@@ -7,7 +7,7 @@ function Login() {
   return (
     <div className="bg-[url('./assets/background-login.jpg')] bg-no-repeat bg-auto w-screen h-screen bg-center flex items-center justify-center">
       <div className="w-6/12 bg-white opacity-80 rounded-md p-8">
-        <div className="text-[#0071BA] uppercase text-3xl font-bold py-8">
+        <div className="text-[#0071BA] uppercase text-3xl font-bold py-8 text-center">
           <p>Đăng nhập</p>
         </div>
         <form className="flex flex-col gap-4">

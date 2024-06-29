@@ -1,10 +1,11 @@
 import './App.css'
-import Home from './pages/Home'
+import Sidebar from './components/Sidebar'
 
 function App() {
-
   return (
-    <Home />
+    <div className="flex w-screen bg-[#F0F0F0]">
+      <Sidebar />
+    </div>
   )
 }
 
