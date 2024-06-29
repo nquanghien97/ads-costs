@@ -1,10 +1,11 @@
+import { RouterProvider } from 'react-router-dom'
 import './App.css'
-import Sidebar from './components/Sidebar'
+import router from './router'
 
 function App() {
   return (
     <div className="flex w-screen bg-[#F0F0F0]">
-      <Sidebar />
+      <RouterProvider router={router} />
     </div>
   )
 }

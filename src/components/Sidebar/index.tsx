@@ -6,7 +6,7 @@ function Sidebar() {
     <div className="h-screen w-[160px]">
       <div className="bg-white w-[160px] opacity-85 fixed top-0 bottom-0 left-0 rounded-r-xl bg-no-repeat">
         {MenuSidebar.map((menu) => (
-          <div className="flex items-center justify-center py-2">
+          <div className="flex items-center justify-center py-2" key={menu.path}>
             <SidebarItem title={menu.title} path={menu.path} />
           </div>
         ))}

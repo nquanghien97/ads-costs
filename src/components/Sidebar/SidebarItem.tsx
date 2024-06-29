@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import BaseButton from "../common/BaseButton";
 
 interface SidebarItemProps {
@@ -9,11 +10,11 @@ function SidebarItem(props: SidebarItemProps) {
   const { title, path } = props;
   return (
     <div className="w-[140px]">
-      <a href={path}>
+      <Link to={path}>
         <BaseButton fullWidth className="py-4 text-white min-h-[80px] text-sm" style={{ outline: 'none' }}>
           {title}
         </BaseButton>
-      </a>
+      </Link>
     </div>
   )
 }
