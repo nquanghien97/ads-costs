@@ -11,7 +11,7 @@ function SidebarItem(props: SidebarItemProps) {
   return (
     <div className="w-[140px]">
       <Link to={path}>
-        <BaseButton fullWidth className="py-4 text-white min-h-[80px] text-sm" style={{ outline: 'none' }}>
+        <BaseButton color="info" fullWidth className="py-4 text-white min-h-[80px] text-sm" style={{ outline: 'none' }}>
           {title}
         </BaseButton>
       </Link>

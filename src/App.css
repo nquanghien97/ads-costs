@@ -2,3 +2,30 @@
   text-align: center;
   color: black;
 }
+
+/* react-select */
+.css-13cymwt-control {
+  border-radius: 9999px !important;
+  filter: drop-shadow(1px 2px rgba(0, 0, 0, 0.4));
+  padding: 2px;
+  cursor: pointer !important;
+}
+
+.css-t3ipsp-control{
+  border-radius: 9999px !important;
+  border: none !important;
+  border-color: transparent !important;;
+  filter: drop-shadow(1px 2px rgba(0, 0, 0, 0.4));
+  padding: 2px;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+.css-art2ul-ValueContainer2 {
+  justify-content: flex-start;
+}
+
+.css-d7l1ni-option{
+  cursor: pointer !important;
+}
+

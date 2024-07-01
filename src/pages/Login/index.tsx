@@ -28,7 +28,7 @@ function Login() {
             }
           />
           <div className="flex justify-center">
-            <BaseButton className="text-white" style={{outline: 'none'}}>
+            <BaseButton color="info" className="text-white" style={{outline: 'none'}}>
               Đăng nhập
             </BaseButton>
           </div>

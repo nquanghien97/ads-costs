@@ -1,6 +1,10 @@
+import Header from "./Header";
+
 function BankAccountDeclaration() {
   return (
-    <div>Khai báo tknh</div>
+    <div className="px-4">
+      <Header />
+    </div>
   )
 }
 
