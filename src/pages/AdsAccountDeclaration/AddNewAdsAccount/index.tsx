@@ -4,6 +4,7 @@ import BaseButton from "../../../components/common/BaseButton";
 import BaseInput from "../../../components/common/BaseInput";
 import ButtonIcon from "../../../components/common/ButtonIcon";
 import { useForm, Controller } from "react-hook-form";
+import { useEffect } from "react";
 
 interface InvoiceDetailsProps {
   onClose: () => void;
@@ -24,13 +25,22 @@ const optionsTypeAdsAccount = [
 function AddNewAdsAccount(props: InvoiceDetailsProps) {
   const { onClose } = props;
 
-  const { register, handleSubmit, watch, control } = useForm();
+  const { register, handleSubmit, watch, control, unregister } = useForm();
 
   const onSubmit = (data: unknown) => {
     console.log(data)
   }
 
-  console.log(watch()?.loaiTKQC?.value)
+  const loaiTKQC = watch('loaiTKQC')?.value;
+
+  useEffect(() => {
+    if (loaiTKQC === 'thue') {
+      unregister('bankLienKet');
+    } else if (loaiTKQC === 'tra-truoc' || loaiTKQC === 'tra-sau') {
+      unregister('tyGia');
+      unregister('phiThue');
+    }
+  }, [loaiTKQC, unregister]);
 
   return (
     <div className="fixed inset-0 bg-[#0000004d] z-50">
@@ -136,18 +146,19 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                 name="muiGio"
               />
             </div>
-            {watch()?.loaiTKQC?.value === 'thue' ? (
+            {loaiTKQC === 'thue' && (
               <>
                 <div className="flex items-center">
                   <p className="w-[120px] text-left text-[#0071BA]">Tỷ giá</p>
-                  <BaseInput fullWidth />
+                  <BaseInput fullWidth {...register('tyGia')} />
                 </div>
                 <div className="flex items-center">
                   <p className="w-[120px] text-left text-[#0071BA]">Phí thuê</p>
-                  <BaseInput fullWidth />
+                  <BaseInput fullWidth {...register('phiThue')} />
                 </div>
               </>
-            ): (
+            )}
+            {(loaiTKQC === 'tra-truoc' || loaiTKQC === 'tra-sau') && (
               <div className="flex items-center">
                 <p className="w-[120px] text-left text-[#0071BA]">Bank Liên Kết</p>
                 <Controller
