@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 function Sidebar() {
   return (
     <>
-      <div className="h-screen w-[160px]">
+      <div className="h-screen w-[160px] z-[100]">
         <div className="bg-white w-[160px] opacity-85 fixed top-0 bottom-0 left-0 rounded-r-xl bg-no-repeat">
           {MenuSidebar.map((menu) => (
             <div className="flex items-center justify-center py-2" key={menu.path}>
@@ -15,7 +15,7 @@ function Sidebar() {
         </div>
         <div className="w-[160px]" />
       </div>
-      <div className="w-full">
+      <div className="w-[calc(100vw-160px)]">
         <Outlet />
       </div>
     </>

@@ -2,7 +2,7 @@ import Header from "./Header";
 
 function AdsAccountDeclaration() {
   return (
-    <div>
+    <div className="px-4">
       <Header />
     </div>
   )

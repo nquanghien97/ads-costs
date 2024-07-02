@@ -1,13 +1,14 @@
 import { useState } from "react";
 import Header from "./Header";
 import PaymentDetails from "./Details/PaymentDetails";
+import TableBankTransaction from "./TableBankTransaction";
 
 function BankTransaction() {
-  const [openPaymentDetails, setOpenPaymentDetails] = useState(true);
+  const [openPaymentDetails, setOpenPaymentDetails] = useState(false);
   return (
     <div className="px-6">
       <Header />
-      Giao dịch ngân hàng
+      <TableBankTransaction />
       {openPaymentDetails && <PaymentDetails onClose={() => setOpenPaymentDetails(false)} />}
     </div>
   )

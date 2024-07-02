@@ -1,6 +1,10 @@
+import Header from "./Header";
+
 function UserManagement() {
   return (
-    <div>Quản lý người dùng</div>
+    <div className="px-4">
+      <Header />
+    </div>
   )
 }
 

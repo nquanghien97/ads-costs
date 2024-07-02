@@ -2,17 +2,13 @@ import Select from "react-select";
 import BaseInput from "../../components/common/BaseInput";
 import SearchIcon from "../../assets/icons/SearchIcon";
 import { useState } from "react";
-import Datepicker from "react-tailwindcss-datepicker";
 import BaseButton from "../../components/common/BaseButton";
+import PlusIcon from "../../assets/icons/PlusIcon";
+import AddNewUser from "./AddNewUser";
 
 type OptionType = {
   value: string;
   label: string;
-} | null
-
-type DateType = {
-  startDate: string | null | Date;
-  endDate: string | null | Date;
 } | null
 
 const options = [
@@ -21,19 +17,11 @@ const options = [
   { value: 'vanilla', label: 'Vanilla' },
 ];
 
-function HeaderInvoice() {
+function Header() {
+  const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false)
   const handleChange = (option: OptionType) => {
     console.log(option)
   }
-  const [value, setValue] = useState<DateType>({ 
-    startDate: new Date(), 
-    endDate: new Date()
-    }); 
-    
-    const handleValueChange = (newValue: DateType) => {
-    console.log("newValue:", newValue); 
-    setValue(newValue); 
-    } 
   return (
     <>
       <div className="flex py-2 justify-between">
@@ -63,28 +51,16 @@ function HeaderInvoice() {
             <SearchIcon color="white" />
           </div>
         </div>
-        <div className="w-[280px] outline-0 border rounded-full border-black">
-          <Datepicker 
-            value={value} 
-            onChange={handleValueChange} 
-            inputClassName="bg-transparent text relative transition-all duration-300 py-2.5 pl-4 pr-14 w-full rounded-full tracking-wide font-light text-sm placeholder-gray-400 bg-white disabled:opacity-40 disabled:cursor-not-allowed ring-blue-500/20"
-          />
-        </div>
       </div>
-      <div className="flex py-2 justify-between">
-        <BaseButton color="info" className="text-white">Khai báo CPQC - Hóa đơn</BaseButton>
-        <div className="flex gap-2">
-          <BaseButton className="bg-white">Export dữ liệu</BaseButton>
-        </div>
+      <div className="flex my-4">
+        <BaseButton color="info" className="text-white" onClick={() => setOpenAddNewAdsAccount(true)}>
+          Thêm mới
+          <PlusIcon color="white" />
+        </BaseButton>
       </div>
-      <div className="py-2 flex justify-start">
-        <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white">Mã MKT - Họ tên - HKD - Hệ thống</span>
-      </div>
-      <div className="py-2 flex justify-start">
-        <span className="px-6 py-2 rounded-full bg-[#da9851] text-white">TKQC Thường</span>
-      </div>
+      {openAddNewAdsAccount && <AddNewUser onClose={() => setOpenAddNewAdsAccount(false)} />}
     </>
   )
 }
 
-export default HeaderInvoice;
+export default Header;
