@@ -8,7 +8,8 @@ function BankTransaction() {
   return (
     <div className="px-6">
       <Header />
-      <TableBankTransaction />
+      <TableBankTransaction setOpenPaymentDetails={setOpenPaymentDetails} />
+      <TableBankTransaction setOpenPaymentDetails={setOpenPaymentDetails} />
       {openPaymentDetails && <PaymentDetails onClose={() => setOpenPaymentDetails(false)} />}
     </div>
   )

@@ -53,6 +53,9 @@ function Header() {
         </div>
       </div>
       <div className="flex my-4">
+        <div className="m-auto">
+          <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Quản lý người dùng</span>
+        </div>
         <BaseButton color="info" className="text-white" onClick={() => setOpenAddNewAdsAccount(true)}>
           Thêm mới
           <PlusIcon color="white" />

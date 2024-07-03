@@ -4,7 +4,7 @@ import router from './router'
 
 function App() {
   return (
-    <div className="flex bg-[#F0F0F0] w-screen">
+    <div className="flex bg-[#F0F0F0]">
       <RouterProvider router={router} />
     </div>
   )

@@ -20,6 +20,26 @@ const fakeData = [
   {
     id: 5,
     name: 'Kênh 5'
+  },
+  {
+    id: 6,
+    name: 'Kênh 1'
+  },
+  {
+    id: 7,
+    name: 'Kênh 2'
+  },
+  {
+    id: 8,
+    name: 'Kênh 3'
+  },
+  {
+    id: 9,
+    name: 'Kênh 4'
+  },
+  {
+    id: 10,
+    name: 'Kênh 5'
   }
 ]
 

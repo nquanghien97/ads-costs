@@ -11,6 +11,18 @@
   cursor: pointer !important;
 }
 
+.custom-bg-red .css-13cymwt-control {
+  background: red !important;
+}
+
+.custom-bg-green .css-13cymwt-control {
+  background: #2b663c !important;
+}
+
+.custom-bg-yellow .css-13cymwt-control {
+  background: #eb9d4d !important;
+}
+
 .css-t3ipsp-control{
   border-radius: 9999px !important;
   border: none !important;

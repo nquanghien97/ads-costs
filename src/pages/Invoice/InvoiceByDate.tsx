@@ -1,11 +1,12 @@
 import Table, { ColumnsType } from "rc-table";
 import Select from "react-select";
-import EyeIcon from "../../../assets/icons/EyeIcon";
+import EyeIcon from "../../assets/icons/EyeIcon";
+import { useState } from "react";
 
 const options = [
-  { value: 'Đã xác nhận', label: 'Đã xác nhận' },
-  { value: 'Sai số liệu', label: 'Sai số liệu' },
-  { value: 'Chưa xin', label: 'Chưa xin' },
+  { value: 'da-xac-nhan', label: 'Đã xác nhận' },
+  { value: 'sai-so-lieu', label: 'Sai số liệu' },
+  { value: 'chua-xin', label: 'Chưa xin' },
 ];
 
 interface RecordType {
@@ -17,16 +18,25 @@ interface RecordType {
     TKQC: string;
     VND: string;
   };
+  xacNhanSoLieu: { value: string; label: string };
   key: string,
 }
-
 
 interface InvoiceByDateProps {
   setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>
 }
-
+type ValueType = {
+  value: string;
+  label: string;
+} | null
 function InvoiceByDate(props: InvoiceByDateProps) {
   const { setOpenInvoiceDetails } = props
+  const [value, setValue] = useState<ValueType>(); 
+    
+  const handleValueChange = (value: ValueType, a) => {
+  setValue(value); 
+  console.log(value)
+  }
   const columns: ColumnsType<RecordType> = [
   
     {
@@ -63,18 +73,18 @@ function InvoiceByDate(props: InvoiceByDateProps) {
     {
       title: "Xác nhận số liệu",
       key: "f",
-      render() {
-        return (
-          <div className="px-2 flex items-center justify-center">
-            <Select
-              options={options}
-              // onChange={handleChange}
-              className=" w-[120px]"
-              placeholder="Select..."
-            />
-          </div>
-        )
-      },
+      render: (e) => (
+        <div className={`px-2 flex items-center justify-center`}>
+          <Select
+            options={options}
+            onChange={(ey) => handleValueChange(ey, e.xacNhanSoLieu)}
+            defaultValue={e.xacNhanSoLieu}
+            // value={value}
+            className=" w-[120px]"
+            placeholder="Select..."
+          />
+        </div>
+      )
     },
   ];
   
@@ -88,6 +98,10 @@ function InvoiceByDate(props: InvoiceByDateProps) {
         TKQC: "25$",
         VND: "625.000đ",
       },
+      xacNhanSoLieu: {
+        value: 'chua-xin',
+        label:'Chưa xin'
+      } ,
       key: "1",
     },
     {
@@ -99,6 +113,10 @@ function InvoiceByDate(props: InvoiceByDateProps) {
         TKQC: "25$",
         VND: "625.000đ",
       },
+      xacNhanSoLieu: {
+        value: 'da-xac-nhan',
+        label:'Đã xác nhận'
+      } ,
       key: "2",
     },
     {
@@ -110,6 +128,10 @@ function InvoiceByDate(props: InvoiceByDateProps) {
         TKQC: "25$",
         VND: "625.000đ",
       },
+      xacNhanSoLieu: {
+        value: 'sai-so-lieu',
+        label:'Sai số liệu'
+      } ,
       key: "3",
     },
     {
@@ -121,6 +143,10 @@ function InvoiceByDate(props: InvoiceByDateProps) {
         TKQC: "25$",
         VND: "625.000đ",
       },
+      xacNhanSoLieu: {
+        value: 'da-xac-nhan',
+        label:'Đã xác nhận'
+      } ,
       key: "4",
     },
     {
@@ -132,62 +158,11 @@ function InvoiceByDate(props: InvoiceByDateProps) {
         TKQC: "25$",
         VND: "625.000đ",
       },
+      xacNhanSoLieu: {
+        value: 'chua-xin',
+        label: 'Chưa xin'
+      } ,
       key: "5",
-    },
-    {
-      tongCPQC: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      tongHoaDon: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      key: "6",
-    },
-    {
-      tongCPQC: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      tongHoaDon: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      key: "7",
-    },
-    {
-      tongCPQC: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      tongHoaDon: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      key: "8",
-    },
-    {
-      tongCPQC: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      tongHoaDon: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      key: "9",
-    },
-    {
-      tongCPQC: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      tongHoaDon: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      key: "10",
     },
   ];
   

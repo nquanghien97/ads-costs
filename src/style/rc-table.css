@@ -141,8 +141,34 @@
 
 .rc-table thead th {
   text-align: center;
-  background: #eb9d4d;
+  /* background: #eb9d4d; */
   height: 70px;
+}
+
+.custom-header-table thead th {
+  background: #eb9d4d;
+}
+
+.custom-header-table tbody tr td {
+  background: #e9d0b7;
+}
+
+.custom-header-table-rent thead th {
+  background: #8e3e58;
+  color: white
+}
+
+.custom-header-table-rent tbody tr td {
+  background-color: #e8a3be;
+}
+
+.custom-header-table-bydate thead th {
+  background: #2b663c;
+  color: white;
+}
+
+.custom-header-table-bydate tbody tr td {
+  background: #f4ffe8;
 }
 
 .rc-table-cell-scrollbar::after {
@@ -171,7 +197,7 @@
 }
 
 .rc-table tbody tr td {
-  background: #e9d0b7;
+  /* background: #e9d0b7; */
   padding: 12px 0;
 
 }

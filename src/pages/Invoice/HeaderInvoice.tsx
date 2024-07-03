@@ -35,7 +35,7 @@ function HeaderInvoice() {
     setValue(newValue); 
     } 
   return (
-    <>
+    <div>
       <div className="flex py-2 justify-between">
         <div className="flex gap-2 items-center">
           <div className="w-[160px]">
@@ -63,7 +63,7 @@ function HeaderInvoice() {
             <SearchIcon color="white" />
           </div>
         </div>
-        <div className="w-[280px] outline-0 border rounded-full border-black">
+        <div className="w-[280px] outline-0 border rounded-full border-black z-[51]">
           <Datepicker 
             value={value} 
             onChange={handleValueChange} 
@@ -80,10 +80,7 @@ function HeaderInvoice() {
       <div className="py-2 flex justify-start">
         <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white">Mã MKT - Họ tên - HKD - Hệ thống</span>
       </div>
-      <div className="py-2 flex justify-start">
-        <span className="px-6 py-2 rounded-full bg-[#da9851] text-white">TKQC Thường</span>
-      </div>
-    </>
+    </div>
   )
 }
 

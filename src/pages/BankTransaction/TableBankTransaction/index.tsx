@@ -1,4 +1,5 @@
 import Table, { ColumnsType } from "rc-table";
+import BankTransactionByDate from "./BankTransactionByDate";
 
 interface RecordType {
   maTKNH: string;
@@ -23,7 +24,7 @@ const columns: ColumnsType<RecordType> = [
   {
     title: 'Họ tên',
     dataIndex: 'hoTen',
-    width: 100,
+    minWidth: 100,
     key: '2',
   },
   {
@@ -45,21 +46,21 @@ const columns: ColumnsType<RecordType> = [
     key: 'e',
   },
   {
-    title: 'Tiền thanh toán hóa đơn',
+    title: 'Tiền TT hóa đơn',
     dataIndex: 'tienThanhToanHoaDon',
-    width: 100,
+    minWidth: 100,
     key: 'e',
   },
   {
     title: 'TT Chi phí khác',
     dataIndex: 'chiPhiKhac',
-    width: 100,
+    minWidth: 100,
     key: 'e',
   },
   {
     title: 'Số dư hiện tại',
     dataIndex: 'soDuHienTai',
-    width: 100,
+    minWidth: 100,
     key: 'e',
   },
 ];
@@ -133,13 +134,35 @@ const data: RecordType[] = [
   },
 ];
 
-function TableBankTransaction() {
+interface TableBankTransactionProps {
+  setOpenPaymentDetails: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function TableBankTransaction(props: TableBankTransactionProps) {
+
+  const { setOpenPaymentDetails } = props
+
   return (
     <div className="my-8">
       <div className="m-auto w-full my-4">
         <div className="px-6 py-2 rounded-full bg-[#eb9d4d] uppercase">Hệ thống 1 - HKD 1</div>
       </div>
-      <Table data={data} columns={columns} />
+      <div className="flex gap-2">
+        <div className="flex-[0_0_60%]">
+          <div className="px-6 py-2 my-2 rounded-full h-10 text-white top-0 z-50 flex"></div>
+          <Table data={data} columns={columns} />
+        </div>
+        <div className="relative overflow-x-auto custom-header-table-bydate">
+          <div className="flex gap-2 flex-[0_0_40%]">
+            <BankTransactionByDate setOpenPaymentDetails={setOpenPaymentDetails} />
+            <BankTransactionByDate setOpenPaymentDetails={setOpenPaymentDetails} />
+            <BankTransactionByDate setOpenPaymentDetails={setOpenPaymentDetails} />
+            <BankTransactionByDate setOpenPaymentDetails={setOpenPaymentDetails} />
+            <BankTransactionByDate setOpenPaymentDetails={setOpenPaymentDetails} />
+          </div>
+        </div>
+
+      </div>
     </div>
   )
 }
