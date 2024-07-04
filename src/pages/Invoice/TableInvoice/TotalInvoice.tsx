@@ -1,235 +1,130 @@
 import type { ColumnsType } from 'rc-table';
 import Table from 'rc-table';
+import { AdsBillingsDTO } from '../../../dto/AdsBillingsDTO';
 
-interface RecordType {
-  maTKQC: string;
-  kenhChay: string;
-  idTKQC: string;
-  tienTe: string;
-  muiGio: string;
-  loaiTK: string;
-  bankLkTKQC: string;
-  trangThaiTKQC: string;
-  soLieu: {
-    TKQC: string;
-    VND: string;
-  };
-  tongCPQC: {
-    TKQC: string;
-    VND: string;
-  };
-  tongHoaDon: {
-    TKQC: string;
-    VND: string;
-  };
-  key: string,
-}
-
-const columns: ColumnsType<RecordType> = [
+const columns: ColumnsType<AdsBillingsDTO> = [
   {
     title: 'Mã TKQC',
-    dataIndex: 'maTKQC',
+    dataIndex: 'ad_account',
     minWidth: 100,
     key: '1',
-
+    render(value) {
+      return value.account_id
+    }
   },
   {
     title: 'Kênh chạy',
-    dataIndex: 'kenhChay',
+    dataIndex: 'ad_account',
     width: 100,
     key: '2',
+    render(value) {
+      return value.channel
+    }
   },
   {
     title: 'ID TKQC',
-    dataIndex: 'idTKQC',
+    dataIndex: 'ad_account',
     minWidth: 100,
     key: '3',
+    render(value) {
+      return value.id
+    }
   },
   {
     title: 'Tiền tệ',
-    dataIndex: 'tienTe',
+    dataIndex: 'ad_account',
     minWidth: 100,
     key: '4',
+    render(value) {
+      return value.currency
+    }
   },
   {
     title: 'Múi giờ',
-    dataIndex: 'muiGio',
+    dataIndex: 'ad_account',
     minWidth: 50,
-    key: 'e',
+    key: '5',
+    render(value) {
+      return value.timezone
+    }
   },
   {
     title: 'Loại TK',
-    dataIndex: 'loaiTK',
+    dataIndex: 'ad_account',
     width: 100,
-    key: 'e',
+    key: '6',
+    render(value) {
+      return value.type
+    }
   },
   {
     title: 'Bank LK TKQC',
-    dataIndex: 'bankLkTKQC',
+    dataIndex: 'ad_account',
     width: 100,
-    key: 'e',
+    key: '7',
+    render(value) {
+      return value.bank_account.bank_name
+    }
+  },
+  {
+    title: 'Trạng thái TKQC',
+    dataIndex: 'ad_account',
+    width: 100,
+    key: '8',
+    render(value) {
+      return value.status
+    }
   },
   {
     title: 'Số liệu',
-    dataIndex: 'soLieu',
+    // dataIndex: 'soLieu',
     width: 200,
-    key: 'e',
-    render: (e) => (
+    key: '9',
+    render: () => (
       <div>
-        <div className="row-custom">{e.TKQC}</div>
-        <div className="row-custom">{e.VND}</div>
+        <div className="row-custom">TKQC</div>
+        <div className="row-custom">VND</div>
       </div>
     ),
   },
   {
     title: 'Tổng CPQC',
-    dataIndex: 'tongCPQC',
+    dataIndex: 'ad_account',
     width: 200,
-    key: 'e',
-    render: (e) => (
-      <div>
-        <div className="row-custom">{e.TKQC}</div>
-        <div className="row-custom">{e.VND}</div>
-      </div>
-    ),
+    key: '10',
+    render(_, value) {
+      return (
+        <div>
+          <div className="row-custom">{value.total_ads}</div>
+          <div className="row-custom">{value.total_ads_vnd}</div>
+        </div>
+      )
+    }
   },
   {
     title: 'Tổng hóa đơn',
-    dataIndex: 'tongHoaDon',
+    dataIndex: 'ad_account',
     width: 200,
-    key: 'e',
-    render: (e) => (
-      <div>
-        <div className="row-custom">{e.TKQC}</div>
-        <div className="row-custom">{e.VND}</div>
-      </div>
-    ),
+    key: '11',
+    render(_, value) {
+      return (
+        <div>
+          <div className="row-custom">{value.total_bill}</div>
+          <div className="row-custom">{value.total_bill_vnd}</div>
+        </div>
+      )
+    }
   },
 ];
 
-const data: RecordType[] = [
-  {
-    maTKQC: "13812340987",
-    kenhChay: "FB",
-    idTKQC: "12345",
-    tienTe: "VND",
-    muiGio: "+7",
-    loaiTK: "trả trước",
-    bankLkTKQC: "TCB",
-    trangThaiTKQC: "Đang sử dụng",
-    soLieu: {
-      TKQC: "TKQC",
-      VND: "VND",
-    },
-    tongCPQC: {
-      TKQC: "25$",
-      VND: "625.000đ",
-    },
-    tongHoaDon: {
-      TKQC: "25$",
-      VND: "625.000đ",
-    },
-    key: "1",
-  },
-  {
-    maTKQC: "13812340987",
-    kenhChay: "FB",
-    idTKQC: "12345",
-    tienTe: "VND",
-    muiGio: "+7",
-    loaiTK: "trả trước",
-    bankLkTKQC: "TCB",
-    trangThaiTKQC: "Đang sử dụng",
-    soLieu: {
-      TKQC: "TKQC",
-      VND: "VND",
-    },
-    tongCPQC: {
-      TKQC: "25$",
-      VND: "625.000đ",
-    },
-    tongHoaDon: {
-      TKQC: "25$",
-      VND: "625.000đ",
-    },
-    key: "2",
-  },
-  {
-    maTKQC: "13812340987",
-    kenhChay: "FB",
-    idTKQC: "12345",
-    tienTe: "VND",
-    muiGio: "+7",
-    loaiTK: "trả trước",
-    bankLkTKQC: "TCB",
-    trangThaiTKQC: "Đang sử dụng",
-    soLieu: {
-      TKQC: "TKQC",
-      VND: "VND",
-    },
-    tongCPQC: {
-      TKQC: "25$",
-      VND: "625.000đ",
-    },
-    tongHoaDon: {
-      TKQC: "25$",
-      VND: "625.000đ",
-    },
-    key: "3",
-  },
-  {
-    maTKQC: "13812340987",
-    kenhChay: "FB",
-    idTKQC: "12345",
-    tienTe: "VND",
-    muiGio: "+7",
-    loaiTK: "trả trước",
-    bankLkTKQC: "TCB",
-    trangThaiTKQC: "Đang sử dụng",
-    soLieu: {
-      TKQC: "TKQC",
-      VND: "VND",
-    },
-    tongCPQC: {
-      TKQC: "25$",
-      VND: "625.000đ",
-    },
-    tongHoaDon: {
-      TKQC: "25$",
-      VND: "625.000đ",
-    },
-    key: "4",
-  },
-  {
-    maTKQC: "13812340987",
-    kenhChay: "FB",
-    idTKQC: "12345",
-    tienTe: "VND",
-    muiGio: "+7",
-    loaiTK: "trả trước",
-    bankLkTKQC: "TCB",
-    trangThaiTKQC: "Đang sử dụng",
-    soLieu: {
-      TKQC: "TKQC",
-      VND: "VND",
-    },
-    tongCPQC: {
-      TKQC: "25$",
-      VND: "625.000đ",
-    },
-    tongHoaDon: {
-      TKQC: "25$",
-      VND: "625.000đ",
-    },
-    key: "5",
-  },
-];
-
-const TotalInvoice = () => (
-  <div className="relative">
-    <div className="px-6 py-2 my-2 rounded-full h-10 text-white top-0 z-50 flex"></div>
-    <Table columns={columns} data={data} />
-  </div>
-);
+function TotalInvoice(props: { data: AdsBillingsDTO[] }) {
+  const { data } = props;
+  return (
+    <div className="relative">
+      <div className="px-6 py-2 my-2 rounded-full h-10 text-white top-0 z-50 flex"></div>
+      <Table columns={columns} data={data} rowKey={(record) => record.ad_account_id}  />
+    </div>
+  )
+}
 
 export default TotalInvoice;

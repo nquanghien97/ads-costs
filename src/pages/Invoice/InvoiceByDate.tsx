@@ -2,6 +2,8 @@ import Table, { ColumnsType } from "rc-table";
 import Select from "react-select";
 import EyeIcon from "../../assets/icons/EyeIcon";
 import { useState } from "react";
+import { AdsBillingsByDate } from "../../dto/AdsBillingsDTO";
+import { unstable_renderSubtreeIntoContainer } from "react-dom";
 
 const options = [
   { value: 'da-xac-nhan', label: 'Đã xác nhận' },
@@ -9,63 +11,52 @@ const options = [
   { value: 'chua-xin', label: 'Chưa xin' },
 ];
 
-interface RecordType {
-  tongCPQC: {
-    TKQC: string;
-    VND: string;
-  };
-  tongHoaDon: {
-    TKQC: string;
-    VND: string;
-  };
-  xacNhanSoLieu: { value: string; label: string };
-  key: string,
-}
-
 interface InvoiceByDateProps {
   setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>
+  data: AdsBillingsByDate
 }
 type ValueType = {
   value: string;
   label: string;
 } | null
+
 function InvoiceByDate(props: InvoiceByDateProps) {
-  const { setOpenInvoiceDetails } = props
+  const { setOpenInvoiceDetails, data } = props
   const [value, setValue] = useState<ValueType>(); 
     
   const handleValueChange = (value: ValueType, a) => {
   setValue(value); 
   console.log(value)
   }
-  const columns: ColumnsType<RecordType> = [
+  const columns: ColumnsType<AdsBillingsByDate> = [
   
     {
       title: 'Tổng CPQC',
-      dataIndex: 'tongCPQC',
+      dataIndex: 'ads',
       width: 200,
       key: 'e',
-      render: (e) => (
+      render: (_, value) => (
         <div>
-          <div className="row-custom">{e.TKQC}</div>
-          <div className="row-custom">{e.VND}</div>
+          <div className="row-custom">{value.ads}</div>
+          <div className="row-custom">{value.ads_vnd}</div>
         </div>
       ),
     },
     {
       title: 'Tổng hóa đơn',
-      dataIndex: 'tongHoaDon',
+      dataIndex: 'bill',
       width: 200,
       key: 'e',
-      render: (e) => (
+      render: (_, value) => (
         <div>
           <div className="row-custom flex items-center justify-between gap-2">
-            {e.TKQC}
+            {value.bill}
             <div onClick={() => setOpenInvoiceDetails(true)} >
               <EyeIcon width={18} height={18} className="cursor-pointer" />
             </div>
           </div>
           <div className="row-custom flex items-center justify-between gap-2">
-            {e.VND}
+            {value.bill_vnd}
           </div>
         </div>
       ),
@@ -87,89 +78,12 @@ function InvoiceByDate(props: InvoiceByDateProps) {
       )
     },
   ];
-  
-  const data: RecordType[] = [
-    {
-      tongCPQC: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      tongHoaDon: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      xacNhanSoLieu: {
-        value: 'chua-xin',
-        label:'Chưa xin'
-      } ,
-      key: "1",
-    },
-    {
-      tongCPQC: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      tongHoaDon: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      xacNhanSoLieu: {
-        value: 'da-xac-nhan',
-        label:'Đã xác nhận'
-      } ,
-      key: "2",
-    },
-    {
-      tongCPQC: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      tongHoaDon: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      xacNhanSoLieu: {
-        value: 'sai-so-lieu',
-        label:'Sai số liệu'
-      } ,
-      key: "3",
-    },
-    {
-      tongCPQC: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      tongHoaDon: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      xacNhanSoLieu: {
-        value: 'da-xac-nhan',
-        label:'Đã xác nhận'
-      } ,
-      key: "4",
-    },
-    {
-      tongCPQC: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      tongHoaDon: {
-        TKQC: "25$",
-        VND: "625.000đ",
-      },
-      xacNhanSoLieu: {
-        value: 'chua-xin',
-        label: 'Chưa xin'
-      } ,
-      key: "5",
-    },
-  ];
-  
+
+  if(!data) return
   return (
     <div className="">
-      <div className="px-6 py-2 my-2 rounded-full bg-[#0071BA] text-white sticky top-[12px] z-50 flex">14 / 06</div>
-      <Table columns={columns} data={data} />
+      <div className="px-6 py-2 my-2 rounded-full bg-[#0071BA] text-white sticky top-[12px] z-50 flex">{data.time}</div>
+      <Table columns={columns} data={[data]} rowKey={(record) => record.time} />
     </div>
   )
 }

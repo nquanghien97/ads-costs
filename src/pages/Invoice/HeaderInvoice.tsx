@@ -77,9 +77,6 @@ function HeaderInvoice() {
           <BaseButton className="bg-white">Export dữ liệu</BaseButton>
         </div>
       </div>
-      <div className="py-2 flex justify-start">
-        <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white">Mã MKT - Họ tên - HKD - Hệ thống</span>
-      </div>
     </div>
   )
 }

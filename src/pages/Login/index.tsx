@@ -1,18 +1,31 @@
+import { useForm } from "react-hook-form";
 import PasswordIcon from "../../assets/icons/PasswordIcon";
 import UserIcon from "../../assets/icons/UserIcon";
 import BaseButton from "../../components/common/BaseButton";
 import BaseInput from "../../components/common/BaseInput";
 
 function Login() {
+
+  const { register, handleSubmit, reset } = useForm();
+
+  const onSubmit = (data: unknown) => {
+    console.log(data)
+    reset()
+  }
+
   return (
     <div className="bg-[url('./assets/background-login.jpg')] bg-no-repeat bg-auto w-screen h-screen bg-center flex items-center justify-center">
       <div className="w-6/12 bg-white opacity-80 rounded-md p-8">
         <div className="text-[#0071BA] uppercase text-3xl font-bold py-8 text-center">
           <p>Đăng nhập</p>
         </div>
-        <form className="flex flex-col gap-4">
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <BaseInput
             placeholder="Tên đăng nhập"
+            {...register('userName')}
             startIcon={
               <div className="w-8 h-8 rounded-full bg-[#0071ba] flex items-center justify-center">
                 <UserIcon />
@@ -21,6 +34,7 @@ function Login() {
           />
           <BaseInput
             placeholder="Mật khẩu"
+            {...register('password')}
             startIcon={
               <div className="w-8 h-8 rounded-full bg-[#0071ba] flex items-center justify-center">
                 <PasswordIcon />
@@ -28,7 +42,11 @@ function Login() {
             }
           />
           <div className="flex justify-center">
-            <BaseButton color="info" className="text-white" style={{outline: 'none'}}>
+            <BaseButton
+              color="info"
+              className="text-white" style={{outline: 'none'}}
+              type="submit"
+            >
               Đăng nhập
             </BaseButton>
           </div>
