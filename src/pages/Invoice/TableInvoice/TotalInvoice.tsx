@@ -2,7 +2,6 @@
 import { Table, ConfigProvider } from 'antd';
 import { AdsBillingsDTO } from '../../../dto/AdsBillingsDTO';
 import { generateDynamicColumns, staticColumns } from './columns';
-// import { columns } from './column';
 
 
 function TotalInvoice(props: { data: AdsBillingsDTO[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>> }) {
@@ -13,7 +12,6 @@ function TotalInvoice(props: { data: AdsBillingsDTO[], setOpenInvoiceDetails: Re
 
   return (
     <div className="relative">
-      {/* <div className="px-6 py-2 my-2 rounded-full h-10 text-white top-0 z-50 flex"></div> */}
       <div className="py-2 flex justify-start">
         <span className="px-6 py-2 rounded-full bg-[#eb9d4d] text-white">TKQC Thường</span>
       </div>
@@ -43,6 +41,7 @@ function TotalInvoice(props: { data: AdsBillingsDTO[], setOpenInvoiceDetails: Re
           bordered
           scroll={{ x: 2000, y: 240 }}
           rowHoverable={false}
+          className='not-fixed'
         />
       </ConfigProvider>
     </div>

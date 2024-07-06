@@ -1,8 +1,8 @@
-import Table, { ColumnsType } from "rc-table";
 import Header from "./Header";
 import EditIcon from "../../assets/icons/EditIcon";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import ButtonIcon from "../../components/common/ButtonIcon";
+import { ConfigProvider, Table, TableColumnsType } from "antd";
 
 interface FieldType {
   createdAt: string;
@@ -23,7 +23,7 @@ interface FieldType {
   trangThaiTKQC: string;
 }
 
-const columns: ColumnsType<FieldType> = [
+const columns: TableColumnsType<FieldType> = [
   {
     title: 'Thời gian',
     dataIndex: 'createdAt',
@@ -131,7 +131,7 @@ const data = [
     hoTen: 'string',
     maTKQC: 'string',
     kenhChay: 'string',
-    idTKQC: 'string',
+    idTKQC: '1',
     tenTKQC: 'string',
     loaiTKQC: 'string',
     tienTe: 'string',
@@ -149,7 +149,7 @@ const data = [
     hoTen: 'string',
     maTKQC: 'string',
     kenhChay: 'string',
-    idTKQC: 'string',
+    idTKQC: '2',
     tenTKQC: 'string',
     loaiTKQC: 'string',
     tienTe: 'string',
@@ -167,7 +167,7 @@ const data = [
     hoTen: 'string',
     maTKQC: 'string',
     kenhChay: 'string',
-    idTKQC: 'string',
+    idTKQC: '3',
     tenTKQC: 'string',
     loaiTKQC: 'string',
     tienTe: 'string',
@@ -184,7 +184,29 @@ function AdsAccountDeclaration() {
     <div className="px-4">
       <Header />
       <div className="custom-header-table">
-        <Table columns={columns} data={data} />
+        <ConfigProvider
+          theme={{
+            token: {
+              borderRadius: 8,
+            },
+            components: {
+              Table: {
+                borderColor: "red",
+                headerBg: "#d19b5c !important",
+                colorBgContainer: '#e2d2bd !important'
+              }
+            }
+          }}
+        >
+          <Table
+            columns={columns}
+            dataSource={data}
+            rowHoverable={false}
+            pagination={false}
+            rowKey={(record) => record.idTKQC}
+            bordered
+          />
+        </ConfigProvider>
       </div>
     </div>
   )

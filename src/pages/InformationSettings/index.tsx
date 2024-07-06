@@ -2,45 +2,25 @@ import InformationSetting from "./InformationSetting";
 
 const fakeData = [
   {
-    id: 1,
+    id: '1',
     name: 'Kênh 1'
   },
   {
-    id: 2,
+    id: '2',
     name: 'Kênh 2'
   },
   {
-    id: 3,
+    id: '3',
     name: 'Kênh 3'
   },
   {
-    id: 4,
+    id: '4',
     name: 'Kênh 4'
   },
   {
-    id: 5,
+    id: '5',
     name: 'Kênh 5'
   },
-  {
-    id: 6,
-    name: 'Kênh 1'
-  },
-  {
-    id: 7,
-    name: 'Kênh 2'
-  },
-  {
-    id: 8,
-    name: 'Kênh 3'
-  },
-  {
-    id: 9,
-    name: 'Kênh 4'
-  },
-  {
-    id: 10,
-    name: 'Kênh 5'
-  }
 ]
 
 function InfomationSettings() {

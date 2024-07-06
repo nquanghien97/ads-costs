@@ -2,24 +2,22 @@ import BaseInput from "../../components/common/BaseInput";
 import SearchIcon from "../../assets/icons/SearchIcon";
 import BaseButton from "../../components/common/BaseButton";
 import { ConfigProvider, DatePicker, Select } from "antd";
-
-type OptionType = {
-  value: string;
-  label: string;
-} | null
-
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-];
+import { dataSystem } from "../../data/systems";
+import { dataGroups } from "../../data/groups";
+import { useState } from "react";
 
 function HeaderInvoice() {
 
   const { RangePicker } = DatePicker
+  const [valueSystem, setValueSystem] = useState<string | null>()
+  const [valueGroup, setValueGroup] = useState<string | null>()
 
-  const handleChange = (option: OptionType) => {
-    console.log(option)
+  const handleSystemChange = (option: string) => {
+    setValueSystem(option)
+    setValueGroup(null)
+  }
+  const handleGroupChange = (option: string) => {
+    setValueGroup(option)
   }
 
   return (
@@ -41,24 +39,26 @@ function HeaderInvoice() {
             // }}
           >
             <Select
-              options={options}
-              onChange={handleChange}
+              options={dataSystem.map((system) => ({ label: system.name, value: system.id}))}
+              onChange={handleSystemChange}
+              // value={valueSystem}
               className="z-50 h-full w-[160px]"
               placeholder="Hệ thống"
             />
           </ConfigProvider>
           <Select
-            options={options}
-            onChange={handleChange}
+            options={dataGroups.filter((id) => id.system_id === valueSystem).map((group) => ({ label: group.name, value: group.name }))}
+            onChange={handleGroupChange}
+            value={valueGroup}
             className="z-50 h-full w-[160px]"
             placeholder="HKD"
           />
-          <Select
+          {/* <Select
             options={options}
             onChange={handleChange}
             className="z-50 h-full w-[160px]"
             placeholder="Họ tên"
-          />
+          /> */}
           <div className="flex items-center justify-center rounded-full bg-[#0071ba] w-8 h-8 cursor-pointer hover:bg-[#326de4] duration-300">
             <SearchIcon color="white" />
           </div>

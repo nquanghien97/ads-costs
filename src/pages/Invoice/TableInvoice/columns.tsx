@@ -139,7 +139,7 @@ export const generateDynamicColumns = (datas: AdsBillingsByDate[], setOpenInvoic
     title: data.time,
     children: [
       {
-        title: `Tổng CPQC (${data.time})`,
+        title: `Tổng CPQC`,
         key: `ads_${index}`,
         width: 120,
         render: (_, record) => (
@@ -150,9 +150,9 @@ export const generateDynamicColumns = (datas: AdsBillingsByDate[], setOpenInvoic
         ),
       },
       {
-        title: `Tổng hóa đơn (${data.time})`,
+        title: `Tổng hóa đơn`,
         key: `bill_${index}`,
-        width: 120,
+        width: 140,
         render: (_, record) => (
           <div key={data.id}>
             <div className="row-custom flex items-center justify-between gap-2">

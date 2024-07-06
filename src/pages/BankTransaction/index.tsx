@@ -7,7 +7,7 @@ import { GetBankBillings } from "../../services/bannk_billings";
 import LoadingIcon from "../../assets/icons/LoadingIcon";
 
 function BankTransaction() {
-  const [openPaymentDetails, setOpenPaymentDetails] = useState(false);
+  const [openPaymentDetails, setOpenBankBillingDetails] = useState(false);
   const [dataBankBillings, setDataBankBillings] = useState<ResponseBankBillings[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -33,7 +33,9 @@ function BankTransaction() {
             {dataBankBillings.map((data) => (
               <div key={data.id}>
                   {data.list.map((smallData) => (
-                    <TableBankTransaction setOpenPaymentDetails={setOpenPaymentDetails} datas={smallData} />
+                    <div key={smallData.system_id}>
+                      <TableBankTransaction setOpenBankBillingDetails={setOpenBankBillingDetails} datas={smallData} />
+                    </div>
                   ))}
             </div>
             ))}
@@ -41,7 +43,7 @@ function BankTransaction() {
         )
       }
 
-      {openPaymentDetails && <PaymentDetails onClose={() => setOpenPaymentDetails(false)} />}
+      {openPaymentDetails && <PaymentDetails onClose={() => setOpenBankBillingDetails(false)} />}
     </div>
   )
 }

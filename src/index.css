@@ -72,21 +72,12 @@ button:focus-visible {
   border-bottom: 1px solid red;
 }
 
-th.ant-table-cell:not(.ant-table-cell-fix-left):not(.ant-table-cell-fix-left-last) {
+.not-fixed th.ant-table-cell:not(.ant-table-cell-fix-left):not(.ant-table-cell-fix-left-last) {
   /* CSS của bạn ở đây */
   background: #2b663c;
 }
 
-td.ant-table-cell:not(.ant-table-cell-fix-left):not(.ant-table-cell-fix-left-last) {
+.not-fixed td.ant-table-cell:not(.ant-table-cell-fix-left):not(.ant-table-cell-fix-left-last) {
   /* CSS của bạn ở đây */
   background: #f6ffea;
-}
-
-td.ant-table-cell:not(.ant-table-cell-fix-left):not(.ant-table-cell-fix-left-last) {
-  /* CSS của bạn ở đây */
-  background: #f6ffea;
-}
-
-.ant-table-cell-row-hover{
-  background-color: transparent !important;
 }
