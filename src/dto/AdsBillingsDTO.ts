@@ -33,6 +33,7 @@ export interface AdsBillingsDTO {
 }
 
 export interface AdsBillingsByDate {
+  id: string,
   time: string,
   ads: number,
   ads_vnd: number,

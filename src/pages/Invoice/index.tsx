@@ -3,7 +3,7 @@ import HeaderInvoice from "./HeaderInvoice";
 import InvoiceDetails from "./InvoiceDetails";
 import TableInvoice from "./TableInvoice";
 import TableInvoiceRent from "./TableInvoiceRent";
-import { AdsBillings } from "../../services/adsServices";
+import { GetAdsBillingsByUser } from "../../services/ads_billings";
 import { AdsBillingsByUserDTO } from "../../dto/AdsBillingsDTO";
 import LoadingIcon from "../../assets/icons/LoadingIcon";
 
@@ -14,13 +14,11 @@ function Invoice() {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const res = await AdsBillings();
+      const res = await GetAdsBillingsByUser();
       setDatas(res.data);
       setLoading(false);
     })()
   }, []);
-
-  console.log(datas)
 
   return (
     <div className="px-4">

@@ -1,10 +1,10 @@
-import Select from "react-select";
 import CloseIcon from "../../../assets/icons/CloseIcon";
 import BaseButton from "../../../components/common/BaseButton";
 import BaseInput from "../../../components/common/BaseInput";
 import ButtonIcon from "../../../components/common/ButtonIcon";
 import { useForm, Controller } from "react-hook-form";
 import { useEffect } from "react";
+import { Select } from "antd";
 
 interface InvoiceDetailsProps {
   onClose: () => void;
@@ -78,7 +78,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                     onChange={onChange}
                     onBlur={onBlur}
                     value={value}
-                    name={name}
+                    // name={name}
                     ref={ref}
                     className="w-full"
                   />

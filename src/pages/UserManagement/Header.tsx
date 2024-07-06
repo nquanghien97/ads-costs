@@ -1,10 +1,10 @@
-import Select from "react-select";
 import BaseInput from "../../components/common/BaseInput";
 import SearchIcon from "../../assets/icons/SearchIcon";
 import { useState } from "react";
 import BaseButton from "../../components/common/BaseButton";
 import PlusIcon from "../../assets/icons/PlusIcon";
 import AddNewUser from "./AddNewUser";
+import { Select } from "antd";
 
 type OptionType = {
   value: string;

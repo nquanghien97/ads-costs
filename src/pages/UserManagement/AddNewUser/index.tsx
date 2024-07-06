@@ -1,4 +1,4 @@
-import Select from "react-select";
+import { Select } from "antd";
 import CloseIcon from "../../../assets/icons/CloseIcon";
 import BaseButton from "../../../components/common/BaseButton";
 import BaseInput from "../../../components/common/BaseInput";

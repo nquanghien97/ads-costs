@@ -1,5 +1,5 @@
 import axios from "axios"
 
-export const AdsBillings = () => {
+export const GetAdsBillingsByUser = () => {
   return axios.get(`${import.meta.env.VITE_API_URL}/ads-billings`)
 }
