@@ -1,9 +1,8 @@
-import { useForm } from "react-hook-form";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import BaseButton from "../../components/common/BaseButton";
-import BaseInput from "../../components/common/BaseInput";
 import ButtonIcon from "../../components/common/ButtonIcon";
 import { useId } from "react";
+import { Form, Input } from "antd";
 
 interface AddNewInformationProps {
   onClose: () => void;
@@ -12,15 +11,15 @@ interface AddNewInformationProps {
 }
 
 interface FormValue {
-  name: string
+  information: string
 }
 
 function AddNewInformation(props: AddNewInformationProps) {
   const id = useId();
-  const { handleSubmit, register } = useForm<FormValue>();
+  const [form] = Form.useForm<FormValue>();
   const { onClose, title, onAddNewData } = props;
-  const onSubmit = (data: { name: string }) => {
-   onAddNewData({id: id, name: data.name})
+  const onSubmit = (data: { information: string }) => {
+   onAddNewData({id: id, name: data.information})
    onClose()
   }
   return (
@@ -34,15 +33,27 @@ function AddNewInformation(props: AddNewInformationProps) {
             </ButtonIcon>
           </div>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex justify-center w-4/5 m-auto py-8">
-            <BaseInput placeholder="Nhập thông tin" fullWidth {...register('name')} />
-          </div>
+        <Form onFinish={onSubmit} form={form}>
+          <Form.Item
+            className="m-auto p-8 pb-4"
+            name="information"
+            rules={[
+              {
+                required: true,
+                message: "Trường này là bắt buộc"
+              }
+            ]}
+            >
+              <Input
+                placeholder="Nhập thông tin"
+                className="py-4"
+              />
+          </Form.Item>
           <div className="flex justify-center gap-12 p-4">
             <BaseButton color="danger" onClick={onClose}>Hủy</BaseButton>
             <BaseButton color="info" type="submit">Xác nhận</BaseButton>
           </div>
-        </form>
+        </Form>
       </div>
     </div>
   )
