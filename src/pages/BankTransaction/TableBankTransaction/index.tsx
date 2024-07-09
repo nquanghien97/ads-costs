@@ -38,7 +38,7 @@ function TableBankTransaction(props: TableBankTransactionProps) {
     return (
       <>
         <tr>
-          <td colSpan={[...staticColumns].length} className={`py-2 uppercase text-center !bg-[#eb9d4d] ant-table-cell ant-table-cell-fix-left sticky left-0`}>
+          <td colSpan={[...staticColumns].length} className={`py-2 uppercase text-center !bg-[#73b67b] ant-table-cell ant-table-cell-fix-left sticky left-0`}>
             {className.split(" ").slice(2, className.length).join(" ")}
           </td>
         </tr>
@@ -63,7 +63,7 @@ function TableBankTransaction(props: TableBankTransactionProps) {
               components: {
                 Table: {
                   borderColor: "red",
-                  headerBg: "#2b663c"
+                  headerBg: "#d19b5c"
                 }
               }
             }}
@@ -77,7 +77,6 @@ function TableBankTransaction(props: TableBankTransactionProps) {
               scroll={{ x: 2000, y: 240 }}
               rowHoverable={false}
               rowClassName={(record) => `${record.system.name}`}
-              // rowClassName="!bg-[red]"
               components={{
                 body: {
                   row: (({ children, className }: { children: React.ReactNode, className: string})=> <CustomRow children={children} className={className} />),

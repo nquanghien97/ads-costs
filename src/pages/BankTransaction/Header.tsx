@@ -1,7 +1,6 @@
-import BaseInput from "../../components/common/BaseInput";
 import SearchIcon from "../../assets/icons/SearchIcon";
 import BaseButton from "../../components/common/BaseButton";
-import { DatePicker, Select } from "antd";
+import { DatePicker, Input, Select } from "antd";
 
 type OptionType = {
   value: string;
@@ -26,25 +25,23 @@ function HeaderInvoice() {
     <>
       <div className="flex py-2 justify-between">
         <div className="flex gap-2 items-center">
-          <div className="w-[160px]">
-            <BaseInput placeholder="Tìm kiếm" className="text-red-100" fullWidth />
-          </div>
+          <Input placeholder="Tìm kiếm" className="h-full w-[160px]" />
           <Select
             options={options}
             onChange={handleChange}
-            className="z-50 h-full w-[160px]"
+            className="h-full w-[160px]"
             placeholder="Hệ thống"
           />
           <Select
             options={options}
             onChange={handleChange}
-            className="z-50 h-full w-[160px]"
+            className="h-full w-[160px]"
             placeholder="HKD"
           />
           <Select
             options={options}
             onChange={handleChange}
-            className="z-50 h-full w-[160px]"
+            className="h-full w-[160px]"
             placeholder="Họ tên"
           />
           <div className="flex items-center justify-center rounded-full bg-[#0071ba] w-8 h-8 cursor-pointer hover:bg-[#326de4] duration-300">

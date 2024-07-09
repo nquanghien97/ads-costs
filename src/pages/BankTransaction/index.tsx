@@ -29,17 +29,7 @@ function BankTransaction() {
             <LoadingIcon />
           </div>
         ) : (
-          <>
-            {/* {dataBankBillings.map((data) => (
-              <div key={data.id}>
-                  {data.list.map((smallData) => (
-                    <div key={smallData.system_id}> */}
-                      <TableBankTransaction setOpenBankBillingDetails={setOpenBankBillingDetails} datas={dataBankBillings} />
-                    {/* </div>
-                  ))}
-            </div>
-            ))} */}
-          </>
+          <TableBankTransaction setOpenBankBillingDetails={setOpenBankBillingDetails} datas={dataBankBillings} />
         )
       }
 

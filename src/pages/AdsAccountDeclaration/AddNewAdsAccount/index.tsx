@@ -4,7 +4,7 @@ import BaseInput from "../../../components/common/BaseInput";
 import ButtonIcon from "../../../components/common/ButtonIcon";
 import { useForm, Controller } from "react-hook-form";
 import { useEffect } from "react";
-import { Select } from "antd";
+import { Input, Select } from "antd";
 
 interface InvoiceDetailsProps {
   onClose: () => void;
@@ -58,89 +58,85 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
             className="flex flex-col gap-6"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">ID TKQC</p>
-              <BaseInput fullWidth {...register('idTKQC')} />
+              <Input {...register('idTKQC')} className="py-2" />
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Tên TKQC</p>
-              <BaseInput fullWidth {...register('tenTKQC')} />
+              <Input {...register('tenTKQC')} className="py-2" />
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Kênh chạy</p>
               <Controller
                 control={control}
+                name="kenhChay"
                 render={({
-                  field: { onChange, onBlur, value, name, ref },
+                  field: { onChange, onBlur, value, ref },
                 }) => (
                   <Select
                     options={options}
                     onChange={onChange}
                     onBlur={onBlur}
                     value={value}
-                    // name={name}
                     ref={ref}
-                    className="w-full"
+                    className="w-full h-full"
                   />
                 )}
-                name="kenhChay"
               />
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Loại TKQC</p>
               <Controller
                 control={control}
                 render={({
-                  field: { onChange, onBlur, value, name, ref },
+                  field: { onChange, onBlur, value, ref },
                 }) => (
                   <Select
                     options={optionsTypeAdsAccount}
                     onChange={onChange}
                     onBlur={onBlur}
                     value={value}
-                    name={name}
                     ref={ref}
-                    className="w-full"
+                    className="w-full h-full"
                   />
                 )}
                 name="loaiTKQC"
               />
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Tiền tệ</p>
               <Controller
                 control={control}
                 render={({
-                  field: { onChange, onBlur, value, name, ref },
+                  field: { onChange, onBlur, value, ref },
                 }) => (
                   <Select
                     options={optionsTypeAdsAccount}
                     onChange={onChange}
                     onBlur={onBlur}
                     value={value}
-                    name={name}
                     ref={ref}
-                    className="w-full"
+                    className="w-full h-full"
                   />
                 )}
                 name="tienTe"
               />
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Múi giờ</p>
               <Controller
                 control={control}
                 render={({
-                  field: { onChange, onBlur, value, name, ref },
+                  field: { onChange, onBlur, value, ref },
                 }) => (
                   <Select
                     options={optionsTypeAdsAccount}
                     onChange={onChange}
                     onBlur={onBlur}
                     value={value}
-                    name={name}
                     ref={ref}
-                    className="w-full"
+                    className="w-full h-full"
                   />
                 )}
                 name="muiGio"
@@ -148,30 +144,29 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
             </div>
             {loaiTKQC === 'thue' && (
               <>
-                <div className="flex items-center">
+                <div className="flex items-center h-[40px]">
                   <p className="w-[120px] text-left text-[#0071BA]">Tỷ giá</p>
-                  <BaseInput fullWidth {...register('tyGia')} />
+                  <Input {...register('tyGia')} className="h-full py-2" />
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center h-[40px]">
                   <p className="w-[120px] text-left text-[#0071BA]">Phí thuê</p>
-                  <BaseInput fullWidth {...register('phiThue')} />
+                  <Input {...register('phiThue')} className="h-full py-2" />
                 </div>
               </>
             )}
             {(loaiTKQC === 'tra-truoc' || loaiTKQC === 'tra-sau') && (
-              <div className="flex items-center">
+              <div className="flex items-center h-[40px]">
                 <p className="w-[120px] text-left text-[#0071BA]">Bank Liên Kết</p>
                 <Controller
                   control={control}
                   render={({
-                    field: { onChange, onBlur, value, name, ref },
+                    field: { onChange, onBlur, value, ref },
                   }) => (
                     <Select
                       options={optionsTypeAdsAccount}
                       onChange={onChange}
                       onBlur={onBlur}
                       value={value}
-                      name={name}
                       ref={ref}
                       className="w-full"
                     />
@@ -180,21 +175,20 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                 />
               </div>
             )}
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Trạng thái TKQC</p>
               <Controller
                 control={control}
                 render={({
-                  field: { onChange, onBlur, value, name, ref },
+                  field: { onChange, onBlur, value, ref },
                 }) => (
                   <Select
                     options={optionsTypeAdsAccount}
                     onChange={onChange}
                     onBlur={onBlur}
                     value={value}
-                    name={name}
                     ref={ref}
-                    className="w-full"
+                    className="w-full h-full"
                   />
                 )}
                 name="trangThaiTKQC"
