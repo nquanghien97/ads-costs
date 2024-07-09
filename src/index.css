@@ -81,3 +81,7 @@ button:focus-visible {
   /* CSS của bạn ở đây */
   background: #f6ffea;
 }
+
+.border-top-row td {
+  border-top: 1px solid red;
+}

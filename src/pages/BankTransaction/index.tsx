@@ -30,15 +30,15 @@ function BankTransaction() {
           </div>
         ) : (
           <>
-            {dataBankBillings.map((data) => (
+            {/* {dataBankBillings.map((data) => (
               <div key={data.id}>
                   {data.list.map((smallData) => (
-                    <div key={smallData.system_id}>
-                      <TableBankTransaction setOpenBankBillingDetails={setOpenBankBillingDetails} datas={smallData} />
-                    </div>
+                    <div key={smallData.system_id}> */}
+                      <TableBankTransaction setOpenBankBillingDetails={setOpenBankBillingDetails} datas={dataBankBillings} />
+                    {/* </div>
                   ))}
             </div>
-            ))}
+            ))} */}
           </>
         )
       }

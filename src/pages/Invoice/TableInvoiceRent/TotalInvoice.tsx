@@ -153,6 +153,7 @@ function TotalInvoice(props: { data: AdsBillingsDTO[], setOpenInvoiceDetails: Re
           pagination={false}
           scroll={{ x: 2000, y: 240 }}
           rowHoverable={false}
+          className='not-fixed'
         />
       </ConfigProvider>
     </div>

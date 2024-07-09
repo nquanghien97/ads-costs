@@ -1,8 +1,7 @@
-import Table, { ColumnsType } from "rc-table";
 import ButtonIcon from "../../../components/common/ButtonIcon";
 import EditIcon from "../../../assets/icons/EditIcon";
 import CloseIcon from "../../../assets/icons/CloseIcon";
-
+import { Table, TableColumnsType } from "antd";
 interface FieldType {
   id: string;
   role: string;
@@ -12,7 +11,7 @@ interface FieldType {
   chucVu: string;
 }
 
-const columns: ColumnsType<FieldType> = [
+const columns: TableColumnsType<FieldType> = [
   {
     title: 'ID',
     dataIndex: 'id',
@@ -98,7 +97,7 @@ const data = [
 
 function TableUser() {
   return (
-    <Table data={data} columns={columns} />
+    <Table dataSource={data} columns={columns} />
   )
 }
 

@@ -1,4 +1,4 @@
-import Table, { ColumnsType } from "rc-table";
+import { ConfigProvider, Table, TableColumnsType } from "antd";
 import CloseIcon from "../../../assets/icons/CloseIcon";
 import EditIcon from "../../../assets/icons/EditIcon";
 import ButtonIcon from "../../../components/common/ButtonIcon";
@@ -15,7 +15,7 @@ interface FieldType {
   trangThaiSuDung: string;
 }
 
-const columns: ColumnsType<FieldType> = [
+const columns: TableColumnsType<FieldType> = [
   {
     title: 'ID',
     dataIndex: 'id',
@@ -118,7 +118,29 @@ const data = [
 function TableBankAccount() {
   return (
     <div className="custom-header-table">
-      <Table columns={columns} data={data} />
+      <ConfigProvider
+          theme={{
+            token: {
+              borderRadius: 8,
+            },
+            components: {
+              Table: {
+                borderColor: "red",
+                headerBg: "#d19b5c !important",
+                colorBgContainer: '#e2d2bd !important'
+              }
+            }
+          }}
+        >
+          <Table
+            columns={columns}
+            dataSource={data}
+            rowHoverable={false}
+            pagination={false}
+            rowKey={(record) => record.id}
+            bordered
+          />
+        </ConfigProvider>
     </div>
   )
 }

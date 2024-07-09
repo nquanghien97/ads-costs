@@ -1,26 +1,19 @@
-import { Select } from 'antd';
 import { TableColumnsType } from 'antd';
-import { BankBillingsByDate, BankBillingsDTO } from '../../../dto/BankBillingsDTO';
+import { DailyData, BankAccountData } from '../../../dto/BankBillingsDTO';
 import EyeIcon from '../../../assets/icons/EyeIcon';
 
-const options = [
-  { value: 'da-xac-nhan', label: 'Đã xác nhận' },
-  { value: 'sai-so-lieu', label: 'Sai số liệu' },
-  { value: 'chua-xin', label: 'Chưa xin' },
-];
-
-export const staticColumns: TableColumnsType<BankBillingsDTO> = [
+export const staticColumns: TableColumnsType<BankAccountData> = [
   {
     title: 'Mã TKNH',
     dataIndex: ['bank_account', 'id'],
     key: '1',
-    width: 80,
+    width: 100,
     fixed: 'left',
   },
   {
     title: 'Họ tên',
     dataIndex: ['bank_account', 'user', 'name'],
-    width: 80,
+    width: 100,
     key: '2',
     fixed: 'left',
   },
@@ -28,68 +21,69 @@ export const staticColumns: TableColumnsType<BankBillingsDTO> = [
     title: 'STK Ngân hàng',
     dataIndex: ['bank_account', 'card_number'],
     key: '3',
-    width: 80,
+    width: 100,
     fixed: 'left',
   },
   {
     title: 'Bank',
     dataIndex: ['bank_account', 'bank_name'],
     key: '4',
-    width: 80,
+    width: 100,
     fixed: 'left',
   },
   {
     title: 'Tiền nhận',
-    dataIndex: 'total_ads',
+    dataIndex: 'total_received',
     key: '5',
-    width: 80,
+    width: 100,
     fixed: 'left',
   },
   {
     title: 'Tiền thanh toán hóa đơn',
-    dataIndex: 'total_bill',
-    width: 80,
+    dataIndex: 'total_paid_bill',
+    width: 100,
     key: '6',
     fixed: 'left',
   },
   {
     title: 'TT Chi phí khác',
-    dataIndex: 'total_ads_vnd',
+    dataIndex: 'total_paid_other',
     width: 100,
     key: '7',
     fixed: 'left',
   },
   {
     title: 'Số dư hiện tại',
-    dataIndex: 'total_ads_vnd',
+    dataIndex: 'balance',
     width: 100,
     key: '8',
     fixed: 'left',
   },
 ];
 
-export const generateDynamicColumns = (datas: BankBillingsByDate[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType => {
-  return datas.flatMap((data, index) => ({
-    title: data.time,
+export const generateDynamicColumns = (datas: { [date: string]: DailyData }, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType => {
+  const dates = Object.keys(datas);
+  return dates.map((date, index) => ({
+    title: date,
     children: [
       {
         title: 'Tiền nhận',
-        key: `ads_${index}`,
+        key: `received_${index}`,
         width: 120,
-        render: (_, record) => (
-          <div key={data.id}>
-            <div>{record.datas[index]?.ads}</div>
+        render: (_, record: BankAccountData) => (
+          <div key={date}>
+            <div>{record.datas[date]?.received}</div>
           </div>
         ),
       },
       {
         title: 'TT hóa đơn',
-        key: `bill_${index}`,
+        key: `paid_bill_${index}`,
         width: 120,
-        render: (_, record) => (
-          <div key={data.id}>
+        render: (_, record: BankAccountData) => (
+          <div key={date}>
             <div className="flex items-center justify-between gap-2">
-              {record.datas[index]?.bill}
+              {record.datas[date]?.paid_bill}
               <div onClick={() => setOpenInvoiceDetails(true)}>
                 <EyeIcon width={18} height={18} className="cursor-pointer" />
               </div>
@@ -99,23 +93,19 @@ export const generateDynamicColumns = (datas: BankBillingsByDate[], setOpenInvoi
       },
       {
         title: 'TT Chi phí khác',
-        key: `status_${index}`,
+        key: `paid_other_${index}`,
         width: 160,
-        render: (_, record) => (
-          <Select
-            options={options}
-            size="large"
-            defaultValue={record.datas[index]?.status}
-            className="w-full"
-            placeholder="Select..."
-          />
+        render: (_, record: BankAccountData) => (
+          <div key={date}>
+            <div className="flex items-center justify-between gap-2">
+              {record.datas[date]?.paid_other}
+              <div onClick={() => setOpenInvoiceDetails(true)}>
+                <EyeIcon width={18} height={18} className="cursor-pointer" />
+              </div>
+            </div>
+          </div>
         ),
       },
     ],
   }));
 };
-
-
-
-
-
