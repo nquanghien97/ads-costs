@@ -12,8 +12,11 @@ function TableBankTransaction(props: TableBankTransactionProps) {
   const { setOpenBankBillingDetails, datas } = props;
 
   // Chuẩn bị dữ liệu cho các cột động
-  const allDatas = datas.flatMap(x => 
-    x.list.flatMap(y => 
+  const data = datas.flatMap(x => x.list);
+
+  const dataForDynamicColumns = datas.flatMap(x => 
+    x.list
+    .flatMap(y => 
       y.group_datas.flatMap(item => 
         item.bank_account_datas.flatMap(account => 
           Object.entries(account.datas).map(([date, data]) => ({
@@ -24,30 +27,19 @@ function TableBankTransaction(props: TableBankTransactionProps) {
       )
     )
   );
-
   // Tạo cột động
-  const dynamicColumns = generateDynamicColumns(allDatas.reduce((acc: TotalDailyData, cur) => {
+  const dynamicColumns = generateDynamicColumns(dataForDynamicColumns.reduce((acc: TotalDailyData, cur) => {
     acc[cur.date] = cur;
     return acc;
   }, {}), setOpenBankBillingDetails);
 
-  // Chuẩn bị dữ liệu cho bảng
-  const allBankAccountDatas = datas.flatMap(x => 
-    x.list.flatMap(y => 
-      y.group_datas.flatMap(item => 
-        item.bank_account_datas
-      )
-    )
-  );
-  console.log(datas.flatMap(x => x.list.flatMap(y => y.system.name)))
-
-  const CustomRow = ({ children, props }: { children: React.ReactNode, props: any }) => {
-    console.log(props['className'])
+  // Tạo sub header cho từng hệ thống / HKD
+  const CustomRow = ({ children, className }: { children: React.ReactNode,  className: string }) => {
     return (
       <>
         <tr>
           <td colSpan={[...staticColumns].length} className={`py-2 uppercase text-center !bg-[#eb9d4d] ant-table-cell ant-table-cell-fix-left sticky left-0`}>
-            {props['className'].split(" ").slice(-2).join(" ")}
+            {className.split(" ").slice(2, className.length).join(" ")}
           </td>
         </tr>
         <tr className="border-top-row">{children}</tr>
@@ -78,17 +70,17 @@ function TableBankTransaction(props: TableBankTransactionProps) {
           >
             <Table
               columns={[...staticColumns, ...dynamicColumns]}
-              dataSource={allBankAccountDatas}
+              dataSource={data}
               pagination={false}
-              rowKey={(record) => record.bank_account_id.toString()}
+              rowKey={(record) => record.system_id.toString()}
               bordered
               scroll={{ x: 2000, y: 240 }}
               rowHoverable={false}
-              rowClassName={(record) => `${record.bank_account.name}`}
+              rowClassName={(record) => `${record.system.name}`}
               // rowClassName="!bg-[red]"
               components={{
                 body: {
-                  row: (({ children, ...props }: { children: React.ReactNode })=> <CustomRow children={children} props={props} />),
+                  row: (({ children, className }: { children: React.ReactNode, className: string})=> <CustomRow children={children} className={className} />),
                 },
               }}
             />

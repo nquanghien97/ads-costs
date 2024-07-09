@@ -80,8 +80,24 @@ button:focus-visible {
 .not-fixed td.ant-table-cell:not(.ant-table-cell-fix-left):not(.ant-table-cell-fix-left-last) {
   /* CSS của bạn ở đây */
   background: #f6ffea;
+  z-index: 0;
+}
+
+.border-top-row tr {
+  border-top: 1px solid red;
+  padding: 0 !important;
+  text-align: center;
 }
 
 .border-top-row td {
-  border-top: 1px solid red;
+  padding: 0 !important;
+}
+
+.border-top-row > .ant-table-cell-fix-left {
+  z-index: 10;
+}
+
+.no-padding td {
+  padding: 0 !important;
+  text-align: center;
 }

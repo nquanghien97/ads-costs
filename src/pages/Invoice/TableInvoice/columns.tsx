@@ -155,10 +155,10 @@ export const generateDynamicColumns = (datas: AdsBillingsByDate[], setOpenInvoic
         width: 140,
         render: (_, record) => (
           <div key={data.id}>
-            <div className="row-custom flex items-center justify-between gap-2">
+            <div className="row-custom flex items-center gap-2">
               {record.datas[index].bill}
-              <div onClick={() => setOpenInvoiceDetails(true)} >
-                <EyeIcon width={18} height={18} className="cursor-pointer" />
+              <div onClick={() => setOpenInvoiceDetails(true)} className="cursor-pointer">
+                <EyeIcon width={18} height={18} />
               </div>
             </div>
             <div className="row-custom flex items-center justify-between gap-2">

@@ -53,12 +53,18 @@ function HeaderInvoice() {
             className="z-50 h-full w-[160px]"
             placeholder="HKD"
           />
-          {/* <Select
-            options={options}
-            onChange={handleChange}
+          <Select
+            // options={options}
+            // onChange={handleChange}
             className="z-50 h-full w-[160px]"
             placeholder="Họ tên"
-          /> */}
+          />
+          <Select
+            // options={options}
+            // onChange={handleChange}
+            className="z-50 h-full w-[160px]"
+            placeholder="Kênh chạy"
+          />
           <div className="flex items-center justify-center rounded-full bg-[#0071ba] w-8 h-8 cursor-pointer hover:bg-[#326de4] duration-300">
             <SearchIcon color="white" />
           </div>

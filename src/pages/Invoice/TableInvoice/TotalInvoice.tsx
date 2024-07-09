@@ -41,6 +41,7 @@ function TotalInvoice(props: { data: AdsBillingsDTO[], setOpenInvoiceDetails: Re
           bordered
           scroll={{ x: 2000, y: 240 }}
           rowHoverable={false}
+          rowClassName="no-padding"
           className='not-fixed'
         />
       </ConfigProvider>
