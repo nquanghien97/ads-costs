@@ -1,7 +1,6 @@
-import { Select } from "antd";
+import { Form, Input, Select } from "antd";
 import CloseIcon from "../../../assets/icons/CloseIcon";
 import BaseButton from "../../../components/common/BaseButton";
-import BaseInput from "../../../components/common/BaseInput";
 import ButtonIcon from "../../../components/common/ButtonIcon";
 
 interface AddNewUserProps {
@@ -16,6 +15,13 @@ const options = [
 
 function AddNewUser(props: AddNewUserProps) {
   const { onClose } = props;
+
+  const [form] = Form.useForm();
+
+  const onFinish = (data: unknown) => {
+    console.log(data)
+  }
+
   return (
     <div className="fixed inset-0 bg-[#0000004d] z-50">
       <div className="w-[800px] relative rounded-xl bg-white left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col">
@@ -28,42 +34,112 @@ function AddNewUser(props: AddNewUserProps) {
           </div>
         </div>
         <div className="p-4 my-4">
-          <form
+          <Form
+            form={form}
+            onFinish={onFinish}
             className="flex flex-col gap-6"
           >
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Mã</p>
-              <BaseInput fullWidth />
+              <Form.Item
+                className="!mb-0 w-full"
+                name="ma"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
+              >
+                <Input className="py-2" />
+              </Form.Item>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Họ tên</p>
-              <BaseInput fullWidth />
+              <Form.Item
+                className="!mb-0 w-full"
+                name="soTKNH"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
+              >
+                <Input className="py-2" />
+              </Form.Item>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Mật khẩu</p>
-              <BaseInput fullWidth />
+              <Form.Item
+                className="!mb-0 w-full"
+                name="soTKNH"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
+              >
+                <Input className="py-2" />
+              </Form.Item>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Xác nhận mật khẩu</p>
-              <BaseInput fullWidth />
+              <Form.Item
+                className="!mb-0 w-full"
+                name="soTKNH"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
+              >
+                <Input className="py-2" />
+              </Form.Item>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Chức vụ</p>
-              <Select options={options} className="w-full" placeholder="Chọn quyền" />
+              <Form.Item
+                className="!mb-0 w-full"
+                name="bank"
+              >
+                <Select
+                  options={options}
+                  className="w-full h-full"
+                />
+              </Form.Item>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Hệ thống</p>
-              <Select options={options} className="w-full" placeholder="Chọn hệ thống" />
+              <Form.Item
+                className="!mb-0 w-full"
+                name="bank"
+              >
+                <Select
+                  options={options}
+                  className="w-full h-full"
+                />
+              </Form.Item>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">HKD</p>
-              <Select options={options} className="w-full" placeholder="Chọn HKD" />
+              <Form.Item
+                className="!mb-0 w-full"
+                name="bank"
+              >
+                <Select
+                  options={options}
+                  className="w-full h-full"
+                />
+              </Form.Item>
             </div>
             <div className="flex justify-evenly">
               <BaseButton color="danger" onClick={onClose}>Hủy</BaseButton>
-              <BaseButton color="success">Xác nhận</BaseButton>
+              <BaseButton color="success" type="submit">Xác nhận</BaseButton>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </div>

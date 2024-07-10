@@ -101,3 +101,7 @@ button:focus-visible {
   padding: 0 !important;
   text-align: center;
 }
+
+.ant-select-selector {
+  padding: 4px 0 !important;
+}

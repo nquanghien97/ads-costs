@@ -134,6 +134,10 @@ export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
   },
 ];
 
+const onChangeStatus = (value: string, id: number) => {
+  console.log({ value, id });
+}
+
 export const generateDynamicColumns = (datas: AdsBillingsByDate[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<AdsBillingsDTO> => {
   return datas.flatMap((data, index) => ({
     title: data.time,
@@ -172,13 +176,16 @@ export const generateDynamicColumns = (datas: AdsBillingsByDate[], setOpenInvoic
         key: `xacnhan_${index}`,
         width: 160,
         render: (_, record) => (
-          <Select
-            options={options}
-            size="large"
-            defaultValue={record.datas[index].status}
-            className="w-full"
-            placeholder="Select..."
-          />
+          <div className="px-2">
+            <Select
+              options={options}
+              onChange={(value) => onChangeStatus(value, record.ad_account.id)}
+              size="large"
+              defaultValue={record.datas[index].status}
+              className="w-full"
+              placeholder="Select..."
+            />
+          </div>
         ),
       },
     ]

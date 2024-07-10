@@ -10,13 +10,15 @@ export const staticColumns: TableColumnsType<ListItem> =  [
     width: 100,
     fixed: 'left',
     render: (_, record) => (
-      <div className="flex flex-col">
+      <table>
+        <tbody>
         {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-          <tr className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+          <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
             <td>{innerData.bank_account_id}</td>
           </tr>
         )))}
-      </div>
+        </tbody>
+      </table>
     ),
   },
   {
@@ -26,13 +28,16 @@ export const staticColumns: TableColumnsType<ListItem> =  [
     key: '2',
     fixed: 'left',
     render: (_, record) => (
-      <div className="flex flex-col">
+      <table>
+        <tbody>
+
         {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-          <tr className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+          <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
             <td>{innerData.bank_account.user.name}</td>
           </tr>
         )))}
-      </div>
+        </tbody>
+      </table>
     ),
   },
   {
@@ -42,13 +47,16 @@ export const staticColumns: TableColumnsType<ListItem> =  [
     width: 100,
     fixed: 'left',
     render: (_, record) => (
-      <div className="flex flex-col">
-        {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-          <tr className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-            <td>{innerData.bank_account.card_number}</td>
-          </tr>
-        )))}
-      </div>
+      <table>
+        <tbody>
+
+          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
+            <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+              <td>{innerData.bank_account.card_number}</td>
+            </tr>
+          )))}
+          </tbody>
+      </table>
     ),
   },
   {
@@ -58,13 +66,16 @@ export const staticColumns: TableColumnsType<ListItem> =  [
     width: 100,
     fixed: 'left',
     render: (_, record) => (
-      <div className="flex flex-col">
-        {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-          <tr className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-            <td>{innerData.bank_account.bank_name}</td>
-          </tr>
-        )))}
-      </div>
+      <table>
+        <tbody>
+
+          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
+            <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+              <td>{innerData.bank_account.bank_name}</td>
+            </tr>
+          )))}
+          </tbody>
+      </table>
     ),
   },
   {
@@ -74,13 +85,16 @@ export const staticColumns: TableColumnsType<ListItem> =  [
     width: 100,
     fixed: 'left',
     render: (_, record) => (
-      <div className="flex flex-col">
-        {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-          <tr className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-            <td>{innerData.total_received}</td>
-          </tr>
-        )))}
-      </div>
+      <table>
+        <tbody>
+
+          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
+            <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+              <td>{innerData.total_received}</td>
+            </tr>
+          )))}
+          </tbody>
+      </table>
     ),
   },
   {
@@ -90,13 +104,16 @@ export const staticColumns: TableColumnsType<ListItem> =  [
     key: '6',
     fixed: 'left',
     render: (_, record) => (
-      <div className="flex flex-col">
-        {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-          <tr className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-            <td>{innerData.total_paid_bill}</td>
-          </tr>
-        )))}
-      </div>
+      <table>
+        <tbody>
+
+          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
+            <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+              <td>{innerData.total_paid_bill}</td>
+            </tr>
+          )))}
+          </tbody>
+      </table>
     ),
   },
   {
@@ -106,13 +123,16 @@ export const staticColumns: TableColumnsType<ListItem> =  [
     key: '7',
     fixed: 'left',
     render: (_, record) => (
-      <div className="flex flex-col">
-        {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-          <tr className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-            <td>{innerData.total_paid_other}</td>
-          </tr>
-        )))}
-      </div>
+      <table>
+        <tbody>
+
+          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
+            <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+              <td>{innerData.total_paid_other}</td>
+            </tr>
+          )))}
+          </tbody>
+      </table>
     ),
   },
   {
@@ -122,13 +142,16 @@ export const staticColumns: TableColumnsType<ListItem> =  [
     key: '8',
     fixed: 'left',
     render: (_, record) => (
-      <div className="flex flex-col">
-        {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-          <tr className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-            <td>{innerData.balance}</td>
-          </tr>
-        )))}
-      </div>
+      <table>
+        <tbody>
+
+          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
+            <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+              <td>{innerData.balance}</td>
+            </tr>
+          )))}
+          </tbody>
+      </table>
     ),
   },
 ];
@@ -143,13 +166,16 @@ export const generateDynamicColumns = (datas: { [date: string]: DailyData }, set
         key: `received_${index}`,
         width: 120,
         render: (_, record: ListItem) => (
-          <div className="flex flex-col" key={date}>
+          <table>
+            <tbody>
+
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-              <tr className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+              <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
                 <td>{innerData.datas[date]?.received}</td>
               </tr>
             )))}
-          </div>
+            </tbody>
+          </table>
         ),
       },
       {
@@ -157,16 +183,18 @@ export const generateDynamicColumns = (datas: { [date: string]: DailyData }, set
         key: `paid_bill_${index}`,
         width: 120,
         render: (_, record: ListItem) => (
-          <div className="flex flex-col" key={date}>
+          <table>
+            <tbody>
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-              <tr className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+              <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
                 <td>{innerData.datas[date]?.received}</td>
-                <div onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
+                <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
                   <EyeIcon width={18} height={18} />
-                </div>
+                </td>
               </tr>
             )))}
-          </div>
+            </tbody>
+          </table>
         ),
       },
       {
@@ -174,16 +202,19 @@ export const generateDynamicColumns = (datas: { [date: string]: DailyData }, set
         key: `paid_other_${index}`,
         width: 160,
         render: (_, record: ListItem) => (
-          <div className="flex flex-col" key={date}>
+          <table>
+            <tbody>
+
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-              <tr className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+              <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
                 <td>{innerData.datas[date]?.paid_other}</td>
-                <div onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
+                <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
                   <EyeIcon width={18} height={18}/>
-                </div>
+                </td>
               </tr>
             )))}
-          </div>
+            </tbody>
+          </table>
         ),
       },
     ],

@@ -1,66 +1,97 @@
-import BaseInput from "../../components/common/BaseInput";
 import SearchIcon from "../../assets/icons/SearchIcon";
 import { useState } from "react";
 import BaseButton from "../../components/common/BaseButton";
 import PlusIcon from "../../assets/icons/PlusIcon";
 import AddNewBankAccount from "./AddNewBankAccount";
-import { DatePicker, Select } from "antd";
-
-type OptionType = {
-  value: string;
-  label: string;
-} | null
-
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-];
+import { Button, DatePicker, Form, Input, Select, Tooltip } from "antd";
+import { dataSystem } from "../../data/systems";
+import { dataGroups } from "../../data/groups";
 
 function Header() {
-
-  const { RangePicker } = DatePicker
-
+  const { RangePicker } = DatePicker;
+  
   const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false)
-  const handleChange = (option: OptionType) => {
-    console.log(option)
+  const [valueSystem, setValueSystem] = useState<string | null>()
+  const [valueGroup, setValueGroup] = useState<string | null>()
+
+  const handleSystemChange = (option: string) => {
+    setValueSystem(option)
+    setValueGroup(null)
+  }
+  const handleGroupChange = (option: string) => {
+    setValueGroup(option)
+  }
+
+  const onFinish = (data: unknown) => {
+    console.log(data)
   }
 
   return (
     <>
-      <div className="flex py-2 justify-between">
+      <Form onFinish={onFinish} className="flex py-2 justify-between">
         <div className="flex gap-2 items-center">
-          <div className="w-[160px]">
-            <BaseInput placeholder="Tìm kiếm" className="text-red-100" fullWidth />
-          </div>
-          <Select
-            options={options}
-            onChange={handleChange}
-            className="z-50 h-full w-[160px]"
-            placeholder="Hệ thống"
-          />
-          <Select
-            options={options}
-            onChange={handleChange}
-            className="z-50 h-full w-[160px]"
-            placeholder="HKD"
-          />
-          <Select
-            options={options}
-            onChange={handleChange}
-            className="z-50 h-full w-[160px]"
-            placeholder="Họ tên"
-          />
-          <div className="flex items-center justify-center rounded-full bg-[#0071ba] w-8 h-8 cursor-pointer hover:bg-[#326de4] duration-300">
-            <SearchIcon color="white" />
-          </div>
+          <Form.Item
+            className="w-[160px]"
+            name="key_word"
+          >
+            <Input
+              placeholder="Tìm kiếm"
+              className="py-2"
+            />
+          </Form.Item>
+          <Form.Item
+            className="w-[160px]"
+            name="system"
+          >
+            <Select
+              options={dataSystem.map((system) => ({ label: system.name, value: system.id}))}
+              onChange={handleSystemChange}
+              className="z-50 h-full w-[160px]"
+              placeholder="Hệ thống"
+            />
+          </Form.Item>
+          <Form.Item
+            className="w-[160px]"
+            name="group"
+          >
+            <Select
+              options={dataGroups.filter((id) => id.system_id === valueSystem).map((group) => ({ label: group.name, value: group.id }))}
+              onChange={handleGroupChange}
+              value={valueGroup}
+              className="z-50 h-full w-[160px]"
+              placeholder="HKD"
+            />
+          </Form.Item>
+          <Form.Item
+            className="w-[160px]"
+            name="name"
+          >
+            <Select
+              // options={options}
+              // onChange={handleChange}
+              className="z-50 h-full w-[160px]"
+              placeholder="Họ tên"
+            />
+          </Form.Item>
+          <Form.Item>
+            <Tooltip title="Tìm kiếm">
+              <Button
+                htmlType="submit"
+                type="primary"
+                shape="circle"
+                icon={<SearchIcon color="white" />}
+              />
+            </Tooltip>
+          </Form.Item>
         </div>
-        <div className="w-[240px] outline-0 border rounded-full border-black">
-          <RangePicker
-            className="bg-transparent text relative transition-all duration-300 py-2.5 pl-4 pr-14 w-full rounded-full tracking-wide font-light text-sm placeholder-gray-400 bg-white disabled:opacity-40 disabled:cursor-not-allowed ring-blue-500/20"
+        <Form.Item
+          name="date"
+        >
+          <RangePicker 
+            className="h-[40px]"
           />
-        </div>
-      </div>
+        </Form.Item>
+      </Form>
       <div className="flex justify-between my-4">
         <div className="m-auto">
           <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Khai báo tài khoản ngân hàng</span>

@@ -1,10 +1,7 @@
 import CloseIcon from "../../../assets/icons/CloseIcon";
 import BaseButton from "../../../components/common/BaseButton";
-import BaseInput from "../../../components/common/BaseInput";
 import ButtonIcon from "../../../components/common/ButtonIcon";
-import { useForm, Controller } from "react-hook-form";
-import { useEffect } from "react";
-import { Input, Select } from "antd";
+import { Form, Input, Select } from "antd";
 
 interface InvoiceDetailsProps {
   onClose: () => void;
@@ -25,22 +22,13 @@ const optionsTypeAdsAccount = [
 function AddNewAdsAccount(props: InvoiceDetailsProps) {
   const { onClose } = props;
 
-  const { register, handleSubmit, watch, control, unregister } = useForm();
+  const [form] = Form.useForm();
 
-  const onSubmit = (data: unknown) => {
+  const onFinish = (data: unknown) => {
     console.log(data)
   }
 
-  const loaiTKQC = watch('loaiTKQC')?.value;
-
-  useEffect(() => {
-    if (loaiTKQC === 'thue') {
-      unregister('bankLienKet');
-    } else if (loaiTKQC === 'tra-truoc' || loaiTKQC === 'tra-sau') {
-      unregister('tyGia');
-      unregister('phiThue');
-    }
-  }, [loaiTKQC, unregister]);
+  const loaiTKQC = Form.useWatch('loaiTKQC', form);
 
   return (
     <div className="fixed inset-0 bg-[#0000004d] z-50">
@@ -54,151 +42,154 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
           </div>
         </div>
         <div className="p-4 my-4">
-          <form
+          <Form
             className="flex flex-col gap-6"
-            onSubmit={handleSubmit(onSubmit)}
+            form={form}
+            onFinish={onFinish}
           >
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">ID TKQC</p>
-              <Input {...register('idTKQC')} className="py-2" />
+              <Form.Item
+                className="!mb-0 w-full"
+                name="idTKQC"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
+              >
+              <Input className="py-2" />
+            </Form.Item>
             </div>
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Tên TKQC</p>
-              <Input {...register('tenTKQC')} className="py-2" />
+              <Form.Item
+                className="!mb-0 w-full"
+                name="tenTKQC"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
+              >
+              <Input className="py-2" />
+            </Form.Item>
             </div>
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Kênh chạy</p>
-              <Controller
-                control={control}
+              <Form.Item
+                className="!mb-0 w-full"
                 name="kenhChay"
-                render={({
-                  field: { onChange, onBlur, value, ref },
-                }) => (
-                  <Select
-                    options={options}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    className="w-full h-full"
-                  />
-                )}
-              />
+              >
+                <Select
+                  options={options}
+                  className="w-full h-full"
+                />
+              </Form.Item>
             </div>
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Loại TKQC</p>
-              <Controller
-                control={control}
-                render={({
-                  field: { onChange, onBlur, value, ref },
-                }) => (
-                  <Select
-                    options={optionsTypeAdsAccount}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    className="w-full h-full"
-                  />
-                )}
+              <Form.Item
+                className="!mb-0 w-full"
                 name="loaiTKQC"
-              />
+              >
+                <Select
+                  options={optionsTypeAdsAccount}
+                  className="w-full h-full"
+                />
+              </Form.Item>
             </div>
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Tiền tệ</p>
-              <Controller
-                control={control}
-                render={({
-                  field: { onChange, onBlur, value, ref },
-                }) => (
-                  <Select
-                    options={optionsTypeAdsAccount}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    className="w-full h-full"
-                  />
-                )}
+              <Form.Item
+                className="!mb-0 w-full"
                 name="tienTe"
-              />
+              >
+                <Select
+                  options={optionsTypeAdsAccount}
+                  className="w-full h-full"
+                />
+              </Form.Item>
             </div>
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Múi giờ</p>
-              <Controller
-                control={control}
-                render={({
-                  field: { onChange, onBlur, value, ref },
-                }) => (
-                  <Select
-                    options={optionsTypeAdsAccount}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    className="w-full h-full"
-                  />
-                )}
+              <Form.Item
+                className="!mb-0 w-full"
                 name="muiGio"
-              />
+              >
+                <Select
+                  options={optionsTypeAdsAccount}
+                  className="w-full h-full"
+                />
+              </Form.Item>
             </div>
             {loaiTKQC === 'thue' && (
               <>
                 <div className="flex items-center h-[40px]">
                   <p className="w-[120px] text-left text-[#0071BA]">Tỷ giá</p>
-                  <Input {...register('tyGia')} className="h-full py-2" />
+                  <Form.Item
+                    className="!mb-0 w-full"
+                    name="tyGia"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Trường này là bắt buộc"
+                      }
+                    ]}
+                  >
+                    <Input className="py-2" />
+                  </Form.Item>
                 </div>
                 <div className="flex items-center h-[40px]">
                   <p className="w-[120px] text-left text-[#0071BA]">Phí thuê</p>
-                  <Input {...register('phiThue')} className="h-full py-2" />
+                  <Form.Item
+                    className="!mb-0 w-full"
+                    name="phiThue"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Trường này là bắt buộc"
+                      }
+                    ]}
+                  >
+                    <Input className="py-2" />
+                  </Form.Item>
                 </div>
               </>
             )}
             {(loaiTKQC === 'tra-truoc' || loaiTKQC === 'tra-sau') && (
               <div className="flex items-center h-[40px]">
                 <p className="w-[120px] text-left text-[#0071BA]">Bank Liên Kết</p>
-                <Controller
-                  control={control}
-                  render={({
-                    field: { onChange, onBlur, value, ref },
-                  }) => (
-                    <Select
-                      options={optionsTypeAdsAccount}
-                      onChange={onChange}
-                      onBlur={onBlur}
-                      value={value}
-                      ref={ref}
-                      className="w-full"
-                    />
-                  )}
+                <Form.Item
+                  className="!mb-0 w-full"
                   name="bankLienKet"
-                />
+                >
+                  <Select
+                    options={optionsTypeAdsAccount}
+                    className="w-full h-full"
+                  />
+                </Form.Item>
               </div>
             )}
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Trạng thái TKQC</p>
-              <Controller
-                control={control}
-                render={({
-                  field: { onChange, onBlur, value, ref },
-                }) => (
-                  <Select
-                    options={optionsTypeAdsAccount}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    ref={ref}
-                    className="w-full h-full"
-                  />
-                )}
+              <Form.Item
+                className="!mb-0 w-full"
                 name="trangThaiTKQC"
-              />
+              >
+                <Select
+                  options={optionsTypeAdsAccount}
+                  className="w-full h-full"
+                />
+              </Form.Item>
             </div>
             <div className="flex justify-evenly">
               <BaseButton color="danger" onClick={onClose}>Hủy</BaseButton>
               <BaseButton color="success" type="submit">Xác nhận</BaseButton>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </div>
