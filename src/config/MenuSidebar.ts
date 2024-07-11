@@ -25,7 +25,7 @@ const MenuSidebar = [
   },
   {
     title: 'KHAI BÁO HỆ THỐNG - HỘ KINH DOANH',
-    path: '/khai-bao-he-thong-ho-kinh-doanh'
+    path: '/khai-bao-he-thong'
   },
   {
     title: 'XEM BÁO CÁO',

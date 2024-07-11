@@ -6,10 +6,11 @@ import InformationSettings from "../pages/InformationSettings";
 import AdsAccountDeclaration from "../pages/AdsAccountDeclaration";
 import BankAccountDeclaration from "../pages/BankAccountDeclaration";
 import UserManagement from "../pages/UserManagement";
-import BusinessHouseholdSystemDeclaration from "../pages/BusinessHouseholdSystemDeclaration";
 import ReportView from "../pages/ReportView";
 import Home from "../pages/Home";
 import Sidebar from "../components/Sidebar";
+import SystemDeclaration from "../pages/SystemDeclaration";
+import GroupDeclaration from "../pages/GroupDeclaration";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,54 +26,12 @@ const router = createBrowserRouter(
         <Route path="/khai-bao-tkqc" element={<AdsAccountDeclaration />} />
         <Route path="/khai-bao-tk-ngan-hang" element={<BankAccountDeclaration />} />
         <Route path="/quan-ly-nguoi-dung" element={<UserManagement />} />
-        <Route path="/khai-bao-he-thong-ho-kinh-doanh" element={<BusinessHouseholdSystemDeclaration />} />
+        <Route path="/khai-bao-he-thong" element={<SystemDeclaration />} />
+        <Route path="/khai-bao-ho-kinh-doanh/:groupId" element={<GroupDeclaration />} />
         <Route path="/xem-bao-cao" element={<ReportView />} />
-        <Route path="/khai-bao-he-thong-ho-kinh-doanh" element={<BusinessHouseholdSystemDeclaration />} />
       </Route>
     </>
   )
 );
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <Home />,
-//   },
-//   {
-//     path: "/login",
-//     element: <Login />,
-//   },
-//   {
-//     path: "/cpqc-hoa-don",
-//     element: <Invoice />,
-//   },
-//   {
-//     path: "/giao-dich-ngan-hang",
-//     element: <BankTransaction />,
-//   },
-//   {
-//     path: "/cai-dat-thong-tin",
-//     element: <InfomationSettings />,
-//   },
-//   {
-//     path: "/khai-bao-tkqc",
-//     element: <AdvertAccountDeclaration />,
-//   },
-//   {
-//     path: "/khai-bao-tk-ngan-hang",
-//     element: <BankAccountDeclaration />,
-//   },
-//   {
-//     path: "/quan-ly-nguoi-dung",
-//     element: <UserManagement />,
-//   },
-//   {
-//     path: "/khai-bao-he-thong-ho-kinh-doanh",
-//     element: <BusinessHouseholdSystemDeclaration />,
-//   },
-//   {
-//     path: "/xem-bao-cao",
-//     element: <ReportView />,
-//   },
-// ]);
 
 export default router;
