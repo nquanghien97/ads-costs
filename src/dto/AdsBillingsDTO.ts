@@ -1,3 +1,9 @@
+export interface AdsBillingsByUser {
+  user_id: number,
+  username: string,
+  name: string,
+  list: AdsBillingsDTO[],
+}
 export interface AdsBillingsDTO {
   ad_account_id: number,
   ad_account: {
@@ -29,10 +35,10 @@ export interface AdsBillingsDTO {
   total_ads_vnd: number,
   total_bill: number,
   total_bill_vnd: number,
-  datas: AdsBillingsByDate[],
+  datas: DailyAdsBillings[],
 }
 
-export interface AdsBillingsByDate {
+export interface DailyAdsBillings {
   id: string,
   time: string,
   ads: number,
@@ -41,11 +47,4 @@ export interface AdsBillingsByDate {
   bill_vnd: number,
   exchange_rate: number
   status: string
-}
-
-export interface AdsBillingsByUserDTO {
-  user_id: number,
-  username: string,
-  name: string,
-  list: AdsBillingsDTO[],
 }

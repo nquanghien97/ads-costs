@@ -1,9 +1,9 @@
-import { AdsBillingsByUserDTO } from "../../../dto/AdsBillingsDTO";
+import { AdsBillingsByUser } from "../../../dto/AdsBillingsDTO";
 import TotalInvoice from "./TotalInvoice";
 
 interface TableInvoiceRentProps {
   setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>
-  data: AdsBillingsByUserDTO
+  data: AdsBillingsByUser
 }
 
 function TableInvoice(props: TableInvoiceRentProps) {

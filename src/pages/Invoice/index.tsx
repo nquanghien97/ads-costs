@@ -4,12 +4,12 @@ import InvoiceDetails from "./InvoiceDetails";
 import TableInvoice from "./TableInvoice";
 import TableInvoiceRent from "./TableInvoiceRent";
 import { GetAdsBillingsByUser } from "../../services/ads_billings";
-import { AdsBillingsByUserDTO } from "../../dto/AdsBillingsDTO";
+import { AdsBillingsByUser } from "../../dto/AdsBillingsDTO";
 import LoadingIcon from "../../assets/icons/LoadingIcon";
 
 function Invoice() {
   const [openInvoiceDetails, setOpenInvoiceDetails] = useState(false);
-  const [datas, setDatas] = useState<AdsBillingsByUserDTO[]>([]);
+  const [datas, setDatas] = useState<AdsBillingsByUser[]>([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
