@@ -20,9 +20,10 @@ interface FormValue {
 function EditInformation(props: EditInformationProps) {
   const [form] = Form.useForm<FormValue>();
   const { onClose, title, onEdit, id, name, loadingEdit } = props;
+
   const onSubmit = async (data: { name: string }) => {
-   await onEdit('channel', {id: id, name: data.name})
-   onClose()
+    await onEdit('channel', {id: id, name: data.name})
+    onClose()
   }
   return (
     <div className="fixed inset-0 bg-[#0000004d] z-50">

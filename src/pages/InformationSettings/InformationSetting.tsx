@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import PlusIcon from "../../assets/icons/PlusIcon"
 import AddNewInformation from "./AddNewInformation";
 import MinusIcon from "../../assets/icons/MinusIcon";
-import SubmitDelInformation from "./SubmitDelInformation";
+import SubmitDelInformation from "./DeleteInformation";
 import EditIcon from "../../assets/icons/EditIcon";
 import EditInformation from "./EditInformation";
 import { InformationSettingType } from "../../entities/InformationSetting";
@@ -54,13 +54,19 @@ function InformationSetting(props: InformationSettingProps) {
         <ul className="flex flex-wrap items-center">
         {datas.map((item) => (
           <li key={item.id} className={`mr-4 px-8 py-4 my-2 rounded-xl uppercase text-center min-w-[120px] relative`} style={{ backgroundColor: color }}>
-            <div className="absolute top-2 right-3 bg-[red] rounded-xl cursor-pointer hover:opacity-70" onClick={() => onOpenDel(item.id)}>
+            <div
+              className="absolute top-2 right-3 bg-[red] rounded-xl cursor-pointer hover:opacity-70"
+              onClick={() => onOpenDel(item.id)}
+            >
               <MinusIcon color="white" width={16} />
             </div>
-            <div className="absolute bottom-2 right-3 bg-[green] rounded-xl cursor-pointer hover:opacity-70" onClick={() => {
-              setOpenModalEditInformation(true)
-              setId(item.id)
-            }}>
+            <div
+              className="absolute bottom-2 right-3 bg-[green] rounded-xl cursor-pointer hover:opacity-70"
+              onClick={() => {
+                setOpenModalEditInformation(true)
+                setId(item.id)
+              }}
+            >
               <EditIcon color="white" width={16} />
             </div>
             {openModalEditInformation && (

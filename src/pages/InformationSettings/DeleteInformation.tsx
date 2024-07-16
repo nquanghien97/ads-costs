@@ -2,7 +2,7 @@ import { Button } from "antd";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import ButtonIcon from "../../components/common/ButtonIcon";
 
-interface SubmitDelInformationProps {
+interface DeleteInformationProps {
   onClose: () => void;
   title: string;
   onDelete: (type: string, id: number) => Promise<void>;
@@ -11,7 +11,7 @@ interface SubmitDelInformationProps {
   loadingDelete: boolean;
 }
 
-function SubmitDelInformation(props: SubmitDelInformationProps) {
+function DeleteInformation(props: DeleteInformationProps) {
   const { onClose, title, onDelete, type, id, loadingDelete } = props;
   const onSubmit = async() => {
     await onDelete(type, id)
@@ -38,4 +38,4 @@ function SubmitDelInformation(props: SubmitDelInformationProps) {
   )
 }
 
-export default SubmitDelInformation;
+export default DeleteInformation;

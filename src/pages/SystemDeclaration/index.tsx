@@ -1,66 +1,49 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Tooltip } from 'antd'
+import { Button, Skeleton, Tooltip } from 'antd'
 import PlusIcon from '../../assets/icons/PlusIcon'
 import SystemItem from './SystemItem'
 import AddNewSystem from './AddNewSystem'
 import withAuth from '../../hocs/withAuth'
 import { getAllSystems } from '../../services/system'
-
-const systemData = [
-  {
-    id: 1,
-    name: 'Hệ thống 1'
-  },
-  {
-    id: 2,
-    name: 'Hệ thống 2'
-  },
-  {
-    id: 3,
-    name: 'Hệ thống 3'
-  },
-  {
-    id: 4,
-    name: 'Hệ thống 4'
-  },
-  {
-    id: 5,
-    name: 'Hệ thống 1'
-  },
-  {
-    id: 6,
-    name: 'Hệ thống 2'
-  },
-  {
-    id: 7,
-    name: 'Hệ thống 3'
-  },
-  {
-    id: 8,
-    name: 'Hệ thống 4'
-  }
-]
+import SystemType from '../../entities/System'
 
 function SystemDeclaration() {
   const [openAddSystemModal, setOpenAddSystemModal] = useState(false);
+  const [systems, setSystems] = useState<SystemType[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     (async () => {
-      await getAllSystems()
+      const res = await getAllSystems();
+      setLoading(false)
+      setSystems(res.data.data.list)
     })()
-  }, [])
+  }, []);
+
   return (
     <>
       <ul className="flex flex-wrap gap-4 px-4 py-6 text-white cursor-pointer">
-        {systemData.map((system) => (
-          <React.Fragment key={system.id}>
-            <SystemItem system={system.name} system_id={system.id} />
-          </React.Fragment>
-        ))}
-        <div className="w-[200px] h-[140px] bg-[#0071BA] rounded-xl flex flex-col gap-2 items-center justify-center">
+        {loading ? (
+          <>
+            <Skeleton.Button className='!w-[200px] !h-[140px]' active />
+            <Skeleton.Button className='!w-[200px] !h-[140px]' active />
+            <Skeleton.Button className='!w-[200px] !h-[140px]' active />
+          </>
+        ) : (
+          systems.map((system) => (
+            <React.Fragment key={system.id}>
+              <SystemItem system={system} setSystems={setSystems} />
+            </React.Fragment>
+          ))
+        )
+        }
+        <div
+          className="w-[200px] h-[140px] bg-[#0071BA] rounded-xl flex flex-col gap-2 items-center justify-center"
+          onClick={() => setOpenAddSystemModal(true)}
+        >
           <Tooltip title="Thêm hệ thống">
             <Button
-              onClick={() => setOpenAddSystemModal(true)}
               type="default"
               shape="circle"
               className="bg-white focus:outline-none"
@@ -70,7 +53,7 @@ function SystemDeclaration() {
           Thêm hệ thống
         </div>
       </ul>
-      <AddNewSystem open={openAddSystemModal} onOk={() => console.log('ok')} onCancel={() => setOpenAddSystemModal(false)} />
+      <AddNewSystem open={openAddSystemModal} onCancel={() => setOpenAddSystemModal(false)} setSystems={setSystems} />
     </>
   )
 }
