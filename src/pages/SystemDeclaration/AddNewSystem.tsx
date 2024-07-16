@@ -53,7 +53,7 @@ export default function AddNewSystem(props: AddNewSystemProps) {
             />
         </Form.Item>
         <div className="flex justify-center gap-12 p-4">
-          <Button type="primary" danger onClick={() => {}}>Hủy</Button>
+          <Button type="primary" danger onClick={onCancel}>Hủy</Button>
           <Button type="primary" htmlType="submit" loading={loadingSubmit}>Xác nhận</Button>
         </div>
       </Form>
