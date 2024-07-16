@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Tooltip } from 'antd'
 import PlusIcon from '../../assets/icons/PlusIcon'
 import SystemItem from './SystemItem'
 import AddNewSystem from './AddNewSystem'
+import withAuth from '../../hocs/withAuth'
+import { getAllSystems } from '../../services/system'
 
 const systemData = [
   {
@@ -39,8 +41,14 @@ const systemData = [
   }
 ]
 
-export default function SystemDeclaration() {
+function SystemDeclaration() {
   const [openAddSystemModal, setOpenAddSystemModal] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      await getAllSystems()
+    })()
+  }, [])
   return (
     <>
       <ul className="flex flex-wrap gap-4 px-4 py-6 text-white cursor-pointer">
@@ -66,3 +74,7 @@ export default function SystemDeclaration() {
     </>
   )
 }
+
+const SystemDeclarationWithAuth = withAuth(SystemDeclaration);
+
+export default SystemDeclarationWithAuth;

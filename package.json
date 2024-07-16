@@ -2,6 +2,7 @@
   "name": "curency-management",
   "private": true,
   "version": "0.0.0",
+  "proxy": "http://exisquanly.com:9000",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,18 +11,25 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.3.7",
     "antd": "^5.19.0",
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
+    "http-proxy-middleware": "^3.0.0",
+    "js-cookie": "^3.0.5",
     "rc-table": "^7.47.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.0",
-    "react-router-dom": "^6.24.0"
+    "react-router-dom": "^6.24.0",
+    "uuid": "^10.0.0",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "@vitejs/plugin-react": "^4.3.1",

@@ -1,17 +1,20 @@
+import { Button } from "antd";
 import CloseIcon from "../../assets/icons/CloseIcon";
-import BaseButton from "../../components/common/BaseButton";
 import ButtonIcon from "../../components/common/ButtonIcon";
 
 interface SubmitDelInformationProps {
   onClose: () => void;
   title: string;
-  onRemoveData: () => void
+  onDelete: (type: string, id: number) => Promise<void>;
+  type: string;
+  id: number;
+  loadingDelete: boolean;
 }
 
 function SubmitDelInformation(props: SubmitDelInformationProps) {
-  const { onClose, title, onRemoveData } = props;
-  const onSubmit = () => {
-    onRemoveData()
+  const { onClose, title, onDelete, type, id, loadingDelete } = props;
+  const onSubmit = async() => {
+    await onDelete(type, id)
     onClose()
   }
   return (
@@ -27,8 +30,8 @@ function SubmitDelInformation(props: SubmitDelInformationProps) {
         </div>
         <h2 className="p-4 text-xl">Bạn có muốn xóa không?</h2>
         <div className="flex justify-center gap-12 p-4">
-          <BaseButton color="danger" onClick={onClose}>Hủy</BaseButton>
-          <BaseButton color="info" onClick={onSubmit}>Xác nhận</BaseButton>
+          <Button type="primary" danger onClick={onClose}>Hủy</Button>
+          <Button type="primary" color="info" onClick={onSubmit} loading={loadingDelete}>Xác nhận</Button>
         </div>
       </div>
     </div>

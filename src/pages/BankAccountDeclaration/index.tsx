@@ -1,3 +1,4 @@
+import withAuth from "../../hocs/withAuth";
 import Header from "./Header";
 import Table from "./TableBankAccount";
 
@@ -10,4 +11,6 @@ function BankAccountDeclaration() {
   )
 }
 
-export default BankAccountDeclaration;
+const BankAccountDeclarationWithAuth = withAuth(BankAccountDeclaration);
+
+export default BankAccountDeclarationWithAuth;

@@ -6,7 +6,7 @@ import InformationSettings from "../pages/InformationSettings";
 import AdsAccountDeclaration from "../pages/AdsAccountDeclaration";
 import BankAccountDeclaration from "../pages/BankAccountDeclaration";
 import UserManagement from "../pages/UserManagement";
-import ReportView from "../pages/ReportView";
+import ReportView from "../pages/ReportAds";
 import Home from "../pages/Home";
 import Sidebar from "../components/Sidebar";
 import SystemDeclaration from "../pages/SystemDeclaration";

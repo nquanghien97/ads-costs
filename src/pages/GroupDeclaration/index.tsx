@@ -5,6 +5,7 @@ import GroupItem from "./GroupItem";
 import { Button, Tooltip } from "antd";
 import PlusIcon from "../../assets/icons/PlusIcon";
 import AddNewGroup from "./AddNewGroup";
+import withAuth from "../../hocs/withAuth";
 
 const groupData = [
   {
@@ -41,7 +42,7 @@ const groupData = [
   }
 ]
 
-export default function GroupDeclaration() {
+function GroupDeclaration() {
   const params = useParams()
   console.log(params.groupId)
   const [openAddGroupModal, setOpenAddGroupModal] = useState(false);
@@ -53,7 +54,8 @@ export default function GroupDeclaration() {
             <GroupItem group={group.name} group_id={group.id} />
           </React.Fragment>
         ))}
-        <div className="w-[200px] h-[140px] bg-[#0071BA] rounded-xl flex flex-col gap-2 items-center justify-center">
+        <div className="w-[200px] h-[140px] bg-[#0071BA] rounded-xl flex gap-2 items-center justify-center p-4">
+          <span>Thêm hộ kinh doanh</span>
           <Tooltip title="Thêm hệ thống">
             <Button
               onClick={() => setOpenAddGroupModal(true)}
@@ -63,10 +65,13 @@ export default function GroupDeclaration() {
               icon={<PlusIcon color="#0071BA" />}
             />
           </Tooltip>
-          Thêm hộ kinh doanh
         </div>
       </ul>
       <AddNewGroup open={openAddGroupModal} onOk={() => console.log('ok')} onCancel={() => setOpenAddGroupModal(false)} />
     </>
   )
 }
+
+const GroupDeclarationWithAuth = withAuth(GroupDeclaration);
+
+export default GroupDeclarationWithAuth;

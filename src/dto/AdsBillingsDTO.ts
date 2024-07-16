@@ -35,12 +35,9 @@ export interface AdsBillingsDTO {
   total_ads_vnd: number,
   total_bill: number,
   total_bill_vnd: number,
-  datas: DailyAdsBillings[],
+  datas: TotalDailyData,
 }
-
 export interface DailyAdsBillings {
-  id: string,
-  time: string,
   ads: number,
   ads_vnd: number,
   bill: number,
@@ -48,3 +45,8 @@ export interface DailyAdsBillings {
   exchange_rate: number
   status: string
 }
+
+export interface TotalDailyData {
+  [date: string]: DailyAdsBillings
+}
+

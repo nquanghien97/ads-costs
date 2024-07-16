@@ -1,5 +1,5 @@
 import { TableColumnsType } from 'antd';
-import { DailyData, ListItem } from '../../../dto/BankBillingsDTO';
+import { ListItem, TotalDailyData } from '../../../dto/BankBillingsDTO';
 import EyeIcon from '../../../assets/icons/EyeIcon';
 
 export const staticColumns: TableColumnsType<ListItem> =  [
@@ -156,7 +156,7 @@ export const staticColumns: TableColumnsType<ListItem> =  [
   },
 ];
 
-export const generateDynamicColumns = (datas: { [date: string]: DailyData }, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<ListItem> => {
+export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<ListItem> => {
   const dates = Object.keys(datas);
   return dates.map((date, index) => ({
     title: date,
@@ -165,10 +165,9 @@ export const generateDynamicColumns = (datas: { [date: string]: DailyData }, set
         title: 'Tiền nhận',
         key: `received_${index}`,
         width: 120,
-        render: (_, record: ListItem) => (
+        render: (_, record) => (
           <table>
             <tbody>
-
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
               <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
                 <td>{innerData.datas[date]?.received}</td>

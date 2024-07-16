@@ -5,6 +5,7 @@ import TableBankTransaction from "./TableBankTransaction";
 import { BankBillings } from "../../dto/BankBillingsDTO";
 import { GetBankBillings } from "../../services/bannk_billings";
 import LoadingIcon from "../../assets/icons/LoadingIcon";
+import withAuth from "../../hocs/withAuth";
 
 function BankTransaction() {
   const [openPaymentDetails, setOpenBankBillingDetails] = useState(false);
@@ -38,4 +39,5 @@ function BankTransaction() {
   )
 }
 
-export default BankTransaction;
+const BankTransactionWithAuth = withAuth(BankTransaction);
+export default BankTransactionWithAuth;

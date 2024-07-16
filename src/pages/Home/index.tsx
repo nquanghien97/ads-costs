@@ -1,3 +1,5 @@
+import withAuth from "../../hocs/withAuth";
+
 function Home() {
   return (
     <div className="bg-[url('./assets/background-home.jpg')] h-screen bg-no-repeat bg-cover flex">
@@ -6,4 +8,6 @@ function Home() {
   )
 }
 
-export default Home;
+const HomeWithAuth = withAuth(Home);
+
+export default HomeWithAuth;

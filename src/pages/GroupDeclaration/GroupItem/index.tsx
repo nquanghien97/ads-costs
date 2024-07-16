@@ -17,7 +17,7 @@ export default function GroupItem(props: GroupItemProps) {
 
   return (
     <>
-      <li className="w-[200px] h-[140px] bg-[#0071BA] rounded-xl flex items-center justify-center" onClick={() => {navigate(`/khai-bao-ho-kinh-doanh/${group_id}`)}}>
+      <li className="w-[200px] h-[140px] bg-[#0071BA] rounded-xl flex items-center justify-center p-4" onClick={() => {navigate(`/khai-bao-ho-kinh-doanh/${group_id}`)}}>
         <span className="mr-2">{group}</span>
         <Tooltip title="Chỉnh sửa" >
           <Button

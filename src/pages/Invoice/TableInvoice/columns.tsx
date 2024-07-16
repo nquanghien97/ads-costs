@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import { TableColumnsType } from 'antd';
-import { DailyAdsBillings, AdsBillingsDTO } from '../../../dto/AdsBillingsDTO';
+import { AdsBillingsDTO, TotalDailyData } from '../../../dto/AdsBillingsDTO';
 import EyeIcon from '../../../assets/icons/EyeIcon';
 
 const options = [
@@ -138,18 +138,19 @@ const onChangeStatus = (value: string, id: number) => {
   console.log({ value, id });
 }
 
-export const generateDynamicColumns = (datas: DailyAdsBillings[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<AdsBillingsDTO> => {
-  return datas.flatMap((data, index) => ({
-    title: data.time,
+export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<AdsBillingsDTO> => {
+  const dates = Object.keys(datas);
+  return dates.flatMap((date, index) => ({
+    title: date,
     children: [
       {
         title: `Tổng CPQC`,
         key: `ads_${index}`,
         width: 120,
         render: (_, record) => (
-          <div key={data.id}>
-            <div className="row-custom">{record.datas[index].ads}</div>
-            <div className="row-custom">{record.datas[index].ads_vnd}</div>
+          <div>
+            <div className="row-custom">{record.datas[date].ads}</div>
+            <div className="row-custom">{record.datas[date].ads_vnd}</div>
           </div>
         ),
       },
@@ -158,15 +159,15 @@ export const generateDynamicColumns = (datas: DailyAdsBillings[], setOpenInvoice
         key: `bill_${index}`,
         width: 140,
         render: (_, record) => (
-          <div key={data.id}>
+          <div>
             <div className="row-custom flex items-center gap-2">
-              {record.datas[index].bill}
+              {record.datas[date].bill}
               <div onClick={() => setOpenInvoiceDetails(true)} className="cursor-pointer">
                 <EyeIcon width={18} height={18} />
               </div>
             </div>
             <div className="row-custom flex items-center justify-between gap-2">
-              {record.datas[index].bill_vnd}
+              {record.datas[date].bill_vnd}
             </div>
           </div>
         ),
@@ -181,7 +182,7 @@ export const generateDynamicColumns = (datas: DailyAdsBillings[], setOpenInvoice
               options={options}
               onChange={(value) => onChangeStatus(value, record.ad_account.id)}
               size="large"
-              defaultValue={record.datas[index].status}
+              defaultValue={record.datas[date].status}
               className="w-full"
               placeholder="Select..."
             />

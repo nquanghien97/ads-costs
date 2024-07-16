@@ -1,3 +1,4 @@
+import withAuth from "../../hocs/withAuth";
 import Header from "./Header";
 import TableUser from "./TableUser";
 
@@ -10,4 +11,6 @@ function UserManagement() {
   )
 }
 
-export default UserManagement;
+const UserManagementWithAuth = withAuth(UserManagement);
+
+export default UserManagementWithAuth;

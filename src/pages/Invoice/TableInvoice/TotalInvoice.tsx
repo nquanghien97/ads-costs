@@ -1,13 +1,22 @@
 // import Table from 'rc-table';
 import { Table, ConfigProvider } from 'antd';
-import { AdsBillingsDTO } from '../../../dto/AdsBillingsDTO';
+import { AdsBillingsDTO, TotalDailyData } from '../../../dto/AdsBillingsDTO';
 import { generateDynamicColumns, staticColumns } from './columns';
 
 
 function TotalInvoice(props: { data: AdsBillingsDTO[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>> }) {
   const { data, setOpenInvoiceDetails } = props;
   
-  const dynamicColumns = data.length > 0 ? generateDynamicColumns(data[0].datas, setOpenInvoiceDetails) : [];
+  const dataForDynamicColumns = data.flatMap(x => 
+    Object.entries(x.datas).map(([date, data]) => ({
+      date,
+      ...data
+    }))
+  );
+  const dynamicColumns = generateDynamicColumns(dataForDynamicColumns.reduce((acc: TotalDailyData, cur) => {
+    acc[cur.date] = cur;
+    return acc;
+  }, {}), setOpenInvoiceDetails);
   const columns = [...staticColumns, ...dynamicColumns];
 
   return (

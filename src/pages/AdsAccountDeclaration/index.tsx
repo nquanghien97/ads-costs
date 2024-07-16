@@ -3,6 +3,7 @@ import EditIcon from "../../assets/icons/EditIcon";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import ButtonIcon from "../../components/common/ButtonIcon";
 import { ConfigProvider, Table, TableColumnsType } from "antd";
+import withAuth from "../../hocs/withAuth";
 
 interface FieldType {
   createdAt: string;
@@ -212,4 +213,5 @@ function AdsAccountDeclaration() {
   )
 }
 
-export default AdsAccountDeclaration;
+const AdsAccountDeclarationWithAuth = withAuth(AdsAccountDeclaration)
+export default AdsAccountDeclarationWithAuth;

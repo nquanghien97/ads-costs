@@ -6,6 +6,7 @@ import TableInvoiceRent from "./TableInvoiceRent";
 import { GetAdsBillingsByUser } from "../../services/ads_billings";
 import { AdsBillingsByUser } from "../../dto/AdsBillingsDTO";
 import LoadingIcon from "../../assets/icons/LoadingIcon";
+import withAuth from "../../hocs/withAuth";
 
 function Invoice() {
   const [openInvoiceDetails, setOpenInvoiceDetails] = useState(false);
@@ -42,4 +43,6 @@ function Invoice() {
   )
 }
 
-export default Invoice;
+const InvoiceWithAuth = withAuth(Invoice)
+
+export default InvoiceWithAuth;

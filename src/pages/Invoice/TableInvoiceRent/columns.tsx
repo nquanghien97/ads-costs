@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import { TableColumnsType } from 'antd';
-import { DailyAdsBillings, AdsBillingsDTO } from '../../../dto/AdsBillingsDTO';
+import { AdsBillingsDTO, TotalDailyData } from '../../../dto/AdsBillingsDTO';
 import EyeIcon from '../../../assets/icons/EyeIcon';
 
 const options = [
@@ -134,18 +134,19 @@ export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
   },
 ];
 
-export const generateDynamicColumns = (datas: DailyAdsBillings[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<AdsBillingsDTO> => {
-  return datas.flatMap((data, index) => ({
-    title: data.time,
+export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<AdsBillingsDTO> => {
+  const dates = Object.keys(datas);
+  return dates.flatMap((date, index) => ({
+    title: date,
     children: [
       {
         title: `Tổng CPQC`,
         key: `ads_${index}`,
         width: 120,
         render: (_, record) => (
-          <div key={data.id}>
-            <div className="row-custom">{record.datas[index].ads}</div>
-            <div className="row-custom">{record.datas[index].ads_vnd}</div>
+          <div>
+            <div className="row-custom">{record.datas[date].ads}</div>
+            <div className="row-custom">{record.datas[date].ads_vnd}</div>
           </div>
         ),
       },
@@ -153,32 +154,36 @@ export const generateDynamicColumns = (datas: DailyAdsBillings[], setOpenInvoice
         title: `Tổng hóa đơn`,
         key: `bill_${index}`,
         width: 140,
-        render: (_, record) => (
-          <div key={data.id}>
-            <div className="row-custom flex items-center justify-between gap-2">
-              {record.datas[index].bill}
-              <div onClick={() => setOpenInvoiceDetails(true)} >
-                <EyeIcon width={18} height={18} className="cursor-pointer" />
+        render: (_, record) => {
+          return (
+            <div>
+              <div className="row-custom flex items-center justify-between gap-2">
+                {record.datas[date].bill}
+                <div onClick={() => setOpenInvoiceDetails(true)} >
+                  <EyeIcon width={18} height={18} className="cursor-pointer" />
+                </div>
+              </div>
+              <div className="row-custom flex items-center justify-between gap-2">
+                {record.datas[date].bill_vnd}
               </div>
             </div>
-            <div className="row-custom flex items-center justify-between gap-2">
-              {record.datas[index].bill_vnd}
-            </div>
-          </div>
-        ),
+          )
+        }
       },
       {
         title: "Xác nhận số liệu",
         key: `xacnhan_${index}`,
         width: 160,
         render: (_, record) => (
+          <div className="px-2">
             <Select
               options={options}
               size="large"
-              defaultValue={record.datas[index].status}
+              defaultValue={record.datas[date].status}
               className="w-full"
               placeholder="Select..."
             />
+          </div>
         ),
       },
     ]

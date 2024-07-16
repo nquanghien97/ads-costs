@@ -1,31 +1,34 @@
 import CloseIcon from "../../assets/icons/CloseIcon";
 import ButtonIcon from "../../components/common/ButtonIcon";
 import { Button, Form, Input } from "antd";
+import { InformationSettingType } from "../../entities/InformationSetting";
 
-interface AddNewInformationProps {
+interface EditInformationProps {
   onClose: () => void;
   title: string;
-  onAdd: (type: string, name: string) => Promise<void>;
+  onEdit: (type: string, data: InformationSettingType) => Promise<void>;
+  id: number;
+  name: string;
   type: string;
-  loadingAdd: boolean;
+  loadingEdit: boolean;
 }
 
 interface FormValue {
   name: string
 }
 
-function AddNewInformation(props: AddNewInformationProps) {
+function EditInformation(props: EditInformationProps) {
   const [form] = Form.useForm<FormValue>();
-  const { onClose, title, onAdd, type, loadingAdd } = props;
+  const { onClose, title, onEdit, id, name, loadingEdit } = props;
   const onSubmit = async (data: { name: string }) => {
-    await onAdd(type, data.name)
-    onClose()
+   await onEdit('channel', {id: id, name: data.name})
+   onClose()
   }
   return (
     <div className="fixed inset-0 bg-[#0000004d] z-50">
       <div className="w-[800px] relative rounded-xl bg-white left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col">
         <div>
-          <div className="w-full text-center p-3 h-[50px] bg-[#eb9d4d] rounded-t-xl uppercase font-bold">{title}</div>
+          <div className="w-full text-center p-3 h-[50px] bg-[#eb9d4d] rounded-t-xl uppercase font-bold">{`Chỉnh sửa ${title}`}</div>
           <div className="absolute right-2 top-2" onClick={onClose}>
             <ButtonIcon>
               <CloseIcon />
@@ -42,6 +45,7 @@ function AddNewInformation(props: AddNewInformationProps) {
                 message: "Trường này là bắt buộc"
               }
             ]}
+            initialValue={name}
             >
               <Input
                 placeholder="Nhập thông tin"
@@ -50,7 +54,7 @@ function AddNewInformation(props: AddNewInformationProps) {
           </Form.Item>
           <div className="flex justify-center gap-12 p-4">
             <Button type="primary" danger onClick={onClose}>Hủy</Button>
-            <Button type="primary" htmlType="submit" loading={loadingAdd}>Xác nhận</Button>
+            <Button type="primary" htmlType="submit" loading={loadingEdit}>Xác nhận</Button>
           </div>
         </Form>
       </div>
@@ -58,4 +62,4 @@ function AddNewInformation(props: AddNewInformationProps) {
   )
 }
 
-export default AddNewInformation;
+export default EditInformation;
