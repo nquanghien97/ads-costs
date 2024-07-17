@@ -2,33 +2,23 @@ import CloseIcon from "../../../assets/icons/CloseIcon";
 import BaseButton from "../../../components/common/BaseButton";
 import ButtonIcon from "../../../components/common/ButtonIcon";
 import { Form, Input, Select } from "antd";
+import { useInformationSettingsStore } from "../../../zustand/information_settings.store";
 
 interface InvoiceDetailsProps {
   onClose: () => void;
 }
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-];
-
-const optionsTypeAdsAccount = [
-  { value: 'tra-truoc', label: "TKCN trả trước"},
-  { value: 'tra-sau', label: "TKCN trả sau"},
-  { value: 'thue', label: "Tài khoản thuê"}
-]
-
 function AddNewAdsAccount(props: InvoiceDetailsProps) {
   const { onClose } = props;
 
   const [form] = Form.useForm();
+  const { channels, currencies, timezones, adAccountStatus, adAccountTypes, banks } = useInformationSettingsStore();
 
   const onFinish = (data: unknown) => {
     console.log(data)
   }
 
-  const loaiTKQC = Form.useWatch('loaiTKQC', form);
+  const adsAccountTypes = Form.useWatch('type', form);
 
   return (
     <div className="fixed inset-0 bg-[#0000004d] z-50">
@@ -48,10 +38,10 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
             onFinish={onFinish}
           >
             <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">ID TKQC</p>
+              <p className="w-[120px] text-left text-[#0071BA]">ID Tài Khoản</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="idTKQC"
+                name="userId"
                 rules={[
                   {
                     required: true,
@@ -59,14 +49,29 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                   }
                 ]}
               >
-              <Input className="py-2" />
-            </Form.Item>
+                <Input className="py-2" />
+              </Form.Item>
+            </div>
+            <div className="flex items-center h-[40px]">
+              <p className="w-[120px] text-left text-[#0071BA]">ID TKQC</p>
+              <Form.Item
+                className="!mb-0 w-full"
+                name="accountId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
+              >
+                <Input className="py-2" />
+              </Form.Item>
             </div>
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Tên TKQC</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="tenTKQC"
+                name="account"
                 rules={[
                   {
                     required: true,
@@ -81,10 +86,10 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
               <p className="w-[120px] text-left text-[#0071BA]">Kênh chạy</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="kenhChay"
+                name="channel"
               >
                 <Select
-                  options={options}
+                  options={channels.map(channel => ({ label: channel.name, value: channel.id}))}
                   className="w-full h-full"
                 />
               </Form.Item>
@@ -93,10 +98,10 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
               <p className="w-[120px] text-left text-[#0071BA]">Loại TKQC</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="loaiTKQC"
+                name="type"
               >
                 <Select
-                  options={optionsTypeAdsAccount}
+                  options={adAccountTypes.map(item => ({ label: item.name, value: item.name }))}
                   className="w-full h-full"
                 />
               </Form.Item>
@@ -105,10 +110,10 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
               <p className="w-[120px] text-left text-[#0071BA]">Tiền tệ</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="tienTe"
+                name="currency"
               >
                 <Select
-                  options={optionsTypeAdsAccount}
+                  options={currencies.map(item => ({ label: item.name, value: item.id }))}
                   className="w-full h-full"
                 />
               </Form.Item>
@@ -117,21 +122,21 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
               <p className="w-[120px] text-left text-[#0071BA]">Múi giờ</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="muiGio"
+                name="timezone"
               >
                 <Select
-                  options={optionsTypeAdsAccount}
+                  options={timezones.map(item => ({ label: item.name, value: item.id }))}
                   className="w-full h-full"
                 />
               </Form.Item>
             </div>
-            {loaiTKQC === 'thue' && (
+            {adsAccountTypes === 'thuê' && (
               <>
                 <div className="flex items-center h-[40px]">
                   <p className="w-[120px] text-left text-[#0071BA]">Tỷ giá</p>
                   <Form.Item
                     className="!mb-0 w-full"
-                    name="tyGia"
+                    name="exchange_rate"
                     rules={[
                       {
                         required: true,
@@ -146,7 +151,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                   <p className="w-[120px] text-left text-[#0071BA]">Phí thuê</p>
                   <Form.Item
                     className="!mb-0 w-full"
-                    name="phiThue"
+                    name="rental_fee"
                     rules={[
                       {
                         required: true,
@@ -159,15 +164,15 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                 </div>
               </>
             )}
-            {(loaiTKQC === 'tra-truoc' || loaiTKQC === 'tra-sau') && (
+            {(adsAccountTypes === 'Trả sau' || adsAccountTypes === 'Trả trước') && (
               <div className="flex items-center h-[40px]">
                 <p className="w-[120px] text-left text-[#0071BA]">Bank Liên Kết</p>
                 <Form.Item
                   className="!mb-0 w-full"
-                  name="bankLienKet"
+                  name="bank_account"
                 >
                   <Select
-                    options={optionsTypeAdsAccount}
+                    options={banks.map(item => ({ label: item.name, value: item.id }))}
                     className="w-full h-full"
                   />
                 </Form.Item>
@@ -177,10 +182,10 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
               <p className="w-[120px] text-left text-[#0071BA]">Trạng thái TKQC</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="trangThaiTKQC"
+                name="status"
               >
                 <Select
-                  options={optionsTypeAdsAccount}
+                  options={adAccountStatus.map(item => ({ label: item.name, value: item.id }))}
                   className="w-full h-full"
                 />
               </Form.Item>

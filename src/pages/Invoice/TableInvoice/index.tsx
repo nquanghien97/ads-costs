@@ -4,11 +4,12 @@ import TotalInvoice from "./TotalInvoice";
 interface TableInvoiceProps {
   setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>
   data: AdsBillingsByUser
+  loading: boolean
 }
 
 function TableInvoice(props: TableInvoiceProps) {
 
-  const { setOpenInvoiceDetails, data } = props;
+  const { setOpenInvoiceDetails, data, loading } = props;
   return (
     <>
       <div className="py-2 flex justify-start">
@@ -19,7 +20,7 @@ function TableInvoice(props: TableInvoiceProps) {
       </div>
       <div className="flex gap-2">
         <div className="flex-[0_0_60%] w-full">
-          <TotalInvoice data={data.list.filter(item => item.ad_account.type !== "Thuê")} setOpenInvoiceDetails={setOpenInvoiceDetails} />
+          <TotalInvoice data={data.list.filter(item => item.ad_account.type !== "Thuê")} setOpenInvoiceDetails={setOpenInvoiceDetails} loading={loading} />
         </div>
       </div>
     </>

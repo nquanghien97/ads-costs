@@ -4,6 +4,8 @@ import CloseIcon from "../../assets/icons/CloseIcon";
 import ButtonIcon from "../../components/common/ButtonIcon";
 import { ConfigProvider, Table, TableColumnsType } from "antd";
 import withAuth from "../../hocs/withAuth";
+import { AdsAccountType } from "../../entities/AdsAccount";
+import { useState } from "react";
 
 interface FieldType {
   createdAt: string;
@@ -181,6 +183,8 @@ const data = [
 ]
 
 function AdsAccountDeclaration() {
+
+  const [data, setData] = useState<AdsAccountType>([])
   return (
     <div className="px-4">
       <Header />

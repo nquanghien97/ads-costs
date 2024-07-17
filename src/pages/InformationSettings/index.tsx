@@ -1,9 +1,9 @@
 import withAuth from "../../hocs/withAuth";
 import InformationSetting from "./InformationSetting";
-import useFetchInformationSettings from "../../hooks/useFetchInformationSettings";
 import { addAdAccountStatus, addAdAccountType, addBank, addChannel, addCurrency, addTimezone, deleteAdAccountStatus, deleteAdAccountType, deleteBank, deleteChannel, deleteCurrency, deleteTimezone, editAdAccountStatus, editAdAccountType, editBank, editChannel, editCurrency, editTimezone } from "../../services/information_settings";
 import { InformationSettingType } from "../../entities/InformationSetting";
 import { useState } from "react";
+import { useInformationSettingsStore } from "../../zustand/information_settings.store";
 
 function InfomationSettings() {
   const {
@@ -11,7 +11,7 @@ function InfomationSettings() {
     adAccountStatus, banks, setChannels, setCurrencies,
     setTimezones, setAdAccountTypes, setAdAccountStatus, setBanks,
     loading
-  } = useFetchInformationSettings(); 
+  } = useInformationSettingsStore(); 
 
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
@@ -176,7 +176,6 @@ function InfomationSettings() {
           loading={loading}
           onAdd={handleAdd}
           loadingAdd={loadingAdd}
-          // onAdd={(name: string) => handleAdd('timezone', name)}
           onDelete={handleDelete}
           loadingDelete={loadingDelete}
           handleEdit={handleEdit}
@@ -190,7 +189,6 @@ function InfomationSettings() {
           loading={loading}
           onAdd={handleAdd}
           loadingAdd={loadingAdd}
-          // onAdd={(name: string) => handleAdd('adAccountType', name)}
           onDelete={handleDelete}
           loadingDelete={loadingDelete}
           handleEdit={handleEdit}
@@ -204,7 +202,6 @@ function InfomationSettings() {
           loading={loading}
           onAdd={handleAdd}
           loadingAdd={loadingAdd}
-          // onAdd={(name: string) => handleAdd('adAccountStatus', name)}
           onDelete={handleDelete}
           loadingDelete={loadingDelete}
           handleEdit={handleEdit}
@@ -218,7 +215,6 @@ function InfomationSettings() {
           loading={loading}
           onAdd={handleAdd}
           loadingAdd={loadingAdd}
-          // onAdd={(name: string) => handleAdd('bank', name)}
           onDelete={handleDelete}
           loadingDelete={loadingDelete}
           handleEdit={handleEdit}

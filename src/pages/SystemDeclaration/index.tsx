@@ -1,25 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Skeleton, Tooltip } from 'antd'
 import PlusIcon from '../../assets/icons/PlusIcon'
 import SystemItem from './SystemItem'
 import AddNewSystem from './AddNewSystem'
 import withAuth from '../../hocs/withAuth'
-import { getAllSystems } from '../../services/system'
-import SystemType from '../../entities/System'
+import { useSystemsStore } from '../../zustand/systems.store'
 
 function SystemDeclaration() {
   const [openAddSystemModal, setOpenAddSystemModal] = useState(false);
-  const [systems, setSystems] = useState<SystemType[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    (async () => {
-      const res = await getAllSystems();
-      setLoading(false)
-      setSystems(res.data.data.list)
-    })()
-  }, []);
+  
+  const { systems, loading, setSystems } = useSystemsStore()
 
   return (
     <>

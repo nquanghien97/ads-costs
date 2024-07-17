@@ -12,7 +12,7 @@ interface SystemItemProps {
     id: number;
     name: string;
   };
-  setSystems: React.Dispatch<React.SetStateAction<SystemType[]>>
+  setSystems: (systems: SystemType[] | ((prev: SystemType[]) => SystemType[])) => void
 }
 
 export default function SystemItem(props: SystemItemProps) {

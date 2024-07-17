@@ -22,7 +22,6 @@ function Login() {
     try {
       const res = await LoginService(formValue)
       const { data } = res
-      console.log(formValue)
       Cookies.set('token', data.data.token, { expires: data.data.timeout / (1000 * 60 * 60 * 24) });
       navigate('/')
     } catch (err) {

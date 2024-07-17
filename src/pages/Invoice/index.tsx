@@ -5,7 +5,6 @@ import TableInvoice from "./TableInvoice";
 import TableInvoiceRent from "./TableInvoiceRent";
 import { GetAdsBillingsByUser } from "../../services/ads_billings";
 import { AdsBillingsByUser } from "../../dto/AdsBillingsDTO";
-import LoadingIcon from "../../assets/icons/LoadingIcon";
 import withAuth from "../../hocs/withAuth";
 
 function Invoice() {
@@ -20,24 +19,19 @@ function Invoice() {
       setLoading(false);
     })()
   }, []);
+  console.log(loading)
 
   return (
     <div className="px-4">
       <HeaderInvoice />
-      {loading ? (
-        <div className="flex justify-center">
-          <LoadingIcon />
-        </div>
-      ): (
-        <>
-          {datas.map((data) => (
-            <div className="border-b-4 border-cyan-700 py-6" key={data.user_id}>
-              <TableInvoice setOpenInvoiceDetails={setOpenInvoiceDetails} data={data} />
-              <TableInvoiceRent setOpenInvoiceDetails={setOpenInvoiceDetails} data={data} />
-            </div>
-          ))}
-        </>
-      )}
+      <>
+        {datas.map((data) => (
+          <div className="border-b-4 border-cyan-700 py-6" key={data.user_id}>
+            <TableInvoice setOpenInvoiceDetails={setOpenInvoiceDetails} data={data} loading={loading} />
+            <TableInvoiceRent setOpenInvoiceDetails={setOpenInvoiceDetails} data={data} loading={loading} />
+          </div>
+        ))}
+      </>
       {openInvoiceDetails && <InvoiceDetails onClose={() => setOpenInvoiceDetails(false)} />}
     </div>
   )

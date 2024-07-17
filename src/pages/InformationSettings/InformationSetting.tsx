@@ -29,6 +29,7 @@ function InformationSetting(props: InformationSettingProps) {
   const [openModalDelInformation, setOpenModalDelInformation] = useState(false);
   const [openModalEditInformation, setOpenModalEditInformation] = useState(false);
   const [id, setId] = useState<number>(-1);
+  const [name, setName] = useState<string>('');
 
   const [datas, setDatas] = useState(data);
 
@@ -65,6 +66,7 @@ function InformationSetting(props: InformationSettingProps) {
               onClick={() => {
                 setOpenModalEditInformation(true)
                 setId(item.id)
+                setName(item.name)
               }}
             >
               <EditIcon color="white" width={16} />
@@ -73,7 +75,9 @@ function InformationSetting(props: InformationSettingProps) {
               <EditInformation
                 title={title}
                 onClose={() => setOpenModalEditInformation(false)}
-                onEdit={handleEdit} id={id} name={item.name}
+                onEdit={handleEdit}
+                id={id}
+                name={name}
                 type={type}
                 loadingEdit={loadingEdit}
               />

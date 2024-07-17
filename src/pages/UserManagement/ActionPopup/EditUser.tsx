@@ -2,12 +2,13 @@ import { Form, Input, Select } from "antd";
 import CloseIcon from "../../../assets/icons/CloseIcon";
 import BaseButton from "../../../components/common/BaseButton";
 import ButtonIcon from "../../../components/common/ButtonIcon";
-import { useSystemsStore } from "../../../zustand/systems.store";
-import { useGroupsStore } from "../../../zustand/groups.store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import User from "../../../entities/User";
+import { getUser } from "../../../services/users";
 
-interface AddNewBankAccountProps {
+interface EditUserProps {
   onClose: () => void;
+  userId: number;
 }
 
 const options = [
@@ -16,18 +17,18 @@ const options = [
   { value: 'vanilla', label: 'Vanilla' },
 ];
 
-function AddNewBankAccount(props: AddNewBankAccountProps) {
-  const { onClose } = props;
-  const { systems } = useSystemsStore();
-  const { groups } = useGroupsStore();
-  const [selectedSystem, setSelectedSystem] = useState(-1);
-
-  const handleSystemChange = (option: number) => {
-    setSelectedSystem(option)
-    form.setFieldsValue({ group: null });
-  }
+function EditUser(props: EditUserProps) {
+  const { onClose, userId } = props;
+  const [data, setData] = useState<User>()
 
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    (async() => {
+      const res = await getUser(userId);
+      console.log(res.data.data)
+    })()
+  })
 
   const onFinish = (data: unknown) => {
     console.log(data)
@@ -37,7 +38,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
     <div className="fixed inset-0 bg-[#0000004d] z-50">
       <div className="w-[800px] relative rounded-xl bg-white left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col">
         <div>
-          <div className="w-full text-center p-3 h-[50px] bg-[#0071BA] rounded-t-xl uppercase font-bold">Khai báo tài khoản ngân hàng</div>
+          <div className="w-full text-center p-3 h-[50px] bg-[#0071BA] rounded-t-xl uppercase font-bold">Chỉnh sửa thông tin người dùng</div>
           <div className="absolute right-2 top-2" onClick={onClose}>
             <ButtonIcon>
               <CloseIcon />
@@ -51,59 +52,10 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
             className="flex flex-col gap-6"
           >
             <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Hệ thống</p>
+              <p className="w-[120px] text-left text-[#0071BA]">Mã</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="system"
-              >
-                <Select
-                  onChange={handleSystemChange}
-                  options={systems.map((system) => ({ label: system.name, value: system.id}))}
-                  className="w-full h-full"
-                />
-              </Form.Item>
-            </div>
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Hộ kinh doanh</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="group"
-              >
-                <Select
-                  options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
-                  className="w-full h-full"
-                />
-              </Form.Item>
-            </div>
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Họ và tên</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="full_name"
-              >
-                <Select
-                  options={options}
-                  className="w-full h-full"
-                />
-              </Form.Item>
-            </div>
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Mã MKT</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="username"
-              >
-                <Select
-                  options={options}
-                  className="w-full h-full"
-                />
-              </Form.Item>
-            </div>
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Tên TKNH</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="name"
+                name="ma"
                 rules={[
                   {
                     required: true,
@@ -111,11 +63,56 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                   }
                 ]}
               >
-              <Input className="py-2" />
-            </Form.Item>
+                <Input className="py-2" />
+              </Form.Item>
             </div>
             <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Bank</p>
+              <p className="w-[120px] text-left text-[#0071BA]">Họ tên</p>
+              <Form.Item
+                className="!mb-0 w-full"
+                name="soTKNH"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
+              >
+                <Input className="py-2" />
+              </Form.Item>
+            </div>
+            <div className="flex items-center h-[40px]">
+              <p className="w-[120px] text-left text-[#0071BA]">Mật khẩu</p>
+              <Form.Item
+                className="!mb-0 w-full"
+                name="soTKNH"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
+              >
+                <Input className="py-2" />
+              </Form.Item>
+            </div>
+            <div className="flex items-center h-[40px]">
+              <p className="w-[120px] text-left text-[#0071BA]">Xác nhận mật khẩu</p>
+              <Form.Item
+                className="!mb-0 w-full"
+                name="soTKNH"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
+              >
+                <Input className="py-2" />
+              </Form.Item>
+            </div>
+            <div className="flex items-center h-[40px]">
+              <p className="w-[120px] text-left text-[#0071BA]">Chức vụ</p>
               <Form.Item
                 className="!mb-0 w-full"
                 name="bank"
@@ -127,10 +124,22 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
               </Form.Item>
             </div>
             <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Trạng thái sử dụng</p>
+              <p className="w-[120px] text-left text-[#0071BA]">Hệ thống</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="status"
+                name="bank"
+              >
+                <Select
+                  options={options}
+                  className="w-full h-full"
+                />
+              </Form.Item>
+            </div>
+            <div className="flex items-center h-[40px]">
+              <p className="w-[120px] text-left text-[#0071BA]">HKD</p>
+              <Form.Item
+                className="!mb-0 w-full"
+                name="bank"
               >
                 <Select
                   options={options}
@@ -149,4 +158,4 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
   )
 }
 
-export default AddNewBankAccount;
+export default EditUser;

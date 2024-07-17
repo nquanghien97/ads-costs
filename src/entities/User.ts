@@ -21,3 +21,9 @@ export default interface User {
   };
   role: UserRole;
 }
+
+export interface pagingUser {
+  page: number;
+  page_size: number;
+  total: number;
+}

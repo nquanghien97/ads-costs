@@ -1,5 +1,5 @@
 import { Button, Modal } from "antd";
-import { deleteSystem } from "../../../services/system";
+import { deleteSystem } from "../../../services/systems";
 import { useState } from "react";
 import SystemType from "../../../entities/System";
 
@@ -7,7 +7,7 @@ interface DeleteSystemProps {
   system: { id: number; name: string }
   openDeleteModal: boolean;
   setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setSystems: React.Dispatch<React.SetStateAction<SystemType[]>>
+  setSystems: (systems: SystemType[] | ((prev: SystemType[]) => SystemType[])) => void
 }
 
 function DeleteSystem(props: DeleteSystemProps) {

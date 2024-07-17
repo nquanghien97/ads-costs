@@ -1,7 +1,7 @@
 import { Button, Form, Input, Modal } from 'antd'
 import SystemType from '../../entities/System';
 import { useState } from 'react';
-import { addSystem } from '../../services/system';
+import { addSystem } from '../../services/systems';
 
 interface AddNewSystemProps {
   open: boolean;

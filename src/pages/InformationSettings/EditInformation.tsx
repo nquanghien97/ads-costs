@@ -19,10 +19,10 @@ interface FormValue {
 
 function EditInformation(props: EditInformationProps) {
   const [form] = Form.useForm<FormValue>();
-  const { onClose, title, onEdit, id, name, loadingEdit } = props;
+  const { onClose, title, onEdit, id, name, loadingEdit, type } = props;
 
   const onSubmit = async (data: { name: string }) => {
-    await onEdit('channel', {id: id, name: data.name})
+    await onEdit(type, {id: id, name: data.name})
     onClose()
   }
   return (

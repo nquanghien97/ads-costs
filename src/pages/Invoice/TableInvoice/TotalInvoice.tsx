@@ -4,8 +4,8 @@ import { AdsBillingsDTO, TotalDailyData } from '../../../dto/AdsBillingsDTO';
 import { generateDynamicColumns, staticColumns } from './columns';
 
 
-function TotalInvoice(props: { data: AdsBillingsDTO[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>> }) {
-  const { data, setOpenInvoiceDetails } = props;
+function TotalInvoice(props: { data: AdsBillingsDTO[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>, loading: boolean }) {
+  const { data, setOpenInvoiceDetails, loading } = props;
   
   const dataForDynamicColumns = data.flatMap(x => 
     Object.entries(x.datas).map(([date, data]) => ({
@@ -52,6 +52,7 @@ function TotalInvoice(props: { data: AdsBillingsDTO[], setOpenInvoiceDetails: Re
           rowHoverable={false}
           rowClassName="no-padding"
           className='not-fixed'
+          loading={loading}
         />
       </ConfigProvider>
     </div>

@@ -1,6 +1,6 @@
 import { Button, Form, Input, Modal } from 'antd'
 import { useState } from 'react';
-import { editSystem } from '../../../services/system';
+import { editSystem } from '../../../services/systems';
 import SystemType from '../../../entities/System';
 
 interface EditSystemProps {
