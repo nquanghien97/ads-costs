@@ -11,7 +11,7 @@ function InfomationSettings() {
     adAccountStatus, banks, setChannels, setCurrencies,
     setTimezones, setAdAccountTypes, setAdAccountStatus, setBanks,
     loading
-  } = useInformationSettingsStore(); 
+  } = useInformationSettingsStore();
 
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);

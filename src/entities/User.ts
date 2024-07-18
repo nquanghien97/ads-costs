@@ -19,7 +19,7 @@ export default interface User {
     id: number;
     name: string;
   };
-  role: UserRole;
+  role: UserRole | '';
 }
 
 export interface pagingUser {
