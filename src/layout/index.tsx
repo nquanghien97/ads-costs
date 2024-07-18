@@ -1,16 +1,17 @@
 import { Button, notification, Skeleton } from "antd";
-import MenuSidebar from "../../config/MenuSidebar";
-import { useAuthStore } from "../../zustand/auth.store";
+import MenuSidebar from "../config/MenuSidebar";
+import { useAuthStore } from "../zustand/auth.store";
 import SidebarItem from "./SidebarItem";
 import { Outlet } from "react-router-dom";
-import { LogOut } from "../../services/auth";
+import { LogOut } from "../services/auth";
 import { useState } from "react";
-import ChangePassword from "../ChangePassword";
+import ChangePassword from "../components/ChangePassword";
 
-function Sidebar() {
+function Layout() {
   const { user } = useAuthStore();
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const currentRole = user.role;
+  console.log(currentRole)
 
   const [api, contextHolder] = notification.useNotification();
   
@@ -51,4 +52,4 @@ function Sidebar() {
   )
 }
 
-export default Sidebar;
+export default Layout;

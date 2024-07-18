@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import BaseButton from "../common/BaseButton";
+import BaseButton from "../components/common/BaseButton";
 
 interface SidebarItemProps {
   title: string;

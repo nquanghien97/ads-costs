@@ -33,7 +33,6 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     })),
   getUser: async () => {
     const userId = getUserId()
-    console.log(userId)
     set(() => ({ loading: true }))
     try {
       const res = await getUser(userId);
