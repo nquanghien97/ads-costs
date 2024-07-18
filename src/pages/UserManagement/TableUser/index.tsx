@@ -7,6 +7,9 @@ import LockIcon from "../../../assets/icons/LockIcon";
 import CloseIcon from "../../../assets/icons/CloseIcon";
 import EditUser from "../Action/EditUser";
 import UpdatePassword from "../Action/UpdatePassword";
+import AddNewUser from "../AddNewUser";
+import BaseButton from "../../../components/common/BaseButton";
+import PlusIcon from "../../../assets/icons/PlusIcon";
 
 function TableUser() {
   
@@ -16,6 +19,7 @@ function TableUser() {
   const [pagingUsers, setPagingUsers] = useState<pagingUser>()
   const [loading, setLoading] = useState(false);
   const [openUpdatePasswordModal, setOpenUpdatePasswordModal] = useState(false);
+  const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   
@@ -138,6 +142,16 @@ function TableUser() {
   return (
     <>
       {contextHolder}
+      <div className="flex my-4">
+        <div className="m-auto">
+          <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Quản lý người dùng</span>
+        </div>
+        <BaseButton color="info" className="text-white" onClick={() => setOpenAddNewAdsAccount(true)}>
+          Thêm mới
+          <PlusIcon color="white" />
+        </BaseButton>
+      </div>
+      {openAddNewAdsAccount && <AddNewUser onClose={() => setOpenAddNewAdsAccount(false)} setRefreshKey={setRefreshKey} />}
       <div className="custom-header-table">
         <ConfigProvider
           theme={{

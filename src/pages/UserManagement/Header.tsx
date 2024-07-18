@@ -1,14 +1,10 @@
 import SearchIcon from "../../assets/icons/SearchIcon";
 import { useState } from "react";
-import BaseButton from "../../components/common/BaseButton";
-import PlusIcon from "../../assets/icons/PlusIcon";
-import AddNewUser from "./AddNewUser";
 import { Button, Form, Input, Select, Tooltip } from "antd";
 import { dataSystem } from "../../data/systems";
 import { dataGroups } from "../../data/groups";
 
 function Header() {
-  const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false)
   const [valueSystem, setValueSystem] = useState<string | null>()
   const [valueGroup, setValueGroup] = useState<string | null>()
 
@@ -61,7 +57,7 @@ function Header() {
           </Form.Item>
           <Form.Item
             className="w-[160px]"
-            name="name"
+            name="search_name"
           >
             <Select
               // options={options}
@@ -82,16 +78,6 @@ function Header() {
           </Form.Item>
         </div>
       </Form>
-      <div className="flex my-4">
-        <div className="m-auto">
-          <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Quản lý người dùng</span>
-        </div>
-        <BaseButton color="info" className="text-white" onClick={() => setOpenAddNewAdsAccount(true)}>
-          Thêm mới
-          <PlusIcon color="white" />
-        </BaseButton>
-      </div>
-      {openAddNewAdsAccount && <AddNewUser onClose={() => setOpenAddNewAdsAccount(false)} />}
     </>
   )
 }

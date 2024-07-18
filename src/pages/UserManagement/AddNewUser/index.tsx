@@ -2,35 +2,50 @@ import { Form, Input, Select } from "antd";
 import CloseIcon from "../../../assets/icons/CloseIcon";
 import BaseButton from "../../../components/common/BaseButton";
 import ButtonIcon from "../../../components/common/ButtonIcon";
-import { useSystemsStore } from "../../../zustand/systems.store";
-import { useGroupsStore } from "../../../zustand/groups.store";
 import { useState } from "react";
+import { UserRole } from "../../../entities/User";
+import { useGroupsStore } from "../../../zustand/groups.store";
+import { useSystemsStore } from "../../../zustand/systems.store";
+import { UserDTO } from "../../../dto/UserDTO";
+import { addNewUser } from "../../../services/users";
 
-interface AddNewUserProps {
+interface AddUserProps {
   onClose: () => void;
+  setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-];
+const roleOptions = Object.keys(UserRole).map(key => ({
+  value: UserRole[key as keyof typeof UserRole],
+  label: UserRole[key as keyof typeof UserRole]
+}));
 
-function AddNewUser(props: AddNewUserProps) {
-  const { onClose } = props;
-  const { systems } = useSystemsStore();
-  const { groups } = useGroupsStore();
+function AddUser(props: AddUserProps) {
+  const { onClose, setRefreshKey } = props;
   const [selectedSystem, setSelectedSystem] = useState(-1);
+  const [loading, setLoading] = useState(false);
+  
+  const { groups } = useGroupsStore();
+  const { systems } = useSystemsStore();
 
   const handleSystemChange = (option: number) => {
     setSelectedSystem(option)
-    form.setFieldsValue({ group: null });
+    form.setFieldsValue({ group_id: null });
   }
 
   const [form] = Form.useForm();
 
-  const onFinish = (data: unknown) => {
-    console.log(data)
+  const onFinish = async (data: UserDTO) => {
+    setLoading(true);
+    try {
+      console.log(data)
+      await addNewUser(data)
+      setRefreshKey(pre => !pre);
+      onClose();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -92,14 +107,37 @@ function AddNewUser(props: AddNewUserProps) {
                   }
                 ]}
               >
-                <Input className="py-2" />
+                <Input.Password className="py-2" />
               </Form.Item>
             </div>
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Xác nhận mật khẩu</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="confirmPassword"
+                name="password_confirm"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('password') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error('Mật khẩu xác nhận không chính xác'));
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password className="py-2" />
+              </Form.Item>
+            </div>
+            <div className="flex items-center h-[40px]">
+              <p className="w-[120px] text-left text-[#0071BA]">Chức vụ</p>
+              <Form.Item
+                className="!mb-0 w-full"
+                name="role"
                 rules={[
                   {
                     required: true,
@@ -107,32 +145,28 @@ function AddNewUser(props: AddNewUserProps) {
                   }
                 ]}
               >
-                <Input className="py-2" />
-              </Form.Item>
-            </div>
-            {/* <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Chức vụ</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="role"
-              >
                 <Select
-                  options={options}
+                  options={roleOptions}
                   className="w-full h-full"
                 />
               </Form.Item>
-            </div> */}
+            </div>
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Hệ thống</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="system"
+                name="system_id"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
               >
                 <Select
-                  className="w-full h-full"
-                  onChange={handleSystemChange}
-                  value={selectedSystem}
                   options={systems.map((system) => ({ label: system.name, value: system.id}))}
+                  onChange={handleSystemChange}
+                  className="w-full h-full"
                 />
               </Form.Item>
             </div>
@@ -140,17 +174,23 @@ function AddNewUser(props: AddNewUserProps) {
               <p className="w-[120px] text-left text-[#0071BA]">HKD</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="group"
+                name="group_id"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
               >
                 <Select
-                  className="w-full h-full"
                   options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
+                  className="w-full h-full"
                 />
               </Form.Item>
             </div>
             <div className="flex justify-evenly">
               <BaseButton color="danger" onClick={onClose}>Hủy</BaseButton>
-              <BaseButton color="success" type="submit">Xác nhận</BaseButton>
+              <BaseButton color="success" type="submit" loading={loading}>Xác nhận</BaseButton>
             </div>
           </Form>
         </div>
@@ -159,4 +199,4 @@ function AddNewUser(props: AddNewUserProps) {
   )
 }
 
-export default AddNewUser;
+export default AddUser;

@@ -7,8 +7,7 @@ import { UserRole } from "../../../entities/User";
 import { getUser, UpdateUser } from "../../../services/users";
 import { useGroupsStore } from "../../../zustand/groups.store";
 import { useSystemsStore } from "../../../zustand/systems.store";
-import { UpdateUserDTO } from "../../../dto/UserDTO";
-import GroupType from "../../../entities/Group";
+import { UserDTO } from "../../../dto/UserDTO";
 
 interface EditUserProps {
   onClose: () => void;
@@ -24,17 +23,14 @@ const roleOptions = Object.keys(UserRole).map(key => ({
 function EditUser(props: EditUserProps) {
   const { onClose, userId, setRefreshKey } = props;
   const [selectedSystem, setSelectedSystem] = useState(-1);
-  const [filteredGroups, setFilteredGroups] = useState<GroupType[]>([]);
   const [loading, setLoading] = useState(false);
-
   
-    const { groups } = useGroupsStore();
-    const { systems } = useSystemsStore();
+  const { groups } = useGroupsStore();
+  const { systems } = useSystemsStore();
 
-  const handleSystemChange = (option: string) => {
-    const selectedSystemId = systems.find(s => s.name === option)?.id;
-      setSelectedSystem(selectedSystemId || -1);
-      form.setFieldsValue({ group_id: null });
+  const handleSystemChange = (option: number) => {
+    setSelectedSystem(option)
+    form.setFieldsValue({ group_id: null });
   }
 
   const [form] = Form.useForm();
@@ -43,7 +39,6 @@ function EditUser(props: EditUserProps) {
     (async() => {
       const res = await getUser(userId);
       const userData = res.data.data
-
       form.setFieldsValue({
         username: userData.username,
         name: userData.name,
@@ -51,20 +46,13 @@ function EditUser(props: EditUserProps) {
         system_id: userData.system.name,
         group_id: userData.group.name,
       });
-      setSelectedSystem(userData.system_id);
-      setFilteredGroups(groups.filter(group => group.system_id === selectedSystem));
     })()
-  }, [userId, form, groups, selectedSystem])
+  }, [userId, form])
 
-  const onFinish = async (data: UpdateUserDTO) => {
+  const onFinish = async (data: UserDTO) => {
     setLoading(true);
     try {
-      const submitData = {
-        ...data,
-        system_id: systems.find(s => s.name === data.system_id?.toString())?.id,
-        group_id: filteredGroups.find(g => g.name === data.group_id?.toString())?.id
-      }
-      await UpdateUser(submitData, userId);
+      await UpdateUser(data, userId);
       setRefreshKey(pre => !pre);
       onClose();
     } catch (err) {
@@ -209,7 +197,7 @@ function EditUser(props: EditUserProps) {
                 ]}
               >
                 <Select
-                  options={filteredGroups.map(group => ({ label: group.name, value: group.id }))}
+                  options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
                   className="w-full h-full"
                 />
               </Form.Item>
