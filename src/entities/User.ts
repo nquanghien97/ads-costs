@@ -1,8 +1,8 @@
 export enum UserRole {
-  root= 'root',
-  system_adm= 'system_adm',
-  group_adm= 'group_adm',
-  user= 'user'
+  ROOT= 'ROOT',
+  SYSTEM_ADM= 'SYSTEM_ADM',
+  GROUP_ADM= 'GROUP_ADM',
+  USER= 'USER'
 }
 
 export default interface User {

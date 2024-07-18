@@ -5,8 +5,8 @@ import { getUsers } from "../../../services/users";
 import EditIcon from "../../../assets/icons/EditIcon";
 import LockIcon from "../../../assets/icons/LockIcon";
 import CloseIcon from "../../../assets/icons/CloseIcon";
-import EditUser from "../ActionPopup/EditUser";
-import UpdatePassword from "../ActionPopup/UpdatePassword";
+import EditUser from "../Action/EditUser";
+import UpdatePassword from "../Action/UpdatePassword";
 
 function TableUser() {
   
@@ -16,6 +16,7 @@ function TableUser() {
   const [pagingUsers, setPagingUsers] = useState<pagingUser>()
   const [loading, setLoading] = useState(false);
   const [openUpdatePasswordModal, setOpenUpdatePasswordModal] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   
   const columns: TableColumnsType<User> = [
@@ -132,7 +133,7 @@ function TableUser() {
       setPagingUsers(res.data.data.paging)
       setLoading(false);
     })();
-  }, []);
+  }, [refreshKey]);
 
   return (
     <>
@@ -165,7 +166,7 @@ function TableUser() {
             loading={loading}
           />
         </ConfigProvider>
-        {openEditModal && <EditUser onClose={() => setOpenEditModal(false)} userId={userId} />}
+        {openEditModal && <EditUser onClose={() => setOpenEditModal(false)} userId={userId} setRefreshKey={setRefreshKey} />}
         {openUpdatePasswordModal && <UpdatePassword open={openUpdatePasswordModal} onCancel={() => setOpenUpdatePasswordModal(false)} api={api} onOk={() => console.log('ok')} />}
       </div>
     </>

@@ -82,28 +82,28 @@ function InformationSetting(props: InformationSettingProps) {
                 loadingEdit={loadingEdit}
               />
             )}
-            {openModalDelInformation && (
-              <SubmitDelInformation
-                title={title}
-                onClose={() => setOpenModalDelInformation(false)}
-                onDelete={onDelete}
-                id={id}
-                type={type}
-                loadingDelete={loadingDelete}
-              />
-            )}
-            {openModalAddInformation && (
-              <AddNewInformation
-                title={title}
-                onClose={() => setOpenModalAddInformation(false)}
-                onAdd={onAdd}
-                type={type}
-                loadingAdd={loadingAdd}
-              />
-            )}
             <span className="mx-2">{item.name}</span>
           </li>
         ))}
+        {openModalDelInformation && (
+          <SubmitDelInformation
+            title={title}
+            onClose={() => setOpenModalDelInformation(false)}
+            onDelete={onDelete}
+            id={id}
+            type={type}
+            loadingDelete={loadingDelete}
+          />
+        )}
+        {openModalAddInformation && (
+          <AddNewInformation
+            title={title}
+            onClose={() => setOpenModalAddInformation(false)}
+            onAdd={onAdd}
+            type={type}
+            loadingAdd={loadingAdd}
+          />
+        )}
         <div className="p-1 rounded-lg cursor-pointer h-8 w-8" style={{ backgroundColor: color}} onClick={() => setOpenModalAddInformation(true)}>
           <PlusIcon />
         </div>
