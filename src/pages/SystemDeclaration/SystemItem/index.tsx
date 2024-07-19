@@ -24,7 +24,7 @@ export default function SystemItem(props: SystemItemProps) {
 
   return (
     <>
-      <li className="w-[200px] h-[140px] bg-[#0071BA] rounded-xl flex items-center justify-center" onClick={() => {navigate(`/khai-bao-ho-kinh-doanh/${system.id}`)}}>
+      <li className="w-[200px] h-[140px] bg-[#0071BA] rounded-xl flex items-center justify-center" onClick={() => {navigate(`/khai-bao-ho-kinh-doanh/${system.id}`, { state: { system}})}}>
         <span className="mr-2">{system.name}</span>
         <div className="flex flex-col gap-4">
           <Tooltip title="Chỉnh sửa" >

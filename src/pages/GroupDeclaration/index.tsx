@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import GroupItem from "./GroupItem";
-import { Button, Skeleton, Tooltip } from "antd";
+import { Alert, Button, Skeleton, Tooltip } from "antd";
 import PlusIcon from "../../assets/icons/PlusIcon";
 import AddNewGroup from "./AddNewGroup";
 import withAuth from "../../hocs/withAuth";
@@ -10,7 +10,8 @@ import GroupType from "../../entities/Group";
 import { getGroupsBySystemId } from "../../services/groups";
 
 function GroupDeclaration() {
-  const params = useParams()
+  const params = useParams();
+  const location = useLocation();
   const [groups, setGroups] = useState<GroupType[]>([]);
   const [loading, setLoading] = useState(false);
   const [openAddGroupModal, setOpenAddGroupModal] = useState(false);
@@ -35,6 +36,9 @@ function GroupDeclaration() {
 
   return (
     <>
+      <div className="py-4">
+        <Alert message={location.state?.system.name} type="info" />
+      </div>
       <ul className="flex flex-wrap gap-4 px-4 py-6 text-white cursor-pointer">
         {loading ? (
           <>
