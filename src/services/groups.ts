@@ -1,11 +1,15 @@
 import api from "../config/api";
 
-export function getAllGroups() {
+export function getGroups() {
   return api.get('/groups');
 }
 
-export function addGroup(name: string) {
-  return api.post('/groups', { name })
+export function getGroupsBySystemId(system_id: number) {
+  return api.get(`/groups?system_id=${system_id}`)
+}
+
+export function addGroup(name: string, system_id: number) {
+  return api.post('/groups', { name, system_id })
 }
 
 export function getGroup(id: number) {
@@ -13,7 +17,7 @@ export function getGroup(id: number) {
 }
 
 export function editGroup({id, name}: { id: number, name: string }){
-  return api.put(`/groups/${id}`, name)
+  return api.put(`/groups/${id}`, { name })
 }
 
 export function deleteGroup(id: number) {

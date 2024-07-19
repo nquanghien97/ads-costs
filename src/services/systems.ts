@@ -13,7 +13,7 @@ export function getSystem(id: number) {
 }
 
 export function editSystem({id, name}: { id: number, name: string }){
-  return api.put(`/systems/${id}`, name)
+  return api.put(`/systems/${id}`, { name })
 }
 
 export function deleteSystem(id: number) {

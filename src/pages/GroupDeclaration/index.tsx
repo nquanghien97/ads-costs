@@ -1,59 +1,54 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom"
 import GroupItem from "./GroupItem";
-import { Button, Tooltip } from "antd";
+import { Button, Skeleton, Tooltip } from "antd";
 import PlusIcon from "../../assets/icons/PlusIcon";
 import AddNewGroup from "./AddNewGroup";
 import withAuth from "../../hocs/withAuth";
-
-const groupData = [
-  {
-    id: 1,
-    name: 'Hộ kinh doanh 1'
-  },
-  {
-    id: 2,
-    name: 'Hộ kinh doanh 2'
-  },
-  {
-    id: 3,
-    name: 'Hộ kinh doanh 3'
-  },
-  {
-    id: 4,
-    name: 'Hộ kinh doanh 4'
-  },
-  {
-    id: 5,
-    name: 'Hộ kinh doanh 1'
-  },
-  {
-    id: 6,
-    name: 'Hộ kinh doanh 2'
-  },
-  {
-    id: 7,
-    name: 'Hộ kinh doanh 3'
-  },
-  {
-    id: 8,
-    name: 'Hộ kinh doanh 4'
-  }
-]
+import GroupType from "../../entities/Group";
+import { getGroupsBySystemId } from "../../services/groups";
 
 function GroupDeclaration() {
   const params = useParams()
-  console.log(params.systemId)
+  const [groups, setGroups] = useState<GroupType[]>([]);
+  const [loading, setLoading] = useState(false);
   const [openAddGroupModal, setOpenAddGroupModal] = useState(false);
+
+  const systemId = params.systemId || '0'
+
+  const fetchGroups = useCallback( async () => {
+    setLoading(true);
+    try {
+      const res = await getGroupsBySystemId(+systemId)
+      setGroups(res.data.data.list)
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [systemId])
+
+  useEffect(() => {
+    fetchGroups()
+  }, [fetchGroups])
+
   return (
     <>
       <ul className="flex flex-wrap gap-4 px-4 py-6 text-white cursor-pointer">
-        {groupData.map((group) => (
-          <React.Fragment key={group.id}>
-            <GroupItem group={group.name} group_id={group.id} />
-          </React.Fragment>
-        ))}
+        {loading ? (
+          <>
+            <Skeleton.Button className='!w-[200px] !h-[140px]' active />
+            <Skeleton.Button className='!w-[200px] !h-[140px]' active />
+            <Skeleton.Button className='!w-[200px] !h-[140px]' active />
+         </>
+        ) : (
+          groups.map((group) => (
+            <React.Fragment key={group.id}>
+              <GroupItem group={group} setGroups={setGroups} />
+            </React.Fragment>
+          ))
+        )}
         <div className="w-[200px] h-[140px] bg-[#0071BA] rounded-xl flex gap-2 items-center justify-center p-4">
           <span>Thêm hộ kinh doanh</span>
           <Tooltip title="Thêm hệ thống">
@@ -67,7 +62,7 @@ function GroupDeclaration() {
           </Tooltip>
         </div>
       </ul>
-      <AddNewGroup open={openAddGroupModal} onOk={() => console.log('ok')} onCancel={() => setOpenAddGroupModal(false)} />
+      <AddNewGroup open={openAddGroupModal} setGroups={setGroups} onCancel={() => setOpenAddGroupModal(false)} system_id={+systemId} />
     </>
   )
 }

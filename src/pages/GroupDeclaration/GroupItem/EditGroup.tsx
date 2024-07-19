@@ -1,29 +1,65 @@
-import { Button, Modal } from 'antd'
+import { Button, Form, Input, Modal } from 'antd'
+import { useState } from 'react';
+import { editGroup } from '../../../services/groups';
+import GroupType from '../../../entities/Group';
 
 interface EditGroupProps {
   open: boolean;
-  onOk: () => void;
+  group: {
+    id: number;
+    name: string;
+  };
   onCancel: () => void;
+  setGroupps: React.Dispatch<React.SetStateAction<GroupType[]>>
 }
 
 export default function EditGroup(props: EditGroupProps) {
-  const { open, onOk, onCancel } = props
+  const { open, group, onCancel, setGroupps } = props;
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (data: { name: string}) => {
+    setLoading(true);
+    try {
+      await editGroup({id: group.id, name: data.name})
+      setGroupps((prev) => prev?.map((i) => (i.id === group.id ? {id: group.id, name: data.name, system_id: i.system_id} : i)));
+      onCancel();
+    } catch(err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
     <Modal
       open={open}
       className='!p-0'
       onCancel={onCancel}
-      footer={
-        <div className="flex justify-evenly py-4">
-          <Button danger type='primary' className='focus:outline-none' onClick={onCancel}>Hủy</Button>
-          <Button type="primary" className='focus:outline-none' onClick={onOk}>Xác nhận</Button>
-        </div>
-      }
+      footer={false}
     >
-      <div className="w-full text-center p-3 h-[60px] leading-[36px] bg-[#0071BA] rounded-t-lg uppercase font-bold">Chỉnh sửa hệ thống</div>
-      <div className="p-4">
-        edit
-      </div>
+      <div className="w-full text-center p-3 h-[60px] leading-[36px] bg-[#0071BA] rounded-t-lg uppercase font-bold">Chỉnh sửa hộ kinh doanh</div>
+      <Form onFinish={onSubmit} form={form}>
+        <Form.Item
+          className="m-auto p-8 pb-4"
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: "Trường này là bắt buộc"
+            }
+          ]}
+          initialValue={group.name}
+          >
+            <Input
+              placeholder="Nhập thông tin"
+              className="py-4"
+            />
+        </Form.Item>
+        <div className="flex justify-center gap-12 p-4">
+          <Button type="primary" danger onClick={onCancel}>Hủy</Button>
+          <Button type="primary" htmlType="submit" loading={loading}>Xác nhận</Button>
+        </div>
+      </Form>
     </Modal>
   )
 }

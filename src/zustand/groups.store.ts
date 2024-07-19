@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import GroupType from "../entities/Group";
-import { getAllGroups } from "../services/groups";
+import { getGroups } from "../services/groups";
 
 interface Groupstore {
   groups: GroupType[]
@@ -18,7 +18,7 @@ export const useGroupsStore = create<Groupstore>()((set) => ({
   getGroups: async () => {
     set(() => ({ loading: true }))
     try {
-      const res = await getAllGroups();
+      const res = await getGroups();
       set(() => ({ groups: res.data.data.list}))
     } catch (err) {
       console.log(err)
