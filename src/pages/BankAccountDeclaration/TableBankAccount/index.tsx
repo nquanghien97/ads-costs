@@ -2,100 +2,54 @@ import { ConfigProvider, Table, TableColumnsType } from "antd";
 import CloseIcon from "../../../assets/icons/CloseIcon";
 import EditIcon from "../../../assets/icons/EditIcon";
 import ButtonIcon from "../../../components/common/ButtonIcon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditBankAccount from "../EditBankAccount";
-
-interface FieldType {
-  id: string;
-  heThong: string;
-  hoKinhDoanh: string;
-  maMKT: string;
-  hoTen: string;
-  maTKQC: string;
-  soTKNH: string;
-  bank: string;
-  trangThaiSuDung: string;
-}
-
-const data = [
-  {
-    id: 'string',
-    heThong: 'string',
-    hoKinhDoanh: 'string',
-    maMKT: 'string',
-    hoTen: 'string',
-    maTKQC: 'string',
-    soTKNH: 'string',
-    bank: 'string',
-    trangThaiSuDung: 'string'
-  },
-  {
-    id: 'string',
-    heThong: 'string',
-    hoKinhDoanh: 'string',
-    maMKT: 'string',
-    hoTen: 'string',
-    maTKQC: 'string',
-    soTKNH: 'string',
-    bank: 'string',
-    trangThaiSuDung: 'string'
-  },
-  {
-    id: 'string',
-    heThong: 'string',
-    hoKinhDoanh: 'string',
-    maMKT: 'string',
-    hoTen: 'string',
-    maTKQC: 'string',
-    soTKNH: 'string',
-    bank: 'string',
-    trangThaiSuDung: 'string'
-  },
-]
+import { BankAccountType } from "../../../entities/BankAccount";
+import { getListBankAccounts } from "../../../services/bank_account";
 
 function TableBankAccount() {
 
   const [openModalEdit, setOpenModalEdit] = useState(false);
 
-  const columns: TableColumnsType<FieldType> = [
+  const columns: TableColumnsType<BankAccountType> = [
     {
       title: 'ID',
-      dataIndex: 'id',
+      dataIndex: 'bank_id',
       key: '1',
     },
     {
       title: 'Hệ thống',
-      dataIndex: 'heThong',
+      dataIndex: 'system',
       key: '2',
     },
     {
       title: 'Hộ kinh doanh',
-      dataIndex: 'hoKinhDoanh',
+      dataIndex: 'group',
       key: '3',
     },
     {
       title: 'Mã MKT',
-      dataIndex: 'maMKT',
+      dataIndex: 'username',
       key: '4',
     },
     {
       title: 'Họ tên',
-      dataIndex: 'hoTen',
+      dataIndex: 'name',
       key: '5'
     },
     {
       title: 'Số TKNH',
-      dataIndex: 'soTKNH',
+      dataIndex: 'card_number',
       key: '6',
     },
     {
       title: 'Bank',
-      dataIndex: 'bank',
+      dataIndex: 'bank_name',
       key: '7',
     },
     {
       title: 'Trạng thái sử dụng',
-      dataIndex: 'trangThaiSuDung',
+      dataIndex: 'status',
       key: '8',
     },
     {
@@ -120,6 +74,24 @@ function TableBankAccount() {
       },
     },
   ]
+
+  
+  const [data, setData] = useState<BankAccountType[]>([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchListBankAccounts = async () => {
+      setLoading(true);
+      try {
+        const res = await getListBankAccounts();
+        setData(res.data.data.list);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchListBankAccounts();
+  }, [])
 
   return (
     <>
@@ -146,6 +118,7 @@ function TableBankAccount() {
               rowKey={(record) => record.id}
               scroll={{ y: 450 }}
               bordered
+              loading={loading}
             />
           </ConfigProvider>
       </div>

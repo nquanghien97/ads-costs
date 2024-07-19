@@ -2,12 +2,12 @@ const optionsBankStatus = [
   {
     id: 1,
     label: 'Đang sử dụng',
-    value: 1,
+    value: 'Đang sử dụng',
   },
   {
     id: 2,
     label: 'Ngừng sử dụng',
-    value: 2,
+    value: 'Ngừng sử dụng',
   }
 ]
 

@@ -8,14 +8,24 @@ import { useState } from "react";
 import { useInformationSettingsStore } from "../../../zustand/information_settings.store";
 import optionsBankStatus from "../../../config/bank_status";
 
+
+interface FormFiels {
+  system: string;
+  groups: string;
+  name: string;
+  username: string;
+  card_number: string;
+  bank_id: string;
+  status: string;
+}
 interface AddNewBankAccountProps {
   onClose: () => void;
 }
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
+const optionsName = [
+  { label: 'Nguyen Van A', value: 1 },
+  { label: 'Nguyen Van B', value: 2 },
+  { label: 'Nguyen Van C', value: 3 },
 ];
 
 function AddNewBankAccount(props: AddNewBankAccountProps) {
@@ -32,8 +42,15 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
 
   const [form] = Form.useForm();
 
-  const onFinish = (data: unknown) => {
-    console.log(data)
+  const onFinish = (data: FormFiels) => {
+    const submitData = {
+      user_id: data.username,
+      name: data.name,
+      card_number: data.card_number,
+      bank_id: data.bank_id,
+      status: data.status
+    }
+    console.log(submitData)
   }
 
   return (
@@ -82,10 +99,10 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
               <p className="w-[120px] text-left text-[#0071BA]">Họ và tên</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="full_name"
+                name="name"
               >
                 <Select
-                  options={options}
+                  options={optionsName}
                   className="w-full h-full"
                 />
               </Form.Item>
@@ -97,16 +114,16 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                 name="username"
               >
                 <Select
-                  options={options}
+                  options={optionsName}
                   className="w-full h-full"
                 />
               </Form.Item>
             </div>
             <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Tên TKNH</p>
+              <p className="w-[120px] text-left text-[#0071BA]">Số TKNH</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="name"
+                name="card_number"
                 rules={[
                   {
                     required: true,
@@ -118,10 +135,10 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
             </Form.Item>
             </div>
             <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Bank</p>
+              <p className="w-[120px] text-left text-[#0071BA]">Tên TKNH</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="bank"
+                name="bank_id"
               >
                 <Select
                   options={banks.map(item => ({label: item.name, value: item.id}))}
