@@ -51,7 +51,7 @@ const router = createBrowserRouter(
           }
         />
         <Route
-          path="/khai-bao-ho-kinh-doanh/:groupId"
+          path="/khai-bao-ho-kinh-doanh/:systemId"
           element={
             <PrivateRoute roles={[UserRole.ROOT]}>
               <GroupDeclaration />

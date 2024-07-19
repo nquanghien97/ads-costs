@@ -28,11 +28,13 @@ function TableUser() {
       title: 'ID',
       dataIndex: 'index',
       key: '1',
+      width: 60,
       render: (_, __, index) => index + 1,
     },
     {
       title: 'Mã',
       dataIndex: ['username'],
+      width: 100,
       key: '2',
     },
     {
@@ -44,6 +46,7 @@ function TableUser() {
       title: 'Hệ thống',
       dataIndex: ['system', 'name'],
       key: '4',
+      width: 150
     },
     {
       title: 'Hộ kinh doanh',
@@ -54,6 +57,7 @@ function TableUser() {
       title: 'Chức vụ',
       dataIndex: 'role',
       key: '5',
+      width: 150,
     },
     {
       title: 'Thao tác',
@@ -142,9 +146,9 @@ function TableUser() {
   return (
     <>
       {contextHolder}
-      <div className="flex my-4">
+      <div className="flex mb-4">
         <div className="m-auto">
-          <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Quản lý người dùng</span>
+          <span className="px-6 p-2 rounded-full bg-[#0071BA] text-white uppercase">Quản lý người dùng</span>
         </div>
         <BaseButton color="info" className="text-white" onClick={() => setOpenAddNewAdsAccount(true)}>
           Thêm mới
@@ -178,9 +182,10 @@ function TableUser() {
               onChange: onChange
             }}
             loading={loading}
+            scroll={{ y: 450 }}
           />
         </ConfigProvider>
-        {openEditModal && <EditUser onClose={() => setOpenEditModal(false)} userId={userId} setRefreshKey={setRefreshKey} />}
+        {openEditModal && <EditUser onClose={() => setOpenEditModal(false)} userId={userId} setRefreshKey={setRefreshKey} open={openEditModal} />}
         {openUpdatePasswordModal && <UpdatePassword open={openUpdatePasswordModal} onCancel={() => setOpenUpdatePasswordModal(false)} api={api} onOk={() => console.log('ok')} />}
       </div>
     </>

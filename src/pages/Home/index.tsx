@@ -18,7 +18,7 @@ function Home() {
     })()
   }, [getGroups, getInformation, getSystems])
   return (
-    <div className="bg-[url('./assets/background-home.jpg')] h-screen bg-no-repeat bg-cover flex">
+    <div className="bg-[url('./assets/background-home.jpg')] h-[calc(100vh-60px)] bg-no-repeat bg-cover flex">
 
     </div>
   )

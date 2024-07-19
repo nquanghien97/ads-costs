@@ -5,6 +5,8 @@ import ButtonIcon from "../../../components/common/ButtonIcon";
 import { useSystemsStore } from "../../../zustand/systems.store";
 import { useGroupsStore } from "../../../zustand/groups.store";
 import { useState } from "react";
+import { useInformationSettingsStore } from "../../../zustand/information_settings.store";
+import optionsBankStatus from "../../../config/bank_status";
 
 interface AddNewBankAccountProps {
   onClose: () => void;
@@ -20,6 +22,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
   const { onClose } = props;
   const { systems } = useSystemsStore();
   const { groups } = useGroupsStore();
+  const { banks } = useInformationSettingsStore(); 
   const [selectedSystem, setSelectedSystem] = useState(-1);
 
   const handleSystemChange = (option: number) => {
@@ -121,7 +124,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                 name="bank"
               >
                 <Select
-                  options={options}
+                  options={banks.map(item => ({label: item.name, value: item.id}))}
                   className="w-full h-full"
                 />
               </Form.Item>
@@ -133,7 +136,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                 name="status"
               >
                 <Select
-                  options={options}
+                  options={optionsBankStatus}
                   className="w-full h-full"
                 />
               </Form.Item>

@@ -228,12 +228,12 @@ function AdsAccountDeclaration() {
     },
   ]
 
-  useEffect(() => {
-    (async() => {
-      const res = await GetListAdsAccount();
-      console.log(res.data.data.list)
-    })()
-  })
+  // useEffect(() => {
+  //   (async() => {
+  //     const res = await GetListAdsAccount();
+  //     console.log(res.data.data.list)
+  //   })()
+  // })
   return (
     <div className="px-4">
       <Header />

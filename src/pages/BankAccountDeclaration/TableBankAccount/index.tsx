@@ -144,6 +144,7 @@ function TableBankAccount() {
               rowHoverable={false}
               pagination={false}
               rowKey={(record) => record.id}
+              scroll={{ y: 450 }}
               bordered
             />
           </ConfigProvider>

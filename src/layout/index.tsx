@@ -11,7 +11,6 @@ function Layout() {
   const { user } = useAuthStore();
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const currentRole = user.role;
-  console.log(currentRole)
 
   const [api, contextHolder] = notification.useNotification();
   

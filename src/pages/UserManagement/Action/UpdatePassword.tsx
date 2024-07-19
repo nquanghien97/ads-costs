@@ -25,14 +25,14 @@ function UpdatePassword(props: UpdatePasswordProps) {
     setLoadingSubmit(true);
     try {
       await updatePassword(data.oldPassword, data.newPassword)
-      api.open({
+      api.success({
         message: "Cập nhật mật khẩu thành công",
         showProgress: true,
       })
       onCancel();
     } catch (err) {
       console.log(err)
-      api.open({
+      api.error({
         message: "Cập nhật mật khẩu không thành công",
         showProgress: true,
       })

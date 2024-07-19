@@ -26,7 +26,7 @@ function App() {
     })()
   }, [getGroups, getInformation, getSystems, getUser]) 
   return (
-    <div className="flex bg-[#F0F0F0]">
+    <div className="flex">
       <RouterProvider router={router} />
     </div>
   )

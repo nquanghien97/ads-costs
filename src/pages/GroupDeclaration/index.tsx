@@ -44,7 +44,7 @@ const groupData = [
 
 function GroupDeclaration() {
   const params = useParams()
-  console.log(params.groupId)
+  console.log(params.systemId)
   const [openAddGroupModal, setOpenAddGroupModal] = useState(false);
   return (
     <>
