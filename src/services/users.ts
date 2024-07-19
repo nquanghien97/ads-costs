@@ -7,6 +7,10 @@ export function getUsers({ page, page_size } : { page: number, page_size: number
   return api.get(`/users?page=${page}&page_size=${page_size}`);
 }
 
+export function getUsersBySystemGroup({system_id, group_id}: { system_id: number, group_id: number}) {
+  return api.get(`/users?system_id=${system_id}&group_id=${group_id}`);
+}
+
 export function getUser(userId: number) {
   return api.get(`/users/${userId}`)
 }

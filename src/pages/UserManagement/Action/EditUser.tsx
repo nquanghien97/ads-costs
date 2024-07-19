@@ -1,5 +1,4 @@
-import { Form, Input, Modal, Select } from "antd";
-import BaseButton from "../../../components/common/BaseButton";
+import { Button, Form, Input, Modal, Select } from "antd";
 import { useEffect, useState } from "react";
 import { UserRole } from "../../../entities/User";
 import { getUser, UpdateUser } from "../../../services/users";
@@ -64,7 +63,7 @@ function EditUser(props: EditUserProps) {
   return (
     <Modal
       open={open}
-      className='!p-0 !w-5/6'
+      className='!p-0 !w-4/6'
       onCancel={onClose}
       footer={false}
     >
@@ -201,8 +200,8 @@ function EditUser(props: EditUserProps) {
             </Form.Item>
           </div>
           <div className="flex justify-evenly">
-            <BaseButton color="danger" onClick={onClose}>Hủy</BaseButton>
-            <BaseButton color="success" type="submit" loading={loading}>Xác nhận</BaseButton>
+            <Button type="primary" danger onClick={onClose}>Hủy</Button>
+            <Button type="primary" htmlType="submit" loading={loading}>Xác nhận</Button>
           </div>
         </Form>
       </div>

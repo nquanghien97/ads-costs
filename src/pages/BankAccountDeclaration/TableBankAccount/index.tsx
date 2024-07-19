@@ -6,18 +6,25 @@ import { useEffect, useState } from "react";
 import EditBankAccount from "../EditBankAccount";
 import { BankAccountType } from "../../../entities/BankAccount";
 import { getListBankAccounts } from "../../../services/bank_account";
+import BaseButton from "../../../components/common/BaseButton";
+import PlusIcon from "../../../assets/icons/PlusIcon";
+import AddNewBankAccount from "../AddNewBankAccount";
+import DeleteBankAccount from "../DeleteBankAccount";
 
 function TableBankAccount() {
   
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [data, setData] = useState<BankAccountType[]>([]);
   const [loading, setLoading] = useState(false);
-  const [bankId, setBankId] = useState<number>(-1)
+  const [bankId, setBankId] = useState<number>(-1);
+  const [refreshKey, setRefreshKey] = useState(false);
+  const [openAddNewBankAccount, setOpenAddNewBankAccount] = useState(false);
+  const [openDeleteBankAccount, setOpenDeleteBankAccount] = useState(false);
 
   const columns: TableColumnsType<BankAccountType> = [
     {
       title: 'ID',
-      dataIndex: 'bank_id',
+      dataIndex: 'id',
       key: '1',
     },
     {
@@ -71,7 +78,13 @@ function TableBankAccount() {
               </ButtonIcon>
               <p>Sửa</p>
             </div>
-            <div className="flex items-center">
+            <div
+              className="flex items-center"
+              onClick={() => {
+                setOpenDeleteBankAccount(true);
+                setBankId(record.id)
+              }}
+            >
               <ButtonIcon>
                 <CloseIcon color="red" />
               </ButtonIcon>
@@ -82,7 +95,6 @@ function TableBankAccount() {
       },
     },
   ]
-
   
   useEffect(() => {
     const fetchListBankAccounts = async () => {
@@ -97,10 +109,20 @@ function TableBankAccount() {
       }
     }
     fetchListBankAccounts();
-  }, [])
+  }, [refreshKey])
 
   return (
     <>
+      <div className="flex justify-between my-4">
+        <div className="m-auto">
+          <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Khai báo tài khoản ngân hàng</span>
+        </div>
+        <BaseButton color="info" className="text-white" onClick={() => setOpenAddNewBankAccount(true)}>
+          Thêm mới
+          <PlusIcon color="white" />
+        </BaseButton>
+      </div>
+      {openAddNewBankAccount && <AddNewBankAccount onClose={() => setOpenAddNewBankAccount(false)} setRefreshKey={setRefreshKey} />}
       <div className="custom-header-table">
         <ConfigProvider
             theme={{
@@ -128,7 +150,8 @@ function TableBankAccount() {
             />
           </ConfigProvider>
       </div>
-      {openModalEdit && <EditBankAccount onClose={() => setOpenModalEdit(false)} open={openModalEdit} bankId={bankId} />}
+      {openModalEdit && <EditBankAccount onClose={() => setOpenModalEdit(false)} open={openModalEdit} bankId={bankId} setRefreshKey={setRefreshKey} />}
+      {openDeleteBankAccount && <DeleteBankAccount openDeleteModal={openDeleteBankAccount} bankId={bankId} onClose={() => setOpenDeleteBankAccount(false)} setRefreshKey={setRefreshKey} />}
     </>
   )
 }

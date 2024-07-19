@@ -1,56 +1,96 @@
-import { Form, Input, Select } from "antd";
+import { Button, Form, Input, Select } from "antd";
 import CloseIcon from "../../../assets/icons/CloseIcon";
-import BaseButton from "../../../components/common/BaseButton";
 import ButtonIcon from "../../../components/common/ButtonIcon";
 import { useSystemsStore } from "../../../zustand/systems.store";
 import { useGroupsStore } from "../../../zustand/groups.store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useInformationSettingsStore } from "../../../zustand/information_settings.store";
 import optionsBankStatus from "../../../config/bank_status";
+import User from "../../../entities/User";
+import { getUsersBySystemGroup } from "../../../services/users";
+import { addBankAccount } from "../../../services/bank_account";
 
 
-interface FormFiels {
+interface FormValues {
   system: string;
   groups: string;
-  name: string;
-  username: string;
+  name: {
+    label: string;
+    value: number;
+  };
+  username: number;
   card_number: string;
-  bank_id: string;
+  bank_id: number;
   status: string;
 }
 interface AddNewBankAccountProps {
   onClose: () => void;
+  setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const optionsName = [
-  { label: 'Nguyen Van A', value: 1 },
-  { label: 'Nguyen Van B', value: 2 },
-  { label: 'Nguyen Van C', value: 3 },
-];
-
 function AddNewBankAccount(props: AddNewBankAccountProps) {
-  const { onClose } = props;
+  const { onClose, setRefreshKey } = props;
   const { systems } = useSystemsStore();
   const { groups } = useGroupsStore();
-  const { banks } = useInformationSettingsStore(); 
+  const { banks } = useInformationSettingsStore();
   const [selectedSystem, setSelectedSystem] = useState(-1);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [value, setValue] = useState({
+    system_id: -1,
+    group_id: -1,
+  });
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const res = await getUsersBySystemGroup(value)
+      setUsers(res.data.data.list);
+    })()
+  }, [value])
 
   const handleSystemChange = (option: number) => {
     setSelectedSystem(option)
     form.setFieldsValue({ group: null });
+    form.setFieldsValue({ name: null });
+    form.setFieldsValue({ username: null })
+  };
+
+  const handleGroupChange = () => {
+    form.setFieldsValue({ name: null })
+    form.setFieldsValue({ username: null });
   }
+
+  const handleUserChange = (
+    option: {
+      label: string,
+      value: number
+    }
+  ) => {
+    setSelectedUser(option.label)
+    form.setFieldsValue({ username: null })
+  };
 
   const [form] = Form.useForm();
 
-  const onFinish = (data: FormFiels) => {
+  const onFinish = async (data: FormValues) => {
+    setLoading(true);
     const submitData = {
       user_id: data.username,
-      name: data.name,
+      name: data.name.label,
       card_number: data.card_number,
       bank_id: data.bank_id,
       status: data.status
     }
-    console.log(submitData)
+    try {
+      await addBankAccount(submitData);
+      onClose();
+      setRefreshKey(pre => !pre)
+    } catch (err){
+    console.log(err)
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -69,6 +109,13 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
             form={form}
             onFinish={onFinish}
             className="flex flex-col gap-6"
+            onValuesChange={(changedValues) => {
+              setValue(preValue => ({
+                ...preValue,
+                system_id: changedValues.system || preValue.system_id,
+                group_id: changedValues.group || preValue.group_id
+              }))
+            }}
           >
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Hệ thống</p>
@@ -78,7 +125,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
               >
                 <Select
                   onChange={handleSystemChange}
-                  options={systems.map((system) => ({ label: system.name, value: system.id}))}
+                  options={systems.map((system) => ({ label: system.name, value: system.id }))}
                   className="w-full h-full"
                 />
               </Form.Item>
@@ -92,6 +139,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                 <Select
                   options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
                   className="w-full h-full"
+                  onChange={handleGroupChange}
                 />
               </Form.Item>
             </div>
@@ -102,8 +150,11 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                 name="name"
               >
                 <Select
-                  options={optionsName}
+                  labelInValue
+                  options={users.map(user => ({ label: user.name, value: user.id }))}
                   className="w-full h-full"
+                  onChange={(_, option) => handleUserChange(option as { label: string; value: number })}
+                  notFoundContent={<div>Loading...</div>}
                 />
               </Form.Item>
             </div>
@@ -114,8 +165,9 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                 name="username"
               >
                 <Select
-                  options={optionsName}
+                  options={users.filter(user => user.name === selectedUser).map(item => ({ label: item.username, value: item.id }))}
                   className="w-full h-full"
+                  notFoundContent={<div>Loading...</div>}
                 />
               </Form.Item>
             </div>
@@ -131,8 +183,8 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                   }
                 ]}
               >
-              <Input className="py-2" />
-            </Form.Item>
+                <Input className="py-2" />
+              </Form.Item>
             </div>
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Tên TKNH</p>
@@ -141,7 +193,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                 name="bank_id"
               >
                 <Select
-                  options={banks.map(item => ({label: item.name, value: item.id}))}
+                  options={banks.map(item => ({ label: item.name, value: item.id }))}
                   className="w-full h-full"
                 />
               </Form.Item>
@@ -159,8 +211,8 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
               </Form.Item>
             </div>
             <div className="flex justify-evenly">
-              <BaseButton color="danger" onClick={onClose}>Hủy</BaseButton>
-              <BaseButton color="success" type="submit">Xác nhận</BaseButton>
+              <Button type="primary" danger onClick={onClose}>Hủy</Button>
+              <Button type="primary" htmlType="submit" loading={loading}>Xác nhận</Button>
             </div>
           </Form>
         </div>

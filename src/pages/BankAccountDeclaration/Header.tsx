@@ -1,8 +1,5 @@
 import SearchIcon from "../../assets/icons/SearchIcon";
 import { useState } from "react";
-import BaseButton from "../../components/common/BaseButton";
-import PlusIcon from "../../assets/icons/PlusIcon";
-import AddNewBankAccount from "./AddNewBankAccount";
 import { Button, DatePicker, Form, Input, Select, Tooltip } from "antd";
 import { dataSystem } from "../../data/systems";
 import { dataGroups } from "../../data/groups";
@@ -10,7 +7,6 @@ import { dataGroups } from "../../data/groups";
 function Header() {
   const { RangePicker } = DatePicker;
   
-  const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false)
   const [valueSystem, setValueSystem] = useState<string | null>()
   const [valueGroup, setValueGroup] = useState<string | null>()
 
@@ -92,16 +88,6 @@ function Header() {
           />
         </Form.Item>
       </Form>
-      <div className="flex justify-between my-4">
-        <div className="m-auto">
-          <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Khai báo tài khoản ngân hàng</span>
-        </div>
-        <BaseButton color="info" className="text-white" onClick={() => setOpenAddNewAdsAccount(true)}>
-          Thêm mới
-          <PlusIcon color="white" />
-        </BaseButton>
-      </div>
-      {openAddNewAdsAccount && <AddNewBankAccount onClose={() => setOpenAddNewAdsAccount(false)} />}
     </>
   )
 }
