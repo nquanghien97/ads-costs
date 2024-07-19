@@ -64,7 +64,7 @@ function EditUser(props: EditUserProps) {
   return (
     <Modal
       open={open}
-      className='!p-0'
+      className='!p-0 !w-5/6'
       onCancel={onClose}
       footer={false}
     >

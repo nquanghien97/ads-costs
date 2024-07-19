@@ -4,5 +4,6 @@ export interface BankAccountType {
   name: string;
   card_number: string;
   bank_name: string;
+  bank_id: number;
   status: string;
 }

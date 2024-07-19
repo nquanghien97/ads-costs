@@ -8,8 +8,11 @@ import { BankAccountType } from "../../../entities/BankAccount";
 import { getListBankAccounts } from "../../../services/bank_account";
 
 function TableBankAccount() {
-
+  
   const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [data, setData] = useState<BankAccountType[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [bankId, setBankId] = useState<number>(-1)
 
   const columns: TableColumnsType<BankAccountType> = [
     {
@@ -54,10 +57,15 @@ function TableBankAccount() {
     },
     {
       title: 'Thao tác',
-      render() {
+      render(_, record) {
         return (
           <div className="flex flex-col items-center px-2">
-            <div className="flex items-center" onClick={() => setOpenModalEdit(true)}>
+            <div
+              className="flex items-center"
+              onClick={() => {
+                setOpenModalEdit(true)
+                setBankId(record.id)
+              }}>
               <ButtonIcon>
                 <EditIcon width={16} height={16} color="green" />
               </ButtonIcon>
@@ -76,8 +84,6 @@ function TableBankAccount() {
   ]
 
   
-  const [data, setData] = useState<BankAccountType[]>([]);
-  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchListBankAccounts = async () => {
       setLoading(true);
@@ -122,7 +128,7 @@ function TableBankAccount() {
             />
           </ConfigProvider>
       </div>
-      {openModalEdit && <EditBankAccount onClose={() => setOpenModalEdit(false)} open={openModalEdit} />}
+      {openModalEdit && <EditBankAccount onClose={() => setOpenModalEdit(false)} open={openModalEdit} bankId={bankId} />}
     </>
   )
 }
