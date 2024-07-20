@@ -36,7 +36,7 @@ function GroupDeclaration() {
 
   return (
     <>
-      <div className="py-4">
+      <div className="pt-4 mx-4">
         <Alert message={location.state?.system.name} type="info" />
       </div>
       <ul className="flex flex-wrap gap-4 px-4 py-6 text-white cursor-pointer">
@@ -53,11 +53,10 @@ function GroupDeclaration() {
             </React.Fragment>
           ))
         )}
-        <div className="w-[200px] h-[140px] bg-[#0071BA] rounded-xl flex gap-2 items-center justify-center p-4">
+        <div className="w-[200px] h-[140px] bg-[#0071BA] rounded-xl flex gap-2 items-center justify-center p-4" onClick={() => setOpenAddGroupModal(true)}>
           <span>Thêm hộ kinh doanh</span>
           <Tooltip title="Thêm hệ thống">
             <Button
-              onClick={() => setOpenAddGroupModal(true)}
               type="default"
               shape="circle"
               className="bg-white focus:outline-none"
