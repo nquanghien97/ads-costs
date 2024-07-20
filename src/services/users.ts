@@ -3,8 +3,23 @@ import { UserDTO } from "../dto/UserDTO";
 import Cookies from 'js-cookie';
 import { parseJwt } from "../utils/parseJwt";
 
-export function getUsers({ page, page_size } : { page: number, page_size: number }) {
-  return api.get(`/users?page=${page}&page_size=${page_size}`);
+export function getUsers({ page, page_size, system_id, group_id, username, name } : { page?: number, page_size?: number, system_id?: number, group_id?: number, username?: string, name?: string}) {
+  const params = new URLSearchParams();
+
+  if (page_size !== undefined) {
+    params.append('page_size', page_size.toString());
+    params.append('page', (page || 1).toString());
+  } else if (page !== undefined) {
+    params.append('page', page.toString());
+  }
+
+  if (system_id !== undefined) params.append('system_id', system_id.toString());
+  if (group_id !== undefined) params.append('group_id', group_id.toString());
+  if (username !== undefined) params.append('username', username);
+  if (name !== undefined) params.append('name', name);
+
+  const queryString = params.toString();
+  return api.get(`/users${queryString ? `?${queryString}` : ''}`);
 }
 
 export function getUsersBySystemGroup({system_id, group_id}: { system_id: number, group_id: number}) {

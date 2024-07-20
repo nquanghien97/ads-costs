@@ -7,3 +7,9 @@ export interface BankAccountType {
   bank_id: number;
   status: string;
 }
+
+export interface pagingBankAccount {
+  page: number;
+  page_size: number;
+  total: number;
+}

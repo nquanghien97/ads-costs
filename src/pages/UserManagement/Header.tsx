@@ -3,6 +3,14 @@ import { useState } from "react";
 import { Button, Form, Input, Select, Tooltip } from "antd";
 import { dataSystem } from "../../data/systems";
 import { dataGroups } from "../../data/groups";
+import { getUsers } from "../../services/users";
+
+interface FormValues {
+  key_word: string;
+  system_id: number;
+  group_id: number;
+  name: string;
+}
 
 function Header() {
   const [valueSystem, setValueSystem] = useState<string | null>()
@@ -16,8 +24,12 @@ function Header() {
     setValueGroup(option)
   }
 
-  const onFinish = (data: unknown) => {
-    console.log(data)
+  const onFinish = async (data: FormValues) => {
+    if(data.key_word) {
+      // await getUsers({ })
+    } else {
+      console.log(data)
+    }
   }
   return (
     <>
@@ -34,7 +46,7 @@ function Header() {
           </Form.Item>
           <Form.Item
             className="w-[160px]"
-            name="system"
+            name="system_id"
           >
             <Select
               options={dataSystem.map((system) => ({ label: system.name, value: system.id}))}
@@ -45,7 +57,7 @@ function Header() {
           </Form.Item>
           <Form.Item
             className="w-[160px]"
-            name="group"
+            name="group_id"
           >
             <Select
               options={dataGroups.filter((id) => id.system_id === valueSystem).map((group) => ({ label: group.name, value: group.id }))}

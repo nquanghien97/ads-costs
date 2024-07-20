@@ -1,3 +1,5 @@
+import User from "./User";
+
 export interface BankAccount {
   id: number;
   user_id: number;
@@ -17,18 +19,26 @@ export interface AdsAccountType {
   type_id: number;
   status_id: number;
   currency_id: number;
-  exchange_rate: number;
   timezone_id: number;
   rental_fee: number;
   bank_account_id: number;
+  created_at: Date;
   channel: string;
   type: string;
+  exchange_rate: number;
   status: string;
   currency: string;
   timezone: string;
   bank_account: BankAccount;
+  user: User
 }
 
 export interface AdsAccountList {
   list: AdsAccountType[];
+}
+
+export interface pagingAdAccount {
+  page: number;
+  page_size: number;
+  total: number;
 }

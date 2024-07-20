@@ -1,8 +1,8 @@
 import api from "../config/api";
 import { BankAccountDTO } from "../dto/BankAccountDTO";
 
-export function getListBankAccounts() {
-  return api.get('/bank-accounts')
+export function getListBankAccounts({ page, page_size } : { page: number, page_size: number}) {
+  return api.get(`/bank-accounts?page=${page}&page_size=${page_size}`)
 }
 
 export function getBankAccount(id: number) {

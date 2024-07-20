@@ -179,6 +179,7 @@ function TableUser() {
             bordered
             pagination={{
               total: pagingUsers?.total,
+              pageSize: pagingUsers?.page_size,
               onChange: onChange
             }}
             loading={loading}

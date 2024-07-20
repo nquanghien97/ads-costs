@@ -1,158 +1,57 @@
 import Header from "./Header";
 import EditIcon from "../../assets/icons/EditIcon";
 import CloseIcon from "../../assets/icons/CloseIcon";
-import ButtonIcon from "../../components/common/ButtonIcon";
-import { ConfigProvider, Table, TableColumnsType } from "antd";
+import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import withAuth from "../../hocs/withAuth";
-import { AdsAccountType } from "../../entities/AdsAccount";
+import { AdsAccountType, pagingAdAccount } from "../../entities/AdsAccount";
 import { useEffect, useState } from "react";
-import { GetListAdsAccount } from "../../services/ads_account";
+import { getListAdsAccount } from "../../services/ads_account";
 import EditAdsAccount from "./EditAdsAccount";
-
-const data: AdsAccountType[] = [
-  {
-    id: 1,
-    user_id: 101,
-    account_id: "ACC12345",
-    account_name: "Ad Account 1",
-    channel_id: 1,
-    type_id: 2,
-    status_id: 1,
-    currency_id: 1,
-    exchange_rate: 1.0,
-    timezone_id: 3,
-    rental_fee: 100,
-    bank_account_id: 1,
-    channel: "Google Ads",
-    type: "Standard",
-    status: "Active",
-    currency: "USD",
-    timezone: "UTC-5",
-    bank_account: {
-      id: 1,
-      user_id: 101,
-      bank_id: 1,
-      name: "John Doe",
-      card_number: "1234567890123456",
-      status: "Verified",
-      bank_name: "Bank A"
-    }
-  },
-  {
-    id: 2,
-    user_id: 102,
-    account_id: "ACC67890",
-    account_name: "Ad Account 2",
-    channel_id: 2,
-    type_id: 3,
-    status_id: 2,
-    currency_id: 2,
-    exchange_rate: 0.85,
-    timezone_id: 4,
-    rental_fee: 150,
-    bank_account_id: 2,
-    channel: "Facebook Ads",
-    type: "Premium",
-    status: "Inactive",
-    currency: "EUR",
-    timezone: "UTC+1",
-    bank_account: {
-      id: 2,
-      user_id: 102,
-      bank_id: 2,
-      name: "Jane Smith",
-      card_number: "2345678901234567",
-      status: "Verified",
-      bank_name: "Bank B"
-    }
-  },
-  {
-    id: 3,
-    user_id: 103,
-    account_id: "ACC54321",
-    account_name: "Ad Account 3",
-    channel_id: 3,
-    type_id: 1,
-    status_id: 3,
-    currency_id: 3,
-    exchange_rate: 0.75,
-    timezone_id: 5,
-    rental_fee: 200,
-    bank_account_id: 3,
-    channel: "Twitter Ads",
-    type: "Basic",
-    status: "Pending",
-    currency: "GBP",
-    timezone: "UTC+0",
-    bank_account: {
-      id: 3,
-      user_id: 103,
-      bank_id: 3,
-      name: "Alice Johnson",
-      card_number: "3456789012345678",
-      status: "Pending",
-      bank_name: "Bank C"
-    }
-  },
-  {
-    id: 4,
-    user_id: 104,
-    account_id: "ACC98765",
-    account_name: "Ad Account 4",
-    channel_id: 4,
-    type_id: 4,
-    status_id: 4,
-    currency_id: 4,
-    exchange_rate: 1.2,
-    timezone_id: 6,
-    rental_fee: 250,
-    bank_account_id: 4,
-    channel: "LinkedIn Ads",
-    type: "Enterprise",
-    status: "Suspended",
-    currency: "JPY",
-    timezone: "UTC+9",
-    bank_account: {
-      id: 4,
-      user_id: 104,
-      bank_id: 4,
-      name: "Bob Brown",
-      card_number: "4567890123456789",
-      status: "Suspended",
-      bank_name: "Bank D"
-    }
-  }
-]
+import BaseButton from "../../components/common/BaseButton";
+import PlusIcon from "../../assets/icons/PlusIcon";
+import AddNewAdsAccount from "./AddNewAdsAccount";
+import DeleteAdAccount from "./DeleteAdAccount";
 
 function AdsAccountDeclaration() {
 
-  // const [data, setData] = useState<AdsAccountType[]>([]);
+  const [data, setData] = useState<AdsAccountType[]>([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(false);
+  const [adAccountId, setAdAccountId] = useState(-1);
+  const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false);
+  const [openDeleteAdAccount, setOpenDeleteAdAccount] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [pagingAdAccount, setPagingAdAccount] = useState<pagingAdAccount>()
 
   const columns: TableColumnsType<AdsAccountType> = [
     {
       title: 'Thời gian',
-      dataIndex: 'createdAt',
+      dataIndex: 'created_at',
       key: '1',
+      render: (_, record) => {
+        return (
+          <div>{(new Date(record.created_at)).toLocaleString()}</div>
+        )
+      }
     },
     {
       title: 'Hệ thống',
-      dataIndex: 'system',
+      dataIndex: ['system', 'name'],
       key: '2',
     },
     {
       title: 'Hộ kinh doanh',
-      dataIndex: 'group',
+      dataIndex: ['group', 'name'],
       key: '3',
     },
     {
       title: 'Mã MKT',
-      dataIndex: 'user_id',
+      dataIndex: ['user', 'username'],
       key: '4',
     },
     {
       title: 'Họ tên',
-      dataIndex: 'account_name',
+      dataIndex: ['user', 'name'],
       key: '5'
     },
     {
@@ -171,56 +70,88 @@ function AdsAccountDeclaration() {
       key: '8',
     },
     {
+      title: 'Kênh chạy',
+      dataIndex: 'channel',
+      key: '9',
+    },
+    {
       title: 'Loại TKQC',
       dataIndex: 'type',
-      key: '9',
+      key: '10',
     },
     {
       title: 'Tiền tệ',
       dataIndex: 'currency',
-      key: '10',
+      key: '111',
+      width: 70
     },
     {
       title: 'Múi giờ',
       dataIndex: 'timezone',
-      key: '11',
+      key: '12',
     },
     {
       title: 'Tỷ giá TKQC thuê',
       dataIndex: 'exchange_rate',
-      key: '12',
+      key: '13',
     },
     {
       title: 'Phí thuê',
       dataIndex: 'rental_fee',
-      key: '13',
+      key: '14',
     },
     {
       title: 'Bank liên kết TKQC',
-      dataIndex: ['bank_account', 'name'],
-      key: '14',
+      dataIndex: ['bank_account', 'bank_name'],
+      key: '15',
     },
     {
       title: 'Trạng thái',
       dataIndex: ['bank_account', 'status'],
-      key: '15',
+      key: '16',
     },
     {
       title: 'Thao tác',
-      render() {
+      width: 100,
+      render(_, record) {
         return (
-          <div className="flex flex-col items-center px-2">
-            <div className="flex items-center"  onClick={() => setOpenModalEdit(true)}>
-              <ButtonIcon>
-                <EditIcon width={16} height={16} color="green" />
-              </ButtonIcon>
-              <p>Sửa</p>
-            </div>
-            <div className="flex items-center">
-              <ButtonIcon>
-                <CloseIcon color="red" />
-              </ButtonIcon>
-              <p>Xóa</p>
+          <div className="flex flex-col justify-between gap-2">
+            <ConfigProvider
+              button={{
+                className: "hover:!bg-[#538b53]"
+              }}
+            >
+              <div
+                className="flex items-center w-full"
+                onClick={() => {
+                  setOpenModalEdit(true)
+                  setAdAccountId(record.id)
+                }}
+              >
+                <Button
+                  className="bg-[green] w-full"
+                  type="primary"
+                  icon={<EditIcon width={16} height={16} color="white" />}
+                >
+                  <p className="text-white">Sửa</p>
+                </Button>
+              </div>
+            </ConfigProvider>
+            <div
+              className="flex items-center w-full"
+              onClick={() => {
+                setOpenDeleteAdAccount(true)
+                setAdAccountId(record.id)
+              }}
+            >
+              <Button
+                icon={<CloseIcon width={16} height={16} color="white" />}
+                type="primary"
+                danger
+                className="w-full"
+              >
+                <p className="text-white">Xóa</p>
+              </Button>
             </div>
           </div>
         )
@@ -228,15 +159,46 @@ function AdsAccountDeclaration() {
     },
   ]
 
-  // useEffect(() => {
-  //   (async() => {
-  //     const res = await GetListAdsAccount();
-  //     console.log(res.data.data.list)
-  //   })()
-  // })
+  const fetchListAdAccount = async ({ page, page_size }: { page: number, page_size: number }) => {
+    const res = await getListAdsAccount({ page, page_size })
+    return res.data.data
+  }
+
+  const onChange = async (page: number, pageSize: number) => {
+    setLoading(true);
+    try {
+      const dataAdAccount = await fetchListAdAccount({ page, page_size: pageSize })
+      setData(dataAdAccount.list);
+      setPagingAdAccount(dataAdAccount.paging)
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    (async () => {
+      const res = await fetchListAdAccount({ page: 1, page_size: 10 });
+      setLoading(false);
+      setData(res.list)
+    })()
+  }, [refreshKey])
+
   return (
     <div className="px-4">
       <Header />
+      <div className="flex justify-between mb-4">
+        <div className="m-auto">
+          <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Khai báo tài khoản quảng cáo</span>
+        </div>
+        <BaseButton color="info" className="text-white" onClick={() => setOpenAddNewAdsAccount(true)}>
+          Thêm mới
+          <PlusIcon color="white" />
+        </BaseButton>
+      </div>
+      {openAddNewAdsAccount && <AddNewAdsAccount onClose={() => setOpenAddNewAdsAccount(false)} setRefreshKey={setRefreshKey} />}
       <div className="custom-header-table">
         <ConfigProvider
           theme={{
@@ -256,13 +218,20 @@ function AdsAccountDeclaration() {
             columns={columns}
             dataSource={data}
             rowHoverable={false}
-            pagination={false}
             rowKey={(record) => record.id}
             bordered
+            pagination={{
+              total: pagingAdAccount?.total,
+              pageSize: 10,
+              onChange: onChange
+            }}
+            loading={loading}
+            scroll={{ y: 450 }}
           />
         </ConfigProvider>
       </div>
-      {openModalEdit && <EditAdsAccount onClose={() => setOpenModalEdit(false)} open={openModalEdit} />}
+      {openModalEdit && <EditAdsAccount adAccountId={adAccountId} onClose={() => setOpenModalEdit(false)} open={openModalEdit} setRefreshKey={setRefreshKey} />}
+      {openDeleteAdAccount && <DeleteAdAccount openDeleteModal={openDeleteAdAccount} onClose={() => setOpenDeleteAdAccount(false)} setRefreshKey={setRefreshKey} account_id={adAccountId} />}
     </div>
   )
 }

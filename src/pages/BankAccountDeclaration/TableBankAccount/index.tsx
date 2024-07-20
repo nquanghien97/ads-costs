@@ -1,10 +1,9 @@
-import { ConfigProvider, Table, TableColumnsType } from "antd";
+import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import CloseIcon from "../../../assets/icons/CloseIcon";
 import EditIcon from "../../../assets/icons/EditIcon";
-import ButtonIcon from "../../../components/common/ButtonIcon";
 import { useEffect, useState } from "react";
 import EditBankAccount from "../EditBankAccount";
-import { BankAccountType } from "../../../entities/BankAccount";
+import { BankAccountType, pagingBankAccount } from "../../../entities/BankAccount";
 import { getListBankAccounts } from "../../../services/bank_account";
 import BaseButton from "../../../components/common/BaseButton";
 import PlusIcon from "../../../assets/icons/PlusIcon";
@@ -20,6 +19,7 @@ function TableBankAccount() {
   const [refreshKey, setRefreshKey] = useState(false);
   const [openAddNewBankAccount, setOpenAddNewBankAccount] = useState(false);
   const [openDeleteBankAccount, setOpenDeleteBankAccount] = useState(false);
+  const [pagingBankAccount, setPagingBankAccount] = useState<pagingBankAccount>()
 
   const columns: TableColumnsType<BankAccountType> = [
     {
@@ -66,49 +66,81 @@ function TableBankAccount() {
       title: 'Thao tác',
       render(_, record) {
         return (
-          <div className="flex flex-col items-center px-2">
+          <div className="flex flex-col justify-between gap-2">
+            <ConfigProvider
+              button={{
+                className: "hover:!bg-[#538b53]"
+              }}
+            >
+              <div
+                className="flex items-center w-full"
+                onClick={() => {
+                  setOpenModalEdit(true)
+                  setBankId(record.id)
+                }}
+              >
+                <Button
+                  className="bg-[green] w-full"
+                  type="primary"
+                  icon={<EditIcon width={16} height={16} color="white" />}
+                >
+                  <p className="text-white">Sửa</p>
+                </Button>
+              </div>
+            </ConfigProvider>
             <div
-              className="flex items-center"
-              onClick={() => {
-                setOpenModalEdit(true)
-                setBankId(record.id)
-              }}>
-              <ButtonIcon>
-                <EditIcon width={16} height={16} color="green" />
-              </ButtonIcon>
-              <p>Sửa</p>
-            </div>
-            <div
-              className="flex items-center"
+              className="flex items-center w-full"
               onClick={() => {
                 setOpenDeleteBankAccount(true);
                 setBankId(record.id)
               }}
             >
-              <ButtonIcon>
-                <CloseIcon color="red" />
-              </ButtonIcon>
-              <p>Xóa</p>
+              <Button
+                icon={<CloseIcon width={16} height={16} color="white" />}
+                type="primary"
+                danger
+                className="w-full"
+              >
+                <p className="text-white">Xóa</p>
+              </Button>
             </div>
           </div>
         )
       },
     },
   ]
+
+  const fetchListBankAccounts = async ({ page, page_size } : { page: number, page_size: number}) => {
+    const res = await getListBankAccounts({page, page_size})
+    return res.data.data
+  }
+
+  const onChange = async (page: number, pageSize: number) => {
+    setLoading(true);
+    try {
+      const dataAdAccount = await fetchListBankAccounts({ page, page_size: pageSize })
+      setData(dataAdAccount.list);
+      setPagingBankAccount(dataAdAccount.paging)
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
   
   useEffect(() => {
-    const fetchListBankAccounts = async () => {
+    (async () => {
       setLoading(true);
       try {
-        const res = await getListBankAccounts();
-        setData(res.data.data.list);
+        const res = await fetchListBankAccounts({ page: 1, page_size: 10 });
+        setData(res.list);
+        setPagingBankAccount(res.paging)
       } catch (err) {
         console.log(err);
       } finally {
         setLoading(false);
       }
-    }
-    fetchListBankAccounts();
+    })()
   }, [refreshKey])
 
   return (
@@ -142,7 +174,11 @@ function TableBankAccount() {
               columns={columns}
               dataSource={data}
               rowHoverable={false}
-              pagination={false}
+              pagination={{
+                total: pagingBankAccount?.total,
+                pageSize: 10,
+                onChange: onChange
+              }}
               rowKey={(record) => record.id}
               scroll={{ y: 450 }}
               bordered
