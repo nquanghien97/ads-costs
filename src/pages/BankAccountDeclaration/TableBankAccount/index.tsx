@@ -29,17 +29,17 @@ function TableBankAccount() {
     },
     {
       title: 'Hệ thống',
-      dataIndex: 'system',
+      dataIndex: ['system', 'name'],
       key: '2',
     },
     {
       title: 'Hộ kinh doanh',
-      dataIndex: 'group',
+      dataIndex: ['group', 'name'],
       key: '3',
     },
     {
       title: 'Mã MKT',
-      dataIndex: 'username',
+      dataIndex: ['user', 'username'],
       key: '4',
     },
     {
