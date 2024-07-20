@@ -3,23 +3,18 @@ import { UserDTO } from "../dto/UserDTO";
 import Cookies from 'js-cookie';
 import { parseJwt } from "../utils/parseJwt";
 
-export function getUsers({ page, page_size, system_id, group_id, username, name } : { page?: number, page_size?: number, system_id?: number, group_id?: number, username?: string, name?: string}) {
+export function getUsers({ page, page_size, system_id, group_id, username, name, key_word } : { page?: number, page_size?: number, system_id?: number, group_id?: number, username?: string, name?: string, key_word?: string}) {
   const params = new URLSearchParams();
+  
+  if (page) params.append('page', page.toString());
+  if (page_size) params.append('page_size', page_size.toString());
+  if (system_id) params.append('system_id', system_id.toString());
+  if (group_id) params.append('group_id', group_id.toString());
+  if (username) params.append('username', username);
+  if (name) params.append('name', name);
+  if (key_word) params.append('key_word', key_word);
 
-  if (page_size !== undefined) {
-    params.append('page_size', page_size.toString());
-    params.append('page', (page || 1).toString());
-  } else if (page !== undefined) {
-    params.append('page', page.toString());
-  }
-
-  if (system_id !== undefined) params.append('system_id', system_id.toString());
-  if (group_id !== undefined) params.append('group_id', group_id.toString());
-  if (username !== undefined) params.append('username', username);
-  if (name !== undefined) params.append('name', name);
-
-  const queryString = params.toString();
-  return api.get(`/users${queryString ? `?${queryString}` : ''}`);
+  return api.get(`/users?${params.toString()}`);
 }
 
 export function getUsersBySystemGroup({system_id, group_id}: { system_id: number, group_id: number}) {

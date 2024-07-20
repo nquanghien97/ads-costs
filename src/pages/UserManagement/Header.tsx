@@ -1,39 +1,68 @@
 import SearchIcon from "../../assets/icons/SearchIcon";
 import { useState } from "react";
 import { Button, Form, Input, Select, Tooltip } from "antd";
-import { dataSystem } from "../../data/systems";
-import { dataGroups } from "../../data/groups";
+import { useGroupsStore } from "../../zustand/groups.store";
+import { useSystemsStore } from "../../zustand/systems.store";
 import { getUsers } from "../../services/users";
+import User from "../../entities/User";
 
 interface FormValues {
   key_word: string;
   system_id: number;
   group_id: number;
-  name: string;
+  search_name: {
+    label: string;
+    value: number;
+  };
 }
 
-function Header() {
-  const [valueSystem, setValueSystem] = useState<string | null>()
-  const [valueGroup, setValueGroup] = useState<string | null>()
+function Header({ setUsers, setLoading } : { setUsers: React.Dispatch<React.SetStateAction<User[]>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>}) {
+  const { groups } = useGroupsStore();
+  const { systems } = useSystemsStore();
+  const [selectedSystem, setSelectedSystem] = useState(-1);
+  const [name, setName] = useState<User[]>([]);
 
-  const handleSystemChange = (option: string) => {
-    setValueSystem(option)
-    setValueGroup(null)
-  }
-  const handleGroupChange = (option: string) => {
-    setValueGroup(option)
+  const [form] = Form.useForm();
+
+  const handleSystemChange = (option: number) => {
+    setSelectedSystem(option)
+    form.setFieldsValue({ group_id: null });
+    form.setFieldsValue({ name: null });
+  };
+
+  const handleGroupChange = async (value: number) => {
+    form.setFieldsValue({ name: null })
+    try {
+      const res = await getUsers({group_id: value});
+      setName(res.data.data.list)
+    } catch(e){
+      console.log(e);
+    }
   }
 
   const onFinish = async (data: FormValues) => {
-    if(data.key_word) {
-      // await getUsers({ })
-    } else {
-      console.log(data)
+    setLoading(true);
+    try {
+      const res = await getUsers({
+        key_word: data.key_word,
+        group_id: data.group_id,
+        system_id: data.system_id,
+        name: data.search_name?.label
+      })
+      setUsers(res.data.data.list)
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
     }
   }
   return (
     <>
-      <Form onFinish={onFinish} className="flex py-2 justify-between">
+      <Form
+        onFinish={onFinish}
+        className="flex py-2 justify-between"
+        form={form}
+      >
         <div className="flex gap-2 items-center">
           <Form.Item
             className="w-[160px]"
@@ -49,7 +78,7 @@ function Header() {
             name="system_id"
           >
             <Select
-              options={dataSystem.map((system) => ({ label: system.name, value: system.id}))}
+              options={systems.map((system) => ({ label: system.name, value: system.id }))}
               onChange={handleSystemChange}
               className="z-50 h-full w-[160px]"
               placeholder="Hệ thống"
@@ -60,9 +89,8 @@ function Header() {
             name="group_id"
           >
             <Select
-              options={dataGroups.filter((id) => id.system_id === valueSystem).map((group) => ({ label: group.name, value: group.id }))}
+              options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
               onChange={handleGroupChange}
-              value={valueGroup}
               className="z-50 h-full w-[160px]"
               placeholder="HKD"
             />
@@ -72,10 +100,11 @@ function Header() {
             name="search_name"
           >
             <Select
-              // options={options}
-              // onChange={handleChange}
+              labelInValue
+              options={name.map(item => ({label: item.name, value: item.id}))}
               className="z-50 h-full w-[160px]"
               placeholder="Họ tên"
+              notFoundContent="Loading..."
             />
           </Form.Item>
           <Form.Item>

@@ -1,6 +1,6 @@
 import withAuth from "../../hocs/withAuth";
 import InformationSetting from "./InformationSetting";
-import { addAdAccountStatus, addAdAccountType, addBank, addChannel, addCurrency, addTimezone, deleteAdAccountStatus, deleteAdAccountType, deleteBank, deleteChannel, deleteCurrency, deleteTimezone, editAdAccountStatus, editAdAccountType, editBank, editChannel, editCurrency, editTimezone } from "../../services/information_settings";
+import { addAdAccountStatus, addBank, addChannel, addCurrency, addTimezone, deleteAdAccountStatus, deleteBank, deleteChannel, deleteCurrency, deleteTimezone, editAdAccountStatus, editBank, editChannel, editCurrency, editTimezone } from "../../services/information_settings";
 import { InformationSettingType } from "../../entities/InformationSetting";
 import { useState } from "react";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
@@ -9,7 +9,7 @@ function InfomationSettings() {
   const {
     channels, currencies, timezones, adAccountTypes,
     adAccountStatus, banks, setChannels, setCurrencies,
-    setTimezones, setAdAccountTypes, setAdAccountStatus, setBanks,
+    setTimezones, setAdAccountStatus, setBanks,
     loading
   } = useInformationSettingsStore();
 
@@ -33,10 +33,10 @@ function InfomationSettings() {
           await editTimezone(data);
           setTimezones((prev) => prev?.map((i) => (i.id === data.id ? data : i)));
           break;
-        case 'adAccountType':
-          await editAdAccountType(data);
-          setAdAccountTypes((prev) => prev?.map((i) => (i.id === data.id ? data : i)));
-          break;
+        // case 'adAccountType':
+        //   await editAdAccountType(data);
+        //   setAdAccountTypes((prev) => prev?.map((i) => (i.id === data.id ? data : i)));
+        //   break;
         case 'adAccountStatus':
           await editAdAccountStatus(data);
           setAdAccountStatus((prev) => prev?.map((i) => (i.id === data.id ? data : i)));
@@ -71,10 +71,10 @@ function InfomationSettings() {
           await deleteTimezone(id);
           setTimezones((prev) => prev.filter((i) => i.id !== id));
           break;
-        case 'adAccountType':
-          await deleteAdAccountType(id);
-          setAdAccountTypes((prev) => prev.filter((i) => i.id !== id));
-          break;
+        // case 'adAccountType':
+        //   await deleteAdAccountType(id);
+        //   setAdAccountTypes((prev) => prev.filter((i) => i.id !== id));
+        //   break;
         case 'adAccountStatus':
           await deleteAdAccountStatus(id);
           setAdAccountStatus((prev) => prev.filter((i) => i.id !== id));
@@ -112,11 +112,11 @@ function InfomationSettings() {
           setTimezones((prev) => [...prev, newTimezone.data.data]);
           break;
         }
-        case 'adAccountType': {
-          const newAdAccountType = await addAdAccountType(name);
-          setAdAccountTypes((prev) => [...prev, newAdAccountType.data.data]);
-          break;
-        }
+        // case 'adAccountType': {
+        //   const newAdAccountType = await addAdAccountType(name);
+        //   setAdAccountTypes((prev) => [...prev, newAdAccountType.data.data]);
+        //   break;
+        // }
         case 'adAccountStatus': {
           const newAdAccountStatus = await addAdAccountStatus(name);
           setAdAccountStatus((prev) => [...prev, newAdAccountStatus.data.data]);

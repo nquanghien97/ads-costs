@@ -57,7 +57,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
           exchange_rate: adAccountData.exchange_rate,
           bank_account_id: adAccountData.bank_account_id,
           rental_fee: adAccountData.rental_fee,
-          status_id: adAccountData.status_id,
+          status_id: adAccountData.status,
       })
     })()
   }, [adAccountId, form])
@@ -93,12 +93,12 @@ function EditAdsAccount(props: EditAdsAccountProps) {
   return (
     <Modal
       open={open}
-      className='!p-0 !w-4/6'
+      className='!p-0 !w-4/6 !top-12'
       onCancel={onClose}
       footer={false}
     >
       <div>
-        <div className="w-full text-center p-3 h-[50px] bg-[#0071BA] rounded-t-md uppercase font-bold">Chỉnh sửa thông tin tài khoản ngân hàng</div>
+        <div className="w-full text-center p-3 h-[50px] bg-[#0071BA] rounded-t-md uppercase font-bold">Chỉnh sửa thông tin tài khoản quảng cáo</div>
       </div>
       <div className="p-4 my-4">
         <Form

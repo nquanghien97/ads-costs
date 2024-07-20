@@ -107,7 +107,7 @@ function AdsAccountDeclaration() {
     },
     {
       title: 'Trạng thái',
-      dataIndex: ['bank_account', 'status'],
+      dataIndex: ['status'],
       key: '16',
     },
     {

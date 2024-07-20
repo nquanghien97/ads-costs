@@ -11,13 +11,20 @@ import AddNewUser from "../AddNewUser";
 import BaseButton from "../../../components/common/BaseButton";
 import PlusIcon from "../../../assets/icons/PlusIcon";
 
-function TableUser() {
+interface TableUserProps {
+  users: User[],
+  setUsers: React.Dispatch<React.SetStateAction<User[]>>
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function TableUser(props: TableUserProps) {
+
+  const { users, setUsers, loading, setLoading } = props;
   
-  const [users, setUsers] = useState<User[]>([]);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [userId, setUserId] = useState(-1)
   const [pagingUsers, setPagingUsers] = useState<pagingUser>()
-  const [loading, setLoading] = useState(false);
   const [openUpdatePasswordModal, setOpenUpdatePasswordModal] = useState(false);
   const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
@@ -141,7 +148,7 @@ function TableUser() {
       setPagingUsers(res.data.data.paging)
       setLoading(false);
     })();
-  }, [refreshKey]);
+  }, [refreshKey, setLoading, setUsers]);
 
   return (
     <>

@@ -17,7 +17,7 @@ function Layout() {
   return (
     <>
       {contextHolder}
-      <div className="fixed top-0 left-[160px] right-0 h-[60px] bg-[#0071ba]">
+      <div className="fixed top-0 left-[160px] right-0 h-[60px] bg-[#0071ba] z-[100]">
         <div className="relative top-0 h-full">
           <div className="flex items-center justify-end h-full gap-4 px-4">
             <Button className="px-4 py-2" onClick={() => setOpenChangePassword(true)}>Đổi mật khẩu</Button>

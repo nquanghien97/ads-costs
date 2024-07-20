@@ -24,14 +24,14 @@ function Invoice() {
   return (
     <div className="px-4">
       <HeaderInvoice />
-      <>
+      <div className="pt-[136px]">
         {datas.map((data) => (
           <div className="border-b-4 border-cyan-700 py-6" key={data.user_id}>
             <TableInvoice setOpenInvoiceDetails={setOpenInvoiceDetails} data={data} loading={loading} />
             <TableInvoiceRent setOpenInvoiceDetails={setOpenInvoiceDetails} data={data} loading={loading} />
           </div>
         ))}
-      </>
+      </div>
       {openInvoiceDetails && <InvoiceDetails onClose={() => setOpenInvoiceDetails(false)} />}
     </div>
   )

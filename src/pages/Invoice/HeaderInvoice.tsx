@@ -24,7 +24,7 @@ function HeaderInvoice() {
   }
 
   return (
-    <div>
+    <div className="fixed bg-[#f0f0f0] right-0 left-[160px] z-[99] px-4 shadow-[0_12px_12px_-15px_rgba(0,0,0,0.3)]">
       <Form onFinish={onFinish} className="flex py-2 justify-between">
         <div className="flex gap-2 items-center">
           <Form.Item
