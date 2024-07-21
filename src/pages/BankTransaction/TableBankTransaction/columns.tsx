@@ -1,8 +1,8 @@
 import { TableColumnsType } from 'antd';
-import { ListItem, TotalDailyData } from '../../../dto/BankBillingsDTO';
+import { BankBillings, TotalDailyData } from '../../../dto/BankBillingsDTO';
 import EyeIcon from '../../../assets/icons/EyeIcon';
 
-export const staticColumns: TableColumnsType<ListItem> =  [
+export const staticColumns: TableColumnsType<BankBillings> =  [
   {
     title: 'Mã TKNH',
     // dataIndex: ['bank_account', 'id'],
@@ -156,7 +156,7 @@ export const staticColumns: TableColumnsType<ListItem> =  [
   },
 ];
 
-export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<ListItem> => {
+export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<BankBillings> => {
   const dates = Object.keys(datas);
   return dates.map((date, index) => ({
     title: date,
@@ -181,7 +181,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
         title: 'TT hóa đơn',
         key: `paid_bill_${index}`,
         width: 120,
-        render: (_, record: ListItem) => (
+        render: (_, record: BankBillings) => (
           <table>
             <tbody>
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
@@ -200,7 +200,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
         title: 'TT Chi phí khác',
         key: `paid_other_${index}`,
         width: 160,
-        render: (_, record: ListItem) => (
+        render: (_, record: BankBillings) => (
           <table>
             <tbody>
 

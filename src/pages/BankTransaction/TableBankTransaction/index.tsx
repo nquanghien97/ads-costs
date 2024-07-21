@@ -1,11 +1,11 @@
 import { ConfigProvider, Table } from 'antd';
-import { BankBillings, TotalDailyData } from "../../../dto/BankBillingsDTO";
+import { BankBillingsResponse, TotalDailyData } from "../../../dto/BankBillingsDTO";
 import { generateDynamicColumns, staticColumns } from './columns';
 import React from 'react';
 
 interface TableBankTransactionProps {
   setOpenBankBillingDetails: React.Dispatch<React.SetStateAction<boolean>>;
-  datas: BankBillings[];
+  datas: BankBillingsResponse[];
 }
 
 function TableBankTransaction(props: TableBankTransactionProps) {

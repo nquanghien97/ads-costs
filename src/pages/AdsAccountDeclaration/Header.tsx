@@ -1,25 +1,49 @@
 import SearchIcon from "../../assets/icons/SearchIcon";
 import { useState } from "react";
 import { Button, DatePicker, Form, Input, Select, Tooltip } from "antd";
-import { dataSystem } from "../../data/systems";
-import { dataGroups } from "../../data/groups";
+import User from "../../entities/User";
+import { useGroupsStore } from "../../zustand/groups.store";
+import { useSystemsStore } from "../../zustand/systems.store";
+import { getUsers } from "../../services/users";
+
+interface FormValues {
+  search: string;
+  system_id: number;
+  group_id: number;
+  search_name: {
+    label: string;
+    value: number;
+  };
+}
 
 function Header() {
 
   const { RangePicker } = DatePicker;
-  const [valueSystem, setValueSystem] = useState<string | null>()
-  const [valueGroup, setValueGroup] = useState<string | null>()
+  const { groups } = useGroupsStore();
+  const { systems } = useSystemsStore();
+  const [selectedSystem, setSelectedSystem] = useState(-1);
+  const [name, setName] = useState<User[]>([]);
 
-  const handleSystemChange = (option: string) => {
-    setValueSystem(option)
-    setValueGroup(null)
-  }
-  const handleGroupChange = (option: string) => {
-    setValueGroup(option)
+  const [form] = Form.useForm();
+
+  const handleSystemChange = (option: number) => {
+    setSelectedSystem(option)
+    form.setFieldsValue({ group_id: null });
+    form.setFieldsValue({ search_name: null });
+  };
+
+  const handleGroupChange = async (value: number) => {
+    form.setFieldsValue({ name: null })
+    try {
+      const res = await getUsers({group_id: value});
+      setName(res.data.data.list)
+    } catch(e){
+      console.log(e);
+    }
   }
 
-  const onFinish = (data: unknown) => {
-    console.log(data)
+  const onFinish = (data: FormValues) => {
+    console.log(data);
   }
 
   return (
@@ -39,7 +63,7 @@ function Header() {
           name="system"
         >
           <Select
-            options={dataSystem.map((system) => ({ label: system.name, value: system.id}))}
+            options={systems.map((system) => ({ label: system.name, value: system.id }))}
             onChange={handleSystemChange}
             className="z-50 h-full w-[160px]"
             placeholder="Hệ thống"
@@ -50,9 +74,8 @@ function Header() {
           name="group"
         >
           <Select
-            options={dataGroups.filter((id) => id.system_id === valueSystem).map((group) => ({ label: group.name, value: group.id }))}
+            options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
             onChange={handleGroupChange}
-            value={valueGroup}
             className="z-50 h-full w-[160px]"
             placeholder="HKD"
           />
@@ -62,8 +85,7 @@ function Header() {
           name="name"
         >
           <Select
-            // options={options}
-            // onChange={handleChange}
+            options={name.map(item => ({label: item.name, value: item.id}))}
             className="z-50 h-full w-[160px]"
             placeholder="Họ tên"
           />

@@ -10,11 +10,17 @@ import PlusIcon from "../../../assets/icons/PlusIcon";
 import AddNewBankAccount from "../AddNewBankAccount";
 import DeleteBankAccount from "../DeleteBankAccount";
 
-function TableBankAccount() {
+interface TableBankAccountProps {
+  data: BankAccountType[]
+  setData: React.Dispatch<React.SetStateAction<BankAccountType[]>>
+  loading: boolean
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function TableBankAccount(props: TableBankAccountProps) {
+  const { data, setData, loading, setLoading } = props
   
   const [openModalEdit, setOpenModalEdit] = useState(false);
-  const [data, setData] = useState<BankAccountType[]>([]);
-  const [loading, setLoading] = useState(false);
   const [bankId, setBankId] = useState<number>(-1);
   const [refreshKey, setRefreshKey] = useState(false);
   const [openAddNewBankAccount, setOpenAddNewBankAccount] = useState(false);

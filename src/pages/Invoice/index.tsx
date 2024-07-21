@@ -19,7 +19,6 @@ function Invoice() {
       setLoading(false);
     })()
   }, []);
-  console.log(loading)
 
   return (
     <div className="px-4">

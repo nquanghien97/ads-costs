@@ -7,7 +7,7 @@ import { getUsers } from "../../services/users";
 import User from "../../entities/User";
 
 interface FormValues {
-  key_word: string;
+  search: string;
   system_id: number;
   group_id: number;
   search_name: {
@@ -27,7 +27,7 @@ function Header({ setUsers, setLoading } : { setUsers: React.Dispatch<React.SetS
   const handleSystemChange = (option: number) => {
     setSelectedSystem(option)
     form.setFieldsValue({ group_id: null });
-    form.setFieldsValue({ name: null });
+    form.setFieldsValue({ search_name: null });
   };
 
   const handleGroupChange = async (value: number) => {
@@ -44,7 +44,7 @@ function Header({ setUsers, setLoading } : { setUsers: React.Dispatch<React.SetS
     setLoading(true);
     try {
       const res = await getUsers({
-        key_word: data.key_word,
+        search: data.search,
         group_id: data.group_id,
         system_id: data.system_id,
         name: data.search_name?.label
@@ -66,7 +66,7 @@ function Header({ setUsers, setLoading } : { setUsers: React.Dispatch<React.SetS
         <div className="flex gap-2 items-center">
           <Form.Item
             className="w-[160px]"
-            name="key_word"
+            name="search"
           >
             <Input
               placeholder="Tìm kiếm"

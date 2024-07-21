@@ -3,7 +3,7 @@ import { UserDTO } from "../dto/UserDTO";
 import Cookies from 'js-cookie';
 import { parseJwt } from "../utils/parseJwt";
 
-export function getUsers({ page, page_size, system_id, group_id, username, name, key_word } : { page?: number, page_size?: number, system_id?: number, group_id?: number, username?: string, name?: string, key_word?: string}) {
+export function getUsers({ page, page_size, system_id, group_id, username, name, search } : { page?: number, page_size?: number, system_id?: number, group_id?: number, username?: string, name?: string, search?: string}) {
   const params = new URLSearchParams();
   
   if (page) params.append('page', page.toString());
@@ -12,7 +12,7 @@ export function getUsers({ page, page_size, system_id, group_id, username, name,
   if (group_id) params.append('group_id', group_id.toString());
   if (username) params.append('username', username);
   if (name) params.append('name', name);
-  if (key_word) params.append('key_word', key_word);
+  if (search) params.append('search', search);
 
   return api.get(`/users?${params.toString()}`);
 }

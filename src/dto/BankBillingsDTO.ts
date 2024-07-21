@@ -1,8 +1,8 @@
-export interface BankBillings {
-  list: ListItem[];
+export interface BankBillingsResponse {
+  list: BankBillings[];
 }
 
-export interface ListItem {
+export interface BankBillings {
   system_id: number;
   system: {
     name: string;
