@@ -6,6 +6,7 @@ import { useInformationSettingsStore } from "../../../zustand/information_settin
 import optionsBankStatus from "../../../config/bank_status";
 import User from "../../../entities/User";
 import { getUser } from "../../../services/users";
+import { useNotification } from "../../../hooks/useNotification";
 
 interface EditBankAccountProps {
   onClose: () => void;
@@ -43,6 +44,8 @@ function EditBankAccount(props: EditBankAccountProps) {
 
   const [form] = Form.useForm();
 
+  const notification = useNotification();
+
   useEffect(() => {
     (async () => {
       const res = await getBankAccount(bankId);
@@ -72,8 +75,10 @@ function EditBankAccount(props: EditBankAccountProps) {
       await editBankAccount(bankAccountData?.id, valuesSubmit)
       onClose();
       setRefreshKey(pre => !pre)
+      notification.success('Chỉnh sửa tài khoản ngân hàng thành công')
     } catch (err) {
       console.log(err)
+      notification.error('Chỉnh sửa tài khoản ngân hàng thất bại')
     } finally {
       setLoading(false)
     }

@@ -7,7 +7,7 @@ interface DataRow {
   'chi phí': string;
 }
 
-function AdCosts() {
+function BillCosts() {
   const [data, setData] = useState<DataRow[] | null>(null);
   const [openModal, setOpenModal] = useState(false);
 
@@ -57,8 +57,8 @@ function AdCosts() {
   return (
     <>
     <label htmlFor="import-ad-costs" className="h-full">
-      <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300">
-        <span className="text-white">Khai Báo CPQC</span>
+      <div className="bg-[#0071ba] rounded-md cursor-pointer px-4 h-full flex items-center justify-center hover:opacity-80 duration-300">
+        <span className="text-white">Khai Báo Hóa Đơn</span>
       </div>
       <input type="file" onChange={handleFileUpload} id="import-ad-costs" className="hidden" />
     </label>
@@ -75,4 +75,4 @@ function AdCosts() {
   );
 }
 
-export default AdCosts
+export default BillCosts

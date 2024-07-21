@@ -1,6 +1,7 @@
 import { Button, Modal } from 'antd';
 import { useState } from 'react'
 import { deleteBankAccount } from '../../../services/bank_account';
+import { useNotification } from '../../../hooks/useNotification';
 
 interface DeleteBankAccountProps {
   openDeleteModal: boolean;
@@ -13,14 +14,18 @@ function DeleteBankAccount(props: DeleteBankAccountProps) {
   const { openDeleteModal, bankId, onClose, setRefreshKey } = props
   const [loadingDelete, setLoadingDelete] = useState(false);
 
+  const notification = useNotification();
+
   const onSubmit = async () => {
     setLoadingDelete(true);
     try {
       await deleteBankAccount(bankId);
       onClose()
       setRefreshKey(pre => !pre)
+      notification.success('Xóa tài khoản ngân hàng thành công')
     } catch (err) {
       console.log(err)
+      notification.error('Xóa tài khoản ngân hàng thất bại')
     } finally {
       setLoadingDelete(false)
     }

@@ -2,13 +2,14 @@ import Cookies from 'js-cookie';
 import PasswordIcon from "../../assets/icons/PasswordIcon";
 import UserIcon from "../../assets/icons/UserIcon";
 import BaseButton from "../../components/common/BaseButton";
-import { Form, Input, notification } from "antd";
+import { Form, Input } from "antd";
 import { LoginService } from "../../services/auth";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
 import withAuth from '../../hocs/withAuth';
 import { useState } from 'react';
 import { useAuthStore } from '../../zustand/auth.store';
+import { useNotification } from '../../hooks/useNotification';
 
 interface FormValue {
   username: string;
@@ -19,27 +20,22 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm<FormValue>()
   const navigate = useNavigate();
-  const [api, contextHolder] = notification.useNotification();
   const { getUser } = useAuthStore();
+
+  const notification = useNotification();
 
   const onSubmit = async (formValue: FormValue) => {
     setLoading(true)
     try {
       const res = await LoginService(formValue);
-      api.success({
-        message: "Đăng nhập thành công",
-        showProgress: true,
-      })
+      notification.success("Đăng nhập thành công")
       const { data } = res
       Cookies.set('token', data.data.token, { expires: data.data.timeout / (1000 * 60 * 60 * 24) });
       await getUser();
       navigate('/')
     } catch (err) {
       console.log(err)
-      api.error({
-        message: "Đăng nhập không thành công",
-        showProgress: true,
-      })
+      notification.error("Đăng nhập không thành công")
     } finally {
       setLoading(false)
     }
@@ -47,7 +43,6 @@ function Login() {
 
   return (
     <>
-      {contextHolder}
       <div className="bg-[url('./assets/background-login.jpg')] bg-no-repeat bg-auto w-screen h-screen bg-center flex items-center justify-center">
         <div className="md:w-6/12 bg-white opacity-80 rounded-md p-8">
           <div className="text-[#0071BA] uppercase text-3xl font-bold py-8 text-center">

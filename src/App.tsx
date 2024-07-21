@@ -7,6 +7,7 @@ import { useGroupsStore } from './zustand/groups.store'
 import { isAuthenticated } from './utils/isAuthenticated'
 import { useInformationSettingsStore } from './zustand/information_settings.store'
 import { useAuthStore } from './zustand/auth.store'
+import { NotificationProvider } from './context/NotificationContext'
 
 function App() {
 
@@ -26,9 +27,11 @@ function App() {
     })()
   }, [getGroups, getInformation, getSystems, getUser]) 
   return (
-    <div className="flex">
-      <RouterProvider router={router} />
-    </div>
+    <NotificationProvider>
+      <div className="flex">
+        <RouterProvider router={router} />
+      </div>
+    </NotificationProvider>
   )
 }
 

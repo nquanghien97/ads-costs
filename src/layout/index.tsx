@@ -1,4 +1,4 @@
-import { Button, notification, Skeleton } from "antd";
+import { Button, Skeleton } from "antd";
 import MenuSidebar from "../config/MenuSidebar";
 import { useAuthStore } from "../zustand/auth.store";
 import SidebarItem from "./SidebarItem";
@@ -12,11 +12,8 @@ function Layout() {
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const currentRole = user.role;
 
-  const [api, contextHolder] = notification.useNotification();
-  
   return (
     <>
-      {contextHolder}
       <div className="fixed top-0 left-[160px] right-0 h-[60px] bg-[#0071ba] z-[100]">
         <div className="relative top-0 h-full">
           <div className="flex items-center justify-end h-full gap-4 px-4">
@@ -43,7 +40,7 @@ function Layout() {
         </div>
         <div className="w-[160px]" />
       </div>
-      {openChangePassword && <ChangePassword open={openChangePassword} onClose={() => setOpenChangePassword(false)} api={api} />}
+      {openChangePassword && <ChangePassword open={openChangePassword} onClose={() => setOpenChangePassword(false)} />}
       <div className="w-[calc(100vw-177px)] mt-[60px]">
         <Outlet />
       </div>

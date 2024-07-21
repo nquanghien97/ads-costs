@@ -1,13 +1,12 @@
 import { Button, Form, Input, Modal } from 'antd'
 import { useState } from 'react';
 import { updatePassword } from '../../../services/users';
-import { NotificationInstance } from 'antd/es/notification/interface';
+import { useNotification } from '../../../hooks/useNotification';
 
 interface UpdatePasswordProps {
   onCancel: () => void;
   open: boolean;
   onOk: () => void;
-  api: NotificationInstance
 }
 
 interface FormValue {
@@ -17,25 +16,21 @@ interface FormValue {
 }
 
 function UpdatePassword(props: UpdatePasswordProps) {
-  const { onCancel, open, api } = props;
+  const { onCancel, open } = props;
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [form] = Form.useForm();
+
+  const notification = useNotification();
   
   const onSubmit = async (data: FormValue) => {
     setLoadingSubmit(true);
     try {
       await updatePassword(data.oldPassword, data.newPassword)
-      api.success({
-        message: "Cập nhật mật khẩu thành công",
-        showProgress: true,
-      })
+      notification.success("Cập nhật mật khẩu thành công")
       onCancel();
     } catch (err) {
       console.log(err)
-      api.error({
-        message: "Cập nhật mật khẩu không thành công",
-        showProgress: true,
-      })
+      notification.error("Cập nhật mật khẩu không thành công")
     } finally {
       setLoadingSubmit(false);
     }

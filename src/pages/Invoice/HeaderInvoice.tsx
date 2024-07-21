@@ -7,6 +7,7 @@ import { useSystemsStore } from "../../zustand/systems.store";
 import User from "../../entities/User";
 import { getUsers } from "../../services/users";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
+import BillCosts from "./Declaration/BillCosts";
 
 interface FormValues {
   search: string;
@@ -129,7 +130,8 @@ function HeaderInvoice() {
       <div className="flex py-2 justify-between">
         <div className="flex gap-4">
           <AdCosts />
-          <Button type="primary" className="bg-[green]" size="large">Khai báo HÓA ĐƠN</Button>
+          {/* <Button type="primary" className="bg-[green]" size="large">Khai báo HÓA ĐƠN</Button> */}
+          <BillCosts />
         </div>
         <div className="flex gap-2">
           <Button size="large" className="bg-white">Export dữ liệu</Button>

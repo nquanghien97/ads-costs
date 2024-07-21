@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, notification, Table, TableColumnsType } from "antd";
+import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import User, { pagingUser } from "../../../entities/User";
 import { useEffect, useState } from "react";
 import { getUsers } from "../../../services/users";
@@ -28,7 +28,6 @@ function TableUser(props: TableUserProps) {
   const [openUpdatePasswordModal, setOpenUpdatePasswordModal] = useState(false);
   const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
-  const [api, contextHolder] = notification.useNotification();
   
   const columns: TableColumnsType<User> = [
     {
@@ -152,7 +151,6 @@ function TableUser(props: TableUserProps) {
 
   return (
     <>
-      {contextHolder}
       <div className="flex mb-4">
         <div className="m-auto">
           <span className="px-6 p-2 rounded-full bg-[#0071BA] text-white uppercase">Quản lý người dùng</span>
@@ -194,7 +192,7 @@ function TableUser(props: TableUserProps) {
           />
         </ConfigProvider>
         {openEditModal && <EditUser onClose={() => setOpenEditModal(false)} userId={userId} setRefreshKey={setRefreshKey} open={openEditModal} />}
-        {openUpdatePasswordModal && <UpdatePassword open={openUpdatePasswordModal} onCancel={() => setOpenUpdatePasswordModal(false)} api={api} onOk={() => console.log('ok')} />}
+        {openUpdatePasswordModal && <UpdatePassword open={openUpdatePasswordModal} onCancel={() => setOpenUpdatePasswordModal(false)} onOk={() => console.log('ok')} />}
       </div>
     </>
   )

@@ -1,12 +1,11 @@
 import { Button, Form, Input, Modal } from 'antd';
 import { useState } from 'react';
 import { ChangePassword } from '../../services/auth';
-import { NotificationInstance } from 'antd/es/notification/interface';
+import { useNotification } from '../../hooks/useNotification';
 
 interface ChangePasswordModalProps {
   open: boolean,
   onClose: () => void;
-  api: NotificationInstance
 }
 
 interface FormValues {
@@ -16,24 +15,20 @@ interface FormValues {
 }
 
 function ChangePasswordModal(props: ChangePasswordModalProps) {
-  const { open, onClose, api } = props;
+  const { open, onClose } = props;
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+
+  const notification = useNotification();
 
   const onSubmit = async (data: FormValues) => {
     setLoading(true);
     try {
       await ChangePassword({ password_old: data.password_old, password_new: data.password_new })
       onClose();
-      api.success({
-        message: 'Password changed',
-        showProgress: true
-      })
+      notification.success('Thay đổi mật khẩu thành công')
     } catch (err) {
-      api.success({
-        message: 'Lỗi',
-        showProgress: true
-      })
+      notification.error('Thay đổi mật khẩu thất bại')
       console.log(err);
     } finally {
       setLoading(false);
