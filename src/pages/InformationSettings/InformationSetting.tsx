@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import PlusIcon from "../../assets/icons/PlusIcon"
 import AddNewInformation from "./AddNewInformation";
 import MinusIcon from "../../assets/icons/MinusIcon";
-import SubmitDelInformation from "./DeleteInformation";
+import DeleteInformation from "./DeleteInformation";
 import EditIcon from "../../assets/icons/EditIcon";
 import EditInformation from "./EditInformation";
 import { InformationSettingType } from "../../entities/InformationSetting";
@@ -61,6 +61,7 @@ function InformationSetting(props: InformationSettingProps) {
             >
               <MinusIcon color="white" width={16} />
             </div>
+            <span className="mx-2">{item.name}</span>
             <div
               className="absolute bottom-2 right-3 bg-[green] rounded-xl cursor-pointer hover:opacity-70"
               onClick={() => {
@@ -71,39 +72,35 @@ function InformationSetting(props: InformationSettingProps) {
             >
               <EditIcon color="white" width={16} />
             </div>
-            {openModalEditInformation && (
-              <EditInformation
-                title={title}
-                onClose={() => setOpenModalEditInformation(false)}
-                onEdit={handleEdit}
-                id={id}
-                name={name}
-                type={type}
-                loadingEdit={loadingEdit}
-              />
-            )}
-            <span className="mx-2">{item.name}</span>
           </li>
         ))}
-        {openModalDelInformation && (
-          <SubmitDelInformation
-            title={title}
-            onClose={() => setOpenModalDelInformation(false)}
-            onDelete={onDelete}
-            id={id}
-            type={type}
-            loadingDelete={loadingDelete}
-          />
-        )}
-        {openModalAddInformation && (
-          <AddNewInformation
-            title={title}
-            onClose={() => setOpenModalAddInformation(false)}
-            onAdd={onAdd}
-            type={type}
-            loadingAdd={loadingAdd}
-          />
-        )}
+        <DeleteInformation
+          title={title}
+          onClose={() => setOpenModalDelInformation(false)}
+          onDelete={onDelete}
+          id={id}
+          type={type}
+          loadingDelete={loadingDelete}
+          open={openModalDelInformation}
+        />
+        <EditInformation
+          title={title}
+          onClose={() => setOpenModalEditInformation(false)}
+          onEdit={handleEdit}
+          id={id}
+          name={name}
+          type={type}
+          loadingEdit={loadingEdit}
+          open={openModalEditInformation}
+        />
+        <AddNewInformation
+          title={title}
+          onClose={() => setOpenModalAddInformation(false)}
+          onAdd={onAdd}
+          type={type}
+          loadingAdd={loadingAdd}
+          open={openModalAddInformation}
+        />
         <div className="p-1 rounded-lg cursor-pointer h-8 w-8" style={{ backgroundColor: color}} onClick={() => setOpenModalAddInformation(true)}>
           <PlusIcon />
         </div>

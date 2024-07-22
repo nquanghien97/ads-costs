@@ -1,6 +1,4 @@
-import CloseIcon from "../../assets/icons/CloseIcon";
-import ButtonIcon from "../../components/common/ButtonIcon";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 
 interface AddNewInformationProps {
   onClose: () => void;
@@ -8,6 +6,7 @@ interface AddNewInformationProps {
   onAdd: (type: string, name: string) => Promise<void>;
   type: string;
   loadingAdd: boolean;
+  open: boolean;
 }
 
 interface FormValue {
@@ -16,21 +15,19 @@ interface FormValue {
 
 function AddNewInformation(props: AddNewInformationProps) {
   const [form] = Form.useForm<FormValue>();
-  const { onClose, title, onAdd, type, loadingAdd } = props;
+  const { onClose, title, onAdd, type, loadingAdd, open } = props;
   const onSubmit = async (data: { name: string }) => {
     await onAdd(type, data.name)
     onClose()
   }
   return (
-    <div className="fixed inset-0 bg-[#0000004d] z-50">
-      <div className="w-[800px] relative rounded-xl bg-white left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col">
+    <Modal
+      open={open}
+      onCancel={onClose}
+      footer={false}
+    >
         <div>
-          <div className="w-full text-center p-3 h-[50px] bg-[#eb9d4d] rounded-t-xl uppercase font-bold">{title}</div>
-          <div className="absolute right-2 top-2" onClick={onClose}>
-            <ButtonIcon>
-              <CloseIcon />
-            </ButtonIcon>
-          </div>
+          <div className="w-full text-center p-3 h-[50px] bg-[#eb9d4d] rounded-t-md uppercase font-bold">{title}</div>
         </div>
         <Form onFinish={onSubmit} form={form}>
           <Form.Item
@@ -53,8 +50,7 @@ function AddNewInformation(props: AddNewInformationProps) {
             <Button type="primary" htmlType="submit" loading={loadingAdd}>Xác nhận</Button>
           </div>
         </Form>
-      </div>
-    </div>
+    </Modal>
   )
 }
 
