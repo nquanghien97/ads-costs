@@ -1,6 +1,7 @@
 import { Button, Modal } from 'antd';
 import { useState } from 'react'
 import { deleteAdAccount } from '../../../services/ads_account';
+import { useNotification } from '../../../hooks/useNotification';
 
 interface DeleteAdAccountProps {
   openDeleteModal: boolean;
@@ -13,14 +14,18 @@ function DeleteAdAccount(props: DeleteAdAccountProps) {
   const { openDeleteModal, account_id, onClose, setRefreshKey } = props
   const [loadingDelete, setLoadingDelete] = useState(false);
 
+  const notification = useNotification();
+
   const onSubmit = async () => {
     setLoadingDelete(true);
     try {
       await deleteAdAccount(account_id);
+      notification.success('Xóa tài khoản quảng cáo thành công')
       onClose()
       setRefreshKey(pre => !pre)
     } catch (err) {
       console.log(err)
+      notification.error('Xóa tài khoản quảng cáo thất bại')
     } finally {
       setLoadingDelete(false)
     }

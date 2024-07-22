@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { editAdsAccount, getAdsAccount } from "../../../services/ads_account";
 import { useInformationSettingsStore } from "../../../zustand/information_settings.store";
 import { AdsAccountType } from "../../../entities/AdsAccount";
+import { useNotification } from "../../../hooks/useNotification";
 
 interface EditAdsAccountProps {
   onClose: () => void;
@@ -34,6 +35,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
   const [adAccountData, setAdAccountData] = useState<AdsAccountType>();
 
   const { channels, currencies, timezones, adAccountStatus, adAccountTypes, banks } = useInformationSettingsStore();
+  const notification = useNotification();
 
   const [form] = Form.useForm();
   const adsAccountTypes = Form.useWatch('type', form);
@@ -57,7 +59,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
           exchange_rate: adAccountData.exchange_rate,
           bank_account_id: adAccountData.bank_account_id,
           rental_fee: adAccountData.rental_fee,
-          status_id: adAccountData.status,
+          status_id: adAccountData.status_id,
       })
     })()
   }, [adAccountId, form])
@@ -78,12 +80,13 @@ function EditAdsAccount(props: EditAdsAccountProps) {
         bank_account_id: data.bank_account_id,
         status_id: data.status_id
       }
-      console.log(valuesSubmit)
-      await editAdsAccount(adAccountData?.id || -1, valuesSubmit)
+      await editAdsAccount(adAccountData?.id || -1, valuesSubmit);
+      notification.success('Chỉnh sửa tài khoản quảng cáo thành công');
       onClose();
       setRefreshKey(pre => !pre)
     } catch (err) {
       console.log(err)
+      notification.error('Chỉnh sửa tài khoản quảng cáo thất bại');
     } finally {
       setLoading(false)
     }

@@ -3,6 +3,7 @@ import { useInformationSettingsStore } from "../../../zustand/information_settin
 import { addNewAdAccount } from "../../../services/ads_account";
 import { useState } from "react";
 import { getUserId } from "../../../services/users";
+import { useNotification } from "../../../hooks/useNotification";
 
 interface InvoiceDetailsProps {
   onClose: () => void;
@@ -34,6 +35,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
   const [form] = Form.useForm();
   const user_id = getUserId();
   const { channels, currencies, timezones, adAccountStatus, adAccountTypes, banks } = useInformationSettingsStore();
+  const notification = useNotification();
   
   const adsAccountTypes = Form.useWatch('type', form);
   const onFinish = async (data: FormValues) => {
@@ -53,8 +55,8 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
           status_id: data.status_id,
         }
         await addNewAdAccount(submitData)
+        notification.success('Thêm mới tài khoản quảng cáo thành công')
         onClose()
-        // console.log(submitData)
       } else if(adsAccountTypes?.label === 'Trả sau' || adsAccountTypes?.label === 'Trả trước') {
         const submitData = {
           user_id: user_id,
@@ -68,12 +70,14 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
           status_id: data.status_id,
         }
         await addNewAdAccount(submitData)
+        notification.success('Thêm mới tài khoản quảng cáo thành công')
         onClose()
         // console.log(submitData)
       }
       setRefreshKey(pre => !pre)
     } catch (err){
       console.log(err);
+      notification.success('Thêm mới tài khoản quảng cáo thất bại')
     } finally {
       setLoading(false);
     }
