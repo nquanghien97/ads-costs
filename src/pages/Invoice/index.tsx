@@ -11,6 +11,11 @@ function Invoice() {
   const [openInvoiceDetails, setOpenInvoiceDetails] = useState(false);
   const [datas, setDatas] = useState<AdsBillingsByUser[]>([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    document.title = "Chi phí quảng cáo - hóa đơn"
+  }, []);
+
   useEffect(() => {
     setLoading(true);
     (async () => {

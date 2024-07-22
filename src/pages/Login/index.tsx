@@ -7,7 +7,7 @@ import { LoginService } from "../../services/auth";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
 import withAuth from '../../hocs/withAuth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthStore } from '../../zustand/auth.store';
 import { useNotification } from '../../hooks/useNotification';
 
@@ -21,6 +21,10 @@ function Login() {
   const [form] = Form.useForm<FormValue>()
   const navigate = useNavigate();
   const { getUser } = useAuthStore();
+
+  useEffect(() => {
+    document.title = "Đăng nhập"
+  }, []);
 
   const notification = useNotification();
 

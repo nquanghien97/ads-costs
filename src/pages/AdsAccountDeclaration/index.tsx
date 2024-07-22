@@ -56,7 +56,11 @@ function AdsAccountDeclaration() {
     },
     {
       title: 'Mã TKQC',
-      dataIndex: 'account_id',
+      render: (_, record) => {
+        return (
+          <div>{`TK${record.id}`}</div>
+        )
+      },
       key: '6',
     },
     {
@@ -176,6 +180,10 @@ function AdsAccountDeclaration() {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    document.title = "Khai báo tài khoản quảng cáo"
+  }, []);
 
   useEffect(() => {
     setLoading(true);

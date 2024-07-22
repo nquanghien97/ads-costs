@@ -18,6 +18,10 @@ function GroupDeclaration() {
 
   const systemId = params.systemId || '0'
 
+  useEffect(() => {
+    document.title = "Khai báo hộ kinh doanh"
+  }, []);
+
   const fetchGroups = useCallback( async () => {
     setLoading(true);
     try {

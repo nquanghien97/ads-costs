@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Skeleton, Tooltip } from 'antd'
 import PlusIcon from '../../assets/icons/PlusIcon'
 import SystemItem from './SystemItem'
@@ -10,6 +10,10 @@ function SystemDeclaration() {
   const [openAddSystemModal, setOpenAddSystemModal] = useState(false);
   
   const { systems, loading, setSystems } = useSystemsStore()
+
+  useEffect(() => {
+    document.title = "Khai báo hộ kinh doanh"
+  }, []);
 
   return (
     <>

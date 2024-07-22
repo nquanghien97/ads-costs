@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import User from "../../entities/User";
 import withAuth from "../../hocs/withAuth";
 import Header from "./Header";
@@ -7,6 +7,10 @@ import TableUser from "./TableUser";
 function UserManagement() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    document.title = "Quản lý người dùng"
+  }, []);
 
   return (
     <div className="px-4">

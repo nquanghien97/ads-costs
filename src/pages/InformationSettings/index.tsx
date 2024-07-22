@@ -2,7 +2,7 @@ import withAuth from "../../hocs/withAuth";
 import InformationSetting from "./InformationSetting";
 import { addAdAccountStatus, addBank, addChannel, addCurrency, addTimezone, deleteAdAccountStatus, deleteBank, deleteChannel, deleteCurrency, deleteTimezone, editAdAccountStatus, editBank, editChannel, editCurrency, editTimezone } from "../../services/information_settings";
 import { InformationSettingType } from "../../entities/InformationSetting";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
 
 function InfomationSettings() {
@@ -136,6 +136,10 @@ function InfomationSettings() {
       setLoadingAdd(false);
     }
   };
+
+  useEffect(() => {
+    document.title = 'Cài đặt thông tin';
+  }, []);
   
   return (
     <div className="px-4">

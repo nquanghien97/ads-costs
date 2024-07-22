@@ -13,6 +13,10 @@ function BankTransaction() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    document.title = "Giao dịch ngân hàng"
+  }, []);
+
+  useEffect(() => {
     setLoading(true);
     (async () => {
       const res = await GetBankBillings();

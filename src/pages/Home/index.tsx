@@ -11,6 +11,10 @@ function Home() {
   const { getInformation } = useInformationSettingsStore();
 
   useEffect(() => {
+    document.title = "Trang chủ"
+  }, []);
+
+  useEffect(() => {
     (async () => {
       await getSystems();
       await getGroups();
