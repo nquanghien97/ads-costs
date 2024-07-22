@@ -8,8 +8,8 @@ interface DataRow {
 }
 
 function BillCosts() {
-  const [data, setData] = useState<DataRow[] | null>(null);
-  const [openModal, setOpenModal] = useState(false);
+  const [dataBill, setDataBill] = useState<DataRow[] | null>(null);
+  const [openModalBillCosts, setOpenModalBillCosts] = useState(false);
 
   const handleFileUpload = (e : ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -22,8 +22,8 @@ function BillCosts() {
         const sheet = workbook.Sheets[sheetName];
         const sheetData: DataRow[] = XLSX.utils.sheet_to_json(sheet);
   
-        setData(sheetData);
-        setOpenModal(true);
+        setDataBill(sheetData);
+        setOpenModalBillCosts(true);
       };
   
       reader.readAsArrayBuffer(file);
@@ -32,39 +32,59 @@ function BillCosts() {
   };
 
   const onCloseModal = () => {
-    setOpenModal(false);
-    setData(null);
+    setOpenModalBillCosts(false);
+    setDataBill(null);
   }
 
   const onOk = () => {
-    console.log(data)
-    setOpenModal(false);
+    console.log(dataBill)
+    setOpenModalBillCosts(false);
   }
 
   const columns: TableColumnsType = [
     {
-      title: 'ID',
-      dataIndex: 'id',
+      title: 'MÚI GIỜ',
+      dataIndex: ['MÚI GIỜ'],
       key: '1',
     },
     {
-      title: 'Chi phí',
-      dataIndex: ['chi phí'],
+      title: 'ID GIAO DỊCH',
+      dataIndex: ['ID GIAO DỊCH'],
+      key: '2',
+    },
+    {
+      title: 'NGÀY PHÁT SINH HÓA ĐƠN',
+      dataIndex: ['NGÀY PHÁT SINH HÓA ĐƠN'],
+      key: '3',
+    },
+    {
+      title: 'SỐ TIỀN',
+      dataIndex: ['SỐ TIỀN'],
+      key: '4',
+    },
+    {
+      title: 'PTTT',
+      dataIndex: ['PTTT'],
+      key: '5',
+    },
+    {
+      title: 'MÃ THAM CHIẾU',
+      dataIndex: ['MÃ THAM CHIẾU'],
       key: '2',
     },
   ] 
 
   return (
     <>
-    <label htmlFor="import-ad-costs" className="h-full">
+    <label htmlFor="import-bill-costs" className="h-full">
       <div className="bg-[#0071ba] rounded-md cursor-pointer px-4 h-full flex items-center justify-center hover:opacity-80 duration-300">
         <span className="text-white">Khai Báo Hóa Đơn</span>
       </div>
-      <input type="file" onChange={handleFileUpload} id="import-ad-costs" className="hidden" />
+      <input type="file" onChange={handleFileUpload} id="import-bill-costs" className="hidden" />
     </label>
-    {data && (
-      <Modal open={openModal} onCancel={onCloseModal} onOk={onOk} footer={false}>
-        <Table dataSource={data} columns={columns} rowKey={(record) => record.id} />
+    {dataBill && (
+      <Modal open={openModalBillCosts} onCancel={onCloseModal} onOk={onOk} footer={false}>
+        <Table dataSource={dataBill} columns={columns} rowKey={(record) => record.id} />
         <div className="flex justify-evenly py-4">
           <Button type="primary" danger onClick={onCloseModal}>Hủy</Button>
           <Button type="primary" htmlType="submit" onClick={onOk}>Xác nhận</Button>
