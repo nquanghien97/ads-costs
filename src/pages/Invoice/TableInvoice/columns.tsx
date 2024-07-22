@@ -14,7 +14,7 @@ export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
     title: 'Mã TKQC',
     dataIndex: 'ad_account',
     key: '1',
-    width: 80,
+    width: 50,
     fixed: 'left',
     render(value) {
       return value.account_id
@@ -23,7 +23,7 @@ export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
   {
     title: 'Kênh chạy',
     dataIndex: 'ad_account',
-    width: 80,
+    width: 50,
     key: '2',
     fixed: 'left',
     render(value) {
@@ -34,7 +34,7 @@ export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
     title: 'ID TKQC',
     dataIndex: 'ad_account',
     key: '3',
-    width: 80,
+    width: 50,
     fixed: 'left',
     render(value) {
       return value.id
@@ -44,7 +44,7 @@ export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
     title: 'Tiền tệ',
     dataIndex: 'ad_account',
     key: '4',
-    width: 80,
+    width: 50,
     fixed: 'left',
     render(value) {
       return value.currency
@@ -54,7 +54,7 @@ export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
     title: 'Múi giờ',
     dataIndex: 'ad_account',
     key: '5',
-    width: 80,
+    width: 50,
     fixed: 'left',
     render(value) {
       return value.timezone
@@ -63,7 +63,7 @@ export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
   {
     title: 'Loại TK',
     dataIndex: 'ad_account',
-    width: 80,
+    width: 50,
     key: '6',
     fixed: 'left',
     render(value) {
@@ -73,17 +73,17 @@ export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
   {
     title: 'Bank LK TKQC',
     dataIndex: 'ad_account',
-    width: 100,
+    width: 50,
     key: '7',
     fixed: 'left',
     render(value) {
-      return value.bank_account.bank_name
+      return value?.bank_account?.bank_name
     }
   },
   {
     title: 'Trạng thái TKQC',
     dataIndex: 'ad_account',
-    width: 100,
+    width: 50,
     key: '8',
     fixed: 'left',
     render(value) {
@@ -92,7 +92,7 @@ export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
   },
   {
     title: 'Số liệu',
-    width: 80,
+    width: 50,
     key: '9',
     fixed: 'left',
     render: () => (
@@ -105,7 +105,7 @@ export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
   {
     title: 'Tổng CPQC',
     dataIndex: 'ad_account',
-    width: 100,
+    width: 50,
     key: '10',
     fixed: 'left',
     render(_, value) {
@@ -120,7 +120,7 @@ export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
   {
     title: 'Tổng hóa đơn',
     dataIndex: 'ad_account',
-    width: 100,
+    width: 50,
     key: '11',
     fixed: 'left',
     render(_, value) {

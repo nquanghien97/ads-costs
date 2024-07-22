@@ -19,8 +19,8 @@ function Invoice() {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const res = await GetAdsBillingsByUser();
-      setDatas(res.data);
+      const res = await GetAdsBillingsByUser({ level: "user", user_id: 7, since: "2024-07-18T06:12:12.000Z", until: "2024-07-22T10:13:24.000Z"});
+      setDatas([res.data.data]);
       setLoading(false);
     })()
   }, []);

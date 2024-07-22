@@ -1,6 +1,6 @@
 // import type { ColumnsType } from 'rc-table';
 // import Table from 'rc-table';
-import { ConfigProvider, Table } from 'antd';
+import { ConfigProvider, Empty, Table } from 'antd';
 import { AdsBillingsDTO, TotalDailyData } from '../../../dto/AdsBillingsDTO';
 import { generateDynamicColumns, staticColumns } from './columns';
 
@@ -42,6 +42,7 @@ function TotalInvoice(props: { data: AdsBillingsDTO[], setOpenInvoiceDetails: Re
             }
           }
         }}
+        renderEmpty={() => <Empty description="Không có dữ liệu" />}
       >
         <Table
           columns={columns}
