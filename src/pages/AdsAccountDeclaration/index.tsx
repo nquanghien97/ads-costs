@@ -198,7 +198,6 @@ function AdsAccountDeclaration() {
           <PlusIcon color="white" />
         </BaseButton>
       </div>
-      {openAddNewAdsAccount && <AddNewAdsAccount onClose={() => setOpenAddNewAdsAccount(false)} setRefreshKey={setRefreshKey} />}
       <div className="custom-header-table">
         <ConfigProvider
           theme={{
@@ -230,8 +229,9 @@ function AdsAccountDeclaration() {
           />
         </ConfigProvider>
       </div>
-      {openModalEdit && <EditAdsAccount adAccountId={adAccountId} onClose={() => setOpenModalEdit(false)} open={openModalEdit} setRefreshKey={setRefreshKey} />}
-      {openDeleteAdAccount && <DeleteAdAccount openDeleteModal={openDeleteAdAccount} onClose={() => setOpenDeleteAdAccount(false)} setRefreshKey={setRefreshKey} account_id={adAccountId} />}
+      <AddNewAdsAccount onClose={() => setOpenAddNewAdsAccount(false)} setRefreshKey={setRefreshKey} open={openAddNewAdsAccount} />
+      <EditAdsAccount adAccountId={adAccountId} onClose={() => setOpenModalEdit(false)} open={openModalEdit} setRefreshKey={setRefreshKey} />
+      <DeleteAdAccount openDeleteModal={openDeleteAdAccount} onClose={() => setOpenDeleteAdAccount(false)} setRefreshKey={setRefreshKey} account_id={adAccountId} />
     </div>
   )
 }

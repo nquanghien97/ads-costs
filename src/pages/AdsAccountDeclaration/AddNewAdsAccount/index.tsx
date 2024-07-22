@@ -1,6 +1,4 @@
-import CloseIcon from "../../../assets/icons/CloseIcon";
-import ButtonIcon from "../../../components/common/ButtonIcon";
-import { Button, Form, Input, Select } from "antd";
+import { Button, Form, Input, Modal, Select } from "antd";
 import { useInformationSettingsStore } from "../../../zustand/information_settings.store";
 import { addNewAdAccount } from "../../../services/ads_account";
 import { useState } from "react";
@@ -8,7 +6,8 @@ import { getUserId } from "../../../services/users";
 
 interface InvoiceDetailsProps {
   onClose: () => void;
-  setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>
+  setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>;
+  open: boolean;
 }
 
 interface FormValues {
@@ -29,7 +28,7 @@ interface FormValues {
 }
 
 function AddNewAdsAccount(props: InvoiceDetailsProps) {
-  const { onClose, setRefreshKey } = props;
+  const { onClose, setRefreshKey, open } = props;
   const [loading, setLoading] = useState(false);
 
   const [form] = Form.useForm();
@@ -82,195 +81,194 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
 
 
   return (
-    <div className="fixed inset-0 bg-[#0000004d] z-50">
-      <div className="w-[800px] relative rounded-xl bg-white left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col">
-        <div>
-          <div className="w-full text-center p-3 h-[50px] bg-[#0071BA] rounded-t-xl uppercase font-bold">Khai báo tài khoản quảng cáo</div>
-          <div className="absolute right-2 top-2" onClick={onClose}>
-            <ButtonIcon>
-              <CloseIcon />
-            </ButtonIcon>
-          </div>
-        </div>
-        <div className="p-4 my-4">
-          <Form
-            className="flex flex-col gap-6"
-            form={form}
-            onFinish={onFinish}
-          >
-            {/* <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">ID Tài Khoản</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="userId"
-                rules={[
-                  {
-                    required: true,
-                    message: "Trường này là bắt buộc"
-                  }
-                ]}
-              >
-                <Input className="py-2" />
-              </Form.Item>
-            </div> */}
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">ID TKQC</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="account_id"
-                rules={[
-                  {
-                    required: true,
-                    message: "Trường này là bắt buộc",
-                  },
-                  () => ({
-                    validator(_, value) {
-                      if (!value) {
-                        return Promise.reject();
-                      }
-                      if (isNaN(value)) {
-                        return Promise.reject("ID TKQC phải là số");
-                      }
-                      return Promise.resolve();
-                    },
-                  }),
-                ]}
-              >
-                <Input className="py-2" />
-              </Form.Item>
-            </div>
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Tên TKQC</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="account_name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Trường này là bắt buộc"
-                  }
-                ]}
-              >
+    <Modal
+      open={open}
+      onCancel={onClose}
+      footer={false}
+      className="!w-4/6"
+    >
+      <div>
+        <div className="w-full text-center p-3 h-[50px] bg-[#0071BA] rounded-t-md uppercase font-bold">Khai báo tài khoản quảng cáo</div>
+      </div>
+      <div className="p-4 my-4">
+        <Form
+          className="flex flex-col gap-6"
+          form={form}
+          onFinish={onFinish}
+        >
+          {/* <div className="flex items-center h-[40px]">
+            <p className="w-[120px] text-left text-[#0071BA]">ID Tài Khoản</p>
+            <Form.Item
+              className="!mb-0 w-full"
+              name="userId"
+              rules={[
+                {
+                  required: true,
+                  message: "Trường này là bắt buộc"
+                }
+              ]}
+            >
               <Input className="py-2" />
             </Form.Item>
-            </div>
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Kênh chạy</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="channel_id"
-              >
-                <Select
-                  options={channels.map(channel => ({ label: channel.name, value: channel.id}))}
-                  className="w-full h-full"
-                />
-              </Form.Item>
-            </div>
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Loại TKQC</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="type"
-              >
-                <Select
-                  labelInValue
-                  options={adAccountTypes.map(item => ({ label: item.name, value: item.id }))}
-                  className="w-full h-full"
-                />
-              </Form.Item>
-            </div>
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Tiền tệ</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="currency_id"
-              >
-                <Select
-                  options={currencies.map(item => ({ label: item.name, value: item.id }))}
-                  className="w-full h-full"
-                />
-              </Form.Item>
-            </div>
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Múi giờ</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="timezone_id"
-              >
-                <Select
-                  options={timezones.map(item => ({ label: item.name, value: item.id }))}
-                  className="w-full h-full"
-                />
-              </Form.Item>
-            </div>
-            {adsAccountTypes?.label === 'thuê' && (
-              <>
-                <div className="flex items-center h-[40px]">
-                  <p className="w-[120px] text-left text-[#0071BA]">Tỷ giá</p>
-                  <Form.Item
-                    className="!mb-0 w-full"
-                    name="exchange_rate"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Trường này là bắt buộc"
-                      }
-                    ]}
-                  >
-                    <Input className="py-2" />
-                  </Form.Item>
-                </div>
-                <div className="flex items-center h-[40px]">
-                  <p className="w-[120px] text-left text-[#0071BA]">Phí thuê</p>
-                  <Form.Item
-                    className="!mb-0 w-full"
-                    name="rental_fee"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Trường này là bắt buộc"
-                      }
-                    ]}
-                  >
-                    <Input className="py-2" />
-                  </Form.Item>
-                </div>
-              </>
-            )}
-            {(adsAccountTypes?.label === 'Trả sau' || adsAccountTypes?.label === 'Trả trước') && (
+          </div> */}
+          <div className="flex items-center h-[40px]">
+            <p className="w-[120px] text-left text-[#0071BA]">ID TKQC</p>
+            <Form.Item
+              className="!mb-0 w-full"
+              name="account_id"
+              rules={[
+                {
+                  required: true,
+                  message: "Trường này là bắt buộc",
+                },
+                () => ({
+                  validator(_, value) {
+                    if (!value) {
+                      return Promise.reject();
+                    }
+                    if (isNaN(value)) {
+                      return Promise.reject("ID TKQC phải là số");
+                    }
+                    return Promise.resolve();
+                  },
+                }),
+              ]}
+            >
+              <Input className="py-2" />
+            </Form.Item>
+          </div>
+          <div className="flex items-center h-[40px]">
+            <p className="w-[120px] text-left text-[#0071BA]">Tên TKQC</p>
+            <Form.Item
+              className="!mb-0 w-full"
+              name="account_name"
+              rules={[
+                {
+                  required: true,
+                  message: "Trường này là bắt buộc"
+                }
+              ]}
+            >
+            <Input className="py-2" />
+          </Form.Item>
+          </div>
+          <div className="flex items-center h-[40px]">
+            <p className="w-[120px] text-left text-[#0071BA]">Kênh chạy</p>
+            <Form.Item
+              className="!mb-0 w-full"
+              name="channel_id"
+            >
+              <Select
+                options={channels.map(channel => ({ label: channel.name, value: channel.id}))}
+                className="w-full h-full"
+              />
+            </Form.Item>
+          </div>
+          <div className="flex items-center h-[40px]">
+            <p className="w-[120px] text-left text-[#0071BA]">Loại TKQC</p>
+            <Form.Item
+              className="!mb-0 w-full"
+              name="type"
+            >
+              <Select
+                labelInValue
+                options={adAccountTypes.map(item => ({ label: item.name, value: item.id }))}
+                className="w-full h-full"
+              />
+            </Form.Item>
+          </div>
+          <div className="flex items-center h-[40px]">
+            <p className="w-[120px] text-left text-[#0071BA]">Tiền tệ</p>
+            <Form.Item
+              className="!mb-0 w-full"
+              name="currency_id"
+            >
+              <Select
+                options={currencies.map(item => ({ label: item.name, value: item.id }))}
+                className="w-full h-full"
+              />
+            </Form.Item>
+          </div>
+          <div className="flex items-center h-[40px]">
+            <p className="w-[120px] text-left text-[#0071BA]">Múi giờ</p>
+            <Form.Item
+              className="!mb-0 w-full"
+              name="timezone_id"
+            >
+              <Select
+                options={timezones.map(item => ({ label: item.name, value: item.id }))}
+                className="w-full h-full"
+              />
+            </Form.Item>
+          </div>
+          {adsAccountTypes?.label === 'thuê' && (
+            <>
               <div className="flex items-center h-[40px]">
-                <p className="w-[120px] text-left text-[#0071BA]">Bank Liên Kết</p>
+                <p className="w-[120px] text-left text-[#0071BA]">Tỷ giá</p>
                 <Form.Item
                   className="!mb-0 w-full"
-                  name="bank_account_id"
+                  name="exchange_rate"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Trường này là bắt buộc"
+                    }
+                  ]}
                 >
-                  <Select
-                    options={banks.map(item => ({ label: item.name, value: item.id }))}
-                    className="w-full h-full"
-                  />
+                  <Input className="py-2" />
                 </Form.Item>
               </div>
-            )}
+              <div className="flex items-center h-[40px]">
+                <p className="w-[120px] text-left text-[#0071BA]">Phí thuê</p>
+                <Form.Item
+                  className="!mb-0 w-full"
+                  name="rental_fee"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Trường này là bắt buộc"
+                    }
+                  ]}
+                >
+                  <Input className="py-2" />
+                </Form.Item>
+              </div>
+            </>
+          )}
+          {(adsAccountTypes?.label === 'Trả sau' || adsAccountTypes?.label === 'Trả trước') && (
             <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Trạng thái TKQC</p>
+              <p className="w-[120px] text-left text-[#0071BA]">Bank Liên Kết</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="status_id"
+                name="bank_account_id"
               >
                 <Select
-                  options={adAccountStatus.map(item => ({ label: item.name, value: item.id }))}
+                  options={banks.map(item => ({ label: item.name, value: item.id }))}
                   className="w-full h-full"
                 />
               </Form.Item>
             </div>
-            <div className="flex justify-evenly">
-              <Button type="primary" danger onClick={onClose}>Hủy</Button>
-              <Button type="primary" htmlType="submit" loading={loading}>Xác nhận</Button>
-            </div>
-          </Form>
-        </div>
+          )}
+          <div className="flex items-center h-[40px]">
+            <p className="w-[120px] text-left text-[#0071BA]">Trạng thái TKQC</p>
+            <Form.Item
+              className="!mb-0 w-full"
+              name="status_id"
+            >
+              <Select
+                options={adAccountStatus.map(item => ({ label: item.name, value: item.id }))}
+                className="w-full h-full"
+              />
+            </Form.Item>
+          </div>
+          <div className="flex justify-evenly">
+            <Button type="primary" danger onClick={onClose}>Hủy</Button>
+            <Button type="primary" htmlType="submit" loading={loading}>Xác nhận</Button>
+          </div>
+        </Form>
       </div>
-    </div>
+    </Modal>
+    
   )
 }
 
