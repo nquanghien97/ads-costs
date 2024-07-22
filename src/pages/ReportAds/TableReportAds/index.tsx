@@ -1,5 +1,5 @@
 import TableAdsAccount from "./TableAdsAccount"
-import TableAdsChannel from "./TableAdsChannel"
+// import TableAdsChannel from "./TableAdsChannel"
 
 function TableReportAds() {
   return (

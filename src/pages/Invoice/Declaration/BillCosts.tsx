@@ -83,7 +83,7 @@ function BillCosts() {
       <input type="file" onChange={handleFileUpload} id="import-bill-costs" className="hidden" />
     </label>
     {dataBill && (
-      <Modal open={openModalBillCosts} onCancel={onCloseModal} onOk={onOk} footer={false}>
+      <Modal open={openModalBillCosts} onCancel={onCloseModal} onOk={onOk} footer={false} className="!w-1/2">
         <Table dataSource={dataBill} columns={columns} rowKey={(record) => record.id} />
         <div className="flex justify-evenly py-4">
           <Button type="primary" danger onClick={onCloseModal}>Hủy</Button>

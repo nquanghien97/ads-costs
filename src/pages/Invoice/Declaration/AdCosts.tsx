@@ -78,41 +78,39 @@ function AdCosts() {
       <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModal(true)}>
         <span className="text-white">Khai Báo CPQC</span>
       </div>
-      <div className="p-4">
-        <Modal open={openModal} onCancel={onCloseModal} onOk={onOk} footer={false} className="!w-1/2">
-          <Form form={form} onFinish={onFinish}>
-            <Form.Item
-              name='date'
-              className="flex justify-center !mb-0 pt-4"
-              rules={[
-                {
-                  required: true,
-                  message: "Trường này là bắt buộc"
-                }
-              ]}
-            >
-              <DatePicker showTime />
-            </Form.Item>
-            <label htmlFor="import-ad-costs" className="h-full">
-              <div className="flex justify-center">
-                <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 py-2 my-4 flex items-center justify-center hover:opacity-80 duration-300">
-                  <span className="text-white">Khai Báo CPQC...</span>
-                </div>
+      <Modal open={openModal} onCancel={onCloseModal} onOk={onOk} footer={false} className="!w-1/2">
+        <Form form={form} onFinish={onFinish}>
+          <Form.Item
+            name='date'
+            className="flex justify-center !mb-0 pt-4"
+            rules={[
+              {
+                required: true,
+                message: "Trường này là bắt buộc"
+              }
+            ]}
+          >
+            <DatePicker showTime />
+          </Form.Item>
+          <label htmlFor="import-ad-costs" className="h-full">
+            <div className="flex justify-center">
+              <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 py-2 my-4 flex items-center justify-center hover:opacity-80 duration-300">
+                <span className="text-white">Khai Báo CPQC...</span>
               </div>
-              <input type="file" onChange={handleFileUpload} id="import-ad-costs" className="!hidden" />
-            </label>
-          {dataImport && (
-            <>
-              <Table dataSource={dataImport} columns={columns} rowKey={(record) => record["ID TKQC"]} />
-              <div className="flex justify-evenly py-4">
-                <Button type="primary" danger onClick={onCloseModal}>Hủy</Button>
-                <Button type="primary" htmlType="submit">Xác nhận</Button>
-              </div>
-            </>
-          )}
-          </Form>
-        </Modal>
-      </div>
+            </div>
+            <input type="file" onChange={handleFileUpload} id="import-ad-costs" className="!hidden" />
+          </label>
+        {dataImport && (
+          <>
+            <Table dataSource={dataImport} columns={columns} rowKey={(record) => record["ID TKQC"]} />
+            <div className="flex justify-evenly py-4">
+              <Button type="primary" danger onClick={onCloseModal}>Hủy</Button>
+              <Button type="primary" htmlType="submit">Xác nhận</Button>
+            </div>
+          </>
+        )}
+        </Form>
+      </Modal>
     </>
   );
 }
