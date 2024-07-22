@@ -24,6 +24,17 @@ export interface AdsBillingsDTO {
     timezone: string,
     rental_fee: number,
     bank_account_id: number,
+    group_id: number,
+    group: {
+      id: number,
+      name: string,
+      system_id: number,
+    }
+    system_id: number,
+    system: {
+      name: string,
+      id: number
+    }
     bank_account: {
       name: string,
       card_number: string,
