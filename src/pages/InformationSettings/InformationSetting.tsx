@@ -42,35 +42,37 @@ function InformationSetting(props: InformationSettingProps) {
     setId(id)
   }
   return (
-    <div className="flex items-center border border-sky-500 p-2 rounded-xl">
-      <div className={`mr-4 px-6 py-2 rounded-full text-white uppercase text-center w-[200px]`} style={{ backgroundColor: titleColor}}>
-        <span>{title}</span>
+    <div className="flex items-center border border-sky-500 p-2 rounded-xl text-xs">
+      <div className={`mr-4 px-6 py-3 rounded-full text-white uppercase text-center w-[200px]`} style={{ backgroundColor: titleColor}}>
+        <p className="font-bold">{title}</p>
       </div>
       {loading ? (
         <div className="flex my-2 gap-4">
-          <Skeleton.Button className="!w-[120px] !h-[56px]" active />
-          <Skeleton.Button className="!w-[120px] !h-[56px]" active />
+          <Skeleton.Button className="!w-[120px] !h-[40px]" active />
+          <Skeleton.Button className="!w-[120px] !h-[40px]" active />
         </div>
       ) : (
         <ul className="flex flex-wrap items-center">
         {datas.map((item) => (
-          <li key={item.id} className={`mr-4 px-8 py-4 my-2 rounded-xl uppercase text-center min-w-[120px] relative`} style={{ backgroundColor: color }}>
-            <div
-              className="absolute top-2 right-3 bg-[red] rounded-xl cursor-pointer hover:opacity-70"
-              onClick={() => onOpenDel(item.id)}
-            >
-              <MinusIcon color="white" width={16} />
-            </div>
-            <span className="mx-2">{item.name}</span>
-            <div
-              className="absolute bottom-2 right-3 bg-[green] rounded-xl cursor-pointer hover:opacity-70"
-              onClick={() => {
-                setOpenModalEditInformation(true)
-                setId(item.id)
-                setName(item.name)
-              }}
-            >
-              <EditIcon color="white" width={16} />
+          <li key={item.id} className={`mr-4 px-4 py-3 my-2 rounded-xl uppercase text-center min-w-[120px] relative flex`} style={{ backgroundColor: color }}>
+            <p className="mx-2 font-bold">{item.name}</p>
+            <div className="flex gap-2">
+              <div
+                className=" bg-[red] rounded-xl cursor-pointer hover:opacity-70"
+                onClick={() => onOpenDel(item.id)}
+              >
+                <MinusIcon color="white" width={16} />
+              </div>
+              <div
+                className=" bg-[green] rounded-xl cursor-pointer hover:opacity-70"
+                onClick={() => {
+                  setOpenModalEditInformation(true)
+                  setId(item.id)
+                  setName(item.name)
+                }}
+              >
+                <EditIcon color="white" width={16} height={16} />
+              </div>
             </div>
           </li>
         ))}
