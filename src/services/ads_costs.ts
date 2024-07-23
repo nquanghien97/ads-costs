@@ -10,7 +10,7 @@ export const GetAdsCostsByUser = ({ search, since, until, system_id, group_id } 
   if(system_id) params.append('system_id', system_id.toString());
   if (group_id) params.append('group_id', group_id.toString());
 
-  return api.get(`/statistics/ads?level=user${params.toString()}`);
+  return api.get(`/statistics/ads?level=user&${params.toString()}`);
 }
 
 export const DeclarationAdsCosts = (data: DeclarationAdsCostsDTO[]) => {

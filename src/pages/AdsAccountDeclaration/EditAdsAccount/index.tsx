@@ -4,12 +4,16 @@ import { editAdsAccount, getAdsAccount } from "../../../services/ads_account";
 import { useInformationSettingsStore } from "../../../zustand/information_settings.store";
 import { AdsAccountType } from "../../../entities/AdsAccount";
 import { useNotification } from "../../../hooks/useNotification";
+import { BankAccountType } from "../../../entities/BankAccount";
+import { getListBankAccounts } from "../../../services/bank_account";
+import { getUserId } from "../../../services/users";
 
 interface EditAdsAccountProps {
   onClose: () => void;
   open: boolean;
   adAccountId: number;
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>
+  bankAccountId: number
 }
 
 interface FormValues {
@@ -26,26 +30,41 @@ interface FormValues {
   bank_account_id: number,
   exchange_rate: number,
   rental_fee: number,
-  status_id: number
+  status_id: number,
+  card_number: number,
 }
 
 function EditAdsAccount(props: EditAdsAccountProps) {
-  const { onClose, adAccountId, open, setRefreshKey } = props;
+  const { onClose, adAccountId, open, setRefreshKey, bankAccountId } = props;
+  const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [adAccountData, setAdAccountData] = useState<AdsAccountType>();
-
+  const [dataAdsAccount, setDataAdsAccount] = useState<BankAccountType[]>([]);
+  const [bankId, setBankId] = useState(0)
+  const user_id = getUserId();
   const { channels, currencies, timezones, adAccountStatus, adAccountTypes, banks } = useInformationSettingsStore();
   const notification = useNotification();
+  console.log(bankId)
 
-  const [form] = Form.useForm();
   const adsAccountTypes = Form.useWatch('type', form);
+
+  const onChangeBankId = (option: number) => {
+    setBankId(option)
+    form.setFieldsValue({ card_number: null })
+  }
+
+  useEffect(() => {
+    (async () => {
+      const res = await getListBankAccounts({user_id})
+      setDataAdsAccount(res.data.data.list)
+    })()
+  }, [user_id])
 
   useEffect(() => {
     (async () => {
       const res = await getAdsAccount(adAccountId);
       const adAccountData = res.data.data as AdsAccountType
       setAdAccountData(adAccountData)
-      console.log(adAccountData)
       form.setFieldsValue({
           account_id: +adAccountData.account_id,
           account_name: adAccountData.account_name,
@@ -57,9 +76,10 @@ function EditAdsAccount(props: EditAdsAccountProps) {
           },
           timezone_id: adAccountData.timezone_id,
           exchange_rate: adAccountData.exchange_rate,
-          bank_account_id: adAccountData.bank_account_id,
+          bank_account_id: adAccountData.bank_account?.bank_name,
           rental_fee: adAccountData.rental_fee,
           status_id: adAccountData.status_id,
+          card_number: adAccountData.bank_account?.card_number
       })
     })()
   }, [adAccountId, form])
@@ -77,12 +97,13 @@ function EditAdsAccount(props: EditAdsAccountProps) {
         exchange_rate: data.exchange_rate,
         timezone_id: data.timezone_id,
         rental_fee: data.rental_fee,
-        bank_account_id: data.bank_account_id,
-        status_id: data.status_id
+        bank_account_id: data.card_number,
+        status_id: data.status_id,
       }
       await editAdsAccount(adAccountData?.id || -1, valuesSubmit);
       notification.success('Chỉnh sửa tài khoản quảng cáo thành công');
       onClose();
+      console.log(data.card_number)
       setRefreshKey(pre => !pre)
     } catch (err) {
       console.log(err)
@@ -234,18 +255,33 @@ function EditAdsAccount(props: EditAdsAccountProps) {
               </>
             )}
             {(adsAccountTypes?.label === 'Trả sau' || adsAccountTypes?.label === 'Trả trước') && (
-              <div className="flex items-center h-[40px]">
-                <p className="w-[120px] text-left text-[#0071BA]">Bank Liên Kết</p>
+              <>
+                <div className="flex items-center h-[40px]">
+                  <p className="w-[120px] text-left text-[#0071BA]">Bank Liên Kết</p>
+                  <Form.Item
+                    className="!mb-0 w-full"
+                    name="bank_account_id"
+                  >
+                    <Select
+                      onChange={onChangeBankId}
+                      options={banks.map(item => ({ label: item.name, value: item.id }))}
+                      className="w-full h-full"
+                    />
+                  </Form.Item>
+                </div>
+                <div className="flex items-center h-[40px]">
+                <p className="w-[120px] text-left text-[#0071BA]">Số TKNH</p>
                 <Form.Item
                   className="!mb-0 w-full"
-                  name="bank_account_id"
+                  name="card_number"
                 >
                   <Select
-                    options={banks.map(item => ({ label: item.name, value: item.id }))}
+                    options={dataAdsAccount.filter(item => item.bank_id === (bankId===0? bankAccountId : bankId)).map(x => ({ label: x.card_number, value: x.id }))}
                     className="w-full h-full"
                   />
                 </Form.Item>
               </div>
+              </>
             )}
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Trạng thái TKQC</p>

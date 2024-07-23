@@ -1,4 +1,5 @@
 export const formatDate = (date: Date) => {
+  if(!date) return undefined
   const padZero = (num: number) => num < 10 ? `0${num}` : num;
 
   const year = date.getFullYear();

@@ -115,21 +115,6 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
           form={form}
           onFinish={onFinish}
         >
-          {/* <div className="flex items-center h-[40px]">
-            <p className="w-[120px] text-left text-[#0071BA]">ID Tài Khoản</p>
-            <Form.Item
-              className="!mb-0 w-full"
-              name="userId"
-              rules={[
-                {
-                  required: true,
-                  message: "Trường này là bắt buộc"
-                }
-              ]}
-            >
-              <Input className="py-2" />
-            </Form.Item>
-          </div> */}
           <div className="flex items-center h-[40px]">
             <p className="w-[120px] text-left text-[#0071BA]">ID TKQC</p>
             <Form.Item
@@ -282,7 +267,6 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                 </Form.Item>
               </div>
             </>
-            
           )}
           <div className="flex items-center h-[40px]">
             <p className="w-[120px] text-left text-[#0071BA]">Trạng thái TKQC</p>

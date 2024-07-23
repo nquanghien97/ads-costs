@@ -18,10 +18,11 @@ function AdsAccountDeclaration() {
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
   const [adAccountId, setAdAccountId] = useState(-1);
+  const [bankAccountId, setBankAccountId] = useState(-1);
   const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false);
   const [openDeleteAdAccount, setOpenDeleteAdAccount] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [pagingAdAccount, setPagingAdAccount] = useState<pagingAdAccount>()
+  const [pagingAdAccount, setPagingAdAccount] = useState<pagingAdAccount>();
 
   const columns: TableColumnsType<AdsAccountType> = [
     {
@@ -146,6 +147,7 @@ function AdsAccountDeclaration() {
                 onClick={() => {
                   setOpenModalEdit(true)
                   setAdAccountId(record.id)
+                  setBankAccountId(record.bank_account?.bank_id)
                 }}
               >
                 <Button
@@ -254,7 +256,7 @@ function AdsAccountDeclaration() {
         </ConfigProvider>
       </div>
       <AddNewAdsAccount onClose={() => setOpenAddNewAdsAccount(false)} setRefreshKey={setRefreshKey} open={openAddNewAdsAccount} />
-      <EditAdsAccount adAccountId={adAccountId} onClose={() => setOpenModalEdit(false)} open={openModalEdit} setRefreshKey={setRefreshKey} />
+      <EditAdsAccount adAccountId={adAccountId} onClose={() => setOpenModalEdit(false)} open={openModalEdit} setRefreshKey={setRefreshKey} bankAccountId={bankAccountId} />
       <DeleteAdAccount openDeleteModal={openDeleteAdAccount} onClose={() => setOpenDeleteAdAccount(false)} setRefreshKey={setRefreshKey} account_id={adAccountId} />
     </div>
   )

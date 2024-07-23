@@ -15,7 +15,6 @@ function Invoice() {
   const [loading, setLoading] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
   const { user } = useAuthStore();
-  console.log(user.role)
 
   useEffect(() => {
     document.title = "Chi phí quảng cáo - hóa đơn"
@@ -31,18 +30,20 @@ function Invoice() {
     })()
   }, [user.role, refreshKey]);
 
-  // if()
-
   return (
     <div className="px-4">
       <HeaderInvoice setDatas={setDatas} setRefreshKey={setRefreshKey} />
       <div className="pt-[136px]">
-        {datas.map(data => data.group_datas.map(data => data.user_datas.map((item, index) => (
+        {datas.length === 0 ? (
+          <div>Không có dữ liệu</div>
+        ) : (
+          datas.map(data => data.group_datas.map(data => data.user_datas.map((item, index) => (
             <div className="border-b-4 border-cyan-700 py-6" key={index}>
               <TableInvoice setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
               <TableInvoiceRent setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
             </div>
-        ))))}
+          ))))
+        )}
       </div>
       {openInvoiceDetails && <InvoiceDetails onClose={() => setOpenInvoiceDetails(false)} />}
     </div>

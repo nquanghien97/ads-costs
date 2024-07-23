@@ -55,10 +55,11 @@ function HeaderInvoice({ setDatas, setRefreshKey }: { setDatas: React.Dispatch<R
   }
 
   const onFinish = async (data: FormValues) => {
+    console.log(data.date)
     const submitData = {
       search: data.search,
-      since: formatDate(new Date(data?.date?.[0])),
-      until: formatDate(new Date(data?.date?.[1])),
+      since: data.date ? formatDate(new Date(data.date?.[0])): undefined,
+      until: data.date ? formatDate(new Date(data.date?.[1])) : undefined,
       system_id: data.system_id,
       group_id: data.group_id,
       channel_id: data.channel_id
