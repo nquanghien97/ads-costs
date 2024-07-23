@@ -27,6 +27,7 @@ function AdsAccountDeclaration() {
     {
       title: 'Thời gian',
       dataIndex: 'created_at',
+      width: 150,
       key: '1',
       render: (_, record) => {
         return (
@@ -77,6 +78,7 @@ function AdsAccountDeclaration() {
       title: 'Kênh chạy',
       dataIndex: 'channel',
       key: '9',
+      width: 100
     },
     {
       title: 'Loại TKQC',
@@ -106,8 +108,22 @@ function AdsAccountDeclaration() {
     },
     {
       title: 'Bank liên kết TKQC',
-      dataIndex: ['bank_account', 'bank_name'],
       key: '15',
+      width: 200,
+      children: [
+        {
+          title: 'Tên ngân hàng',
+          key: '111',
+          width: 150,
+          dataIndex: ['bank_account', 'bank_name']
+        },
+        {
+          title: 'Số TKNH',
+          key: '112',
+          width: 100,
+          dataIndex: ['bank_account', 'card_number']
+        }
+      ]
     },
     {
       title: 'Trạng thái',
@@ -116,10 +132,10 @@ function AdsAccountDeclaration() {
     },
     {
       title: 'Thao tác',
-      width: 100,
+      width: 150,
       render(_, record) {
         return (
-          <div className="flex flex-col justify-between gap-2">
+          <div className="flex flex-col justify-between gap-2 py-2">
             <ConfigProvider
               button={{
                 className: "hover:!bg-[#538b53]"
@@ -233,7 +249,7 @@ function AdsAccountDeclaration() {
               onChange: onChange
             }}
             loading={loading}
-            scroll={{ y: 450 }}
+            scroll={{ y: 450, x: 2000 }}
           />
         </ConfigProvider>
       </div>

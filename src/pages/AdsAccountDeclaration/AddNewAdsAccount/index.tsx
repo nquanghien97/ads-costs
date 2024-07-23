@@ -1,9 +1,11 @@
 import { Button, Form, Input, Modal, Select } from "antd";
 import { useInformationSettingsStore } from "../../../zustand/information_settings.store";
 import { addNewAdAccount } from "../../../services/ads_account";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getUserId } from "../../../services/users";
 import { useNotification } from "../../../hooks/useNotification";
+import { getListBankAccounts } from "../../../services/bank_account";
+import { BankAccountType } from "../../../entities/BankAccount";
 
 interface InvoiceDetailsProps {
   onClose: () => void;
@@ -25,12 +27,15 @@ interface FormValues {
   bank_account_id: number,
   exchange_rate: number,
   rental_fee: number,
-  status_id: number
+  status_id: number,
+  card_number: number,
 }
 
 function AddNewAdsAccount(props: InvoiceDetailsProps) {
   const { onClose, setRefreshKey, open } = props;
   const [loading, setLoading] = useState(false);
+  const [dataAdsAccount, setDataAdsAccount] = useState<BankAccountType[]>([]);
+  const [bankName, setBankName] = useState(-1)
 
   const [form] = Form.useForm();
   const user_id = getUserId();
@@ -38,6 +43,18 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
   const notification = useNotification();
   
   const adsAccountTypes = Form.useWatch('type', form);
+
+  const onChangeBankName = (option: number) => {
+    setBankName(option)
+  }
+
+  useEffect(() => {
+    (async () => {
+      const res = await getListBankAccounts({user_id})
+      setDataAdsAccount(res.data.data.list)
+    })()
+  }, [user_id])
+
   const onFinish = async (data: FormValues) => {
     setLoading(true);
     try{
@@ -66,13 +83,12 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
           currency_id: data.currency_id,
           type_id: data.type.value,
           timezone_id: data.timezone_id,
-          bank_account_id: data.bank_account_id,
+          bank_account_id: +data.card_number,
           status_id: data.status_id,
         }
         await addNewAdAccount(submitData)
         notification.success('Thêm mới tài khoản quảng cáo thành công')
         onClose()
-        // console.log(submitData)
       }
       setRefreshKey(pre => !pre)
     } catch (err){
@@ -83,13 +99,12 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
     }
   }
 
-
   return (
     <Modal
       open={open}
       onCancel={onClose}
       footer={false}
-      className="!w-4/6"
+      className="!w-4/6 top-12"
     >
       <div>
         <div className="w-full text-center p-3 h-[50px] bg-[#0071BA] rounded-t-md uppercase font-bold">Khai báo tài khoản quảng cáo</div>
@@ -240,18 +255,34 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
             </>
           )}
           {(adsAccountTypes?.label === 'Trả sau' || adsAccountTypes?.label === 'Trả trước') && (
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">Bank Liên Kết</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="bank_account_id"
-              >
-                <Select
-                  options={banks.map(item => ({ label: item.name, value: item.id }))}
-                  className="w-full h-full"
-                />
-              </Form.Item>
-            </div>
+            <>
+              <div className="flex items-center h-[40px]">
+                <p className="w-[120px] text-left text-[#0071BA]">Bank Liên Kết</p>
+                <Form.Item
+                  className="!mb-0 w-full"
+                  name="bank_account_id"
+                >
+                  <Select
+                    onChange={onChangeBankName}
+                    options={banks.map(item => ({ label: item.name, value: item.id }))}
+                    className="w-full h-full"
+                  />
+                </Form.Item>
+              </div>
+              <div className="flex items-center h-[40px]">
+                <p className="w-[120px] text-left text-[#0071BA]">Số TKNH</p>
+                <Form.Item
+                  className="!mb-0 w-full"
+                  name="card_number"
+                >
+                  <Select
+                    options={dataAdsAccount.filter(item => item.bank_id === bankName).map(x => ({ label: x.card_number, value: x.id }))}
+                    className="w-full h-full"
+                  />
+                </Form.Item>
+              </div>
+            </>
+            
           )}
           <div className="flex items-center h-[40px]">
             <p className="w-[120px] text-left text-[#0071BA]">Trạng thái TKQC</p>
