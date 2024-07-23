@@ -1,5 +1,6 @@
 import { Button, Form, Input, Modal } from "antd";
 import { InformationSettingType } from "../../entities/InformationSetting";
+import { useEffect } from "react";
 
 interface EditInformationProps {
   onClose: () => void;
@@ -19,6 +20,11 @@ interface FormValue {
 function EditInformation(props: EditInformationProps) {
   const [form] = Form.useForm<FormValue>();
   const { onClose, title, onEdit, id, name, loadingEdit, type, open } = props;
+
+
+  useEffect(() => {
+    form.setFieldsValue({ name: name })
+  }, [form, name])
 
   const onSubmit = async (data: { name: string }) => {
     await onEdit(type, {id: id, name: data.name})
