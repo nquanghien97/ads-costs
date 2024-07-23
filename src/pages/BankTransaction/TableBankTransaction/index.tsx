@@ -1,29 +1,26 @@
 import { ConfigProvider, Table } from 'antd';
-import { BankBillingsResponse, TotalDailyData } from "../../../dto/BankBillingsDTO";
+import { BankTransactionsDTO, TotalDailyData } from "../../../dto/BankTransactionsDTO";
 import { generateDynamicColumns, staticColumns } from './columns';
 import React from 'react';
 
 interface TableBankTransactionProps {
   setOpenBankBillingDetails: React.Dispatch<React.SetStateAction<boolean>>;
-  datas: BankBillingsResponse[];
+  datas: BankTransactionsDTO[];
 }
 
 function TableBankTransaction(props: TableBankTransactionProps) {
   const { setOpenBankBillingDetails, datas } = props;
 
   // Chuẩn bị dữ liệu cho các cột động
-  const data = datas.flatMap(x => x.list);
+  console.log(datas)
 
   const dataForDynamicColumns = datas.flatMap(x => 
-    x.list
-    .flatMap(y => 
-      y.group_datas.flatMap(item => 
-        item.bank_account_datas.flatMap(account => 
-          Object.entries(account.datas).map(([date, data]) => ({
-            date,
-            ...data
-          }))
-        )
+    x.group_datas.flatMap(item => 
+      item.bank_account_datas.flatMap(account => 
+        Object.entries(account.datas).map(([date, data]) => ({
+          date,
+          ...data
+        }))
       )
     )
   );
@@ -70,7 +67,7 @@ function TableBankTransaction(props: TableBankTransactionProps) {
           >
             <Table
               columns={[...staticColumns, ...dynamicColumns]}
-              dataSource={data}
+              dataSource={datas}
               pagination={false}
               rowKey={(record) => record.system_id.toString()}
               bordered

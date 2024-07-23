@@ -3,14 +3,19 @@ import HeaderInvoice from "./HeaderInvoice";
 import InvoiceDetails from "./InvoiceDetails";
 import TableInvoice from "./TableInvoice";
 import TableInvoiceRent from "./TableInvoiceRent";
-import { GetAdsBillingsByUser } from "../../services/ads_billings";
+import { GetAdsCostsByUser } from "../../services/ads_costs";
 import { SystemData } from "../../dto/AdsBillingsDTO";
 import withAuth from "../../hocs/withAuth";
+import { useAuthStore } from "../../zustand/auth.store";
+import { UserRole } from "../../entities/User";
 
 function Invoice() {
   const [openInvoiceDetails, setOpenInvoiceDetails] = useState(false);
   const [datas, setDatas] = useState<SystemData[]>([]);
   const [loading, setLoading] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(false);
+  const { user } = useAuthStore();
+  console.log(user.role)
 
   useEffect(() => {
     document.title = "Chi phí quảng cáo - hóa đơn"
@@ -18,21 +23,24 @@ function Invoice() {
 
   useEffect(() => {
     setLoading(true);
+    if(user.role === UserRole.ROOT) return;
     (async () => {
-      const res = await GetAdsBillingsByUser({});
+      const res = await GetAdsCostsByUser({});
       setDatas(res.data.data.list);
       setLoading(false);
     })()
-  }, []);
+  }, [user.role, refreshKey]);
+
+  // if()
 
   return (
     <div className="px-4">
-      <HeaderInvoice />
+      <HeaderInvoice setDatas={setDatas} setRefreshKey={setRefreshKey} />
       <div className="pt-[136px]">
-        {datas.map(data => data.group_datas.map(x => x.user_datas.map((y, index) => (
+        {datas.map(data => data.group_datas.map(data => data.user_datas.map((item, index) => (
             <div className="border-b-4 border-cyan-700 py-6" key={index}>
-              <TableInvoice setOpenInvoiceDetails={setOpenInvoiceDetails} data={y} loading={loading} />
-              <TableInvoiceRent setOpenInvoiceDetails={setOpenInvoiceDetails} data={y} loading={loading} />
+              <TableInvoice setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
+              <TableInvoiceRent setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
             </div>
         ))))}
       </div>

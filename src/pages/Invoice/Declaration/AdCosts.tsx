@@ -1,16 +1,22 @@
 import { Button, DatePicker, Form, Modal, Table, TableColumnsType } from "antd";
 import { ChangeEvent, useState } from "react";
 import * as XLSX from "xlsx";
+import { formatDate } from "../../../utils/formatDate";
+import { useNotification } from "../../../hooks/useNotification";
+import { DeclarationAdsCosts } from "../../../services/ads_costs";
 
 interface DataRow {
-  id: number;
-  'chi phí': string;
+  'ID TKQC': number;
+  'CHI PHÍ': string;
 }
 
 function AdCosts() {
   const [dataImport, setDataImport] = useState<DataRow[] | null>(null);
   const [openModal, setOpenModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+
+  const notification = useNotification()
 
   const handleFileUpload = (e : ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -36,31 +42,30 @@ function AdCosts() {
     setDataImport(null);
   }
 
-  const onOk = () => {
-    console.log(dataImport)
-    setOpenModal(false);
-  }
-
-  const onFinish = (data: { date: Date}) => {
-    const date = new Date(data.date)
-    const padZero = (num: number) => num < 10 ? `0${num}` : num;
-
-    const year = date.getFullYear();
-    const month = padZero(date.getMonth() + 1);
-    const day = padZero(date.getDate());
-    const hours = padZero(date.getHours());
-    const minutes = padZero(date.getMinutes());
-    const seconds = padZero(date.getSeconds());
-    const time = (`${year}-${month}-${day} ${hours}:${minutes}:${seconds}`)
-    console.log({ time, dataImport})
+  const onFinish = async (data: { date: Date}) => {
+    setLoading(true);
+    const dataSubmit = dataImport?.map(item => ({
+      date: formatDate(new Date(data.date)),
+      ad_account_id: item["ID TKQC"],
+      amount: +item["CHI PHÍ"]
+    }));
+    if(!dataSubmit) {
+      notification.warning('Bạn cần import dữ liệu')
+      return;
+    }
+    try {
+      await DeclarationAdsCosts(dataSubmit)
+      setOpenModal(false);
+      notification.success('Khai báo Chi phí quảng cáo thành công')
+    } catch (err) {
+      console.log(err);
+      notification.error('Khai báo Chi phí quảng cáo không thành công')
+    } finally {
+      setLoading(false);
+    }
   }
 
   const columns: TableColumnsType = [
-    {
-      title: 'NGÀY',
-      dataIndex: 'NGÀY',
-      key: '1',
-    },
     {
       title: 'ID TKQC',
       dataIndex: 'ID TKQC',
@@ -68,7 +73,7 @@ function AdCosts() {
     },
     {
       title: 'CHI PHÍ',
-      dataIndex: ['CHI PHÍ'],
+      dataIndex: 'CHI PHÍ',
       key: '3',
     },
   ]
@@ -78,7 +83,7 @@ function AdCosts() {
       <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModal(true)}>
         <span className="text-white">Khai Báo CPQC</span>
       </div>
-      <Modal open={openModal} onCancel={onCloseModal} onOk={onOk} footer={false} className="!w-1/2">
+      <Modal open={openModal} onCancel={onCloseModal} footer={false} className="!w-1/2">
         <Form form={form} onFinish={onFinish}>
           <Form.Item
             name='date'
@@ -90,7 +95,7 @@ function AdCosts() {
               }
             ]}
           >
-            <DatePicker showTime />
+            <DatePicker placeholder="Chọn ngày" />
           </Form.Item>
           <label htmlFor="import-ad-costs" className="h-full">
             <div className="flex justify-center">
@@ -105,7 +110,7 @@ function AdCosts() {
             <Table dataSource={dataImport} columns={columns} rowKey={(record) => record["ID TKQC"]} />
             <div className="flex justify-evenly py-4">
               <Button type="primary" danger onClick={onCloseModal}>Hủy</Button>
-              <Button type="primary" htmlType="submit">Xác nhận</Button>
+              <Button type="primary" htmlType="submit" loading={loading}>Xác nhận</Button>
             </div>
           </>
         )}

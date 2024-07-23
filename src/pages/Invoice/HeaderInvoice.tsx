@@ -8,6 +8,10 @@ import User from "../../entities/User";
 import { getUsers } from "../../services/users";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
 import BillCosts from "./Declaration/BillCosts";
+import { SystemData } from "../../dto/AdsBillingsDTO";
+import { formatDate } from "../../utils/formatDate";
+import { useNotification } from "../../hooks/useNotification";
+import { GetAdsCostsByUser } from "../../services/ads_costs";
 
 interface FormValues {
   search: string;
@@ -18,9 +22,10 @@ interface FormValues {
     value: number;
   };
   channel_id: number;
+  date: Date[]
 }
 
-function HeaderInvoice() {
+function HeaderInvoice({ setDatas, setRefreshKey }: { setDatas: React.Dispatch<React.SetStateAction<SystemData[]>>, setRefreshKey: React.Dispatch<React.SetStateAction<boolean>> }) {
 
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
@@ -28,6 +33,8 @@ function HeaderInvoice() {
   const { channels } = useInformationSettingsStore();
   const [selectedSystem, setSelectedSystem] = useState(-1);
   const [name, setName] = useState<User[]>([]);
+
+  const notification = useNotification();
 
   const [form] = Form.useForm();
 
@@ -47,9 +54,23 @@ function HeaderInvoice() {
     }
   }
 
-  const onFinish = (data: FormValues) => {
-    // console.log(new Date(data.date))
-    console.log(data)
+  const onFinish = async (data: FormValues) => {
+    const submitData = {
+      search: data.search,
+      since: formatDate(new Date(data?.date?.[0])),
+      until: formatDate(new Date(data?.date?.[1])),
+      system_id: data.system_id,
+      group_id: data.group_id,
+      channel_id: data.channel_id
+    }
+    try {
+      const res = await GetAdsCostsByUser(submitData)
+      setDatas(res.data.data.list)
+      setRefreshKey(pre => !pre)
+    } catch(err) {
+      console.log(err);
+      notification.error('Có lỗi xảy ra, vui lòng thử lại')
+    }
   }
 
   return (

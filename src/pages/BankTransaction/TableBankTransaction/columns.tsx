@@ -1,20 +1,20 @@
 import { TableColumnsType } from 'antd';
-import { BankBillings, TotalDailyData } from '../../../dto/BankBillingsDTO';
+import { BankTransactionsDTO, TotalDailyData } from '../../../dto/BankTransactionsDTO';
 import EyeIcon from '../../../assets/icons/EyeIcon';
 
-export const staticColumns: TableColumnsType<BankBillings> =  [
+export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
   {
     title: 'Mã TKNH',
     // dataIndex: ['bank_account', 'id'],
     key: '1',
-    width: 100,
+    width: 50,
     fixed: 'left',
     render: (_, record) => (
       <table>
         <tbody>
         {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
           <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-            <td>{innerData.bank_account_id}</td>
+            <td>{`TKNH${innerData.bank_account_id}`}</td>
           </tr>
         )))}
         </tbody>
@@ -24,7 +24,7 @@ export const staticColumns: TableColumnsType<BankBillings> =  [
   {
     title: 'Họ tên',
     // dataIndex: ['bank_account', 'user', 'name'],
-    width: 100,
+    width: 80,
     key: '2',
     fixed: 'left',
     render: (_, record) => (
@@ -33,7 +33,7 @@ export const staticColumns: TableColumnsType<BankBillings> =  [
 
         {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
           <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-            <td>{innerData.bank_account.user.name}</td>
+            <td>{innerData.bank_account.name}</td>
           </tr>
         )))}
         </tbody>
@@ -44,7 +44,7 @@ export const staticColumns: TableColumnsType<BankBillings> =  [
     title: 'STK Ngân hàng',
     // dataIndex: ['bank_account', 'card_number'],
     key: '3',
-    width: 100,
+    width: 70,
     fixed: 'left',
     render: (_, record) => (
       <table>
@@ -63,7 +63,7 @@ export const staticColumns: TableColumnsType<BankBillings> =  [
     title: 'Bank',
     // dataIndex: ['bank_account', 'bank_name'],
     key: '4',
-    width: 100,
+    width: 60,
     fixed: 'left',
     render: (_, record) => (
       <table>
@@ -82,7 +82,7 @@ export const staticColumns: TableColumnsType<BankBillings> =  [
     title: 'Tiền nhận',
     // dataIndex: 'total_received',
     key: '5',
-    width: 100,
+    width: 60,
     fixed: 'left',
     render: (_, record) => (
       <table>
@@ -100,7 +100,7 @@ export const staticColumns: TableColumnsType<BankBillings> =  [
   {
     title: 'Tiền thanh toán hóa đơn',
     // dataIndex: 'total_paid_bill',
-    width: 100,
+    width: 60,
     key: '6',
     fixed: 'left',
     render: (_, record) => (
@@ -119,7 +119,7 @@ export const staticColumns: TableColumnsType<BankBillings> =  [
   {
     title: 'TT Chi phí khác',
     // dataIndex: 'total_paid_other',
-    width: 100,
+    width: 60,
     key: '7',
     fixed: 'left',
     render: (_, record) => (
@@ -138,7 +138,7 @@ export const staticColumns: TableColumnsType<BankBillings> =  [
   {
     title: 'Số dư hiện tại',
     // dataIndex: 'balance',
-    width: 100,
+    width: 60,
     key: '8',
     fixed: 'left',
     render: (_, record) => (
@@ -147,7 +147,7 @@ export const staticColumns: TableColumnsType<BankBillings> =  [
 
           {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
             <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-              <td>{innerData.balance}</td>
+              <td>{innerData?.balance}</td>
             </tr>
           )))}
           </tbody>
@@ -156,7 +156,7 @@ export const staticColumns: TableColumnsType<BankBillings> =  [
   },
 ];
 
-export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<BankBillings> => {
+export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<BankTransactionsDTO> => {
   const dates = Object.keys(datas);
   return dates.map((date, index) => ({
     title: date,
@@ -181,7 +181,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
         title: 'TT hóa đơn',
         key: `paid_bill_${index}`,
         width: 120,
-        render: (_, record: BankBillings) => (
+        render: (_, record: BankTransactionsDTO) => (
           <table>
             <tbody>
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
@@ -200,7 +200,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
         title: 'TT Chi phí khác',
         key: `paid_other_${index}`,
         width: 160,
-        render: (_, record: BankBillings) => (
+        render: (_, record: BankTransactionsDTO) => (
           <table>
             <tbody>
 

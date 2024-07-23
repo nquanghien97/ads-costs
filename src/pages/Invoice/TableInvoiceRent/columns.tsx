@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import { TableColumnsType } from 'antd';
-import { AdsBillingsDTO, TotalDailyData } from '../../../dto/AdsBillingsDTO';
+import { AdAccountData, TotalDailyData } from '../../../dto/AdsBillingsDTO';
 import EyeIcon from '../../../assets/icons/EyeIcon';
 
 const options = [
@@ -9,7 +9,7 @@ const options = [
   { value: 'chua-xin', label: 'Chưa xin' },
 ];
 
-export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
+export const staticColumns: TableColumnsType<AdAccountData> = [
   {
     title: 'Mã TKQC',
     dataIndex: 'ad_account',
@@ -134,7 +134,7 @@ export const staticColumns: TableColumnsType<AdsBillingsDTO> = [
   },
 ];
 
-export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<AdsBillingsDTO> => {
+export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<AdAccountData> => {
   const dates = Object.keys(datas);
   return dates.flatMap((date, index) => ({
     title: date,

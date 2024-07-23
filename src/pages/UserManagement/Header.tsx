@@ -8,8 +8,8 @@ import User from "../../entities/User";
 
 interface FormValues {
   search: string;
-  system_id: number;
-  group_id: number;
+  system_id_search: number;
+  group_id_search: number;
   search_name: {
     label: string;
     value: number;
@@ -45,8 +45,8 @@ function Header({ setUsers, setLoading } : { setUsers: React.Dispatch<React.SetS
     try {
       const res = await getUsers({
         search: data.search,
-        group_id: data.group_id,
-        system_id: data.system_id,
+        group_id: data.group_id_search,
+        system_id: data.system_id_search,
         name: data.search_name?.label
       })
       setUsers(res.data.data.list)
@@ -75,7 +75,7 @@ function Header({ setUsers, setLoading } : { setUsers: React.Dispatch<React.SetS
           </Form.Item>
           <Form.Item
             className="w-[160px]"
-            name="system_id"
+            name="system_id_search"
           >
             <Select
               options={systems.map((system) => ({ label: system.name, value: system.id }))}
@@ -86,7 +86,7 @@ function Header({ setUsers, setLoading } : { setUsers: React.Dispatch<React.SetS
           </Form.Item>
           <Form.Item
             className="w-[160px]"
-            name="group_id"
+            name="group_id_search"
           >
             <Select
               options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}

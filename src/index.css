@@ -114,3 +114,8 @@ button:focus-visible {
 .ant-select-selection-item {
   padding: 0 11px !important;
 }
+
+.ant-table-cell {
+  padding: 0 16px !important;
+  height: 40px !important;
+}

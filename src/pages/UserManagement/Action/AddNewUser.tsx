@@ -3,21 +3,16 @@ import CloseIcon from "../../../assets/icons/CloseIcon";
 import BaseButton from "../../../components/common/BaseButton";
 import ButtonIcon from "../../../components/common/ButtonIcon";
 import { useState } from "react";
-import { UserRole } from "../../../entities/User";
 import { useGroupsStore } from "../../../zustand/groups.store";
 import { useSystemsStore } from "../../../zustand/systems.store";
 import { UserDTO } from "../../../dto/UserDTO";
 import { addNewUser } from "../../../services/users";
+import { roleOptions } from "../../../config/userRoleOption";
 
 interface AddUserProps {
   onClose: () => void;
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>
 }
-
-const roleOptions = Object.keys(UserRole).map(key => ({
-  value: UserRole[key as keyof typeof UserRole],
-  label: UserRole[key as keyof typeof UserRole]
-}));
 
 function AddUser(props: AddUserProps) {
   const { onClose, setRefreshKey } = props;

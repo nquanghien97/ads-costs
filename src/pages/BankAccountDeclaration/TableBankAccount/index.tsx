@@ -147,7 +147,7 @@ function TableBankAccount(props: TableBankAccountProps) {
         setLoading(false);
       }
     })()
-  }, [refreshKey])
+  }, [refreshKey, setData, setLoading])
 
   return (
     <>

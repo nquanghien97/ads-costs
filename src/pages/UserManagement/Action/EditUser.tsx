@@ -1,10 +1,10 @@
 import { Button, Form, Input, Modal, Select } from "antd";
 import { useEffect, useState } from "react";
-import { UserRole } from "../../../entities/User";
 import { getUser, UpdateUser } from "../../../services/users";
 import { useGroupsStore } from "../../../zustand/groups.store";
 import { useSystemsStore } from "../../../zustand/systems.store";
 import { UserDTO } from "../../../dto/UserDTO";
+import { roleOptions } from "../../../config/userRoleOption";
 
 interface EditUserProps {
   onClose: () => void;
@@ -12,11 +12,6 @@ interface EditUserProps {
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>
   open: boolean;
 }
-
-const roleOptions = Object.keys(UserRole).map(key => ({
-  value: UserRole[key as keyof typeof UserRole],
-  label: UserRole[key as keyof typeof UserRole]
-}));
 
 function EditUser(props: EditUserProps) {
   const { onClose, userId, setRefreshKey, open } = props;
@@ -37,12 +32,13 @@ function EditUser(props: EditUserProps) {
     (async() => {
       const res = await getUser(userId);
       const userData = res.data.data
+      console.log(userData)
       form.setFieldsValue({
         username: userData.username,
         name: userData.name,
         role: userData.role,
-        system_id: userData.system.name,
-        group_id: userData.group.name,
+        system_id: userData.system?.name,
+        group_id: userData.group?.name,
       });
     })()
   }, [userId, form])

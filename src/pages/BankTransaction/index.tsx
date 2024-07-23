@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import Header from "./Header";
 import PaymentDetails from "./Details/PaymentDetails";
-// import TableBankTransaction from "./TableBankTransaction";
-// import { BankBillings } from "../../dto/BankBillingsDTO";
-import { GetBankBillings } from "../../services/bannk_billings";
+import TableBankTransaction from "./TableBankTransaction";
+import { BankTransactionsDTO } from "../../dto/BankTransactionsDTO";
+import { GetBankTransactions } from "../../services/bank_transaction";
 import LoadingIcon from "../../assets/icons/LoadingIcon";
 import withAuth from "../../hocs/withAuth";
 
 function BankTransaction() {
   const [openPaymentDetails, setOpenBankBillingDetails] = useState(false);
-  // const [dataBankBillings, setDataBankBillings] = useState<BankBillings[]>([]);
+  const [dataBankBillings, setDataBankBillings] = useState<BankTransactionsDTO[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -19,9 +19,9 @@ function BankTransaction() {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const res = await GetBankBillings();
-      // setDataBankBillings(res.data);
-      console.log(res)
+      const res = await GetBankTransactions({});
+      setDataBankBillings(res.data.data.list);
+      console.log(res.data.data.list)
       setLoading(false);
     })()
   }, [])
@@ -35,8 +35,7 @@ function BankTransaction() {
             <LoadingIcon />
           </div>
         ) : (
-          // <TableBankTransaction setOpenBankBillingDetails={setOpenBankBillingDetails} datas={dataBankBillings} />
-          <div>Loading...</div>
+            <TableBankTransaction setOpenBankBillingDetails={setOpenBankBillingDetails} datas={dataBankBillings} />
         )
       }
 
