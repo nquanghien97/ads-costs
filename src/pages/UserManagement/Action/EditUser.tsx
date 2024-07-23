@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { getUser, UpdateUser } from "../../../services/users";
 import { useGroupsStore } from "../../../zustand/groups.store";
 import { useSystemsStore } from "../../../zustand/systems.store";
-import { UserDTO } from "../../../dto/UserDTO";
 import { roleOptions } from "../../../config/userRoleOption";
 
 interface EditUserProps {
@@ -11,6 +10,22 @@ interface EditUserProps {
   userId: number;
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>
   open: boolean;
+}
+
+interface FormValues {
+  group: {
+    label: string,
+    value: number,
+  },
+  system: {
+    label: string,
+    value: number,
+  },
+  name: string,
+  password: string,
+  password_confirm: string,
+  role: string,
+  username: string,
 }
 
 function EditUser(props: EditUserProps) {
@@ -21,32 +36,40 @@ function EditUser(props: EditUserProps) {
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
 
-  const handleSystemChange = (option: number) => {
-    setSelectedSystem(option)
-    form.setFieldsValue({ group_id: null });
+  const handleSystemChange = (option: { label: string, value: number}) => {
+    setSelectedSystem(option.value)
+    form.setFieldsValue({ group: null });
   }
-
   const [form] = Form.useForm();
 
   useEffect(() => {
     (async() => {
       const res = await getUser(userId);
       const userData = res.data.data
-      console.log(userData)
       form.setFieldsValue({
         username: userData.username,
         name: userData.name,
         role: userData.role,
-        system_id: userData.system?.name,
-        group_id: userData.group?.name,
+        system: userData.system?.name,
+        group: userData.group?.name,
       });
     })()
   }, [userId, form])
 
-  const onFinish = async (data: UserDTO) => {
+  const onFinish = async (data: FormValues) => {
     setLoading(true);
     try {
-      await UpdateUser(data, userId);
+      const submitData = {
+        group_id: data.group.value,
+        system_id: data.system.value,
+        password: data.password,
+        password_confirm: data.password_confirm,
+        role: data.role,
+        username: data.username,
+        name: data.name
+      }
+      await UpdateUser(submitData, userId);
+      console.log(data)
       setRefreshKey(pre => !pre);
       onClose();
     } catch (err) {
@@ -162,7 +185,7 @@ function EditUser(props: EditUserProps) {
             <p className="w-[120px] text-left text-[#0071BA]">Hệ thống</p>
             <Form.Item
               className="!mb-0 w-full"
-              name="system_id"
+              name="system"
               rules={[
                 {
                   required: true,
@@ -171,6 +194,7 @@ function EditUser(props: EditUserProps) {
               ]}
             >
               <Select
+                labelInValue
                 options={systems.map((system) => ({ label: system.name, value: system.id}))}
                 onChange={handleSystemChange}
                 className="w-full h-full"
@@ -181,7 +205,7 @@ function EditUser(props: EditUserProps) {
             <p className="w-[120px] text-left text-[#0071BA]">HKD</p>
             <Form.Item
               className="!mb-0 w-full"
-              name="group_id"
+              name="group"
               rules={[
                 {
                   required: true,
@@ -190,6 +214,7 @@ function EditUser(props: EditUserProps) {
               ]}
             >
               <Select
+                labelInValue
                 options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
                 className="w-full h-full"
               />
