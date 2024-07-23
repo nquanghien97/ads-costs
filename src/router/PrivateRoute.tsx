@@ -1,12 +1,13 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { UserRole } from "../entities/User";
 import { useAuthStore } from "../zustand/auth.store";
+import withAuth from "../hocs/withAuth";
 
 interface PrivateRouteProps {
   children: React.ReactNode;
   roles: UserRole[];
 }
-export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, roles }) => {
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, roles }) => {
   const { user, loading } = useAuthStore();
   const location = useLocation();
 
@@ -24,3 +25,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, roles }) =
 
   return <>{children}</>;
 };
+
+const PrivateRouteWithAuth = withAuth(PrivateRoute);
+
+export default PrivateRouteWithAuth

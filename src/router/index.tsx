@@ -5,14 +5,14 @@ import BankTransaction from "../pages/BankTransaction";
 import InformationSettings from "../pages/InformationSettings";
 import AdsAccountDeclaration from "../pages/AdsAccountDeclaration";
 import BankAccountDeclaration from "../pages/BankAccountDeclaration";
-import UserManagement from "../pages/UserManagement";
+import UserManagementWithAuth from "../pages/UserManagement";
 import ReportView from "../pages/ReportAds";
 import Home from "../pages/Home";
 import Layout from "../layout";
 import SystemDeclaration from "../pages/SystemDeclaration";
 import GroupDeclaration from "../pages/GroupDeclaration";
 import { UserRole } from "../entities/User";
-import { PrivateRoute } from "./PrivateRoute";
+import PrivateRouteWithAuth from "./PrivateRoute";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,9 +27,9 @@ const router = createBrowserRouter(
         <Route
           path="/cai-dat-thong-tin"
           element={
-            <PrivateRoute roles={[UserRole.ROOT]}>
+            <PrivateRouteWithAuth roles={[UserRole.ROOT]}>
               <InformationSettings />
-            </PrivateRoute>
+            </PrivateRouteWithAuth>
           }
         />
         <Route path="/khai-bao-tkqc" element={<AdsAccountDeclaration />} />
@@ -37,25 +37,25 @@ const router = createBrowserRouter(
         <Route
           path="/quan-ly-nguoi-dung"
           element={
-            <PrivateRoute roles={[UserRole.ROOT]}>
-              <UserManagement />
-            </PrivateRoute>
+            <PrivateRouteWithAuth roles={[UserRole.ROOT]}>
+              <UserManagementWithAuth />
+            </PrivateRouteWithAuth>
           }
         />
         <Route
           path="/khai-bao-he-thong"
           element={
-            <PrivateRoute roles={[UserRole.ROOT]}>
+            <PrivateRouteWithAuth roles={[UserRole.ROOT]}>
               <SystemDeclaration />
-            </PrivateRoute>
+            </PrivateRouteWithAuth>
           }
         />
         <Route
           path="/khai-bao-ho-kinh-doanh/:systemId"
           element={
-            <PrivateRoute roles={[UserRole.ROOT]}>
+            <PrivateRouteWithAuth roles={[UserRole.ROOT]}>
               <GroupDeclaration />
-            </PrivateRoute>
+            </PrivateRouteWithAuth>
           }
         />
         <Route path="/xem-bao-cao" element={<ReportView />} />
