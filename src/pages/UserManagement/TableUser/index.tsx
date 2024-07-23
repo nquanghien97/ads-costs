@@ -5,9 +5,9 @@ import { getUsers } from "../../../services/users";
 import EditIcon from "../../../assets/icons/EditIcon";
 import LockIcon from "../../../assets/icons/LockIcon";
 import CloseIcon from "../../../assets/icons/CloseIcon";
-import EditUser from "../Action/EditUser";
-import UpdatePassword from "../Action/UpdatePassword";
-import AddNewUser from "../AddNewUser";
+import EditUser from "../action/EditUser";
+import UpdatePassword from "../action/UpdatePassword";
+import AddNewUser from "../action/AddNewUser";
 import BaseButton from "../../../components/common/BaseButton";
 import PlusIcon from "../../../assets/icons/PlusIcon";
 
@@ -45,6 +45,7 @@ function TableUser(props: TableUserProps) {
     },
     {
       title: 'Họ tên',
+      width: 160,
       dataIndex: ['name'],
       key: '3',
     },
@@ -55,21 +56,23 @@ function TableUser(props: TableUserProps) {
       width: 150
     },
     {
+      width: 160,
       title: 'Hộ kinh doanh',
       dataIndex: ['group', 'name'],
       key: '5',
     },
     {
       title: 'Chức vụ',
+      width: 120,
       dataIndex: 'role',
       key: '5',
-      width: 150,
     },
     {
       title: 'Thao tác',
+      width: 280,
       render(_, record) {
         return (
-          <div className="flex flex-col gap-2 p-2">
+          <div className="flex flex-col gap-2 px-2">
             <div className="flex justify-between gap-2">
               <ConfigProvider
                 button={{
@@ -77,7 +80,7 @@ function TableUser(props: TableUserProps) {
                 }}
               >
                 <div
-                  className="flex items-center w-full"
+                  className="flex items-center"
                   onClick={() => {
                     setUserId(record.id)
                     setOpenEditModal(true)}
@@ -92,7 +95,7 @@ function TableUser(props: TableUserProps) {
                   </Button>
                 </div>
               </ConfigProvider>
-              <div className="flex items-center w-full">
+              <div className="flex items-center">
                 <Button
                   icon={<LockIcon color="white" />}
                   type="primary"
@@ -102,18 +105,18 @@ function TableUser(props: TableUserProps) {
                   <p className="text-white">Khóa</p>
                 </Button>
               </div>
-            </div>
-            <div 
-              className="flex items-center"
-              onClick={() => setOpenUpdatePasswordModal(true)}
-            >
-              <Button
-                icon={<CloseIcon color="white" />}
-                type="primary"
-                className="w-full"
-              >      
-                <p className="text-white">Cập nhật mật khẩu</p>
-              </Button>
+              <div 
+                className="flex items-center"
+                onClick={() => setOpenUpdatePasswordModal(true)}
+              >
+                <Button
+                  icon={<CloseIcon color="white" />}
+                  type="primary"
+                  className="w-full"
+                >      
+                  <p className="text-white">Cập nhật mật khẩu</p>
+                </Button>
+              </div>
             </div>
           </div>
         )
@@ -142,7 +145,7 @@ function TableUser(props: TableUserProps) {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const res = await fetchUsers({ page: 1, page_size: 10 })
+      const res = await fetchUsers({ page: 1, page_size: 20 })
       setUsers(res.data.data.list);
       setPagingUsers(res.data.data.paging)
       setLoading(false);
@@ -188,7 +191,7 @@ function TableUser(props: TableUserProps) {
               onChange: onChange
             }}
             loading={loading}
-            scroll={{ y: 450 }}
+            scroll={{ y: 600 }}
           />
         </ConfigProvider>
         {openEditModal && <EditUser onClose={() => setOpenEditModal(false)} userId={userId} setRefreshKey={setRefreshKey} open={openEditModal} />}
