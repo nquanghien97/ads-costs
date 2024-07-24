@@ -2,6 +2,7 @@ import { Button, Form, Input, Modal } from 'antd'
 import { useState } from 'react';
 import { editSystem } from '../../../services/systems';
 import SystemType from '../../../entities/System';
+import { useNotification } from '../../../hooks/useNotification';
 
 interface EditSystemProps {
   open: boolean;
@@ -18,14 +19,18 @@ export default function EditSystem(props: EditSystemProps) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
+  const notification = useNotification();
+
   const onSubmit = async (data: { name: string}) => {
     setLoading(true);
     try {
       await editSystem({id: system.id, name: data.name})
       setSystems((prev) => prev?.map((i) => (i.id === system.id ? {id: system.id, name: data.name} : i)));
       onCancel();
+      notification.success('Chỉnh sửa Hệ thống thành công')
     } catch(err) {
       console.log(err);
+      notification.error('Chỉnh sửa Hệ thống thất bại')
     } finally {
       setLoading(false);
     }

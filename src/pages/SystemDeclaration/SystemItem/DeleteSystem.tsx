@@ -2,6 +2,7 @@ import { Button, Modal } from "antd";
 import { deleteSystem } from "../../../services/systems";
 import { useState } from "react";
 import SystemType from "../../../entities/System";
+import { useNotification } from "../../../hooks/useNotification";
 
 interface DeleteSystemProps {
   system: { id: number; name: string }
@@ -13,14 +14,19 @@ interface DeleteSystemProps {
 function DeleteSystem(props: DeleteSystemProps) {
   const { openDeleteModal, system, setOpenDeleteModal, setSystems } = props;
   const [loadingDelete, setLoadingDelete] = useState(false);
+
+  const notification = useNotification();
+
   const onSubmit = async () => {
     setLoadingDelete(true);
     try {
       await deleteSystem(system.id);
       setSystems((prev) => prev.filter(item => item.id !== system.id) )
       setOpenDeleteModal(false);
+      notification.success('Xóa Hệ thống thành công')
     } catch (err) {
       console.log(err);
+      notification.error('Xóa Hệ thống thất bại')
     } finally {
       setLoadingDelete(false);
     }

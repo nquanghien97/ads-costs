@@ -2,6 +2,7 @@ import { Button, Form, Input, Modal } from 'antd'
 import SystemType from '../../entities/System';
 import { useState } from 'react';
 import { addSystem } from '../../services/systems';
+import { useNotification } from '../../hooks/useNotification';
 
 interface AddNewSystemProps {
   open: boolean;
@@ -14,6 +15,8 @@ export default function AddNewSystem(props: AddNewSystemProps) {
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [form] = Form.useForm();
 
+  const notification = useNotification();
+
   const onSubmit = async (data: { name: string }) => {
     setLoadingSubmit(true);
     try {
@@ -21,8 +24,10 @@ export default function AddNewSystem(props: AddNewSystemProps) {
       setSystems((prev) => [...prev, res.data.data])
       onCancel();
       form.resetFields();
+      notification.success('Thêm mới Hệ thống thành công')
     } catch (err) {
       console.log(err);
+      notification.error('Thêm mới Hệ thống thất bại')
     } finally {
       setLoadingSubmit(false);
     }
