@@ -119,3 +119,7 @@ button:focus-visible {
   padding: 0 16px !important;
   height: 40px !important;
 }
+
+.table-row-custom-color {
+  background-color: #ccc;
+}

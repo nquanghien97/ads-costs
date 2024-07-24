@@ -194,6 +194,7 @@ function TableBankAccount(props: TableBankAccountProps) {
               columns={columns}
               dataSource={data}
               rowHoverable={false}
+              rowClassName={(_, index) => index % 2 === 0 ? 'table-row-custom-color' :  ''}
               pagination={{
                 total: pagingBankAccount?.total,
                 pageSize: pagingBankAccount?.page_size,

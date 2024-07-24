@@ -279,6 +279,7 @@ function AdsAccountDeclaration() {
             dataSource={data}
             rowHoverable={false}
             rowKey={(record) => record.id}
+            rowClassName={(_, index) => index % 2 === 0 ? 'table-row-custom-color' :  ''}
             bordered
             pagination={{
               total: pagingAdAccount?.total,

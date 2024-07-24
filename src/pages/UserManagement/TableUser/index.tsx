@@ -183,6 +183,7 @@ function TableUser(props: TableUserProps) {
             columns={columns}
             dataSource={users}
             rowHoverable={false}
+            rowClassName={(_, index) => index % 2 === 0 ? 'table-row-custom-color' :  ''}
             rowKey={(record) => record.id}
             bordered
             pagination={{
