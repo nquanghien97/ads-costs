@@ -18,7 +18,7 @@ export const getListAdsAccount = (
   if (since) params.append('since', since.toString());
   if (until) params.append('until', until.toString())
 
-  return api.get(`/ad-accounts?${params.toString()}`)
+  return api.get(`/ad-accounts?order_by=created_at&order=DESC&${params.toString()}`)
 }
 
 export const editAdsAccount = (id: number, data: EditAdsAccountDTO) => {
