@@ -74,6 +74,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
         await addNewAdAccount(submitData)
         notification.success('Thêm mới tài khoản quảng cáo thành công')
         onClose()
+        form.resetFields();
       } else if(adsAccountTypes?.label === 'Trả sau' || adsAccountTypes?.label === 'Trả trước') {
         const submitData = {
           user_id: user_id,
@@ -88,7 +89,8 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
         }
         await addNewAdAccount(submitData)
         notification.success('Thêm mới tài khoản quảng cáo thành công')
-        onClose()
+        onClose();
+        form.resetFields();
       }
       setRefreshKey(pre => !pre)
     } catch (err){
@@ -99,10 +101,15 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
     }
   }
 
+  const onCancel = () => {
+    onClose();
+    form.resetFields();
+  }
+
   return (
     <Modal
       open={open}
-      onCancel={onClose}
+      onCancel={onCancel}
       footer={false}
       className="!w-4/6 top-12"
     >
@@ -281,7 +288,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
             </Form.Item>
           </div>
           <div className="flex justify-evenly">
-            <Button type="primary" danger onClick={onClose}>Hủy</Button>
+            <Button type="primary" danger onClick={onCancel}>Hủy</Button>
             <Button type="primary" htmlType="submit" loading={loading}>Xác nhận</Button>
           </div>
         </Form>
