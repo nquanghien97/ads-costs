@@ -58,7 +58,7 @@ function BillCosts() {
       payment_method: item['PTTT'],
       refer_code: item['MÃ THAM CHIẾU'],
       billing_id: item['ID GIAO DỊCH'],
-      ad_account_id: item['ID TKQC']
+      account_id: item['ID TKQC']
     }))
     if (!dataSubmit) {
       notification.warning('Bạn cần import dữ liệu')
@@ -67,6 +67,7 @@ function BillCosts() {
     try {
       await DeclarationAdsBills(dataSubmit)
       setOpenModalBillCosts(false);
+      console.log(dataSubmit)
       notification.success('Khai báo Hóa đơn thành công')
     } catch (err) {
       console.log(err);

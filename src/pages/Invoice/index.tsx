@@ -30,14 +30,27 @@ function Invoice() {
     })()
   }, [user.role, refreshKey]);
 
+  const filteredData = datas.map(system => ({
+    ...system,
+    group_datas: system.group_datas.map(group => ({
+      ...group,
+      user_datas: group.user_datas.map(user => ({
+        ...user,
+        ad_account_datas: user.ad_account_datas.filter(account => account.ad_account !== null)
+      })).filter(user => user.ad_account_datas.length > 0)
+    })).filter(group => group.user_datas.length > 0)
+  })).filter(system => system.group_datas.length > 0);
+
+  console.log(filteredData)
+
   return (
     <div className="px-4">
       <HeaderInvoice setDatas={setDatas} setRefreshKey={setRefreshKey} />
       <div className="pt-[136px]">
-        {datas.length === 0 ? (
+        {filteredData.length === 0 ? (
           <div>Không có dữ liệu</div>
         ) : (
-          datas.map(data => data.group_datas.map(data => data.user_datas.map((item, index) => (
+          filteredData.map(data => data.group_datas.map(data => data.user_datas.map((item, index) => (
             <div className="border-b-4 border-cyan-700 py-6" key={index}>
               <TableInvoice setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
               <TableInvoiceRent setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />

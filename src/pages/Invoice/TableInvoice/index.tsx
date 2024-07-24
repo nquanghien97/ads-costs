@@ -10,7 +10,7 @@ interface TableInvoiceProps {
 function TableInvoice(props: TableInvoiceProps) {
 
   const { setOpenInvoiceDetails, data, loading } = props;
-  const group_system = data.ad_account_datas.flatMap(item => `${item.ad_account.group.name} - ${item.ad_account.system.name}`)
+  const group_system = data.ad_account_datas.filter(item => item.ad_account !== null).flatMap(item => `${item.ad_account.group.name} - ${item.ad_account.system.name}`)
   return (
     <>
       <div className="py-2 flex justify-start">
@@ -21,7 +21,7 @@ function TableInvoice(props: TableInvoiceProps) {
       </div>
       <div className="flex gap-2">
         <div className="flex-[0_0_60%] w-full">
-          <TotalInvoice data={data.ad_account_datas.filter(item => item.ad_account.type !== "thuê")} setOpenInvoiceDetails={setOpenInvoiceDetails} loading={loading} />
+          <TotalInvoice data={data.ad_account_datas.filter(item => (item.ad_account !== null && item.ad_account.type !== "thuê"))} setOpenInvoiceDetails={setOpenInvoiceDetails} loading={loading} />
         </div>
       </div>
     </>

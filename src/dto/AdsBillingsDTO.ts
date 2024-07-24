@@ -140,6 +140,6 @@ export interface DeclarationAdsBillsDTO {
   amount: number;
   payment_method: string;
   refer_code: string;
-  ad_account_id: number;
+  account_id: number;
   billing_id: string;
 }

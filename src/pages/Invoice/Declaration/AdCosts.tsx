@@ -56,6 +56,7 @@ function AdCosts() {
     try {
       await DeclarationAdsCosts(dataSubmit)
       setOpenModal(false);
+      console.log(dataSubmit)
       notification.success('Khai báo Chi phí quảng cáo thành công')
     } catch (err) {
       console.log(err);
