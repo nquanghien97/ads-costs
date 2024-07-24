@@ -17,8 +17,8 @@ function AdsAccountDeclaration() {
   const [data, setData] = useState<AdsAccountType[]>([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
-  const [adAccountId, setAdAccountId] = useState(-1);
-  const [bankAccountId, setBankAccountId] = useState(-1);
+  const [adAccountId, setAdAccountId] = useState(0);
+  const [bankAccountId, setBankAccountId] = useState(0);
   const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false);
   const [openDeleteAdAccount, setOpenDeleteAdAccount] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ function AdsAccountDeclaration() {
     {
       title: 'Thời gian',
       dataIndex: 'created_at',
-      width: 150,
+      width: 200,
       key: '1',
       render: (_, record) => {
         return (
@@ -40,11 +40,13 @@ function AdsAccountDeclaration() {
       title: 'Hệ thống',
       dataIndex: ['system', 'name'],
       key: '2',
+      width: 150
     },
     {
       title: 'Hộ kinh doanh',
       dataIndex: ['group', 'name'],
       key: '3',
+      width: 150
     },
     {
       title: 'Mã MKT',
@@ -54,7 +56,8 @@ function AdsAccountDeclaration() {
     {
       title: 'Họ tên',
       dataIndex: ['user', 'name'],
-      key: '5'
+      key: '5',
+      width: 150
     },
     {
       title: 'Mã TKQC',
@@ -69,11 +72,13 @@ function AdsAccountDeclaration() {
       title: 'ID TKQC',
       dataIndex: 'account_id',
       key: '7',
+      width: 250
     },
     {
       title: 'Tên TKQC',
       dataIndex: 'account_name',
       key: '8',
+      width: 200
     },
     {
       title: 'Kênh chạy',
@@ -96,6 +101,7 @@ function AdsAccountDeclaration() {
       title: 'Múi giờ',
       dataIndex: 'timezone',
       key: '12',
+      width: 150
     },
     {
       title: 'Tỷ giá TKQC thuê',
@@ -121,7 +127,7 @@ function AdsAccountDeclaration() {
         {
           title: 'Số TKNH',
           key: '112',
-          width: 100,
+          width: 150,
           dataIndex: ['bank_account', 'card_number']
         }
       ]
@@ -130,13 +136,14 @@ function AdsAccountDeclaration() {
       title: 'Trạng thái',
       dataIndex: ['status'],
       key: '16',
+      width: 150
     },
     {
       title: 'Thao tác',
-      width: 150,
+      width: 250,
       render(_, record) {
         return (
-          <div className="flex flex-col justify-between gap-2 py-2">
+          <div className="flex justify-between gap-2 py-2">
             <ConfigProvider
               button={{
                 className: "hover:!bg-[#538b53]"
@@ -251,7 +258,7 @@ function AdsAccountDeclaration() {
               onChange: onChange
             }}
             loading={loading}
-            scroll={{ y: 450, x: 2000 }}
+            scroll={{ y: 450, x: 2500 }}
           />
         </ConfigProvider>
       </div>

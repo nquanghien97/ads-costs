@@ -5,7 +5,7 @@ export interface EditAdsAccountDTO {
   type_id: number,
   currency_id: number,
   timezone_id: number,
-  bank_account_id: number,
+  bank_account_id?: number,
   status_id: number
 }
 

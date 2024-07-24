@@ -44,7 +44,6 @@ function EditAdsAccount(props: EditAdsAccountProps) {
   const user_id = getUserId();
   const { channels, currencies, timezones, adAccountStatus, adAccountTypes, banks } = useInformationSettingsStore();
   const notification = useNotification();
-  console.log(bankId)
 
   const adsAccountTypes = Form.useWatch('type', form);
 
@@ -62,6 +61,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
 
   useEffect(() => {
     (async () => {
+      if(!adAccountId) return
       const res = await getAdsAccount(adAccountId);
       const adAccountData = res.data.data as AdsAccountType
       setAdAccountData(adAccountData)
@@ -97,13 +97,12 @@ function EditAdsAccount(props: EditAdsAccountProps) {
         exchange_rate: data.exchange_rate,
         timezone_id: data.timezone_id,
         rental_fee: data.rental_fee,
-        bank_account_id: data.card_number,
+        bank_account_id: data.card_number ? adAccountData?.bank_account.id: data.card_number,
         status_id: data.status_id,
       }
       await editAdsAccount(adAccountData?.id || -1, valuesSubmit);
       notification.success('Chỉnh sửa tài khoản quảng cáo thành công');
       onClose();
-      console.log(data.card_number)
       setRefreshKey(pre => !pre)
     } catch (err) {
       console.log(err)
