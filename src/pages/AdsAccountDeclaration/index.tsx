@@ -240,7 +240,7 @@ function AdsAccountDeclaration() {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const res = await fetchListAdAccount({ page: 1, page_size: 10 });
+      const res = await fetchListAdAccount({ page: 1, page_size: 20 });
       setLoading(false);
       setData(res.list);
       setPagingAdAccount(res.paging)
@@ -283,7 +283,8 @@ function AdsAccountDeclaration() {
             pagination={{
               total: pagingAdAccount?.total,
               pageSize: pagingAdAccount?.page_size,
-              onChange: onChange
+              onChange: onChange,
+              showTotal: (total) => <span className="font-bold">{`Tổng:   ${total}`}</span>
             }}
             loading={loading}
             scroll={{ y: 600, x: 3000 }}

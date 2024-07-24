@@ -188,7 +188,8 @@ function TableUser(props: TableUserProps) {
             pagination={{
               total: pagingUsers?.total,
               pageSize: pagingUsers?.page_size,
-              onChange: onChange
+              onChange: onChange,
+              showTotal: (total) => <span className="font-bold">{`Tổng:   ${total}`}</span>
             }}
             loading={loading}
             scroll={{ y: 600 }}
