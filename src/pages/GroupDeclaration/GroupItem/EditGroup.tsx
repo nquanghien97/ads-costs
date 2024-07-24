@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { editGroup } from '../../../services/groups';
 import GroupType from '../../../entities/Group';
 import { useParams } from 'react-router-dom';
+import { useNotification } from '../../../hooks/useNotification';
 
 interface EditGroupProps {
   open: boolean;
@@ -22,14 +23,18 @@ export default function EditGroup(props: EditGroupProps) {
 
   const systemId = params.systemId || '0'
 
+  const notification = useNotification();
+
   const onSubmit = async (value: { name: string}) => {
     setLoading(true);
     try {
       await editGroup(group.id, { name: value.name, system_id: +systemId })
       setGroupps((prev) => prev?.map((i) => (i.id === group.id ? {id: group.id, name: value.name, system_id: i.system_id} : i)));
       onCancel();
+      notification.success('Chỉnh sửa Hộ kinh doanh thành công')
     } catch(err) {
       console.log(err);
+      notification.error('Chỉnh sửa Hộ kinh doanh thất bại')
     } finally {
       setLoading(false);
     }

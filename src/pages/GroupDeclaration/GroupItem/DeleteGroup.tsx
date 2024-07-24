@@ -2,6 +2,7 @@ import { Button, Modal } from "antd";
 import { deleteGroup } from "../../../services/groups";
 import { useState } from "react";
 import GroupType from "../../../entities/Group";
+import { useNotification } from "../../../hooks/useNotification";
 
 interface DeleteGroupProps {
   group: { id: number; name: string }
@@ -13,14 +14,19 @@ interface DeleteGroupProps {
 function DeleteGroup(props: DeleteGroupProps) {
   const { openDeleteModal, group, setOpenDeleteModal, setGroups } = props;
   const [loadingDelete, setLoadingDelete] = useState(false);
+
+  const notification = useNotification();
+
   const onSubmit = async () => {
     setLoadingDelete(true);
     try {
       await deleteGroup(group.id);
       setGroups((prev) => prev.filter(item => item.id !== group.id) )
       setOpenDeleteModal(false);
+      notification.success('Xóa Hộ kinh doanh thành công')
     } catch (err) {
       console.log(err);
+      notification.error('Xóa Hộ kinh doanh thất bại')
     } finally {
       setLoadingDelete(false);
     }

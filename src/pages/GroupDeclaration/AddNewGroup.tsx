@@ -2,6 +2,7 @@ import { Button, Form, Input, Modal } from 'antd'
 import GroupType from '../../entities/Group';
 import { useState } from 'react';
 import { addGroup } from '../../services/groups';
+import { useNotification } from '../../hooks/useNotification';
 
 interface AddNewGroupProps {
   open: boolean;
@@ -15,6 +16,8 @@ export default function AddNewGroup(props: AddNewGroupProps) {
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [form] = Form.useForm();
 
+  const notification = useNotification();
+
   const onSubmit = async (data: { name: string }) => {
     setLoadingSubmit(true);
     try {
@@ -22,8 +25,10 @@ export default function AddNewGroup(props: AddNewGroupProps) {
       setGroups((prev) => [...prev, res.data.data])
       onCancel();
       form.resetFields();
+      notification.success('Thêm mới Hộ kinh doanh thành công')
     } catch (err) {
       console.log(err);
+      notification.error('Thêm mới Hộ kinh doanh thất bại')
     } finally {
       setLoadingSubmit(false);
     }
