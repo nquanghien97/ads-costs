@@ -30,7 +30,10 @@ interface FormValues {
   bank_account_id: number,
   exchange_rate: number,
   rental_fee: number,
-  status_id: number,
+  status: {
+    label: string,
+    value: number
+  },
   card_number: number,
 }
 
@@ -78,7 +81,10 @@ function EditAdsAccount(props: EditAdsAccountProps) {
           exchange_rate: adAccountData.exchange_rate,
           bank_account_id: adAccountData.bank_account?.bank_name,
           rental_fee: adAccountData.rental_fee,
-          status_id: adAccountData.status_id,
+          status: {
+            label: adAccountData.status,
+            value: adAccountData.status_id
+          },
           card_number: adAccountData.bank_account?.card_number
       })
     })()
@@ -98,7 +104,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
         timezone_id: data.timezone_id,
         rental_fee: data.rental_fee,
         bank_account_id: data.card_number ? adAccountData?.bank_account.id: data.card_number,
-        status_id: data.status_id,
+        status_id: data.status.value,
       }
       await editAdsAccount(adAccountData?.id || -1, valuesSubmit);
       notification.success('Chỉnh sửa tài khoản quảng cáo thành công');
@@ -286,9 +292,10 @@ function EditAdsAccount(props: EditAdsAccountProps) {
               <p className="w-[120px] text-left text-[#0071BA]">Trạng thái TKQC</p>
               <Form.Item
                 className="!mb-0 w-full"
-                name="status_id"
+                name="status"
               >
                 <Select
+                  labelInValue
                   options={adAccountStatus.map(item => ({ label: item.name, value: item.id }))}
                   className="w-full h-full"
                 />

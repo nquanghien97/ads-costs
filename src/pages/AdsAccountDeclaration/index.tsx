@@ -11,6 +11,7 @@ import BaseButton from "../../components/common/BaseButton";
 import PlusIcon from "../../assets/icons/PlusIcon";
 import AddNewAdsAccount from "./AddNewAdsAccount";
 import DeleteAdAccount from "./DeleteAdAccount";
+import { AdsAccountStatusType } from "../../entities/AdsAccountStatus";
 
 function AdsAccountDeclaration() {
 
@@ -136,7 +137,28 @@ function AdsAccountDeclaration() {
       title: 'Trạng thái',
       dataIndex: ['status'],
       key: '16',
-      width: 150
+      width: 200,
+      render(value) {
+        if(AdsAccountStatusType.DANG_SU_DUNG === value) {
+          return (
+            <div className="flex justify-center">
+              <span className="bg-[#0071ba] py-1 px-2 text-center rounded-md text-white w-full">{value}</span>
+            </div>
+          )
+        } else if(AdsAccountStatusType.NGUNG_SU_DUNG === value) {
+          return (
+            <div className="flex justify-center">
+              <span className="bg-[#d37dbe] py-2 px-2 text-center rounded-md text-white w-full">{value}</span>
+            </div>
+          )
+        } else if(AdsAccountStatusType.DIE === value) {
+          return (
+            <div className="flex justify-center">
+              <span className="bg-[#ff4d4f] py-2 px-2 text-center rounded-md text-white w-full">{value}</span>
+            </div>
+          )
+        }
+      }
     },
     {
       title: 'Thao tác',
@@ -259,7 +281,7 @@ function AdsAccountDeclaration() {
               onChange: onChange
             }}
             loading={loading}
-            scroll={{ y: 600, x: 2500 }}
+            scroll={{ y: 600, x: 3000 }}
           />
         </ConfigProvider>
       </div>
