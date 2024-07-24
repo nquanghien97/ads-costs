@@ -1,6 +1,6 @@
 import SearchIcon from "../../assets/icons/SearchIcon";
 import { useState } from "react";
-import { Button, DatePicker, Form, Input, Select, Tooltip } from "antd";
+import { Button, Form, Input, Select, Tooltip } from "antd";
 import { getListAdsAccount } from "../../services/ads_account";
 import { useGroupsStore } from "../../zustand/groups.store";
 import { useSystemsStore } from "../../zustand/systems.store";
@@ -25,7 +25,6 @@ interface FormValues {
 
 function Header(props: HeaderProps) {
   const { setData, setLoading } = props;
-  const { RangePicker } = DatePicker;
   
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
@@ -125,13 +124,6 @@ function Header(props: HeaderProps) {
             </Tooltip>
           </Form.Item>
         </div>
-        <Form.Item
-          name="date"
-        >
-          <RangePicker 
-            className="h-[40px]"
-          />
-        </Form.Item>
       </Form>
     </>
   )

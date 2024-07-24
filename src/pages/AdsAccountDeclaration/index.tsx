@@ -53,12 +53,13 @@ function AdsAccountDeclaration() {
       title: 'Mã MKT',
       dataIndex: ['user', 'username'],
       key: '4',
+      width: 100
     },
     {
       title: 'Họ tên',
       dataIndex: ['user', 'name'],
       key: '5',
-      width: 150
+      width: 200
     },
     {
       title: 'Mã TKQC',
@@ -68,6 +69,7 @@ function AdsAccountDeclaration() {
         )
       },
       key: '6',
+      width: 100
     },
     {
       title: 'ID TKQC',
@@ -79,7 +81,7 @@ function AdsAccountDeclaration() {
       title: 'Tên TKQC',
       dataIndex: 'account_name',
       key: '8',
-      width: 200
+      width: 300
     },
     {
       title: 'Kênh chạy',
@@ -91,28 +93,31 @@ function AdsAccountDeclaration() {
       title: 'Loại TKQC',
       dataIndex: 'type',
       key: '10',
+      width: 200
     },
     {
       title: 'Tiền tệ',
       dataIndex: 'currency',
       key: '111',
-      width: 70
+      width: 80
     },
     {
       title: 'Múi giờ',
       dataIndex: 'timezone',
       key: '12',
-      width: 150
+      width: 100
     },
     {
       title: 'Tỷ giá TKQC thuê',
       dataIndex: 'exchange_rate',
       key: '13',
+      width: 100
     },
     {
       title: 'Phí thuê',
       dataIndex: 'rental_fee',
       key: '14',
+      width: 100
     },
     {
       title: 'Bank liên kết TKQC',
@@ -244,7 +249,7 @@ function AdsAccountDeclaration() {
 
   return (
     <div className="px-4">
-      <Header />
+      <Header setData={setData} setLoading={setLoading} />
       <div className="flex justify-between mb-4">
         <div className="m-auto">
           <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Khai báo tài khoản quảng cáo</span>

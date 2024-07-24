@@ -58,7 +58,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
   const onFinish = async (data: FormValues) => {
     setLoading(true);
     try{
-      if(adsAccountTypes?.label === 'thuê') {
+      if(adsAccountTypes?.label === 'TK THUÊ') {
         const submitData = {
           user_id: user_id,
           account_id: +data.account_id,
@@ -75,7 +75,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
         notification.success('Thêm mới tài khoản quảng cáo thành công')
         onClose()
         form.resetFields();
-      } else if(adsAccountTypes?.label === 'Trả sau' || adsAccountTypes?.label === 'Trả trước') {
+      } else if(adsAccountTypes?.label === 'TK THƯỜNG - Trả sau' || adsAccountTypes?.label === 'TK THƯỜNG - Trả trước') {
         const submitData = {
           user_id: user_id,
           account_id: +data.account_id,
@@ -212,7 +212,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
               />
             </Form.Item>
           </div>
-          {adsAccountTypes?.label === 'thuê' && (
+          {adsAccountTypes?.label === 'TK THUÊ' && (
             <>
               <div className="flex items-center h-[40px]">
                 <p className="w-[120px] text-left text-[#0071BA]">Tỷ giá</p>
@@ -246,7 +246,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
               </div>
             </>
           )}
-          {(adsAccountTypes?.label === 'Trả sau' || adsAccountTypes?.label === 'Trả trước') && (
+          {(adsAccountTypes?.label === 'TK THƯỜNG - Trả sau' || adsAccountTypes?.label === 'TK THƯỜNG - Trả trước') && (
             <>
               <div className="flex items-center h-[40px]">
                 <p className="w-[120px] text-left text-[#0071BA]">Bank Liên Kết</p>

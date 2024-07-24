@@ -225,7 +225,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                 />
               </Form.Item>
             </div>
-            {adsAccountTypes?.label === 'thuê' && (
+            {adsAccountTypes?.label === 'TK THUÊ' && (
               <>
                 <div className="flex items-center h-[40px]">
                   <p className="w-[120px] text-left text-[#0071BA]">Tỷ giá</p>
@@ -259,7 +259,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                 </div>
               </>
             )}
-            {(adsAccountTypes?.label === 'Trả sau' || adsAccountTypes?.label === 'Trả trước') && (
+            {(adsAccountTypes?.label === 'TK THƯỜNG - Trả sau' || adsAccountTypes?.label === 'TK THƯỜNG - Trả trước') && (
               <>
                 <div className="flex items-center h-[40px]">
                   <p className="w-[120px] text-left text-[#0071BA]">Bank Liên Kết</p>

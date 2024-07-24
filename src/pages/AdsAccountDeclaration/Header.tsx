@@ -5,6 +5,8 @@ import User from "../../entities/User";
 import { useGroupsStore } from "../../zustand/groups.store";
 import { useSystemsStore } from "../../zustand/systems.store";
 import { getUsers } from "../../services/users";
+import { getListAdsAccount } from "../../services/ads_account";
+import { AdsAccountType } from "../../entities/AdsAccount";
 
 interface FormValues {
   search: string;
@@ -14,9 +16,16 @@ interface FormValues {
     label: string;
     value: number;
   };
+  channel_id: number;
 }
 
-function Header() {
+interface HeaderProps {
+  setData: React.Dispatch<React.SetStateAction<AdsAccountType[]>>
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function Header(props: HeaderProps) {
+  const { setData, setLoading } = props;
 
   const { RangePicker } = DatePicker;
   const { groups } = useGroupsStore();
@@ -42,16 +51,31 @@ function Header() {
     }
   }
 
-  const onFinish = (data: FormValues) => {
-    console.log(data);
+  const onFinish = async (data: FormValues) => {
+    setLoading(true);
+    try {
+      const res = await getListAdsAccount({
+        search: data.search,
+        system_id: data.system_id,
+        group_id: data.group_id,
+        name: data.search_name?.label,
+        channel_id: data.channel_id
+      });
+      setData(res.data.data.list)
+      console.log(data)
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
-    <Form onFinish={onFinish} className="flex py-2 justify-between">
+    <Form onFinish={onFinish} className="flex py-2 justify-between" form={form}>
       <div className="flex gap-2 items-center">
         <Form.Item
           className="w-[160px]"
-          name="key_word"
+          name="search"
         >
           <Input
             placeholder="Tìm kiếm"
@@ -60,7 +84,7 @@ function Header() {
         </Form.Item>
         <Form.Item
           className="w-[160px]"
-          name="system"
+          name="system_id"
         >
           <Select
             options={systems.map((system) => ({ label: system.name, value: system.id }))}
@@ -71,7 +95,7 @@ function Header() {
         </Form.Item>
         <Form.Item
           className="w-[160px]"
-          name="group"
+          name="group_id"
         >
           <Select
             options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
@@ -82,9 +106,10 @@ function Header() {
         </Form.Item>
         <Form.Item
           className="w-[160px]"
-          name="name"
+          name="search_name"
         >
           <Select
+            labelInValue
             options={name.map(item => ({label: item.name, value: item.id}))}
             className="z-50 h-full w-[160px]"
             placeholder="Họ tên"
@@ -92,7 +117,7 @@ function Header() {
         </Form.Item>
         <Form.Item
           className="w-[160px]"
-          name="channel"
+          name="channel_id"
         >
           <Select
             // options={options}
@@ -124,3 +149,4 @@ function Header() {
 }
 
 export default Header;
+
