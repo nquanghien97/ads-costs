@@ -2,6 +2,7 @@ import { Button, Form, Input, Modal } from 'antd'
 import { useState } from 'react';
 import { editGroup } from '../../../services/groups';
 import GroupType from '../../../entities/Group';
+import { useParams } from 'react-router-dom';
 
 interface EditGroupProps {
   open: boolean;
@@ -14,15 +15,18 @@ interface EditGroupProps {
 }
 
 export default function EditGroup(props: EditGroupProps) {
+  const params = useParams();
   const { open, group, onCancel, setGroupps } = props;
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = async (data: { name: string}) => {
+  const systemId = params.systemId || '0'
+
+  const onSubmit = async (value: { name: string}) => {
     setLoading(true);
     try {
-      await editGroup({id: group.id, name: data.name})
-      setGroupps((prev) => prev?.map((i) => (i.id === group.id ? {id: group.id, name: data.name, system_id: i.system_id} : i)));
+      await editGroup(group.id, { name: value.name, system_id: +systemId })
+      setGroupps((prev) => prev?.map((i) => (i.id === group.id ? {id: group.id, name: value.name, system_id: i.system_id} : i)));
       onCancel();
     } catch(err) {
       console.log(err);

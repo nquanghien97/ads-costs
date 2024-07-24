@@ -16,8 +16,8 @@ export function getGroup(id: number) {
   return api.get(`/groups/${id}`)
 }
 
-export function editGroup({id, name}: { id: number, name: string }){
-  return api.put(`/groups/${id}`, { name })
+export function editGroup(id: number, data: { name: string, system_id: number }){
+  return api.put(`/groups/${id}`, data )
 }
 
 export function deleteGroup(id: number) {
