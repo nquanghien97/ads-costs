@@ -215,7 +215,8 @@ function AdsAccountDeclaration() {
     (async () => {
       const res = await fetchListAdAccount({ page: 1, page_size: 10 });
       setLoading(false);
-      setData(res.list)
+      setData(res.list);
+      setPagingAdAccount(res.paging)
     })()
   }, [refreshKey])
 
@@ -254,11 +255,11 @@ function AdsAccountDeclaration() {
             bordered
             pagination={{
               total: pagingAdAccount?.total,
-              pageSize: 10,
+              pageSize: pagingAdAccount?.page_size,
               onChange: onChange
             }}
             loading={loading}
-            scroll={{ y: 450, x: 2500 }}
+            scroll={{ y: 600, x: 2500 }}
           />
         </ConfigProvider>
       </div>
