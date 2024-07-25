@@ -25,7 +25,13 @@ interface FormValues {
   date: Date[]
 }
 
-function HeaderInvoice({ setDatas, setRefreshKey }: { setDatas: React.Dispatch<React.SetStateAction<SystemData[]>>, setRefreshKey: React.Dispatch<React.SetStateAction<boolean>> }) {
+interface HeaderInvoiceProps {
+  setDatas: React.Dispatch<React.SetStateAction<SystemData[]>>,
+  setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>,
+  handleSearchClick: () => Promise<void>
+}
+
+function HeaderInvoice({ setDatas, setRefreshKey, handleSearchClick }: HeaderInvoiceProps) {
 
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
@@ -67,7 +73,7 @@ function HeaderInvoice({ setDatas, setRefreshKey }: { setDatas: React.Dispatch<R
     try {
       const res = await GetAdsCostsByUser(submitData)
       setDatas(res.data.data.list)
-      setRefreshKey(pre => !pre)
+      handleSearchClick()
     } catch(err) {
       console.log(err);
       notification.error('Có lỗi xảy ra, vui lòng thử lại')
@@ -152,8 +158,7 @@ function HeaderInvoice({ setDatas, setRefreshKey }: { setDatas: React.Dispatch<R
       <div className="flex py-2 justify-between">
         <div className="flex gap-4">
           <AdCosts />
-          {/* <Button type="primary" className="bg-[green]" size="large">Khai báo HÓA ĐƠN</Button> */}
-          <BillCosts />
+          <BillCosts setRefreshKey={setRefreshKey} />
         </div>
         <div className="flex gap-2">
           <Button size="large" className="bg-white">Export dữ liệu</Button>

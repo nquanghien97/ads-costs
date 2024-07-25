@@ -15,7 +15,12 @@ interface DataRow {
   'PTTT': string;
 }
 
-function BillCosts() {
+interface BillCostsProps {
+  setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function BillCosts(props: BillCostsProps) {
+  const { setRefreshKey } = props
   const [dataBill, setDataBill] = useState<DataRow[] | null>(null);
   const [openModalBillCosts, setOpenModalBillCosts] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -67,8 +72,8 @@ function BillCosts() {
     try {
       await DeclarationAdsBills(dataSubmit)
       setOpenModalBillCosts(false);
-      console.log(dataSubmit)
       notification.success('Khai báo Hóa đơn thành công')
+      setRefreshKey(pre => !pre)
     } catch (err) {
       console.log(err);
       notification.error('Khai báo Hóa đơn không thành công')

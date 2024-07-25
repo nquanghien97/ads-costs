@@ -131,7 +131,7 @@ export interface DataAdsBillings {
 
 export interface DeclarationAdsCostsDTO {
   date: string;
-  ad_account_id: number;
+  account_id: number;
   amount: number;
 }
 

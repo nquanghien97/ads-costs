@@ -6,8 +6,8 @@ import { useNotification } from "../../../hooks/useNotification";
 import { DeclarationAdsCosts } from "../../../services/ads_costs";
 
 interface DataRow {
-  'ID TKQC': number;
-  'CHI PHÍ': string;
+  'SỐ TIỀN': number;
+  'ID NGÂN HÀNG': string;
 }
 
 function AdCosts() {

@@ -9,12 +9,17 @@ const options = [
   { value: 'chua-xin', label: 'Chưa xin' },
 ];
 
+const formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'VND',
+});
+
 export const staticColumns: TableColumnsType<AdAccountData> = [
   {
     title: 'Mã TKQC',
     dataIndex: 'ad_account',
     key: '1',
-    width: 50,
+    width: 150,
     fixed: 'left',
     render(value) {
       return value.account_id
@@ -23,7 +28,7 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
   {
     title: 'Kênh chạy',
     dataIndex: 'ad_account',
-    width: 50,
+    width: 100,
     key: '2',
     fixed: 'left',
     render(value) {
@@ -34,7 +39,7 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
     title: 'ID TKQC',
     dataIndex: 'ad_account',
     key: '3',
-    width: 50,
+    width: 100,
     fixed: 'left',
     render(value) {
       return value.id
@@ -44,7 +49,7 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
     title: 'Tiền tệ',
     dataIndex: 'ad_account',
     key: '4',
-    width: 50,
+    width: 80,
     fixed: 'left',
     render(value) {
       return value.currency
@@ -54,7 +59,7 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
     title: 'Múi giờ',
     dataIndex: 'ad_account',
     key: '5',
-    width: 50,
+    width: 80,
     fixed: 'left',
     render(value) {
       return value.timezone
@@ -63,17 +68,17 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
   {
     title: 'Phí thuê',
     dataIndex: 'ad_account',
-    width: 50,
+    width: 100,
     key: '6',
     fixed: 'left',
     render(value) {
-      return value.rental_fee
+      return `${value.rental_fee} %`
     }
   },
   {
     title: 'Tỷ giá TKQC thuê',
     dataIndex: 'ad_account',
-    width: 50,
+    width: 100,
     key: '7',
     fixed: 'left',
     render(value) {
@@ -83,7 +88,7 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
   {
     title: 'Trạng thái TKQC',
     dataIndex: 'ad_account',
-    width: 50,
+    width: 100,
     key: '8',
     fixed: 'left',
     render(value) {
@@ -92,7 +97,7 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
   },
   {
     title: 'Số liệu',
-    width: 50,
+    width: 100,
     key: '9',
     fixed: 'left',
     render: () => (
@@ -105,7 +110,7 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
   {
     title: 'Tổng CPQC',
     dataIndex: 'ad_account',
-    width: 50,
+    width: 100,
     key: '10',
     fixed: 'left',
     render(_, value) {
@@ -120,14 +125,14 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
   {
     title: 'Tổng hóa đơn',
     dataIndex: 'ad_account',
-    width: 60,
+    width: 100,
     key: '11',
     fixed: 'left',
     render(_, value) {
       return (
         <div>
           <div className="row-custom">{value.total_bill}</div>
-          <div className="row-custom">{value.total_bill_vnd}</div>
+          <div className="row-custom">{formatter.format(value.total_bill_vnd)}</div>
         </div>
       )
     }
@@ -145,8 +150,8 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
         width: 120,
         render: (_, record) => (
           <div>
-            <div className="row-custom">{record.datas[date].ads}</div>
-            <div className="row-custom">{record.datas[date].ads_vnd}</div>
+            <div className="row-custom">{record.datas?.[date]?.ads}</div>
+            <div className="row-custom">{record.datas?.[date]?.ads_vnd}</div>
           </div>
         ),
       },
@@ -158,13 +163,13 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
           return (
             <div>
               <div className="row-custom flex items-center justify-between gap-2">
-                {record.datas[date].bill}
+                {record.datas?.[date]?.bill}
                 <div onClick={() => setOpenInvoiceDetails(true)} >
                   <EyeIcon width={18} height={18} className="cursor-pointer" />
                 </div>
               </div>
               <div className="row-custom flex items-center justify-between gap-2">
-                {record.datas[date].bill_vnd}
+                {record.datas?.[date]?.bill_vnd}
               </div>
             </div>
           )
@@ -179,7 +184,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
             <Select
               options={options}
               size="large"
-              defaultValue={record.datas[date].status}
+              defaultValue={record.datas?.[date]?.status}
               className="w-full"
               placeholder="Select..."
             />

@@ -20,14 +20,31 @@ function Invoice() {
     document.title = "Chi phí quảng cáo - hóa đơn"
   }, []);
 
-  useEffect(() => {
+  const fetchData = async () => {
     setLoading(true);
-    if(user.role === UserRole.ROOT) return;
-    (async () => {
+    try {
       const res = await GetAdsCostsByUser({});
       setDatas(res.data.data.list);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSearchClick = async () => {
+    if (user.role === UserRole.ROOT) {
+      setRefreshKey(pre => !pre)
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      if(user.role !== UserRole.ROOT && user.role ) {
+        await fetchData()
+      }
     })()
+    console.log(user.role)
   }, [user.role, refreshKey]);
 
   const filteredData = datas.map(system => ({
@@ -41,11 +58,9 @@ function Invoice() {
     })).filter(group => group.user_datas.length > 0)
   })).filter(system => system.group_datas.length > 0);
 
-  console.log(filteredData)
-
   return (
     <div className="px-4">
-      <HeaderInvoice setDatas={setDatas} setRefreshKey={setRefreshKey} />
+      <HeaderInvoice setDatas={setDatas} setRefreshKey={setRefreshKey} handleSearchClick={handleSearchClick} />
       <div className="pt-[136px]">
         {filteredData.length === 0 ? (
           <div>Không có dữ liệu</div>

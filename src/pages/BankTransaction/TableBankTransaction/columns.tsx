@@ -13,8 +13,8 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
       <table>
         <tbody>
         {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-          <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-            <td>{`TKNH${innerData.bank_account_id}`}</td>
+          <tr key={innerData.bank_account.id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+            <td>{`TKNH${innerData.bank_account.id}`}</td>
           </tr>
         )))}
         </tbody>

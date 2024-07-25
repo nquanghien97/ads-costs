@@ -14,5 +14,5 @@ export const GetAdsCostsByUser = ({ search, since, until, system_id, group_id } 
 }
 
 export const DeclarationAdsCosts = (data: DeclarationAdsCostsDTO[]) => {
-  return api.post('/bulk-ads-costs', data)
+  return api.post('/bulk-ads-costs', { data })
 }

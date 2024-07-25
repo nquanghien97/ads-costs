@@ -14,7 +14,11 @@ function TableInvoice(props: TableInvoiceRentProps) {
     <>
       <div className="flex gap-2">
         <div className="flex-[0_0_60%] w-full">
-          <TotalInvoice data={data.ad_account_datas.filter(item => (item.ad_account?.type === "TK THUÊ" && item.ad_account !== null) )} setOpenInvoiceDetails={setOpenInvoiceDetails} loading={loading} />
+          <TotalInvoice
+            data={data.ad_account_datas.filter(item => (item.ad_account?.type === "TK THUÊ" && item.ad_account !== null) )}
+            setOpenInvoiceDetails={setOpenInvoiceDetails}
+            loading={loading}
+          />
         </div>
       </div>
     </>
