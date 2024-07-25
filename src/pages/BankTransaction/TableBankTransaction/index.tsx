@@ -12,8 +12,6 @@ function TableBankTransaction(props: TableBankTransactionProps) {
   const { setOpenBankBillingDetails, datas } = props;
 
   // Chuẩn bị dữ liệu cho các cột động
-  console.log(datas)
-
   const dataForDynamicColumns = datas.flatMap(x => 
     x.group_datas.flatMap(item => 
       item.bank_account_datas.flatMap(account => 

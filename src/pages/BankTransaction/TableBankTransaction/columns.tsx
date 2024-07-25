@@ -30,9 +30,8 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
     render: (_, record) => (
       <table>
         <tbody>
-
         {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-          <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+          <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
             <td>{innerData.bank_account.name}</td>
           </tr>
         )))}
@@ -49,9 +48,8 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
     render: (_, record) => (
       <table>
         <tbody>
-
           {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-            <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
               <td>{innerData.bank_account.card_number}</td>
             </tr>
           )))}
@@ -70,7 +68,7 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
         <tbody>
 
           {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-            <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
               <td>{innerData.bank_account.bank_name}</td>
             </tr>
           )))}
@@ -89,7 +87,7 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
         <tbody>
 
           {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-            <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
               <td>{innerData.total_received}</td>
             </tr>
           )))}
@@ -108,7 +106,7 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
         <tbody>
 
           {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-            <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
               <td>{innerData.total_paid_bill}</td>
             </tr>
           )))}
@@ -127,7 +125,7 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
         <tbody>
 
           {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-            <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
               <td>{innerData.total_paid_other}</td>
             </tr>
           )))}
@@ -146,7 +144,7 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
         <tbody>
 
           {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-            <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
               <td>{innerData?.balance}</td>
             </tr>
           )))}
@@ -169,7 +167,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
           <table>
             <tbody>
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-              <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
                 <td>{innerData.datas[date]?.received}</td>
               </tr>
             )))}
@@ -185,7 +183,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
           <table>
             <tbody>
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-              <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
                 <td>{innerData.datas[date]?.received}</td>
                 <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
                   <EyeIcon width={18} height={18} />
@@ -205,7 +203,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
             <tbody>
 
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-              <tr key={innerData.bank_account_id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
                 <td>{innerData.datas[date]?.paid_other}</td>
                 <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
                   <EyeIcon width={18} height={18}/>

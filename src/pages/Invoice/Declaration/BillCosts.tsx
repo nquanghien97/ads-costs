@@ -74,6 +74,7 @@ function BillCosts(props: BillCostsProps) {
       setOpenModalBillCosts(false);
       notification.success('Khai báo Hóa đơn thành công')
       setRefreshKey(pre => !pre)
+      console.log(dataSubmit)
     } catch (err) {
       console.log(err);
       notification.error('Khai báo Hóa đơn không thành công')
@@ -133,7 +134,7 @@ function BillCosts(props: BillCostsProps) {
     </label>
     {dataBill && (
       <Modal open={openModalBillCosts} onCancel={onCloseModal} footer={false} className="!w-full">
-        <Table dataSource={dataBill} columns={columns} rowKey={(record) => record["ID GIAO DỊCH"]} />
+        <Table dataSource={dataBill} columns={columns} rowKey={(record) => record["ID TKQC"]} />
         <div className="flex justify-evenly py-4">
           <Button type="primary" danger onClick={onCloseModal}>Hủy</Button>
           <Button type="primary" htmlType="submit" onClick={onOk} loading={loading}>Xác nhận</Button>

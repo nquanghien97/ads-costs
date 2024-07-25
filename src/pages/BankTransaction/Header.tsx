@@ -7,6 +7,9 @@ import { useGroupsStore } from "../../zustand/groups.store";
 import { useSystemsStore } from "../../zustand/systems.store";
 import { getUsers } from "../../services/users";
 import localeValues from "antd/locale/vi_VN";
+import TransferMoney from "./Declaration/transfer-money";
+import CostsDeclaration from "./Declaration/costs";
+import ExchangeRate from "./Declaration/exchange_rate";
 
 interface FormValues {
   search: string;
@@ -116,9 +119,9 @@ function HeaderInvoice() {
       </Form>
       <div className="flex py-2 justify-between">
         <div className="flex gap-2">
-          <BaseButton color="info">Khai báo tiền chuyển</BaseButton>
-          <BaseButton color="info">Khai báo chi phí</BaseButton>
-          <BaseButton color="info">Khai báo tỷ giá ngân hàng</BaseButton>
+          <TransferMoney />
+          <CostsDeclaration />
+          <ExchangeRate />
         </div>
         <div className="flex gap-2">
           <BaseButton>Export dữ liệu</BaseButton>

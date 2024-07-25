@@ -6,8 +6,7 @@ import { generateDynamicColumns, staticColumns } from './columns';
 
 function TotalInvoice(props: { data: AdAccountData[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>, loading: boolean }) {
   const { data, setOpenInvoiceDetails, loading } = props;
-  console.log(data)
-
+  
   const dataForDynamicColumns = data.flatMap(x => 
     Object.entries(x.datas).map(([date, data]) => ({
       date,

@@ -3,15 +3,16 @@ import { ChangeEvent, useState } from "react";
 import * as XLSX from "xlsx";
 import { formatDate } from "../../../utils/formatDate";
 import { useNotification } from "../../../hooks/useNotification";
-import { DeclarationAdsCosts } from "../../../services/ads_costs";
 import localeValues from "antd/locale/vi_VN";
+import { BankCostsDeclaration } from "../../../services/bank_transaction";
 
 interface DataRow {
   'SỐ TIỀN': number;
-  'ID NGÂN HÀNG': string;
+  'NGÀY': string;
+  'SỐ TKNH': number
 }
 
-function AdCosts() {
+function TransferMoney() {
   const [dataImport, setDataImport] = useState<DataRow[] | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -47,21 +48,22 @@ function AdCosts() {
     setLoading(true);
     const dataSubmit = dataImport?.map(item => ({
       date: formatDate(new Date(data.date)),
-      account_id: item["ID TKQC"],
-      amount: +item["CHI PHÍ"]
+      card_number: item["SỐ TKNH"],
+      amount: +item["SỐ TIỀN"],
+      type: "Tiền nhận"
     }));
     if(!dataSubmit) {
       notification.warning('Bạn cần import dữ liệu')
       return;
     }
     try {
-      await DeclarationAdsCosts(dataSubmit)
+      await BankCostsDeclaration(dataSubmit)
       setOpenModal(false);
-      console.log(dataSubmit)
-      notification.success('Khai báo Chi phí quảng cáo thành công')
+      notification.success('Khai báo Tiền nhận thành công')
+      // console.log(dataSubmit)
     } catch (err) {
       console.log(err);
-      notification.error('Khai báo Chi phí quảng cáo không thành công')
+      notification.error('Khai báo Tiền nhận không thành công')
     } finally {
       setLoading(false);
     }
@@ -69,13 +71,13 @@ function AdCosts() {
 
   const columns: TableColumnsType = [
     {
-      title: 'ID TKQC',
-      dataIndex: 'ID TKQC',
+      title: 'SỐ TIỀN',
+      dataIndex: 'SỐ TIỀN',
       key: '2'
     },
     {
-      title: 'CHI PHÍ',
-      dataIndex: 'CHI PHÍ',
+      title: 'SỐ TKNH',
+      dataIndex: 'SỐ TKNH',
       key: '3',
     },
   ]
@@ -83,7 +85,7 @@ function AdCosts() {
   return (
     <>
       <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModal(true)}>
-        <span className="text-white">Khai Báo CPQC</span>
+        <span className="text-white">Khai báo tiền chuyển</span>
       </div>
       <Modal open={openModal} onCancel={onCloseModal} footer={false} className="!w-1/2">
         <Form form={form} onFinish={onFinish}>
@@ -102,7 +104,7 @@ function AdCosts() {
           <label htmlFor="import-ad-costs" className="h-full">
             <div className="flex justify-center">
               <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 py-2 my-4 flex items-center justify-center hover:opacity-80 duration-300">
-                <span className="text-white">Khai Báo CPQC...</span>
+                <span className="text-white">Khai báo tiền chuyển</span>
               </div>
             </div>
             <input type="file" onChange={handleFileUpload} id="import-ad-costs" className="!hidden" />
@@ -122,4 +124,4 @@ function AdCosts() {
   );
 }
 
-export default AdCosts
+export default TransferMoney

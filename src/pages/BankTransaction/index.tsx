@@ -21,7 +21,6 @@ function BankTransaction() {
     (async () => {
       const res = await GetBankTransactions({});
       setDataBankBillings(res.data.data.list);
-      console.log(res.data.data.list)
       setLoading(false);
     })()
   }, [])

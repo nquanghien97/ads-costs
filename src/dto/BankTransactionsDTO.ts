@@ -1,40 +1,3 @@
-// export interface BankBillingsResponse {
-//   list: BankTransactionsDTO[];
-// }
-
-// export interface BankTransactionsDTO {
-//   system_id: number;
-//   system: {
-//     name: string;
-//   };
-//   group_datas: {
-//     group_id: number;
-//     group: {
-//       name: string;
-//     };
-//     bank_account_datas: {
-//       bank_account_id: number;
-//       bank_account: {
-//         id: number;
-//         name: string;
-//         card_number: string;
-//         bank_name: string;
-//         status: string;
-//         user: {
-//           id: number;
-//           username: string;
-//           name: string;
-//         };
-//       };
-//       total_received: number;
-//       total_paid_bill: number;
-//       total_paid_other: number;
-//       balance: number;
-//       datas: TotalDailyData;
-//     }[];
-//   }[];
-// }
-
 export interface DailyData {
   received: number;
   paid_bill: number;
@@ -92,6 +55,23 @@ export interface BankTransactionsDTO {
 
 export interface BankTransactionsResponse {
   list: BankTransactionsDTO[];
+}
+
+//type khai báo tiền
+
+export interface BankCostsDTO {
+  date: string;
+  amount: number;
+  type: string;
+  description?: string;
+  card_number: number
+}
+
+export interface ExchangeRateDTO {
+  date: string;
+  bank_id: number;
+  currency_id: number;
+  rate: number;
 }
 
 
