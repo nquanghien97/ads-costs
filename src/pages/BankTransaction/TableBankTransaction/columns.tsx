@@ -1,6 +1,7 @@
 import { TableColumnsType } from 'antd';
 import { BankTransactionsDTO, TotalDailyData } from '../../../dto/BankTransactionsDTO';
 import EyeIcon from '../../../assets/icons/EyeIcon';
+import { formatCurrency } from '../../../utils/currency';
 
 export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
   {
@@ -85,10 +86,9 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
     render: (_, record) => (
       <table>
         <tbody>
-
           {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
             <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-              <td>{innerData.total_received}</td>
+              <td>{formatCurrency(innerData.total_received)}</td>
             </tr>
           )))}
           </tbody>
@@ -97,7 +97,6 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
   },
   {
     title: 'Tiền thanh toán hóa đơn',
-    // dataIndex: 'total_paid_bill',
     width: 60,
     key: '6',
     fixed: 'left',
@@ -107,7 +106,7 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
 
           {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
             <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-              <td>{innerData.total_paid_bill}</td>
+              <td>{formatCurrency(innerData.total_paid_bill)}</td>
             </tr>
           )))}
           </tbody>
@@ -116,7 +115,6 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
   },
   {
     title: 'TT Chi phí khác',
-    // dataIndex: 'total_paid_other',
     width: 60,
     key: '7',
     fixed: 'left',
@@ -126,7 +124,7 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
 
           {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
             <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-              <td>{innerData.total_paid_other}</td>
+              <td>{formatCurrency(innerData.total_paid_other)}</td>
             </tr>
           )))}
           </tbody>
@@ -145,7 +143,7 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
 
           {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
             <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-              <td>{innerData?.balance}</td>
+              <td>{formatCurrency(innerData?.balance)}</td>
             </tr>
           )))}
           </tbody>
@@ -168,7 +166,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
             <tbody>
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
               <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-                <td>{innerData.datas[date]?.received}</td>
+                <td>{formatCurrency(innerData.datas[date]?.received)}</td>
               </tr>
             )))}
             </tbody>
@@ -184,7 +182,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
             <tbody>
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
               <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-                <td>{innerData.datas[date]?.received}</td>
+                <td>{formatCurrency(innerData.datas[date]?.received)}</td>
                 <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
                   <EyeIcon width={18} height={18} />
                 </td>
@@ -204,7 +202,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
 
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
               <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-                <td>{innerData.datas[date]?.paid_other}</td>
+                <td>{formatCurrency(innerData.datas[date]?.paid_other)}</td>
                 <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
                   <EyeIcon width={18} height={18}/>
                 </td>

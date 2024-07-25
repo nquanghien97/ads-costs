@@ -1,6 +1,5 @@
 import { useState } from "react";
 import SearchIcon from "../../assets/icons/SearchIcon";
-import BaseButton from "../../components/common/BaseButton";
 import { Button, DatePicker, Form, Input, Select, Tooltip } from "antd";
 import User from "../../entities/User";
 import { useGroupsStore } from "../../zustand/groups.store";
@@ -124,7 +123,12 @@ function HeaderInvoice() {
           <ExchangeRate />
         </div>
         <div className="flex gap-2">
-          <BaseButton>Export dữ liệu</BaseButton>
+          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 py-3 flex items-center justify-center hover:opacity-80 duration-300">
+            <span className="text-white">Khai báo Chi phí</span>
+          </div>
+          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 py-3 flex items-center justify-center hover:opacity-80 duration-300">
+            <span className="text-white">Export dữ liệu</span>
+          </div>
         </div>
       </div>
     </>
