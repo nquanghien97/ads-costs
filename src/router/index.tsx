@@ -1,6 +1,6 @@
 import { Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 import Login from "../pages/Login";
-import Invoice from "../pages/Invoice";
+import AdCosts from "../pages/AdCosts";
 import BankTransaction from "../pages/BankTransaction";
 import InformationSettings from "../pages/InformationSettings";
 import AdsAccountDeclaration from "../pages/AdsAccountDeclaration";
@@ -22,7 +22,7 @@ const router = createBrowserRouter(
       </Route>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/cpqc-hoa-don" element={<Invoice />} />
+        <Route path="/cpqc-hoa-don" element={<AdCosts />} />
         <Route path="/giao-dich-ngan-hang" element={<BankTransaction />} />
         <Route
           path="/cai-dat-thong-tin"

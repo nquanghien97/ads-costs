@@ -1,13 +1,13 @@
 import { UserData } from "../../../dto/AdsBillingsDTO";
-import TotalInvoice from "./TotalInvoice";
+import AdAccountTable from "./AdAccountTable";
 
-interface TableInvoiceProps {
+interface AdAccountProps {
   setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>
   data: UserData
   loading: boolean
 }
 
-function TableInvoice(props: TableInvoiceProps) {
+function AdAccount(props: AdAccountProps) {
 
   const { setOpenInvoiceDetails, data, loading } = props;
   const group_system = data.ad_account_datas.filter(item => item.ad_account !== null).flatMap(item => `${item.ad_account.group.name} - ${item.ad_account.system.name}`)
@@ -21,7 +21,7 @@ function TableInvoice(props: TableInvoiceProps) {
       </div>
       <div className="flex gap-2">
         <div className="w-full">
-          <TotalInvoice
+          <AdAccountTable
             data={data.ad_account_datas.filter(item => (item.ad_account !== null && item.ad_account.type !== "TK THUÊ"))}
             setOpenInvoiceDetails={setOpenInvoiceDetails}
             loading={loading}
@@ -32,4 +32,4 @@ function TableInvoice(props: TableInvoiceProps) {
   )
 }
 
-export default TableInvoice;
+export default AdAccount;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import HeaderInvoice from "./HeaderInvoice";
+import Header from "./Header";
 import InvoiceDetails from "./InvoiceDetails";
-import TableInvoice from "./TableInvoice";
-import TableInvoiceRent from "./TableInvoiceRent";
+import AdAccount from "./AdAccount";
+import AdAccountRent from "./AdAccountRent";
 import { GetAdsCostsByUser } from "../../services/ads_costs";
 import { SystemData } from "../../dto/AdsBillingsDTO";
 import withAuth from "../../hocs/withAuth";
@@ -65,8 +65,8 @@ function Invoice() {
     return (
       filteredData?.map(data => data.group_datas.map(data => data.user_datas.map((item, index) => (
         <div className="border-b-4 border-cyan-700 py-6" key={index}>
-          <TableInvoice setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
-          <TableInvoiceRent setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
+          <AdAccount setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
+          <AdAccountRent setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
         </div>
     ))))
     )
@@ -74,7 +74,7 @@ function Invoice() {
 
   return (
     <div className="px-4">
-      <HeaderInvoice setDatas={setDatas} setLoading={setLoading} setRefreshKey={setRefreshKey} handleSearchClick={handleSearchClick} />
+      <Header setDatas={setDatas} setLoading={setLoading} setRefreshKey={setRefreshKey} handleSearchClick={handleSearchClick} />
       <div className="pt-[136px]">
         {renderBody()}
       </div>

@@ -1,20 +1,20 @@
 import { UserData } from "../../../dto/AdsBillingsDTO";
-import TotalInvoice from "./TotalInvoice";
+import AdAccountRentTable from "./AdAccountRentTable";
 
-interface TableInvoiceRentProps {
+interface AdAccountRentProps {
   setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>
   data: UserData
   loading: boolean
 }
 
-function TableInvoice(props: TableInvoiceRentProps) {
+function AdAccountRent(props: AdAccountRentProps) {
 
   const { setOpenInvoiceDetails, data, loading } = props;
   return (
     <>
       <div className="flex gap-2">
         <div className=" w-full">
-          <TotalInvoice
+          <AdAccountRentTable
             data={data.ad_account_datas.filter(item => (item.ad_account?.type === "TK THUÊ" && item.ad_account !== null) )}
             setOpenInvoiceDetails={setOpenInvoiceDetails}
             loading={loading}
@@ -25,4 +25,4 @@ function TableInvoice(props: TableInvoiceRentProps) {
   )
 }
 
-export default TableInvoice;
+export default AdAccountRent;

@@ -4,7 +4,7 @@ import { AdAccountData, TotalDailyData } from '../../../dto/AdsBillingsDTO';
 import { generateDynamicColumns, staticColumns } from './columns';
 
 
-function TotalInvoice(props: { data: AdAccountData[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>, loading: boolean }) {
+function AdAccountTable(props: { data: AdAccountData[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>, loading: boolean }) {
   const { data, setOpenInvoiceDetails, loading } = props;
   
   const dataForDynamicColumns = data.flatMap(x => 
@@ -60,4 +60,4 @@ function TotalInvoice(props: { data: AdAccountData[], setOpenInvoiceDetails: Rea
   )
 }
 
-export default TotalInvoice;
+export default AdAccountTable;

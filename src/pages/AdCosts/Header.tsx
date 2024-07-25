@@ -26,14 +26,14 @@ interface FormValues {
   date: Date[]
 }
 
-interface HeaderInvoiceProps {
+interface HeaderProps {
   setDatas: React.Dispatch<React.SetStateAction<SystemData[] | undefined>>,
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>,
   handleSearchClick: () => Promise<void>
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function HeaderInvoice({ setDatas, setRefreshKey, handleSearchClick, setLoading }: HeaderInvoiceProps) {
+function Header({ setDatas, setRefreshKey, handleSearchClick, setLoading }: HeaderProps) {
 
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
@@ -173,4 +173,4 @@ function HeaderInvoice({ setDatas, setRefreshKey, handleSearchClick, setLoading 
   )
 }
 
-export default HeaderInvoice;
+export default Header;
