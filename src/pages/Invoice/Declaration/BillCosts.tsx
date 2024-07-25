@@ -1,7 +1,7 @@
 import { Button, Modal, Table, TableColumnsType } from "antd";
 import { ChangeEvent, useState } from "react";
 import * as XLSX from "xlsx";
-import { convertCurrencyStringToNumber } from "../../../utils/convertCurrency";
+import { convertCurrencyStringToNumber } from "../../../utils/currency";
 import { formatDate } from "../../../utils/formatDate";
 import { useNotification } from "../../../hooks/useNotification";
 import { DeclarationAdsBills } from "../../../services/ads_bills";

@@ -2,6 +2,7 @@ import { Select } from 'antd';
 import { TableColumnsType } from 'antd';
 import { AdAccountData, TotalDailyData } from '../../../dto/AdsBillingsDTO';
 import EyeIcon from '../../../assets/icons/EyeIcon';
+import { formatCurrency } from '../../../utils/currency';
 
 const options = [
   { value: 'da-xac-nhan', label: 'Đã xác nhận' },
@@ -111,8 +112,8 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
     render(_, value) {
       return (
         <div>
-          <div className="row-custom">{value.total_ads}</div>
-          <div className="row-custom">{value.total_ads_vnd}</div>
+          <div className="row-custom">{formatCurrency(value.total_ads)}</div>
+          <div className="row-custom">{formatCurrency(value.total_ads_vnd)}</div>
         </div>
       )
     },
@@ -126,8 +127,8 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
     render(_, value) {
       return (
         <div>
-          <div className="row-custom">{value.total_bill}</div>
-          <div className="row-custom">{value.total_bill_vnd}</div>
+          <div className="row-custom">{formatCurrency(value.total_bill)}</div>
+          <div className="row-custom">{formatCurrency(value.total_bill_vnd)}</div>
         </div>
       )
     }
@@ -150,8 +151,8 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
         render: (_, record) => {
           return (
             <div>
-              <div className="row-custom">{record.datas?.[date]?.ads}</div>
-              <div className="row-custom">{record.datas?.[date]?.ads_vnd}</div>
+              <div className="row-custom">{formatCurrency(record.datas?.[date]?.ads)}</div>
+              <div className="row-custom">{formatCurrency(record.datas?.[date]?.ads_vnd)}</div>
             </div>
           )
         },
@@ -163,13 +164,13 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
         render: (_, record) => (
           <div>
             <div className="row-custom flex items-center gap-2">
-              {record.datas?.[date]?.bill}
+              {formatCurrency(record.datas?.[date]?.bill)}
               <div onClick={() => setOpenInvoiceDetails(true)} className="cursor-pointer">
                 <EyeIcon width={18} height={18} />
               </div>
             </div>
             <div className="row-custom flex items-center justify-between gap-2">
-              {record.datas?.[date]?.bill_vnd}
+              {formatCurrency(record.datas?.[date]?.bill_vnd)}
             </div>
           </div>
         ),
