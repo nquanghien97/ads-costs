@@ -47,7 +47,7 @@ function TableBankTransaction(props: TableBankTransactionProps) {
   return (
     <div className="my-8">
       <div className="flex gap-2">
-        <div className="flex-[0_0_60%] w-full">
+        <div className="w-full">
           <ConfigProvider
             theme={{
               token: {

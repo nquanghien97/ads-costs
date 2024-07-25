@@ -8,10 +8,11 @@ import { SystemData } from "../../dto/AdsBillingsDTO";
 import withAuth from "../../hocs/withAuth";
 import { useAuthStore } from "../../zustand/auth.store";
 import { UserRole } from "../../entities/User";
+import LoadingIcon from "../../assets/icons/LoadingIcon";
 
 function Invoice() {
   const [openInvoiceDetails, setOpenInvoiceDetails] = useState(false);
-  const [datas, setDatas] = useState<SystemData[]>([]);
+  const [datas, setDatas] = useState<SystemData[]>();
   const [loading, setLoading] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
   const { user } = useAuthStore();
@@ -44,10 +45,9 @@ function Invoice() {
         await fetchData()
       }
     })()
-    console.log(user.role)
   }, [user.role, refreshKey]);
 
-  const filteredData = datas.map(system => ({
+  const filteredData = datas?.map(system => ({
     ...system,
     group_datas: system.group_datas.map(group => ({
       ...group,
@@ -58,20 +58,25 @@ function Invoice() {
     })).filter(group => group.user_datas.length > 0)
   })).filter(system => system.group_datas.length > 0);
 
+  const renderBody = () => {
+    if (loading) return <div className="flex justify-center py-4"><LoadingIcon /></div>
+    if (!datas) return <div className="h-[300px] flex justify-center items-center text-xl">Vui lòng chọn hệ thống để hiển thị dữ liệu...</div>
+    if (filteredData?.length === 0) return <div>Không có dữ liệu</div>
+    return (
+      filteredData?.map(data => data.group_datas.map(data => data.user_datas.map((item, index) => (
+        <div className="border-b-4 border-cyan-700 py-6" key={index}>
+          <TableInvoice setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
+          <TableInvoiceRent setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
+        </div>
+    ))))
+    )
+  }
+
   return (
     <div className="px-4">
-      <HeaderInvoice setDatas={setDatas} setRefreshKey={setRefreshKey} handleSearchClick={handleSearchClick} />
+      <HeaderInvoice setDatas={setDatas} setLoading={setLoading} setRefreshKey={setRefreshKey} handleSearchClick={handleSearchClick} />
       <div className="pt-[136px]">
-        {filteredData.length === 0 ? (
-          <div>Không có dữ liệu</div>
-        ) : (
-          filteredData.map(data => data.group_datas.map(data => data.user_datas.map((item, index) => (
-            <div className="border-b-4 border-cyan-700 py-6" key={index}>
-              <TableInvoice setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
-              <TableInvoiceRent setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
-            </div>
-          ))))
-        )}
+        {renderBody()}
       </div>
       {openInvoiceDetails && <InvoiceDetails onClose={() => setOpenInvoiceDetails(false)} />}
     </div>

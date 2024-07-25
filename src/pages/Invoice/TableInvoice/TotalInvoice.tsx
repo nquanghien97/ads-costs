@@ -49,7 +49,7 @@ function TotalInvoice(props: { data: AdAccountData[], setOpenInvoiceDetails: Rea
           rowKey={(record) => record.ad_account_id} 
           pagination={false}
           bordered
-          scroll={{ x: 2000, y: 240 }}
+          scroll={{ x: columns.length * 100, y: 240 }}
           rowHoverable={false}
           rowClassName="no-padding"
           className='not-fixed'

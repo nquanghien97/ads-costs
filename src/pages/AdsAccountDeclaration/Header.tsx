@@ -7,6 +7,7 @@ import { useSystemsStore } from "../../zustand/systems.store";
 import { getUsers } from "../../services/users";
 import { getListAdsAccount } from "../../services/ads_account";
 import { AdsAccountType } from "../../entities/AdsAccount";
+import localeValues from "antd/locale/vi_VN";
 
 interface FormValues {
   search: string;
@@ -140,7 +141,8 @@ function Header(props: HeaderProps) {
       <Form.Item
         name="date"
       >
-        <RangePicker 
+        <RangePicker
+          locale={localeValues.DatePicker}
           className="h-[40px]"
         />
       </Form.Item>

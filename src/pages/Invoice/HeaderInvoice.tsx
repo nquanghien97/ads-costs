@@ -12,6 +12,7 @@ import { SystemData } from "../../dto/AdsBillingsDTO";
 import { formatDate } from "../../utils/formatDate";
 import { useNotification } from "../../hooks/useNotification";
 import { GetAdsCostsByUser } from "../../services/ads_costs";
+import localeValues from "antd/locale/vi_VN";
 
 interface FormValues {
   search: string;
@@ -26,12 +27,13 @@ interface FormValues {
 }
 
 interface HeaderInvoiceProps {
-  setDatas: React.Dispatch<React.SetStateAction<SystemData[]>>,
+  setDatas: React.Dispatch<React.SetStateAction<SystemData[] | undefined>>,
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>,
   handleSearchClick: () => Promise<void>
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function HeaderInvoice({ setDatas, setRefreshKey, handleSearchClick }: HeaderInvoiceProps) {
+function HeaderInvoice({ setDatas, setRefreshKey, handleSearchClick, setLoading }: HeaderInvoiceProps) {
 
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
@@ -61,7 +63,7 @@ function HeaderInvoice({ setDatas, setRefreshKey, handleSearchClick }: HeaderInv
   }
 
   const onFinish = async (data: FormValues) => {
-    console.log(data.date)
+    setLoading(true);
     const submitData = {
       search: data.search,
       since: data.date ? formatDate(new Date(data.date?.[0])): undefined,
@@ -77,6 +79,8 @@ function HeaderInvoice({ setDatas, setRefreshKey, handleSearchClick }: HeaderInv
     } catch(err) {
       console.log(err);
       notification.error('Có lỗi xảy ra, vui lòng thử lại')
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -150,7 +154,8 @@ function HeaderInvoice({ setDatas, setRefreshKey, handleSearchClick }: HeaderInv
         <Form.Item
           name="date"
         >
-          <RangePicker 
+          <RangePicker
+            locale={localeValues.DatePicker}
             className="h-[40px]"
           />
         </Form.Item>

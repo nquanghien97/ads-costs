@@ -4,6 +4,8 @@ import * as XLSX from "xlsx";
 import { formatDate } from "../../../utils/formatDate";
 import { useNotification } from "../../../hooks/useNotification";
 import { DeclarationAdsCosts } from "../../../services/ads_costs";
+import localeValues from "antd/locale/vi_VN";
+
 
 interface DataRow {
   'ID TKQC': number;
@@ -96,7 +98,7 @@ function AdCosts() {
               }
             ]}
           >
-            <DatePicker placeholder="Chọn ngày" />
+            <DatePicker placeholder="Chọn ngày" locale={localeValues.DatePicker} />
           </Form.Item>
           <label htmlFor="import-ad-costs" className="h-full">
             <div className="flex justify-center">

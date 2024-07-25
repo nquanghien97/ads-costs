@@ -8,6 +8,10 @@ import { isAuthenticated } from './utils/isAuthenticated'
 import { useInformationSettingsStore } from './zustand/information_settings.store'
 import { useAuthStore } from './zustand/auth.store'
 import { NotificationProvider } from './context/NotificationContext'
+import dayjs from 'dayjs';
+import 'dayjs/locale/vi';
+
+dayjs.locale('vi')
 
 function App() {
 

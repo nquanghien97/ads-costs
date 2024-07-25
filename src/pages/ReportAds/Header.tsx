@@ -5,6 +5,7 @@ import { useGroupsStore } from "../../zustand/groups.store";
 import { useSystemsStore } from "../../zustand/systems.store";
 import User from "../../entities/User";
 import { getUsers } from "../../services/users";
+import localeValues from "antd/locale/vi_VN";
 
 interface FormValues {
   search: string;
@@ -115,7 +116,8 @@ function Header() {
         <Form.Item
           name="date"
         >
-          <RangePicker 
+          <RangePicker
+            locale={localeValues.DatePicker}
             className="h-[40px]"
           />
         </Form.Item>

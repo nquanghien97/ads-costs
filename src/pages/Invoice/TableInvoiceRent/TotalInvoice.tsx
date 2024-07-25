@@ -6,6 +6,7 @@ import { generateDynamicColumns, staticColumns } from './columns';
 
 function TotalInvoice(props: { data: AdAccountData[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>, loading: boolean }) {
   const { data, setOpenInvoiceDetails, loading } = props;
+  console.log(data)
 
   const dataForDynamicColumns = data.flatMap(x => 
     Object.entries(x.datas).map(([date, data]) => ({
@@ -50,7 +51,7 @@ function TotalInvoice(props: { data: AdAccountData[], setOpenInvoiceDetails: Rea
           rowKey={(record) => record.ad_account_id}
           bordered
           pagination={false}
-          scroll={{ x: 2000, y: 240 }}
+          scroll={{ x: data.length === 0 ? undefined : columns.length * 100, y: 240 }}
           rowHoverable={false}
           className='not-fixed'
           rowClassName="no-padding"
