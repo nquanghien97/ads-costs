@@ -176,7 +176,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
             <tbody>
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
               <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-                <td>{formatCurrency(innerData.datas[date]?.received)}</td>
+                <td>{formatCurrency(innerData.datas[date]?.paid_bill)}</td>
                 <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
                   <EyeIcon width={18} height={18} />
                 </td>
