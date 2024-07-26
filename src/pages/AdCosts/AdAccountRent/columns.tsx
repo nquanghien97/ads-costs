@@ -98,8 +98,8 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
     fixed: 'left',
     render: () => (
       <div>
-        <div className="row-custom">TKQC</div>
-        <div className="row-custom">VND</div>
+        <div className="row-custom bg-[#3f8e4d]">TKQC</div>
+        <div className="row-custom bg-[#0071ba]">VND</div>
       </div>
     ),
   },
@@ -112,8 +112,8 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
     render(_, value) {
       return (
         <div>
-          <div className="row-custom">{formatCurrency(value.total_ads)}</div>
-          <div className="row-custom">{formatCurrency(value.total_ads_vnd)}</div>
+          <div className="row-custom bg-[#3f8e4d]">{formatCurrency(value.total_ads)}</div>
+          <div className="row-custom bg-[#0071ba]">{formatCurrency(value.total_ads_vnd)}</div>
         </div>
       )
     },
@@ -127,8 +127,8 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
     render(_, value) {
       return (
         <div>
-          <div className="row-custom">{formatCurrency(value.total_bill)}</div>
-          <div className="row-custom">{formatCurrency(value.total_bill_vnd)}</div>
+          <div className="row-custom bg-[#3f8e4d]">{formatCurrency(value.total_bill)}</div>
+          <div className="row-custom bg-[#0071ba]">{formatCurrency(value.total_bill_vnd)}</div>
         </div>
       )
     }
@@ -146,8 +146,8 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
         width: 120,
         render: (_, record) => (
           <div>
-            <div className="row-custom">{formatCurrency(record.datas?.[date]?.ads)}</div>
-            <div className="row-custom">{formatCurrency(record.datas?.[date]?.ads_vnd)}</div>
+            <div className="row-custom bg-[#3f8e4d]">{formatCurrency(record.datas?.[date]?.ads)}</div>
+            <div className="row-custom bg-[#0071ba]">{formatCurrency(record.datas?.[date]?.ads_vnd)}</div>
           </div>
         ),
       },
@@ -158,13 +158,13 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
         render: (_, record) => {
           return (
             <div>
-              <div className="row-custom flex items-center justify-between gap-2">
+              <div className="row-custom flex items-center justify-between gap-2 bg-[#3f8e4d]">
                 {formatCurrency(record.datas?.[date]?.bill)}
                 <div onClick={() => setOpenInvoiceDetails(true)} >
                   <EyeIcon width={18} height={18} className="cursor-pointer" />
                 </div>
               </div>
-              <div className="row-custom flex items-center justify-between gap-2">
+              <div className="row-custom flex items-center justify-between gap-2 bg-[#0071ba]">
                 {formatCurrency(record.datas?.[date]?.bill_vnd)}
               </div>
             </div>

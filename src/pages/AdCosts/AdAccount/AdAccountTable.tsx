@@ -32,7 +32,7 @@ function AdAccountTable(props: { data: AdAccountData[], setOpenInvoiceDetails: R
             borderRadius: 8,
             colorBorder: "#eb9d4d",
             // Alias Token
-            colorBgContainer: '#e5d1ba',
+            // colorBgContainer: '#e5d1ba',
           },
           components: {
             Table: {
@@ -46,12 +46,12 @@ function AdAccountTable(props: { data: AdAccountData[], setOpenInvoiceDetails: R
         <Table
           columns={columns}
           dataSource={data}
-          rowKey={(record) => record.ad_account_id} 
+          rowKey={(record) => record.ad_account_id}
+          rowClassName={(_, index) => index % 2 === 0 ? '[&>*]:!bg-[#ccc] no-padding' :  '[&>*]:!bg-[#e5d1ba] no-padding'}
           pagination={false}
           bordered
           scroll={{ x: columns.length * 100, y: 240 }}
           rowHoverable={false}
-          rowClassName="no-padding"
           className='not-fixed'
           loading={loading}
         />

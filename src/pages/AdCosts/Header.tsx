@@ -88,7 +88,7 @@ function Header({ setDatas, setRefreshKey, setLoading }: HeaderProps) {
       system_id: data.system_id,
       group_id: data.group_id,
       channel_id: data.channel_id,
-      user_id: data.user.value
+      user_id: data.user?.value
     }
     setSearchForm(submitData)
     try {

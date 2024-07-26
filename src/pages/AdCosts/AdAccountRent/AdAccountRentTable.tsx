@@ -32,7 +32,7 @@ function AdAccountRentTable(props: { data: AdAccountData[], setOpenInvoiceDetail
             borderRadius: 8,
             colorBorder: "#eb9d4d",
             // Alias Token
-            colorBgContainer: '#dea6bd',
+            // colorBgContainer: '#dea6bd',
           },
           components: {
             Table: {
@@ -53,7 +53,7 @@ function AdAccountRentTable(props: { data: AdAccountData[], setOpenInvoiceDetail
           scroll={{ x: data.length === 0 ? undefined : columns.length * 100, y: 240 }}
           rowHoverable={false}
           className='not-fixed'
-          rowClassName="no-padding"
+          rowClassName={(_, index) => index % 2 === 0 ? '[&>*]:!bg-[#ccc] no-padding' :  '[&>*]:!bg-[#dea6bd] no-padding'}
           loading={loading}
         />
       </ConfigProvider>
