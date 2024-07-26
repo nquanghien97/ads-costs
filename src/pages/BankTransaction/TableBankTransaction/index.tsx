@@ -68,7 +68,7 @@ function TableBankTransaction(props: TableBankTransactionProps) {
               pagination={false}
               rowKey={(record) => record.system_id.toString()}
               bordered
-              scroll={{ x: 2000, y: 240 }}
+              scroll={{ x: [...staticColumns, ...dataForDynamicColumns].length * 100, y: 240 }}
               rowHoverable={false}
               rowClassName={(record) => `${record.system.name} - ${record.group_datas.flatMap(item => item.group.name)}`}
               components={{

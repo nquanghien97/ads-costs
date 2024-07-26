@@ -6,9 +6,8 @@ import { formatCurrency } from '../../../utils/currency';
 export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
   {
     title: 'Mã TKNH',
-    // dataIndex: ['bank_account', 'id'],
     key: '1',
-    width: 50,
+    width: 100,
     fixed: 'left',
     render: (_, record) => (
       <table>
@@ -24,8 +23,7 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
   },
   {
     title: 'Họ tên',
-    // dataIndex: ['bank_account', 'user', 'name'],
-    width: 80,
+    width: 160,
     key: '2',
     fixed: 'left',
     render: (_, record) => (
@@ -42,9 +40,8 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
   },
   {
     title: 'STK Ngân hàng',
-    // dataIndex: ['bank_account', 'card_number'],
     key: '3',
-    width: 70,
+    width: 220,
     fixed: 'left',
     render: (_, record) => (
       <table>
@@ -60,9 +57,8 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
   },
   {
     title: 'Bank',
-    // dataIndex: ['bank_account', 'bank_name'],
     key: '4',
-    width: 60,
+    width: 150,
     fixed: 'left',
     render: (_, record) => (
       <table>
@@ -79,9 +75,8 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
   },
   {
     title: 'Tiền nhận',
-    // dataIndex: 'total_received',
     key: '5',
-    width: 60,
+    width: 150,
     fixed: 'left',
     render: (_, record) => (
       <table>
@@ -97,7 +92,7 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
   },
   {
     title: 'Tiền thanh toán hóa đơn',
-    width: 60,
+    width: 150,
     key: '6',
     fixed: 'left',
     render: (_, record) => (
@@ -115,7 +110,7 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
   },
   {
     title: 'TT Chi phí khác',
-    width: 60,
+    width: 150,
     key: '7',
     fixed: 'left',
     render: (_, record) => (
@@ -133,8 +128,7 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
   },
   {
     title: 'Số dư hiện tại',
-    // dataIndex: 'balance',
-    width: 60,
+    width: 150,
     key: '8',
     fixed: 'left',
     render: (_, record) => (
@@ -160,7 +154,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
       {
         title: 'Tiền nhận',
         key: `received_${index}`,
-        width: 120,
+        width: 160,
         render: (_, record) => (
           <table>
             <tbody>
@@ -176,7 +170,7 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
       {
         title: 'TT hóa đơn',
         key: `paid_bill_${index}`,
-        width: 120,
+        width: 160,
         render: (_, record: BankTransactionsDTO) => (
           <table>
             <tbody>
