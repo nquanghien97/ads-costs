@@ -33,13 +33,6 @@ function Invoice() {
     }
   };
 
-  // const handleSearchClick = async () => {
-  //   if (user.role === UserRole.ROOT) {
-  //     // setRefreshKey(pre => !pre)
-  //     await fetchData();
-  //   }
-  // };
-
   useEffect(() => {
     (async () => {
       if(user.role !== UserRole.ROOT && user.role ) {

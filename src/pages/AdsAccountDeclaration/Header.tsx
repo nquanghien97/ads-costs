@@ -5,8 +5,6 @@ import User from "../../entities/User";
 import { useGroupsStore } from "../../zustand/groups.store";
 import { useSystemsStore } from "../../zustand/systems.store";
 import { getUsers } from "../../services/users";
-import { getListAdsAccount } from "../../services/ads_account";
-import { AdsAccountType } from "../../entities/AdsAccount";
 import localeValues from "antd/locale/vi_VN";
 import { formatDate } from "../../utils/formatDate";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
@@ -25,13 +23,12 @@ interface FormValues {
 }
 
 interface HeaderProps {
-  setData: React.Dispatch<React.SetStateAction<AdsAccountType[]>>
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
   setSubmitFormSearch: React.Dispatch<React.SetStateAction<SubmitFormSearchType | undefined>>
 }
 
 function Header(props: HeaderProps) {
-  const { setData, setLoading, setSubmitFormSearch } = props;
+  const { setLoading, setSubmitFormSearch } = props;
 
   const { RangePicker } = DatePicker;
   const { groups } = useGroupsStore();
@@ -70,8 +67,6 @@ function Header(props: HeaderProps) {
       until: data.date ? formatDate(new Date(data.date?.[1])) : undefined,
     }
     try {
-      const res = await getListAdsAccount(submitData);
-      setData(res.data.data.list)
       setSubmitFormSearch((pre) => ({
         ...pre,
         ...submitData

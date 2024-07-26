@@ -24,7 +24,7 @@ function BankAccountDeclaration() {
   
   return (
     <div className="px-4">
-      <Header setData={setData} setLoading={setLoading} setFormSearchValue={setFormSearchValue} />
+      <Header setLoading={setLoading} setFormSearchValue={setFormSearchValue} />
       <Table data={data} setData={setData} loading={loading} setLoading={setLoading} formSearchValue={formSearchValue} />
     </div>
   )

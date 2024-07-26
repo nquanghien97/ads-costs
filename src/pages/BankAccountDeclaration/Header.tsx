@@ -4,13 +4,10 @@ import { Button, Form, Input, Select, Tooltip } from "antd";
 import { useGroupsStore } from "../../zustand/groups.store";
 import { useSystemsStore } from "../../zustand/systems.store";
 import User from "../../entities/User";
-import { BankAccountType } from "../../entities/BankAccount";
 import { getUsers } from "../../services/users";
 import { FormSearchValueType } from ".";
-import { getListBankAccounts } from "../../services/bank_account";
 
 interface HeaderProps {
-  setData: React.Dispatch<React.SetStateAction<BankAccountType[]>>
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
   setFormSearchValue: React.Dispatch<React.SetStateAction<FormSearchValueType | undefined>>
 }
@@ -26,7 +23,7 @@ interface FormValues {
 }
 
 function Header(props: HeaderProps) {
-  const { setData, setLoading, setFormSearchValue } = props;
+  const { setLoading, setFormSearchValue } = props;
   
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
@@ -60,8 +57,6 @@ function Header(props: HeaderProps) {
       user_id: data.search_name?.value
     }
     try {
-      const res = await getListBankAccounts(submitData)
-      setData(res.data.data.list)
       setFormSearchValue((pre) => ({
         ...pre,
         ...submitData

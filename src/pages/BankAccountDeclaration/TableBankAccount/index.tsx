@@ -154,7 +154,7 @@ function TableBankAccount(props: TableBankAccountProps) {
     (async () => {
       setLoading(true);
       try {
-        const res = await fetchListBankAccounts({ page: 1, page_size: 10 });
+        const res = await fetchListBankAccounts({ page: 1, page_size: 20 });
         setData(res.list);
         setPagingBankAccount(res.paging)
       } catch (err) {

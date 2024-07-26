@@ -2,12 +2,14 @@ import api from "../config/api"
 import { DeclarationAdsCostsDTO } from "../dto/AdsBillingsDTO";
 
 export const GetAdsCostsByUser = (
-    { search, since, until, system_id, group_id, user_id, channel_id }
+    { page, page_size, search, since, until, system_id, group_id, user_id, channel_id }
     :
-    { search?: string, since?: string, until?: string, system_id?: number, group_id?: number, user_id?: number, channel_id?: number }
+    { page?: number, page_size?: number, search?: string, since?: string, until?: string, system_id?: number, group_id?: number, user_id?: number, channel_id?: number }
   ) => {
   const params = new URLSearchParams();
   
+  if (page) params.append('page', page.toString());
+  if (page_size) params.append('page_size', page_size.toString());
   if (search) params.append('search', search.toString());
   if (since) params.append('since', since.toString());
   if (until) params.append('until', until.toString());

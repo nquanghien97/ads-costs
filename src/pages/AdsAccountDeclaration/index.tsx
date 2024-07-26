@@ -266,7 +266,7 @@ function AdsAccountDeclaration() {
 
   return (
     <div className="px-4">
-      <Header setData={setData} setLoading={setLoading} setSubmitFormSearch={setSubmitFormSearch} />
+      <Header setLoading={setLoading} setSubmitFormSearch={setSubmitFormSearch} />
       <div className="flex justify-between mb-4">
         <div className="m-auto">
           <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Khai báo tài khoản quảng cáo</span>
