@@ -33,11 +33,12 @@ function Invoice() {
     }
   };
 
-  const handleSearchClick = async () => {
-    if (user.role === UserRole.ROOT) {
-      setRefreshKey(pre => !pre)
-    }
-  };
+  // const handleSearchClick = async () => {
+  //   if (user.role === UserRole.ROOT) {
+  //     // setRefreshKey(pre => !pre)
+  //     await fetchData();
+  //   }
+  // };
 
   useEffect(() => {
     (async () => {
@@ -74,7 +75,7 @@ function Invoice() {
 
   return (
     <div className="px-4">
-      <Header setDatas={setDatas} setLoading={setLoading} setRefreshKey={setRefreshKey} handleSearchClick={handleSearchClick} />
+      <Header setDatas={setDatas} setLoading={setLoading} setRefreshKey={setRefreshKey} />
       <div className="pt-[136px]">
         {renderBody()}
       </div>

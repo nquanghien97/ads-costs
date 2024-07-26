@@ -5,6 +5,9 @@ import { convertCurrencyStringToNumber } from "../../../utils/currency";
 import { formatDate } from "../../../utils/formatDate";
 import { useNotification } from "../../../hooks/useNotification";
 import { DeclarationAdsBills } from "../../../services/ads_bills";
+import { SearchFormValues } from "../Header";
+import { SystemData } from "../../../dto/AdsBillingsDTO";
+import { GetAdsCostsByUser } from "../../../services/ads_costs";
 
 interface DataRow {
   'ID TKQC': number;
@@ -17,10 +20,12 @@ interface DataRow {
 
 interface BillCostsProps {
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>
+  searchForm: SearchFormValues
+  setDatas: React.Dispatch<React.SetStateAction<SystemData[] | undefined>>
 }
 
 function BillCosts(props: BillCostsProps) {
-  const { setRefreshKey } = props
+  const { setRefreshKey, searchForm, setDatas } = props
   const [dataBill, setDataBill] = useState<DataRow[] | null>(null);
   const [openModalBillCosts, setOpenModalBillCosts] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -71,10 +76,11 @@ function BillCosts(props: BillCostsProps) {
     }
     try {
       await DeclarationAdsBills(dataSubmit)
+      const res = await GetAdsCostsByUser(searchForm)
+      setDatas(res.data.data.list)
       setOpenModalBillCosts(false);
       notification.success('Khai báo Hóa đơn thành công')
       setRefreshKey(pre => !pre)
-      console.log(dataSubmit)
     } catch (err) {
       console.log(err);
       notification.error('Khai báo Hóa đơn không thành công')

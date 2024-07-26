@@ -1,7 +1,11 @@
 import api from "../config/api"
 import { DeclarationAdsCostsDTO } from "../dto/AdsBillingsDTO";
 
-export const GetAdsCostsByUser = ({ search, since, until, system_id, group_id } : { search?: string, since?: string, until?: string, system_id?: number, group_id?: number}) => {
+export const GetAdsCostsByUser = (
+    { search, since, until, system_id, group_id, user_id, channel_id }
+    :
+    { search?: string, since?: string, until?: string, system_id?: number, group_id?: number, user_id?: number, channel_id?: number }
+  ) => {
   const params = new URLSearchParams();
   
   if (search) params.append('search', search.toString());
@@ -9,6 +13,8 @@ export const GetAdsCostsByUser = ({ search, since, until, system_id, group_id } 
   if (until) params.append('until', until.toString());
   if(system_id) params.append('system_id', system_id.toString());
   if (group_id) params.append('group_id', group_id.toString());
+  if (user_id) params.append('user_id', user_id.toString());
+  if (channel_id) params.append('channel_id', channel_id.toString());
 
   return api.get(`/statistics/ads?level=user&${params.toString()}`);
 }

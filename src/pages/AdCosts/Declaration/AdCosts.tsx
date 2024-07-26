@@ -3,8 +3,10 @@ import { ChangeEvent, useState } from "react";
 import * as XLSX from "xlsx";
 import { formatDate } from "../../../utils/formatDate";
 import { useNotification } from "../../../hooks/useNotification";
-import { DeclarationAdsCosts } from "../../../services/ads_costs";
+import { DeclarationAdsCosts, GetAdsCostsByUser } from "../../../services/ads_costs";
 import localeValues from "antd/locale/vi_VN";
+import { SearchFormValues } from "../Header";
+import { SystemData } from "../../../dto/AdsBillingsDTO";
 
 
 interface DataRow {
@@ -12,7 +14,15 @@ interface DataRow {
   'CHI PHÍ': string;
 }
 
-function AdCosts() {
+
+interface AdCostsProps {
+  setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>
+  searchForm: SearchFormValues
+  setDatas: React.Dispatch<React.SetStateAction<SystemData[] | undefined>>
+}
+
+function AdCosts(props: AdCostsProps) {
+  const { setDatas, searchForm, setRefreshKey } = props;
   const [dataImport, setDataImport] = useState<DataRow[] | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -57,9 +67,12 @@ function AdCosts() {
     }
     try {
       await DeclarationAdsCosts(dataSubmit)
-      setOpenModal(false);
+      const res = await GetAdsCostsByUser(searchForm)
+      setDatas(res.data.data.list)
+      setOpenModal(false)
       console.log(dataSubmit)
       notification.success('Khai báo Chi phí quảng cáo thành công')
+      setRefreshKey(pre => !pre)
     } catch (err) {
       console.log(err);
       notification.error('Khai báo Chi phí quảng cáo không thành công')

@@ -18,22 +18,31 @@ interface FormValues {
   search: string;
   system_id: number;
   group_id: number;
-  search_name: {
+  user: {
     label: string;
     value: number;
   };
   channel_id: number;
-  date: Date[]
+  date: Date[];
 }
 
 interface HeaderProps {
   setDatas: React.Dispatch<React.SetStateAction<SystemData[] | undefined>>,
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>,
-  handleSearchClick: () => Promise<void>
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function Header({ setDatas, setRefreshKey, handleSearchClick, setLoading }: HeaderProps) {
+export interface SearchFormValues {
+  search?: string;
+  since?: string;
+  until?: string;
+  system_id?: number;
+  group_id?: number;
+  channel_id?: number;
+  user_id?: number;
+}
+
+function Header({ setDatas, setRefreshKey, setLoading }: HeaderProps) {
 
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
@@ -41,6 +50,14 @@ function Header({ setDatas, setRefreshKey, handleSearchClick, setLoading }: Head
   const { channels } = useInformationSettingsStore();
   const [selectedSystem, setSelectedSystem] = useState(-1);
   const [name, setName] = useState<User[]>([]);
+  const [searchForm, setSearchForm] = useState<SearchFormValues>({
+    search: '',
+    since: '',
+    until: '',
+    system_id: 0,
+    group_id: 0,
+    channel_id: 0
+  })
 
   const notification = useNotification();
 
@@ -70,12 +87,13 @@ function Header({ setDatas, setRefreshKey, handleSearchClick, setLoading }: Head
       until: data.date ? formatDate(new Date(data.date?.[1])) : undefined,
       system_id: data.system_id,
       group_id: data.group_id,
-      channel_id: data.channel_id
+      channel_id: data.channel_id,
+      user_id: data.user.value
     }
+    setSearchForm(submitData)
     try {
       const res = await GetAdsCostsByUser(submitData)
       setDatas(res.data.data.list)
-      handleSearchClick()
     } catch(err) {
       console.log(err);
       notification.error('Có lỗi xảy ra, vui lòng thử lại')
@@ -121,9 +139,10 @@ function Header({ setDatas, setRefreshKey, handleSearchClick, setLoading }: Head
           </Form.Item>
           <Form.Item
             className="w-[160px]"
-            name="search_name"
+            name="user"
           >
             <Select
+              labelInValue
               options={name.map(item => ({label: item.name, value: item.id}))}
               className="z-50 h-full w-[160px]"
               placeholder="Họ tên"
@@ -162,8 +181,8 @@ function Header({ setDatas, setRefreshKey, handleSearchClick, setLoading }: Head
       </Form>
       <div className="flex py-2 justify-between">
         <div className="flex gap-4">
-          <AdCosts />
-          <BillCosts setRefreshKey={setRefreshKey} />
+          <AdCosts setRefreshKey={setRefreshKey} searchForm={searchForm} setDatas={setDatas} />
+          <BillCosts setRefreshKey={setRefreshKey} searchForm={searchForm} setDatas={setDatas} />
         </div>
         <div className="flex gap-2">
           <Button size="large" className="bg-white">Export dữ liệu</Button>
