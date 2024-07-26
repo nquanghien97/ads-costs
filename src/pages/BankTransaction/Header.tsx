@@ -9,6 +9,7 @@ import localeValues from "antd/locale/vi_VN";
 import TransferMoney from "./Declaration/transfer-money";
 import CostsDeclaration from "./Declaration/costs";
 import ExchangeRate from "./Declaration/exchange_rate";
+import { Link } from "react-router-dom";
 
 interface FormValues {
   search: string;
@@ -123,8 +124,10 @@ function HeaderInvoice() {
           <ExchangeRate />
         </div>
         <div className="flex gap-2">
-          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 py-3 flex items-center justify-center hover:opacity-80 duration-300">
-            <span className="text-white">Khai báo Chi phí</span>
+          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 py-3 flex items-center justify-center hover:opacity-80 duration-300" >
+            <Link to="/xem-ty-gia">
+              <span className="text-white">Xem tỷ giá</span>
+            </Link>
           </div>
           <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 py-3 flex items-center justify-center hover:opacity-80 duration-300">
             <span className="text-white">Export dữ liệu</span>
