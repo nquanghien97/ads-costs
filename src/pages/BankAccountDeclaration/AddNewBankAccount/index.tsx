@@ -9,6 +9,7 @@ import optionsBankStatus from "../../../config/bank_status";
 import User from "../../../entities/User";
 import { getUsersBySystemGroup } from "../../../services/users";
 import { addBankAccount } from "../../../services/bank_account";
+import { useNotification } from "../../../hooks/useNotification";
 
 
 interface FormValues {
@@ -70,7 +71,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
     setSelectedUser(option.label)
     form.setFieldsValue({ username: null })
   };
-
+  const notification = useNotification();
   const [form] = Form.useForm();
 
   const onFinish = async (data: FormValues) => {
@@ -86,8 +87,10 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
       await addBankAccount(submitData);
       onClose();
       setRefreshKey(pre => !pre)
+      notification.success('Khai báo tài khoản ngân hàng thành công')
     } catch (err){
-    console.log(err)
+      console.log(err)
+      notification.success('Khai báo tài khoản ngân hàng không thành công')
     } finally {
       setLoading(false);
     }

@@ -1,7 +1,7 @@
 import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import CloseIcon from "../../../assets/icons/CloseIcon";
 import EditIcon from "../../../assets/icons/EditIcon";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import EditBankAccount from "../EditBankAccount";
 import { BankAccountType, pagingBankAccount } from "../../../entities/BankAccount";
 import { getListBankAccounts } from "../../../services/bank_account";
@@ -9,16 +9,18 @@ import BaseButton from "../../../components/common/BaseButton";
 import PlusIcon from "../../../assets/icons/PlusIcon";
 import AddNewBankAccount from "../AddNewBankAccount";
 import DeleteBankAccount from "../DeleteBankAccount";
+import { FormSearchValueType } from "..";
 
 interface TableBankAccountProps {
   data: BankAccountType[]
   setData: React.Dispatch<React.SetStateAction<BankAccountType[]>>
   loading: boolean
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  formSearchValue: FormSearchValueType | undefined
 }
 
 function TableBankAccount(props: TableBankAccountProps) {
-  const { data, setData, loading, setLoading } = props
+  const { data, setData, loading, setLoading, formSearchValue } = props
   
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [bankId, setBankId] = useState<number>(-1);
@@ -130,15 +132,15 @@ function TableBankAccount(props: TableBankAccountProps) {
     },
   ]
 
-  const fetchListBankAccounts = async ({ page, page_size } : { page: number, page_size: number}) => {
-    const res = await getListBankAccounts({page, page_size})
+  const fetchListBankAccounts = useCallback(async ({ page, page_size } : { page: number, page_size: number}) => {
+    const res = await getListBankAccounts({page, page_size, ...formSearchValue})
     return res.data.data
-  }
+  }, [formSearchValue])
 
   const onChange = async (page: number, pageSize: number) => {
     setLoading(true);
     try {
-      const dataAdAccount = await fetchListBankAccounts({ page, page_size: pageSize })
+      const dataAdAccount = await fetchListBankAccounts({ page, page_size: pageSize, ...formSearchValue })
       setData(dataAdAccount.list);
       setPagingBankAccount(dataAdAccount.paging)
     } catch (err) {
@@ -152,7 +154,7 @@ function TableBankAccount(props: TableBankAccountProps) {
     (async () => {
       setLoading(true);
       try {
-        const res = await fetchListBankAccounts({ page: 1, page_size: 20 });
+        const res = await fetchListBankAccounts({ page: 1, page_size: 10 });
         setData(res.list);
         setPagingBankAccount(res.paging)
       } catch (err) {
@@ -161,7 +163,7 @@ function TableBankAccount(props: TableBankAccountProps) {
         setLoading(false);
       }
     })()
-  }, [refreshKey, setData, setLoading])
+  }, [fetchListBankAccounts, refreshKey, setData, setLoading])
 
   return (
     <>

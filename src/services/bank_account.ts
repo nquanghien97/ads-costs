@@ -1,7 +1,10 @@
 import api from "../config/api";
 import { BankAccountDTO } from "../dto/BankAccountDTO";
 
-export function getListBankAccounts({ page, page_size, user_id, search, system_id, group_id } : { page?: number, page_size?: number, user_id?: number, search?: string, system_id?: string, group_id?: string}) {
+export function getListBankAccounts(
+  { page, page_size, user_id, search, system_id, group_id }
+  :
+  { page?: number, page_size?: number, user_id?: number, search?: string, system_id?: number, group_id?: number}) {
   const params = new URLSearchParams();
   if(user_id) params.append('user_id', user_id.toString());
   if(page) params.append('page', page.toString());
@@ -10,7 +13,7 @@ export function getListBankAccounts({ page, page_size, user_id, search, system_i
   if(system_id) params.append('system_id', system_id.toString());
   if (group_id) params.append('group_id', group_id.toString());
 
-  return api.get(`/bank-accounts?${params.toString()}`);
+  return api.get(`/bank-accounts?order_by=created_at&order=DESC&${params.toString()}`);
 }
 
 export function getBankAccount(id: number) {

@@ -4,7 +4,7 @@ import CloseIcon from "../../assets/icons/CloseIcon";
 import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import withAuth from "../../hocs/withAuth";
 import { AdsAccountType, pagingAdAccount } from "../../entities/AdsAccount";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getListAdsAccount } from "../../services/ads_account";
 import EditAdsAccount from "./EditAdsAccount";
 import BaseButton from "../../components/common/BaseButton";
@@ -12,6 +12,18 @@ import PlusIcon from "../../assets/icons/PlusIcon";
 import AddNewAdsAccount from "./AddNewAdsAccount";
 import DeleteAdAccount from "./DeleteAdAccount";
 import { AdsAccountStatusType } from "../../entities/AdsAccountStatus";
+
+export interface SubmitFormSearchType {
+  search: string;
+  system_id?: number;
+  group_id?: number;
+  name?: string;
+  channel_id?: number;
+  since?: string;
+  until?: string;
+  page?: number;
+  page_size?: number;
+}
 
 function AdsAccountDeclaration() {
 
@@ -24,6 +36,7 @@ function AdsAccountDeclaration() {
   const [openDeleteAdAccount, setOpenDeleteAdAccount] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pagingAdAccount, setPagingAdAccount] = useState<pagingAdAccount>();
+  const [submitFormSearch, setSubmitFormSearch] = useState<SubmitFormSearchType>();
 
   const columns: TableColumnsType<AdsAccountType> = [
     {
@@ -144,19 +157,19 @@ function AdsAccountDeclaration() {
       key: '16',
       width: 200,
       render(value) {
-        if(AdsAccountStatusType.DANG_SU_DUNG === value) {
+        if (AdsAccountStatusType.DANG_SU_DUNG === value) {
           return (
             <div className="flex justify-center">
               <span className="bg-[#0071ba] py-1 px-2 text-center rounded-md text-white w-full">{value}</span>
             </div>
           )
-        } else if(AdsAccountStatusType.NGUNG_SU_DUNG === value) {
+        } else if (AdsAccountStatusType.NGUNG_SU_DUNG === value) {
           return (
             <div className="flex justify-center">
               <span className="bg-[#d37dbe] py-2 px-2 text-center rounded-md text-white w-full">{value}</span>
             </div>
           )
-        } else if(AdsAccountStatusType.DIE === value) {
+        } else if (AdsAccountStatusType.DIE === value) {
           return (
             <div className="flex justify-center">
               <span className="bg-[#ff4d4f] py-2 px-2 text-center rounded-md text-white w-full">{value}</span>
@@ -215,15 +228,15 @@ function AdsAccountDeclaration() {
     },
   ]
 
-  const fetchListAdAccount = async ({ page, page_size }: { page: number, page_size: number }) => {
-    const res = await getListAdsAccount({ page, page_size })
+  const fetchListAdAccount = useCallback(async ({ page, page_size }: { page: number, page_size: number }) => {
+    const res = await getListAdsAccount({ page, page_size, ...submitFormSearch })
     return res.data.data
-  }
+  }, [submitFormSearch])
 
   const onChange = async (page: number, pageSize: number) => {
     setLoading(true);
     try {
-      const dataAdAccount = await fetchListAdAccount({ page, page_size: pageSize })
+      const dataAdAccount = await fetchListAdAccount({ page, page_size: pageSize, ...submitFormSearch })
       setData(dataAdAccount.list);
       setPagingAdAccount(dataAdAccount.paging)
     } catch (err) {
@@ -240,16 +253,20 @@ function AdsAccountDeclaration() {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const res = await fetchListAdAccount({ page: 1, page_size: 20 });
+      const res = await fetchListAdAccount({
+        ...submitFormSearch,
+        page: 1,
+        page_size: 20
+      });
       setLoading(false);
       setData(res.list);
       setPagingAdAccount(res.paging)
     })()
-  }, [refreshKey])
+  }, [fetchListAdAccount, refreshKey, submitFormSearch])
 
   return (
     <div className="px-4">
-      <Header setData={setData} setLoading={setLoading} />
+      <Header setData={setData} setLoading={setLoading} setSubmitFormSearch={setSubmitFormSearch} />
       <div className="flex justify-between mb-4">
         <div className="m-auto">
           <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Khai báo tài khoản quảng cáo</span>
@@ -279,7 +296,7 @@ function AdsAccountDeclaration() {
             dataSource={data}
             rowHoverable={false}
             rowKey={(record) => record.id}
-            rowClassName={(_, index) => index % 2 === 0 ? 'table-row-custom-color' :  ''}
+            rowClassName={(_, index) => index % 2 === 0 ? 'table-row-custom-color' : ''}
             bordered
             pagination={{
               total: pagingAdAccount?.total,
@@ -292,8 +309,18 @@ function AdsAccountDeclaration() {
           />
         </ConfigProvider>
       </div>
-      <AddNewAdsAccount onClose={() => setOpenAddNewAdsAccount(false)} setRefreshKey={setRefreshKey} open={openAddNewAdsAccount} />
-      <EditAdsAccount adAccountId={adAccountId} onClose={() => setOpenModalEdit(false)} open={openModalEdit} setRefreshKey={setRefreshKey} bankAccountId={bankAccountId} />
+      <AddNewAdsAccount
+        onClose={() => setOpenAddNewAdsAccount(false)}
+        setRefreshKey={setRefreshKey}
+        open={openAddNewAdsAccount}
+      />
+      <EditAdsAccount
+        adAccountId={adAccountId}
+        onClose={() => setOpenModalEdit(false)}
+        open={openModalEdit}
+        setRefreshKey={setRefreshKey}
+        bankAccountId={bankAccountId}
+      />
       <DeleteAdAccount openDeleteModal={openDeleteAdAccount} onClose={() => setOpenDeleteAdAccount(false)} setRefreshKey={setRefreshKey} account_id={adAccountId} />
     </div>
   )

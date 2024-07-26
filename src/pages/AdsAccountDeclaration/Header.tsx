@@ -8,6 +8,9 @@ import { getUsers } from "../../services/users";
 import { getListAdsAccount } from "../../services/ads_account";
 import { AdsAccountType } from "../../entities/AdsAccount";
 import localeValues from "antd/locale/vi_VN";
+import { formatDate } from "../../utils/formatDate";
+import { useInformationSettingsStore } from "../../zustand/information_settings.store";
+import { SubmitFormSearchType } from ".";
 
 interface FormValues {
   search: string;
@@ -18,19 +21,22 @@ interface FormValues {
     value: number;
   };
   channel_id: number;
+  date: Date[]
 }
 
 interface HeaderProps {
   setData: React.Dispatch<React.SetStateAction<AdsAccountType[]>>
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setSubmitFormSearch: React.Dispatch<React.SetStateAction<SubmitFormSearchType | undefined>>
 }
 
 function Header(props: HeaderProps) {
-  const { setData, setLoading } = props;
+  const { setData, setLoading, setSubmitFormSearch } = props;
 
   const { RangePicker } = DatePicker;
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
+  const { channels } = useInformationSettingsStore();
   const [selectedSystem, setSelectedSystem] = useState(-1);
   const [name, setName] = useState<User[]>([]);
 
@@ -54,16 +60,23 @@ function Header(props: HeaderProps) {
 
   const onFinish = async (data: FormValues) => {
     setLoading(true);
+    const submitData = {
+      search: data.search,
+      system_id: data.system_id,
+      group_id: data.group_id,
+      name: data.search_name?.label,
+      channel_id: data.channel_id,
+      since: data.date ? formatDate(new Date(data.date?.[0])): undefined,
+      until: data.date ? formatDate(new Date(data.date?.[1])) : undefined,
+    }
     try {
-      const res = await getListAdsAccount({
-        search: data.search,
-        system_id: data.system_id,
-        group_id: data.group_id,
-        name: data.search_name?.label,
-        channel_id: data.channel_id
-      });
+      const res = await getListAdsAccount(submitData);
       setData(res.data.data.list)
-      console.log(data)
+      setSubmitFormSearch((pre) => ({
+        ...pre,
+        ...submitData
+      }));
+      console.log(submitData)
     } catch (err) {
       console.log(err);
     } finally {
@@ -121,8 +134,7 @@ function Header(props: HeaderProps) {
           name="channel_id"
         >
           <Select
-            // options={options}
-            // onChange={handleChange}
+            options={channels.map(item => ({label: item.name, value: item.id}))}
             className="z-50 h-full w-[160px]"
             placeholder="Kênh chạy"
           />
