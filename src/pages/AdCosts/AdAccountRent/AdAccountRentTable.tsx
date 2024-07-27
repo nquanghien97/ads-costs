@@ -53,7 +53,7 @@ function AdAccountRentTable(props: { data: AdAccountData[], setOpenInvoiceDetail
           scroll={{ x: data.length === 0 ? undefined : columns.length * 100, y: 240 }}
           rowHoverable={false}
           className='not-fixed'
-          rowClassName={(_, index) => index % 2 === 0 ? '[&>*]:!bg-[#ccc] no-padding' :  '[&>*]:!bg-[#dea6bd] no-padding'}
+          rowClassName={(_, index) => index % 2 === 0 ? '[&>*]:!bg-[#ccc] no-padding' :  '[&>*]:!bg-[#e5d1ba] no-padding'}
           loading={loading}
         />
       </ConfigProvider>
