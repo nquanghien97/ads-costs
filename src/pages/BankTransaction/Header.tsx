@@ -10,18 +10,27 @@ import TransferMoney from "./Declaration/transfer-money";
 import CostsDeclaration from "./Declaration/costs";
 import ExchangeRate from "./Declaration/exchange_rate";
 import { Link } from "react-router-dom";
+import { formatDate } from "../../utils/formatDate";
+import { SearchFormValues } from ".";
 
 interface FormValues {
   search: string;
   system_id: number;
   group_id: number;
-  search_name: {
+  user: {
     label: string;
     value: number;
   };
+  date: Date[]
 }
 
-function HeaderInvoice() {
+interface HeaderProps {
+  setSearchForm: React.Dispatch<React.SetStateAction<SearchFormValues>>
+  setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function Header(props: HeaderProps) {
+  const { setSearchForm, setRefreshKey } = props;
 
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
@@ -34,11 +43,11 @@ function HeaderInvoice() {
   const handleSystemChange = (option: number) => {
     setSelectedSystem(option)
     form.setFieldsValue({ group_id: null });
-    form.setFieldsValue({ search_name: null });
+    form.setFieldsValue({ user: null });
   };
 
   const handleGroupChange = async (value: number) => {
-    form.setFieldsValue({ name: null })
+    form.setFieldsValue({ user: null })
     try {
       const res = await getUsers({group_id: value});
       setName(res.data.data.list)
@@ -48,16 +57,29 @@ function HeaderInvoice() {
   }
 
   const onFinish = (data: FormValues) => {
-    console.log(data)
+    const submitData = {
+      search: data.search,
+      since: data.date ? formatDate(new Date(data.date?.[0])): undefined,
+      until: data.date ? formatDate(new Date(data.date?.[1])) : undefined,
+      system_id: data.system_id,
+      group_id: data.group_id,
+      user_id: data.user?.value
+    }
+    try {
+      setSearchForm(submitData)
+      setRefreshKey(pre => !pre)
+    } catch(err) {
+      console.log(err)
+    }
   }
 
   return (
     <>
-      <Form onFinish={onFinish} className="flex py-2 justify-between">
+      <Form onFinish={onFinish} className="flex py-2 justify-between" form={form}>
         <div className="flex gap-2 items-center">
           <Form.Item
             className="w-[160px]"
-            name="key_word"
+            name="search"
           >
             <Input
               placeholder="Tìm kiếm"
@@ -66,7 +88,7 @@ function HeaderInvoice() {
           </Form.Item>
           <Form.Item
             className="w-[160px]"
-            name="system"
+            name="system_id"
           >
             <Select
               options={systems.map((system) => ({ label: system.name, value: system.id }))}
@@ -77,7 +99,7 @@ function HeaderInvoice() {
           </Form.Item>
           <Form.Item
             className="w-[160px]"
-            name="group"
+            name="group_id"
           >
             <Select
               options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
@@ -88,7 +110,7 @@ function HeaderInvoice() {
           </Form.Item>
           <Form.Item
             className="w-[160px]"
-            name="name"
+            name="user"
           >
             <Select
               options={name.map(item => ({label: item.name, value: item.id}))}
@@ -138,4 +160,4 @@ function HeaderInvoice() {
   )
 }
 
-export default HeaderInvoice;
+export default Header;

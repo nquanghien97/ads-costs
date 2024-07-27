@@ -33,7 +33,7 @@ function TableBankTransaction(props: TableBankTransactionProps) {
     return (
       <>
         <tr>
-          <td colSpan={[...staticColumns].length} className={`py-2 uppercase text-center !bg-[#73b67b] ant-table-cell ant-table-cell-fix-left sticky left-0`}>
+          <td colSpan={[...staticColumns].length} className={`py-2 uppercase text-center !bg-[#0071ba] ant-table-cell ant-table-cell-fix-left sticky left-0 font-bold text-white`}>
             {className.split(" ").slice(2, className.length).join(" ")}
           </td>
         </tr>
@@ -57,7 +57,7 @@ function TableBankTransaction(props: TableBankTransactionProps) {
               components: {
                 Table: {
                   borderColor: "red",
-                  headerBg: "#d19b5c"
+                  headerBg: "#ebd1b2",
                 }
               }
             }}

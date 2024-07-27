@@ -11,7 +11,7 @@ export const GetBankTransactions = ({ user_id, search, since, until, system_id, 
   if (group_id) params.append('group_id', group_id.toString());
   if(system_id) params.append('system_id', system_id.toString());
 
-  return api.get(`/statistics/bank${params.toString()}`);
+  return api.get(`/statistics/bank?${params.toString()}`);
 }
 
 export const BankCostsDeclaration = (data: BankCostsDTO[]) => {
