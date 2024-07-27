@@ -37,7 +37,7 @@ function AdAccountTable(props: { data: AdAccountData[], setOpenInvoiceDetails: R
           components: {
             Table: {
               borderColor: "red",
-              headerBg: "#db9850"
+              headerBg: "#ebd1b2"
             }
           }
         }}
@@ -47,7 +47,7 @@ function AdAccountTable(props: { data: AdAccountData[], setOpenInvoiceDetails: R
           columns={columns}
           dataSource={data}
           rowKey={(record) => record.ad_account_id}
-          rowClassName={(_, index) => index % 2 === 0 ? '[&>*]:!bg-[#ccc] no-padding' :  '[&>*]:!bg-[#e5d1ba] no-padding'}
+          rowClassName={(_, index) => index % 2 === 0 ? '[&>*]:!bg-[#e9e9e9] no-padding' :  '[&>*]:!bg-[#ebd1b2] no-padding'}
           pagination={false}
           bordered
           scroll={{ x: columns.length * 100, y: 240 }}

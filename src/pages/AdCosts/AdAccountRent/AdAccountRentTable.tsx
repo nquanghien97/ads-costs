@@ -5,7 +5,7 @@ import { AdAccountData, TotalDailyData } from '../../../dto/AdsBillingsDTO';
 import { generateDynamicColumns, staticColumns } from './columns';
 
 function AdAccountRentTable(props: { data: AdAccountData[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>, loading: boolean }) {
-  const { data, setOpenInvoiceDetails, loading } = props;
+  const { data, loading } = props;
   
   const dataForDynamicColumns = data.flatMap(x => 
     Object.entries(x.datas).map(([date, data]) => ({
@@ -16,7 +16,7 @@ function AdAccountRentTable(props: { data: AdAccountData[], setOpenInvoiceDetail
   const dynamicColumns = data.length > 0 ? generateDynamicColumns(dataForDynamicColumns.reduce((acc: TotalDailyData, cur) => {
     acc[cur.date] = cur;
     return acc;
-  }, {}), setOpenInvoiceDetails) : [];
+  }, {})) : [];
   const columns = [...staticColumns, ...dynamicColumns];
 
   return (
@@ -37,8 +37,8 @@ function AdAccountRentTable(props: { data: AdAccountData[], setOpenInvoiceDetail
           components: {
             Table: {
               borderColor: "red",
-              headerBg: "#8e3e58",
-              headerColor: "white"
+              headerBg: "#e9b9c9",
+              headerColor: "black"
             }
           }
         }}
@@ -53,7 +53,7 @@ function AdAccountRentTable(props: { data: AdAccountData[], setOpenInvoiceDetail
           scroll={{ x: data.length === 0 ? undefined : columns.length * 100, y: 240 }}
           rowHoverable={false}
           className='not-fixed'
-          rowClassName={(_, index) => index % 2 === 0 ? '[&>*]:!bg-[#ccc] no-padding' :  '[&>*]:!bg-[#e5d1ba] no-padding'}
+          rowClassName={(_, index) => index % 2 === 0 ? '[&>*]:!bg-[#e9e9e9] no-padding' :  '[&>*]:!bg-[#e5d1ba] no-padding'}
           loading={loading}
         />
       </ConfigProvider>

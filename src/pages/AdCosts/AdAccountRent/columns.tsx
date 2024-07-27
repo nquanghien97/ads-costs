@@ -89,7 +89,7 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
     render(value) {
       return value.status
     },
-    className: '!bg-[#8e3e58]'
+    className: '!bg-[#e9b9c9] !text-black'
   },
   {
     title: 'Số liệu',
@@ -102,12 +102,12 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
         <div className="row-custom bg-[white]">VND</div>
       </div>
     ),
-    className: '!bg-[#8e3e58]'
+    className: '!bg-[#e9b9c9]'
   },
   {
     title: 'Tổng CPQC',
     dataIndex: 'ad_account',
-    width: 100,
+    width: 200,
     key: '10',
     render(_, value) {
       return (
@@ -117,7 +117,7 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
         </div>
       )
     },
-    className: '!bg-[#8e3e58]'
+    className: '!bg-[#e9b9c9] !text-black'
   },
   {
     title: 'Tổng hóa đơn',
@@ -132,7 +132,7 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
         </div>
       )
     },
-    className: '!bg-[#8e3e58]'
+    className: '!bg-[#e9b9c9] !text-black'
   },
 ];
 

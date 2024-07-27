@@ -76,6 +76,7 @@ button:focus-visible {
 .not-fixed th.ant-table-cell:not(.ant-table-cell-fix-left):not(.ant-table-cell-fix-left-last) {
   /* CSS của bạn ở đây */
   background: #2b663c;
+  color: white;
 }
 
 .not-fixed td.ant-table-cell:not(.ant-table-cell-fix-left):not(.ant-table-cell-fix-left-last) {

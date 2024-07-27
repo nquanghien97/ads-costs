@@ -106,7 +106,7 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
   {
     title: 'Tổng CPQC',
     dataIndex: 'ad_account',
-    width: 100,
+    width: 200,
     key: '10',
     render(_, value) {
       return (
@@ -116,12 +116,12 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
         </div>
       )
     },
-    className: '!bg-[#db9850]'
+    className: '!bg-[#ebd1b2] !text-[black]'
   },
   {
     title: 'Tổng hóa đơn',
     dataIndex: 'ad_account',
-    width: 100,
+    width: 200,
     key: '11',
     render(_, value) {
       return (
@@ -131,7 +131,7 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
         </div>
       )
     },
-    className: '!bg-[#db9850]'
+    className: '!bg-[#ebd1b2] !text-[black]'
   },
 ];
 
