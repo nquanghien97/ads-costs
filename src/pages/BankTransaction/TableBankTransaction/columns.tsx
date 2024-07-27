@@ -12,11 +12,17 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
     render: (_, record) => (
       <table>
         <tbody>
-        {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-          <tr key={innerData.bank_account.id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-            <td>{`TKNH${innerData.bank_account.id}`}</td>
-          </tr>
-        )))}
+          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
+            index % 2 === 0 ? (
+              <tr key={innerData.bank_account.id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+                <td>{`TKNH${innerData.bank_account.id}`}</td>
+              </tr>
+            ) : (
+              <tr key={innerData.bank_account.id} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+                <td>{`TKNH${innerData.bank_account.id}`}</td>
+              </tr>
+            )
+          )))}
         </tbody>
       </table>
     ),
@@ -29,10 +35,16 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
     render: (_, record) => (
       <table>
         <tbody>
-        {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-          <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-            <td>{innerData.bank_account.name}</td>
-          </tr>
+        {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
+          index % 2 === 0 ? (
+            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+              <td>{innerData.bank_account.name}</td>
+            </tr>
+          ) : (
+            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+              <td>{innerData.bank_account.name}</td>
+            </tr>
+          )
         )))}
         </tbody>
       </table>
@@ -46,10 +58,16 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
     render: (_, record) => (
       <table>
         <tbody>
-          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-              <td>{innerData.bank_account.card_number}</td>
-            </tr>
+          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
+            index % 2 === 0 ? (
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+                <td>{innerData.bank_account.card_number}</td>
+              </tr>
+            ) : (
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+                <td>{innerData.bank_account.card_number}</td>
+              </tr>
+            )
           )))}
           </tbody>
       </table>
@@ -63,11 +81,16 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
     render: (_, record) => (
       <table>
         <tbody>
-
-          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-              <td>{innerData.bank_account.bank_name}</td>
-            </tr>
+          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
+            index % 2 === 0 ? (
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+                <td>{innerData.bank_account.bank_name}</td>
+              </tr>
+            ) : (
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+                <td>{innerData.bank_account.bank_name}</td>
+              </tr>
+            )
           )))}
           </tbody>
       </table>
@@ -81,10 +104,16 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
     render: (_, record) => (
       <table>
         <tbody>
-          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-              <td>{formatCurrency(innerData.total_received)}</td>
-            </tr>
+          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
+            index % 2 === 0 ? (
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+                <td>{formatCurrency(innerData.total_received)}</td>
+              </tr>
+            ) : (
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+                <td>{formatCurrency(innerData.total_received)}</td>
+              </tr>
+            )
           )))}
           </tbody>
       </table>
@@ -98,11 +127,16 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
     render: (_, record) => (
       <table>
         <tbody>
-
-          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-              <td>{formatCurrency(innerData.total_paid_bill)}</td>
-            </tr>
+          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
+            index % 2 === 0 ? (
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+                <td>{formatCurrency(innerData.total_paid_bill)}</td>
+              </tr>
+            ) : (
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+                <td>{formatCurrency(innerData.total_paid_bill)}</td>
+              </tr>
+            )
           )))}
           </tbody>
       </table>
@@ -116,11 +150,16 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
     render: (_, record) => (
       <table>
         <tbody>
-
-          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-              <td>{formatCurrency(innerData.total_paid_other)}</td>
-            </tr>
+          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
+            index % 2 === 0 ? (
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+                <td>{formatCurrency(innerData.total_paid_other)}</td>
+              </tr>
+            ) : (
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+                <td>{formatCurrency(innerData.total_paid_other)}</td>
+              </tr>
+            )
           )))}
           </tbody>
       </table>
@@ -134,11 +173,16 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
     render: (_, record) => (
       <table>
         <tbody>
-
-          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-            <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-              <td>{formatCurrency(innerData?.balance)}</td>
-            </tr>
+          {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
+            index % 2 === 0 ? (
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+                <td>{formatCurrency(innerData?.balance)}</td>
+              </tr>
+            ) : (
+              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+                <td>{formatCurrency(innerData?.balance)}</td>
+              </tr>
+            )
           )))}
           </tbody>
       </table>
@@ -158,10 +202,16 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
         render: (_, record) => (
           <table>
             <tbody>
-            {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-                <td>{formatCurrency(innerData.datas[date]?.received)}</td>
-              </tr>
+            {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
+              index % 2 === 0 ? (
+                <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+                  <td>{formatCurrency(innerData.datas[date]?.received)}</td>
+                </tr>
+              ) : (
+                <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+                  <td>{formatCurrency(innerData.datas[date]?.received)}</td>
+                </tr>
+              )
             )))}
             </tbody>
           </table>
@@ -174,13 +224,22 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
         render: (_, record: BankTransactionsDTO) => (
           <table>
             <tbody>
-            {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-                <td>{formatCurrency(innerData.datas[date]?.paid_bill)}</td>
-                <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
-                  <EyeIcon width={18} height={18} />
-                </td>
-              </tr>
+            {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
+              index % 2 === 0 ? (
+                <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+                  <td>{formatCurrency(innerData.datas[date]?.paid_bill)}</td>
+                  <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
+                    <EyeIcon width={18} height={18} />
+                  </td>
+                </tr>
+              ) : (
+                <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+                  <td>{formatCurrency(innerData.datas[date]?.paid_bill)}</td>
+                  <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
+                    <EyeIcon width={18} height={18} />
+                  </td>
+                </tr>
+              )
             )))}
             </tbody>
           </table>
@@ -193,15 +252,23 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
         render: (_, record: BankTransactionsDTO) => (
           <table>
             <tbody>
-
-            {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap(innerData => (
-              <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
-                <td>{formatCurrency(innerData.datas[date]?.paid_other)}</td>
-                <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
-                  <EyeIcon width={18} height={18}/>
-                </td>
-              </tr>
-            )))}
+              {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
+                index % 2 === 0 ? (
+                  <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+                    <td>{formatCurrency(innerData.datas[date]?.paid_other)}</td>
+                    <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
+                      <EyeIcon width={18} height={18}/>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+                    <td>{formatCurrency(innerData.datas[date]?.paid_other)}</td>
+                    <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
+                      <EyeIcon width={18} height={18}/>
+                    </td>
+                  </tr>
+                )
+              )))}
             </tbody>
           </table>
         ),

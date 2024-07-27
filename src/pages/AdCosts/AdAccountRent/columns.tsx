@@ -14,10 +14,10 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
     title: 'Mã TKQC',
     dataIndex: 'ad_account',
     key: '1',
-    width: 150,
+    width: 100,
     fixed: 'left',
     render(value) {
-      return value.account_id
+      return <span>{`TK${value.id}`}</span>
     }
   },
   {
@@ -34,10 +34,10 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
     title: 'ID TKQC',
     dataIndex: 'ad_account',
     key: '3',
-    width: 100,
+    width: 150,
     fixed: 'left',
     render(value) {
-      return value.id
+      return value.account_id
     }
   },
   {
