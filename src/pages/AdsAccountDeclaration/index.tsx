@@ -130,7 +130,12 @@ function AdsAccountDeclaration() {
       title: 'Phí thuê',
       dataIndex: 'rental_fee',
       key: '14',
-      width: 100
+      width: 100,
+      render(value) {
+        return (
+          <div>{`${value} %`}</div>
+        )
+      }
     },
     {
       title: 'Bank liên kết TKQC',
