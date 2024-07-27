@@ -8,6 +8,7 @@ import { DeclarationAdsBills } from "../../../services/ads_bills";
 import { SearchFormValues } from "../Header";
 import { SystemData } from "../../../dto/AdsBillingsDTO";
 import { GetAdsCostsByUser } from "../../../services/ads_costs";
+import axios from "axios";
 
 interface DataRow {
   'ID TKQC': number;
@@ -81,9 +82,17 @@ function BillCosts(props: BillCostsProps) {
       setOpenModalBillCosts(false);
       notification.success('Khai báo Hóa đơn thành công')
       setRefreshKey(pre => !pre)
-    } catch (err) {
-      console.log(err);
-      notification.error('Khai báo Hóa đơn không thành công')
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Không hợp lệ.")) {
+            const index = parseInt(key.split('.')[1], 10);
+            notification.error(`ID TKQC "${dataSubmit[index].account_id}" không tồn tại`)
+            break;
+          }
+        }
+      }
     } finally {
       setLoading(false)
     }
