@@ -61,7 +61,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
       if(adsAccountTypes?.label === 'TK THUÊ') {
         const submitData = {
           user_id: user_id,
-          account_id: +data.account_id,
+          account_id: data.account_id,
           account_name: data.account_name,
           channel_id: data.channel_id,
           currency_id: data.currency_id,
@@ -78,7 +78,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
       } else if(adsAccountTypes?.label === 'TK THƯỜNG - Trả sau' || adsAccountTypes?.label === 'TK THƯỜNG - Trả trước') {
         const submitData = {
           user_id: user_id,
-          account_id: +data.account_id,
+          account_id: data.account_id,
           account_name: data.account_name,
           channel_id: data.channel_id,
           currency_id: data.currency_id,
