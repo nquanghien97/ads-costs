@@ -93,6 +93,7 @@ function BillCosts(props: BillCostsProps) {
           }
         }
       }
+      notification.error('Có lỗi xảy ra, vui lòng thử lại!')
     } finally {
       setLoading(false)
     }

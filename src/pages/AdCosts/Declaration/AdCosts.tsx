@@ -86,6 +86,7 @@ function AdCosts(props: AdCostsProps) {
           }
         }
       }
+      notification.error('Có lỗi xảy ra, vui lòng thử lại!')
     } finally {
       setLoading(false);
     }
