@@ -59,7 +59,7 @@ function AdCosts(props: AdCostsProps) {
     const dataSubmit = dataImport?.map(item => ({
       date: formatDate(new Date(data.date)),
       account_id: item["ID TKQC"],
-      amount: +item["CHI PHÍ"]
+      amount: +item["CHI PHÍ"].replace(/,/g, '')
     }));
     if(!dataSubmit) {
       notification.warning('Bạn cần import dữ liệu')
@@ -68,9 +68,9 @@ function AdCosts(props: AdCostsProps) {
     try {
       await DeclarationAdsCosts(dataSubmit)
       const res = await GetAdsCostsByUser(searchForm)
+      console.log(res.data)
       setDatas(res.data.data.list)
       setOpenModal(false)
-      console.log(dataSubmit)
       notification.success('Khai báo Chi phí quảng cáo thành công')
       setRefreshKey(pre => !pre)
     } catch (err) {
