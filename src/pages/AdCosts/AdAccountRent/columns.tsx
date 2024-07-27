@@ -1,7 +1,6 @@
 import { Select } from 'antd';
 import { TableColumnsType } from 'antd';
 import { AdAccountData, TotalDailyData } from '../../../dto/AdsBillingsDTO';
-import EyeIcon from '../../../assets/icons/EyeIcon';
 import { formatCurrency } from '../../../utils/currency';
 
 const options = [
@@ -137,7 +136,7 @@ export const staticColumns: TableColumnsType<AdAccountData> = [
   },
 ];
 
-export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<AdAccountData> => {
+export const generateDynamicColumns = (datas: TotalDailyData): TableColumnsType<AdAccountData> => {
   const dates = Object.keys(datas);
   return dates.flatMap((date, index) => ({
     title: date,
@@ -162,9 +161,6 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
             <div>
               <div className="row-custom flex items-center justify-between gap-2 bg-[#c7ecce]">
                 {formatCurrency(record.datas?.[date]?.bill)}
-                <div onClick={() => setOpenInvoiceDetails(true)} >
-                  <EyeIcon width={18} height={18} className="cursor-pointer" />
-                </div>
               </div>
               <div className="row-custom flex items-center justify-between gap-2 bg-[white]">
                 {formatCurrency(record.datas?.[date]?.bill_vnd)}
