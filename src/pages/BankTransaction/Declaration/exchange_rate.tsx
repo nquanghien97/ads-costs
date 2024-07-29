@@ -14,9 +14,15 @@ interface DataRow {
   __rowNum__: number
 }
 
-function ExchangeRate() {
+interface ExchangeRateProps {
+  openModalExchangeRate: boolean
+  setOpenModalExchangeRate: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function ExchangeRate(props: ExchangeRateProps) {
+  const { openModalExchangeRate, setOpenModalExchangeRate } = props;
+
   const [dataImport, setDataImport] = useState<DataRow[] | null>(null);
-  const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
@@ -44,7 +50,7 @@ function ExchangeRate() {
   };
 
   const onCloseModal = () => {
-    setOpenModal(false);
+    setOpenModalExchangeRate(false);
     setDataImport(null);
   }
 
@@ -62,7 +68,7 @@ function ExchangeRate() {
     }
     try {
       await ExchangeRateDeclaration(dataSubmit)
-      setOpenModal(false);
+      setOpenModalExchangeRate(false);
       notification.success('Khai báo Tỷ giá ngân hàng thành công')
     } catch (err) {
       console.log(err);
@@ -91,11 +97,8 @@ function ExchangeRate() {
   ]
 
   return (
-    <>
-      <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModal(true)}>
-        <span className="text-white">Khai báo tỷ giá ngân hàng</span>
-      </div>
-      <Modal open={openModal} onCancel={onCloseModal} footer={false} className="!w-1/2">
+    <> 
+      <Modal open={openModalExchangeRate} onCancel={onCloseModal} footer={false} className="!w-1/2">
         <Form form={form} onFinish={onFinish}>
           <Form.Item
             name='date'
@@ -112,7 +115,7 @@ function ExchangeRate() {
           <div className="flex items-center justify-center">
             <label htmlFor="import-ad-costs" className="h-full">
               <div className="flex justify-center">
-                <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 py-4 my-4 flex items-center justify-center hover:opacity-80 duration-300">
+                <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 py-2 my-4 flex items-center justify-center hover:opacity-80 duration-300">
                   <span className="text-white">Khai báo tỷ giá ngân hàng</span>
                 </div>
               </div>

@@ -37,6 +37,10 @@ function Header(props: HeaderProps) {
   const { systems } = useSystemsStore();
   const [selectedSystem, setSelectedSystem] = useState(-1);
   const [name, setName] = useState<User[]>([]);
+  
+  const [openModalTransfer, setOpenModalTransfer] = useState(false);
+  const [openModalCosts, setOpenModalCosts] = useState(false);
+  const [openModalExchangeRate, setOpenModalExchangeRate] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -141,9 +145,18 @@ function Header(props: HeaderProps) {
       </Form>
       <div className="flex py-2 justify-between">
         <div className="flex gap-2">
-          <TransferMoney />
-          <CostsDeclaration />
-          <ExchangeRate />
+          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalTransfer(true)}>
+            <span className="text-white">Khai báo tiền chuyển</span>
+          </div>
+          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalCosts(true)}>
+            <span className="text-white">Khai báo Chi phí</span>
+          </div>
+          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalExchangeRate(true)}>
+            <span className="text-white">Khai báo tỷ giá ngân hàng</span>
+          </div>
+          {openModalTransfer && <TransferMoney openModalTransfer={openModalTransfer} setOpenModalTransfer={setOpenModalTransfer} />}
+          {openModalCosts && <CostsDeclaration openModalCosts={openModalCosts} setOpenModalCosts={setOpenModalCosts} />}
+          {openModalExchangeRate && <ExchangeRate openModalExchangeRate={openModalExchangeRate} setOpenModalExchangeRate={setOpenModalExchangeRate} />}
         </div>
         <div className="flex gap-2">
           <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 py-3 flex items-center justify-center hover:opacity-80 duration-300" >

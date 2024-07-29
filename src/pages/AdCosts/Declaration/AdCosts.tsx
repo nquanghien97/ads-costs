@@ -85,8 +85,9 @@ function AdCosts(props: AdCostsProps) {
             break;
           }
         }
+      } else {
+        notification.error('Có lỗi xảy ra, vui lòng thử lại!')
       }
-      notification.error('Có lỗi xảy ra, vui lòng thử lại!')
     } finally {
       setLoading(false);
     }

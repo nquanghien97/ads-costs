@@ -72,7 +72,7 @@ function TableBankAccount(props: TableBankAccountProps) {
       width: 220
     },
     {
-      title: 'Bank',
+      title: 'Ngân hàng',
       dataIndex: 'bank_name',
       key: '7',
       width: 150

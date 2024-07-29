@@ -5,6 +5,7 @@ import { formatDate } from "../../../utils/formatDate";
 import { useNotification } from "../../../hooks/useNotification";
 import localeValues from "antd/locale/vi_VN";
 import { BankCostsDeclaration } from "../../../services/bank_transaction";
+import axios from "axios";
 
 interface DataRow {
   'SỐ TIỀN': number;
@@ -12,9 +13,15 @@ interface DataRow {
   'SỐ TKNH': number
 }
 
-function TransferMoney() {
+interface TransferMoneyProps {
+  openModalTransfer: boolean
+  setOpenModalTransfer: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function TransferMoney(props: TransferMoneyProps) {
+  const { openModalTransfer, setOpenModalTransfer} = props
+
   const [dataImport, setDataImport] = useState<DataRow[] | null>(null);
-  const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
@@ -40,7 +47,7 @@ function TransferMoney() {
   };
 
   const onCloseModal = () => {
-    setOpenModal(false);
+    setOpenModalTransfer(false);
     setDataImport(null);
   }
 
@@ -58,16 +65,28 @@ function TransferMoney() {
     }
     try {
       await BankCostsDeclaration(dataSubmit)
-      setOpenModal(false);
+      setOpenModalTransfer(false);
       notification.success('Khai báo Tiền nhận thành công')
       // console.log(dataSubmit)
     } catch (err) {
-      console.log(err);
-      notification.error('Khai báo Tiền nhận không thành công')
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        console.log(invalidData)
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Số thẻ ngân hàng không tồn tại hoặc đã ngừng sử dụng.")) {
+            const index = parseInt(key.split('.')[1], 10);
+            notification.error(`Số TKNH "${dataSubmit[index].card_number}" không tồn tại hoặc đã ngừng sử dụng.`)
+            break;
+          }
+        }
+      } else {
+        notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+      }
     } finally {
       setLoading(false);
     }
   }
+  console.log(dataImport)
 
   const columns: TableColumnsType = [
     {
@@ -84,10 +103,7 @@ function TransferMoney() {
 
   return (
     <>
-      <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModal(true)}>
-        <span className="text-white">Khai báo tiền chuyển</span>
-      </div>
-      <Modal open={openModal} onCancel={onCloseModal} footer={false} className="!w-1/2">
+      <Modal open={openModalTransfer} onCancel={onCloseModal} footer={false} className="!w-1/2">
         <Form form={form} onFinish={onFinish}>
           <Form.Item
             name='date'
@@ -111,7 +127,7 @@ function TransferMoney() {
           </label>
         {dataImport && (
           <>
-            <Table dataSource={dataImport} columns={columns} rowKey={(record) => record["ID TKQC"]} />
+            <Table dataSource={dataImport} columns={columns} rowKey={(record) => record["__rowNum__"]} />
             <div className="flex justify-evenly py-4">
               <Button type="primary" danger onClick={onCloseModal}>Hủy</Button>
               <Button type="primary" htmlType="submit" loading={loading}>Xác nhận</Button>

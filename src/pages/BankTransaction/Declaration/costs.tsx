@@ -5,6 +5,7 @@ import { formatDate } from "../../../utils/formatDate";
 import { useNotification } from "../../../hooks/useNotification";
 import localeValues from "antd/locale/vi_VN";
 import { BankCostsDeclaration } from "../../../services/bank_transaction";
+import axios from "axios";
 
 interface DataRow {
   'SỐ TIỀN': number;
@@ -13,9 +14,15 @@ interface DataRow {
   'HẠNG MỤC THANH TOÁN': string
 }
 
-function CostsDeclaration() {
+interface CostsDeclarationProps {
+  openModalCosts: boolean
+  setOpenModalCosts: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function CostsDeclaration(props: CostsDeclarationProps) {
+  const { openModalCosts, setOpenModalCosts} = props;
+
   const [dataImport, setDataImport] = useState<DataRow[] | null>(null);
-  const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
@@ -41,7 +48,7 @@ function CostsDeclaration() {
   };
 
   const onCloseModal = () => {
-    setOpenModal(false);
+    setOpenModalCosts(false);
     setDataImport(null);
   }
 
@@ -60,16 +67,29 @@ function CostsDeclaration() {
     }
     try {
       await BankCostsDeclaration(dataSubmit)
-      setOpenModal(false);
+      setOpenModalCosts(false);
       notification.success('Khai báo Tiền nhận thành công')
       // console.log(dataSubmit)
     } catch (err) {
-      console.log(err);
-      notification.error('Khai báo Tiền nhận không thành công')
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        console.log(invalidData)
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Số thẻ ngân hàng không tồn tại hoặc đã ngừng sử dụng.")) {
+            const index = parseInt(key.split('.')[1], 10);
+            notification.error(`Số TKNH "${dataSubmit[index].card_number}" không tồn tại hoặc đã ngừng sử dụng.`)
+            break;
+          }
+        }
+      } else {
+        notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+      }
     } finally {
       setLoading(false);
     }
   }
+
+  console.log(dataImport)
 
   const columns: TableColumnsType = [
     {
@@ -91,10 +111,7 @@ function CostsDeclaration() {
 
   return (
     <>
-      <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModal(true)}>
-        <span className="text-white">Khai báo Chi phí</span>
-      </div>
-      <Modal open={openModal} onCancel={onCloseModal} footer={false} className="!w-1/2">
+      <Modal open={openModalCosts} onCancel={onCloseModal} footer={false} className="!w-1/2">
         <Form form={form} onFinish={onFinish}>
           <Form.Item
             name='date'
