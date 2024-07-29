@@ -2,7 +2,8 @@
 // import Table from 'rc-table';
 import { ConfigProvider, Empty, Table } from 'antd';
 import { AdAccountData, TotalDailyData } from '../../../dto/AdsBillingsDTO';
-import { generateDynamicColumns, staticColumns } from './columns';
+import { GenerateDynamicColumns } from './columns/GenerateDynamicColumns';
+import { StaticColumns } from './columns/StaticColumns'; 
 
 function AdAccountRentTable(props: { data: AdAccountData[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>, loading: boolean }) {
   const { data, loading } = props;
@@ -13,11 +14,11 @@ function AdAccountRentTable(props: { data: AdAccountData[], setOpenInvoiceDetail
       ...data
     }))
   );
-  const dynamicColumns = data.length > 0 ? generateDynamicColumns(dataForDynamicColumns.reduce((acc: TotalDailyData, cur) => {
+  const dynamicColumns = data.length > 0 ? GenerateDynamicColumns(dataForDynamicColumns.reduce((acc: TotalDailyData, cur) => {
     acc[cur.date] = cur;
     return acc;
   }, {})) : [];
-  const columns = [...staticColumns, ...dynamicColumns];
+  const columns = [...StaticColumns, ...dynamicColumns];
 
   return (
     <div className="relative">
