@@ -51,7 +51,6 @@ function EditBankAccount(props: EditBankAccountProps) {
       const res = await getBankAccount(bankId);
       const bankData = res.data.data as BankAccountType
       setBankAccountData(bankData)
-      console.log(bankData)
       const resUser = await getUser(bankData.user_id)
       setUser(resUser.data.data)
       form.setFieldsValue({

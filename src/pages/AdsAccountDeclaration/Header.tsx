@@ -71,7 +71,6 @@ function Header(props: HeaderProps) {
         ...pre,
         ...submitData
       }));
-      console.log(submitData)
     } catch (err) {
       console.log(err);
     } finally {

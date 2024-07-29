@@ -69,11 +69,9 @@ function CostsDeclaration(props: CostsDeclarationProps) {
       await BankCostsDeclaration(dataSubmit)
       setOpenModalCosts(false);
       notification.success('Khai báo Tiền nhận thành công')
-      // console.log(dataSubmit)
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const invalidData = err.response?.data.invalidData
-        console.log(invalidData)
         for (const key in invalidData) {
           if (Array.isArray(invalidData[key]) && invalidData[key].includes("Số thẻ ngân hàng không tồn tại hoặc đã ngừng sử dụng.")) {
             const index = parseInt(key.split('.')[1], 10);

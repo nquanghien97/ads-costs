@@ -38,7 +38,6 @@ function AddUser(props: AddUserProps) {
   const onFinish = async (data: UserDTO) => {
     setLoading(true);
     try {
-      console.log(data)
       await addNewUser(data)
       setRefreshKey(pre => !pre);
       onClose();

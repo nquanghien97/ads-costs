@@ -69,7 +69,6 @@ function AdCosts(props: AdCostsProps) {
     try {
       await DeclarationAdsCosts(dataSubmit)
       const res = await GetAdsCostsByUser(searchForm)
-      console.log(res.data)
       setDatas(res.data.data.list)
       setOpenModal(false)
       notification.success('Khai báo Chi phí quảng cáo thành công')
