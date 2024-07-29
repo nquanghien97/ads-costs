@@ -1,6 +1,6 @@
 import withAuth from "../../hocs/withAuth";
 import InformationSetting from "./InformationSetting";
-import { addAdAccountStatus, addBank, addChannel, addCurrency, addTimezone, deleteAdAccountStatus, deleteBank, deleteChannel, deleteCurrency, deleteTimezone, editAdAccountStatus, editBank, editChannel, editCurrency, editTimezone } from "../../services/information_settings";
+import { addBank, addChannel, addCurrency, addTimezone, deleteBank, deleteChannel, deleteCurrency, deleteTimezone, editAdAccountStatus, editBank, editChannel, editCurrency, editTimezone } from "../../services/information_settings";
 import { InformationSettingType } from "../../entities/InformationSetting";
 import { useEffect, useState } from "react";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
@@ -8,7 +8,7 @@ import { useInformationSettingsStore } from "../../zustand/information_settings.
 function InfomationSettings() {
   const {
     channels, currencies, timezones, adAccountTypes,
-    adAccountStatus, banks, setChannels, setCurrencies,
+    banks, setChannels, setCurrencies,
     setTimezones, setAdAccountStatus, setBanks,
     loading
   } = useInformationSettingsStore();
@@ -75,10 +75,10 @@ function InfomationSettings() {
         //   await deleteAdAccountType(id);
         //   setAdAccountTypes((prev) => prev.filter((i) => i.id !== id));
         //   break;
-        case 'adAccountStatus':
-          await deleteAdAccountStatus(id);
-          setAdAccountStatus((prev) => prev.filter((i) => i.id !== id));
-          break;
+        // case 'adAccountStatus':
+        //   await deleteAdAccountStatus(id);
+        //   setAdAccountStatus((prev) => prev.filter((i) => i.id !== id));
+        //   break;
         case 'bank':
           await deleteBank(id);
           setBanks((prev) => prev.filter((i) => i.id !== id));
@@ -117,11 +117,11 @@ function InfomationSettings() {
         //   setAdAccountTypes((prev) => [...prev, newAdAccountType.data.data]);
         //   break;
         // }
-        case 'adAccountStatus': {
-          const newAdAccountStatus = await addAdAccountStatus(name);
-          setAdAccountStatus((prev) => [...prev, newAdAccountStatus.data.data]);
-          break;
-        }
+        // case 'adAccountStatus': {
+        //   const newAdAccountStatus = await addAdAccountStatus(name);
+        //   setAdAccountStatus((prev) => [...prev, newAdAccountStatus.data.data]);
+        //   break;
+        // }
         case 'bank': {
           const newBank = await addBank(name);
           setBanks((prev) => [...prev, newBank.data.data]);
@@ -199,7 +199,7 @@ function InfomationSettings() {
           loadingEdit={loadingEdit}
           type="adAccountType"
         />
-        <InformationSetting
+        {/* <InformationSetting
           data={adAccountStatus}
           title="Trạng thái TKQC" color="#f6ca99"
           titleColor="#e7963e"
@@ -211,7 +211,7 @@ function InfomationSettings() {
           handleEdit={handleEdit}
           loadingEdit={loadingEdit}
           type="adAccountStatus"
-        />
+        /> */}
         <InformationSetting
           data={banks}
           title="Ngân hàng" color="#dbcfc2"
