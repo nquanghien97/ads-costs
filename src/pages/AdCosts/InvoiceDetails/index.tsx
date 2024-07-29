@@ -1,23 +1,78 @@
-import CloseIcon from "../../../assets/icons/CloseIcon"
-import ButtonIcon from "../../../components/common/ButtonIcon"
-
+import { Modal, Table, TableColumnsType } from "antd";
+import { useEffect, useState } from "react";
+import { getAdsBillDetails } from "../../../services/ads_bills";
+import { convertToDate, formatDate } from "../../../utils/date";
 interface InvoiceDetailsProps {
   onClose: () => void;
+  open: boolean;
+  dataDetails: {
+    ad_account_id: number;
+    date: string;
+  }
 }
 
+const columns: TableColumnsType = [
+  {
+    title: 'ID GIAO DỊCH',
+    key: '1',
+    dataIndex: 'billing_id'
+  },
+  {
+    title: 'NGÀY',
+    key: '2',
+    dataIndex: 'date'
+  },
+  {
+    title: 'SỐ TIỀN',
+    key: '3',
+    dataIndex: 'amount'
+  },
+  {
+    title: 'PTTT',
+    key: '4',
+    dataIndex: 'payment_method'
+  },
+  {
+    title: 'MÃ THAM CHIẾU',
+    key: '5',
+    dataIndex: 'refer_code'
+  }
+]
+
 function InvoiceDetails(props: InvoiceDetailsProps) {
-  const { onClose } = props
+  const { onClose, open, dataDetails } = props;
+  const dateBill = formatDate(convertToDate(dataDetails.date))
+  const [dataBillDetails, setDataBillDetails] = useState([]);
+  const [loading, setLoading] = useState(false);
+  console.log(dataDetails)
+  useEffect(() => {
+    setLoading(true);
+    (async () => {
+      const res = await getAdsBillDetails({since: dateBill, until: dateBill, ad_account_id: dataDetails.ad_account_id})
+      setDataBillDetails(res.data.data.list)
+      setLoading(false)
+    })()
+  }, [dataDetails.ad_account_id, dateBill]);
+
   return (
-    <div className="fixed inset-0 bg-[#0000004d] z-50">
-      <div className="w-[800px] h-[300px] relative rounded-xl bg-white left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 flex">
-        <div className="w-full text-center p-3 h-[50px] bg-[#eb9d4d] rounded-t-xl uppercase font-bold">Chi tiết hóa đơn</div>
-        <div className="absolute right-2 top-2" onClick={onClose}>
-          <ButtonIcon>
-            <CloseIcon />
-          </ButtonIcon>
-        </div>
+    <Modal
+      open={open}
+      onCancel={onClose}
+      footer={false}
+      className="!w-2/3"
+    >
+      <div className="w-full text-center p-3 h-[50px] bg-[#eb9d4d] rounded-t-md uppercase font-bold">Chi tiết hóa đơn</div>
+      <div className="p-4">
+        <Table
+          dataSource={dataBillDetails}
+          columns={columns}
+          bordered
+          pagination={false}
+          rowKey={(record => record.id)}
+          loading={loading}
+        />
       </div>
-    </div>
+    </Modal>
   )
 }
 

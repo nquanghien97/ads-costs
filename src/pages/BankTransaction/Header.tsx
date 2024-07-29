@@ -10,7 +10,7 @@ import TransferMoney from "./Declaration/transfer-money";
 import CostsDeclaration from "./Declaration/costs";
 import ExchangeRate from "./Declaration/exchange_rate";
 import { Link } from "react-router-dom";
-import { formatDate } from "../../utils/formatDate";
+import { formatDate } from "../../utils/date";
 import { SearchFormValues } from ".";
 
 interface FormValues {

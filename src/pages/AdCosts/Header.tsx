@@ -9,7 +9,7 @@ import { getUsers } from "../../services/users";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
 import BillCosts from "./Declaration/BillCosts";
 import { SystemData } from "../../dto/AdsBillingsDTO";
-import { formatDate } from "../../utils/formatDate";
+import { formatDate } from "../../utils/date";
 import { useNotification } from "../../hooks/useNotification";
 import { GetAdsCostsByUser } from "../../services/ads_costs";
 import localeValues from "antd/locale/vi_VN";

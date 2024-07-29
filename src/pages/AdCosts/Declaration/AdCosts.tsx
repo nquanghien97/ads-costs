@@ -1,7 +1,7 @@
 import { Button, DatePicker, Form, Modal, Table, TableColumnsType } from "antd";
 import { ChangeEvent, useState } from "react";
 import * as XLSX from "xlsx";
-import { formatDate } from "../../../utils/formatDate";
+import { formatDate } from "../../../utils/date";
 import { useNotification } from "../../../hooks/useNotification";
 import { DeclarationAdsCosts, GetAdsCostsByUser } from "../../../services/ads_costs";
 import localeValues from "antd/locale/vi_VN";

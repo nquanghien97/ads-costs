@@ -10,18 +10,25 @@ const options = [
   { value: 'Chưa xin', label: 'Chưa xin' },
 ];
 
-const bgSelect = (value: string) => {
-  if (value === 'Đã XN') return `w-full [&>*]:!bg-[#0071ba] [&>*]:!text-white`
-  if (value === 'Sai số') return 'w-full [&>*]:!bg-[#ff4d4f] [&>*]:!text-white'
-  return 'w-full'
-}
-
-const onChangeStatus = (value: string, id: number) => {
-  console.log({ value, id });
-}
-
 export const GenerateDynamicColumns = (datas: TotalDailyData): TableColumnsType<AdAccountData> => {
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState({
+    ad_account_id: -1,
+    date: '',
+    value: ''
+  });
+
+  const onChangeStatus = (value: string, record: AdAccountData, date: string) => {
+    setSelected({ ad_account_id: record.ad_account_id, date, value: value})
+  }
+
+  const bgSelect = (record: AdAccountData, date: string) => {
+    if (selected.ad_account_id === record.ad_account_id && selected.date === date) {
+      if (selected.value === 'Đã XN') return 'w-full [&>*]:!bg-[#0071ba] [&>*]:!text-white';
+      if (selected.value === 'Sai số') return 'w-full [&>*]:!bg-[#ff4d4f] [&>*]:!text-white';
+    }
+    return 'w-full';
+  }
+
   const dates = Object.keys(datas);
   return dates.flatMap((date, index) => ({
     title: date,
@@ -62,14 +69,11 @@ export const GenerateDynamicColumns = (datas: TotalDailyData): TableColumnsType<
           <div className="px-2">
             <Select
               options={options}
-              onChange={(value) => {
-                setSelected(value)
-                onChangeStatus(value, record.ad_account.id)}
-              }
+              onChange={(value) => onChangeStatus(value, record, date)}
               size="large"
               defaultValue={record.datas?.[date]?.status}
+              className={bgSelect(record, date)}
               placeholder="Select..."
-              className={bgSelect(selected)}
             />
           </div>
         ),

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Header from "./Header";
-import InvoiceDetails from "./InvoiceDetails";
 import AdAccount from "./AdAccount";
 import AdAccountRent from "./AdAccountRent";
 import { GetAdsCostsByUser } from "../../services/ads_costs";
@@ -11,7 +10,6 @@ import { UserRole } from "../../entities/User";
 import LoadingIcon from "../../assets/icons/LoadingIcon";
 
 function Invoice() {
-  const [openInvoiceDetails, setOpenInvoiceDetails] = useState(false);
   const [datas, setDatas] = useState<SystemData[]>();
   const [loading, setLoading] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
@@ -59,8 +57,8 @@ function Invoice() {
     return (
       filteredData?.map(data => data.group_datas.map(data => data.user_datas.map((item, index) => (
         <div className="border-b-4 border-cyan-700 py-6" key={index}>
-          <AdAccount setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
-          <AdAccountRent setOpenInvoiceDetails={setOpenInvoiceDetails} data={item} loading={loading} />
+          <AdAccount data={item} loading={loading} />
+          <AdAccountRent data={item} loading={loading} />
         </div>
     ))))
     )
@@ -72,7 +70,6 @@ function Invoice() {
       <div className="pt-[136px]">
         {renderBody()}
       </div>
-      {openInvoiceDetails && <InvoiceDetails onClose={() => setOpenInvoiceDetails(false)} />}
     </div>
   )
 }

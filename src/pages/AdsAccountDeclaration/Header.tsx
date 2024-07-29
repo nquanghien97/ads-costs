@@ -6,7 +6,7 @@ import { useGroupsStore } from "../../zustand/groups.store";
 import { useSystemsStore } from "../../zustand/systems.store";
 import { getUsers } from "../../services/users";
 import localeValues from "antd/locale/vi_VN";
-import { formatDate } from "../../utils/formatDate";
+import { formatDate } from "../../utils/date";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
 import { SubmitFormSearchType } from ".";
 

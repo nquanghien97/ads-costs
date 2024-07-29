@@ -11,19 +11,35 @@ const options = [
   { value: 'Chưa xin', label: 'Chưa xin' },
 ];
 
-
-const bgSelect = (value: string) => {
-  if (value === 'Đã XN') return `w-full [&>*]:!bg-[#0071ba] [&>*]:!text-white`
-  if (value === 'Sai số') return 'w-full [&>*]:!bg-[#ff4d4f] [&>*]:!text-white'
-  return 'w-full'
+interface GenerateDynamicColumnsProps {
+  setDataDetails: React.Dispatch<React.SetStateAction<{
+    ad_account_id: number;
+    date: string;
+  }>>;
+  datas: TotalDailyData;
+  setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const onChangeStatus = (value: string, id: number) => {
-  console.log({ value, id });
-}
+export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): TableColumnsType<AdAccountData> => {
+  const { setDataDetails, datas, setOpenInvoiceDetails } = props;
+  const [selected, setSelected] = useState({
+    ad_account_id: -1,
+    date: '',
+    value: ''
+  })
 
-export const GenerateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<AdAccountData> => {
-  const [selected, setSelected] = useState('')
+  const onChangeStatus = (value: string, record: AdAccountData, date: string) => {
+    setSelected({ ad_account_id: record.ad_account_id, date, value: value})
+  }
+
+  const bgSelect = (record: AdAccountData, date: string) => {
+    if (selected.ad_account_id === record.ad_account_id && selected.date === date) {
+      if (selected.value === 'Đã XN') return 'w-full [&>*]:!bg-[#0071ba] [&>*]:!text-white';
+      if (selected.value === 'Sai số') return 'w-full [&>*]:!bg-[#ff4d4f] [&>*]:!text-white';
+    }
+    return 'w-full';
+  }
+
   const dates = Object.keys(datas);
   return dates.flatMap((date, index) => ({
     title: date,
@@ -46,17 +62,27 @@ export const GenerateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
         key: `bill_${index}`,
         width: 140,
         render: (_, record) => (
-          <div>
-            <div className="row-custom flex items-center gap-2 bg-[#c7ecce]">
-              {formatCurrency(record.datas?.[date]?.bill)}
-              <div onClick={() => setOpenInvoiceDetails(true)} className="cursor-pointer">
-                <EyeIcon width={18} height={18} />
+          <>
+            <div>
+              <div className="row-custom flex items-center gap-2 bg-[#c7ecce]">
+                {formatCurrency(record.datas?.[date]?.bill)}
+                <div
+                  onClick={() => {
+                    setOpenInvoiceDetails(true)
+                    setDataDetails({
+                      ad_account_id: record.ad_account_id,
+                      date: date
+                    })
+                  }}
+                  className="cursor-pointer">
+                  <EyeIcon width={18} height={18} />
+                </div>
+              </div>
+              <div className="row-custom flex items-center justify-between gap-2 bg-[white]">
+                {formatCurrency(record.datas?.[date]?.bill_vnd)}
               </div>
             </div>
-            <div className="row-custom flex items-center justify-between gap-2 bg-[white]">
-              {formatCurrency(record.datas?.[date]?.bill_vnd)}
-            </div>
-          </div>
+          </>
         ),
       },
       {
@@ -67,13 +93,10 @@ export const GenerateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
           <div className="px-2">
             <Select
               options={options}
-              onChange={(value) => {
-                setSelected(value)
-                onChangeStatus(value, record.ad_account.id)}
-              }
+              onChange={(value) => onChangeStatus(value, record, date)}
               size="large"
               defaultValue={record.datas?.[date]?.status}
-              className={bgSelect(selected)}
+              className={bgSelect(record, date)}
               placeholder="Select..."
             />
           </div>

@@ -5,7 +5,7 @@ import { AdAccountData, TotalDailyData } from '../../../dto/AdsBillingsDTO';
 import { GenerateDynamicColumns } from './columns/GenerateDynamicColumns';
 import { StaticColumns } from './columns/StaticColumns'; 
 
-function AdAccountRentTable(props: { data: AdAccountData[], setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>, loading: boolean }) {
+function AdAccountRentTable(props: { data: AdAccountData[], loading: boolean }) {
   const { data, loading } = props;
   
   const dataForDynamicColumns = data.flatMap(x => 

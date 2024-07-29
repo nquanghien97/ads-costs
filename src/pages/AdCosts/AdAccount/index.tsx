@@ -2,14 +2,13 @@ import { UserData } from "../../../dto/AdsBillingsDTO";
 import AdAccountTable from "./AdAccountTable";
 
 interface AdAccountProps {
-  setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>
   data: UserData
   loading: boolean
 }
 
 function AdAccount(props: AdAccountProps) {
 
-  const { setOpenInvoiceDetails, data, loading } = props;
+  const { data, loading } = props;
   const group_system = data.ad_account_datas.filter(item => item.ad_account !== null).flatMap(item => `${item.ad_account.group.name} - ${item.ad_account.system.name}`)
   return (
     <>
@@ -23,7 +22,6 @@ function AdAccount(props: AdAccountProps) {
         <div className="w-full">
           <AdAccountTable
             data={data.ad_account_datas.filter(item => (item.ad_account !== null && item.ad_account.type !== "TK THUÊ"))}
-            setOpenInvoiceDetails={setOpenInvoiceDetails}
             loading={loading}
           />
         </div>
