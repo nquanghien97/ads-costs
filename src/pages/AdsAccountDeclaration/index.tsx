@@ -162,6 +162,7 @@ function AdsAccountDeclaration() {
       key: '16',
       width: 200,
       render(value) {
+        console.log(value);
         if (AdsAccountStatusType.DANG_SU_DUNG === value) {
           return (
             <div className="flex justify-center">

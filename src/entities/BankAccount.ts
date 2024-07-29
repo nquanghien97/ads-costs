@@ -13,3 +13,8 @@ export interface pagingBankAccount {
   page_size: number;
   total: number;
 }
+
+export enum BankAccountStatusType {
+  Dang_su_dung = "Đang sử dụng",
+  Ngung_su_dung = "Ngừng sử dụng",
+}

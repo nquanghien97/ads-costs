@@ -3,7 +3,7 @@ import CloseIcon from "../../../assets/icons/CloseIcon";
 import EditIcon from "../../../assets/icons/EditIcon";
 import { useCallback, useEffect, useState } from "react";
 import EditBankAccount from "../EditBankAccount";
-import { BankAccountType, pagingBankAccount } from "../../../entities/BankAccount";
+import { BankAccountStatusType, BankAccountType, pagingBankAccount } from "../../../entities/BankAccount";
 import { getListBankAccounts } from "../../../services/bank_account";
 import BaseButton from "../../../components/common/BaseButton";
 import PlusIcon from "../../../assets/icons/PlusIcon";
@@ -81,7 +81,22 @@ function TableBankAccount(props: TableBankAccountProps) {
       title: 'Trạng thái sử dụng',
       dataIndex: 'status',
       key: '8',
-      width: 170
+      width: 170,
+      render(value) {
+        if (BankAccountStatusType.Dang_su_dung === value) {
+          return (
+            <div className="flex justify-center">
+              <span className="bg-[#0071ba] py-1 px-2 text-center rounded-md text-white w-full">{value}</span>
+            </div>
+          )
+        } else if (BankAccountStatusType.Ngung_su_dung === value) {
+          return (
+            <div className="flex justify-center">
+              <span className="bg-[#d37dbe] py-2 px-2 text-center rounded-md text-white w-full">{value}</span>
+            </div>
+          )
+        }
+      }
     },
     {
       title: 'Thao tác',
