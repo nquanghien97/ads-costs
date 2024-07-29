@@ -102,7 +102,6 @@ const columns: TableColumnsType = [
     width: 200
   }))
 ];
-console.log(columns)
 
 function ExchangeRate() {
   return (

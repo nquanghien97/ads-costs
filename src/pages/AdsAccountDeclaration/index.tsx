@@ -307,7 +307,8 @@ function AdsAccountDeclaration() {
               total: pagingAdAccount?.total,
               pageSize: pagingAdAccount?.page_size,
               onChange: onChange,
-              showTotal: (total) => <span className="font-bold">{`Tổng:   ${total}`}</span>
+              showTotal: (total) => <span className="font-bold">{`Tổng:   ${total}`}</span>,
+              showSizeChanger: true
             }}
             loading={loading}
             scroll={{ y: 600, x: 3000 }}

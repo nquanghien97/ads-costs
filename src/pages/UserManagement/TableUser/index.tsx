@@ -147,7 +147,7 @@ function TableUser(props: TableUserProps) {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const res = await fetchUsers({ page: 1, page_size: 10 })
+      const res = await fetchUsers({ page: 1, page_size: 20 })
       setUsers(res.data.data.list);
       setPagingUsers(res.data.data.paging)
       setLoading(false);
@@ -193,7 +193,7 @@ function TableUser(props: TableUserProps) {
               pageSize: pagingUsers?.page_size,
               onChange: onChange,
               showTotal: (total) => <span className="font-bold">{`Tổng:   ${total}`}</span>,
-              // pageSizeOptions: [10, 20, 50, 100, pagingUsers?.total || 125]
+              showSizeChanger: true
             }}
             loading={loading}
             scroll={{ y: 600 }}

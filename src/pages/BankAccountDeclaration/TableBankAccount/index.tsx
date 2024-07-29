@@ -201,7 +201,8 @@ function TableBankAccount(props: TableBankAccountProps) {
                 total: pagingBankAccount?.total,
                 pageSize: pagingBankAccount?.page_size,
                 onChange: onChange,
-                showTotal: (total) => <span className="font-bold">{`Tổng:   ${total}`}</span>
+                showTotal: (total) => <span className="font-bold">{`Tổng:   ${total}`}</span>,
+                showSizeChanger: true
               }}
               rowKey={(record) => record.id}
               scroll={{ y: 600 }}
