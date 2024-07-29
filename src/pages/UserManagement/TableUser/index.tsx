@@ -1,6 +1,6 @@
 import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import User, { pagingUser } from "../../../entities/User";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getUsers } from "../../../services/users";
 import EditIcon from "../../../assets/icons/EditIcon";
 import LockIcon from "../../../assets/icons/LockIcon";
@@ -10,17 +10,19 @@ import UpdatePassword from "../action/UpdatePassword";
 import AddNewUser from "../action/AddNewUser";
 import BaseButton from "../../../components/common/BaseButton";
 import PlusIcon from "../../../assets/icons/PlusIcon";
+import { SearchFormType } from "..";
 
 interface TableUserProps {
   users: User[],
   setUsers: React.Dispatch<React.SetStateAction<User[]>>
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  searchForm: SearchFormType | undefined
 }
 
 function TableUser(props: TableUserProps) {
 
-  const { users, setUsers, loading, setLoading } = props;
+  const { users, setUsers, loading, setLoading, searchForm } = props;
   
   const [openEditModal, setOpenEditModal] = useState(false);
   const [userId, setUserId] = useState(-1)
@@ -124,15 +126,15 @@ function TableUser(props: TableUserProps) {
     },
   ]
 
-  const fetchUsers = async ({ page, page_size } : { page: number, page_size: number }) => {
-    const res = await getUsers({ page, page_size});
+  const fetchUsers = useCallback(async ({ page, page_size } : { page: number, page_size: number }) => {
+    const res = await getUsers({ page, page_size, ...searchForm});
     return res
-  }
+  }, [searchForm])
 
   const onChange = async (page: number, pageSize: number) => {
     setLoading(true);
     try {
-      const res = await fetchUsers({ page, page_size: pageSize })
+      const res = await fetchUsers({ page, page_size: pageSize, ...searchForm})
       setUsers(res.data.data.list);
       setPagingUsers(res.data.data.paging)
     } catch (err) {
@@ -145,12 +147,12 @@ function TableUser(props: TableUserProps) {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const res = await fetchUsers({ page: 1, page_size: 20 })
+      const res = await fetchUsers({ page: 1, page_size: 10 })
       setUsers(res.data.data.list);
       setPagingUsers(res.data.data.paging)
       setLoading(false);
     })();
-  }, [refreshKey, setLoading, setUsers]);
+  }, [fetchUsers, refreshKey, setLoading, setUsers]);
 
   return (
     <>
@@ -183,14 +185,15 @@ function TableUser(props: TableUserProps) {
             columns={columns}
             dataSource={users}
             rowHoverable={false}
-            rowClassName={(_, index) => index % 2 === 0 ? 'table-row-custom-color' :  ''}
             rowKey={(record) => record.id}
+            rowClassName={(_, index) => index % 2 === 0 ? 'table-row-custom-color' :  ''}
             bordered
             pagination={{
               total: pagingUsers?.total,
               pageSize: pagingUsers?.page_size,
               onChange: onChange,
-              showTotal: (total) => <span className="font-bold">{`Tổng:   ${total}`}</span>
+              showTotal: (total) => <span className="font-bold">{`Tổng:   ${total}`}</span>,
+              // pageSizeOptions: [10, 20, 50, 100, pagingUsers?.total || 125]
             }}
             loading={loading}
             scroll={{ y: 600 }}

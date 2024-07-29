@@ -5,6 +5,7 @@ import { useGroupsStore } from "../../zustand/groups.store";
 import { useSystemsStore } from "../../zustand/systems.store";
 import { getUsers } from "../../services/users";
 import User from "../../entities/User";
+import { SearchFormType } from ".";
 
 interface FormValues {
   search: string;
@@ -16,7 +17,11 @@ interface FormValues {
   };
 }
 
-function Header({ setUsers, setLoading } : { setUsers: React.Dispatch<React.SetStateAction<User[]>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>}) {
+function Header(
+  { setUsers, setLoading, setSearchForm }
+  :
+  { setUsers: React.Dispatch<React.SetStateAction<User[]>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setSearchForm: React.Dispatch<React.SetStateAction<SearchFormType | undefined>>}
+) {
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
   const [selectedSystem, setSelectedSystem] = useState(-1);
@@ -42,14 +47,16 @@ function Header({ setUsers, setLoading } : { setUsers: React.Dispatch<React.SetS
 
   const onFinish = async (data: FormValues) => {
     setLoading(true);
+    const dataSubmit = {
+      search: data.search,
+      group_id: data.group_id_search,
+      system_id: data.system_id_search,
+      name: data.search_name?.label
+    }
     try {
-      const res = await getUsers({
-        search: data.search,
-        group_id: data.group_id_search,
-        system_id: data.system_id_search,
-        name: data.search_name?.label
-      })
+      const res = await getUsers(dataSubmit)
       setUsers(res.data.data.list)
+      setSearchForm(dataSubmit)
     } catch (err) {
       console.log(err);
     } finally {
