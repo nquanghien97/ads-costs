@@ -8,6 +8,7 @@ import { useSystemsStore } from "../../../zustand/systems.store";
 import { UserDTO } from "../../../dto/UserDTO";
 import { addNewUser } from "../../../services/users";
 import { roleOptions } from "../../../config/userRoleOption";
+import { UserRole } from "../../../entities/User";
 
 interface AddUserProps {
   onClose: () => void;
@@ -18,6 +19,7 @@ function AddUser(props: AddUserProps) {
   const { onClose, setRefreshKey } = props;
   const [selectedSystem, setSelectedSystem] = useState(-1);
   const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState('')
   
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
@@ -25,6 +27,10 @@ function AddUser(props: AddUserProps) {
   const handleSystemChange = (option: number) => {
     setSelectedSystem(option)
     form.setFieldsValue({ group_id: null });
+  }
+
+  const onRoleChange = (option: string) => {
+    setRole(option)
   }
 
   const [form] = Form.useForm();
@@ -143,6 +149,7 @@ function AddUser(props: AddUserProps) {
                 <Select
                   options={roleOptions}
                   className="w-full h-full"
+                  onChange={onRoleChange}
                 />
               </Form.Item>
             </div>
@@ -153,7 +160,7 @@ function AddUser(props: AddUserProps) {
                 name="system_id"
                 rules={[
                   {
-                    required: true,
+                    required: role !== UserRole.ROOT,
                     message: "Trường này là bắt buộc"
                   }
                 ]}
@@ -172,7 +179,7 @@ function AddUser(props: AddUserProps) {
                 name="group_id"
                 rules={[
                   {
-                    required: true,
+                    required: role !== UserRole.ROOT,
                     message: "Trường này là bắt buộc"
                   }
                 ]}
