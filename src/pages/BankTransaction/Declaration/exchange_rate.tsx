@@ -4,7 +4,7 @@ import * as XLSX from "xlsx";
 import { formatDate } from "../../../utils/formatDate";
 import { useNotification } from "../../../hooks/useNotification";
 import localeValues from "antd/locale/vi_VN";
-import { ExchangeRateDeclaration } from "../../../services/bank_transaction";
+import { ExchangeRateDeclaration } from "../../../services/exchange_rates";
 import { useInformationSettingsStore } from "../../../zustand/information_settings.store";
 
 interface DataRow {
