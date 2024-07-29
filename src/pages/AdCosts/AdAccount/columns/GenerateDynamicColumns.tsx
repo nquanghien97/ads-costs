@@ -8,7 +8,7 @@ import { useState } from 'react';
 const options = [
   { value: 'Đã XN', label: 'Đã XN' },
   { value: 'Sai số', label: 'Sai số' },
-  { value: 'Chưa xin', label: 'Chưa xin' },
+  { value: 'Chưa XN', label: 'Chưa XN' },
 ];
 
 interface GenerateDynamicColumnsProps {
