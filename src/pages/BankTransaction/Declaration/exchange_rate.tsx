@@ -6,6 +6,7 @@ import { useNotification } from "../../../hooks/useNotification";
 import localeValues from "antd/locale/vi_VN";
 import { ExchangeRateDeclaration } from "../../../services/exchange_rates";
 import { useInformationSettingsStore } from "../../../zustand/information_settings.store";
+import axios from "axios";
 
 interface DataRow {
   'NGÂN HÀNG': string;
@@ -71,8 +72,24 @@ function ExchangeRate(props: ExchangeRateProps) {
       setOpenModalExchangeRate(false);
       notification.success('Khai báo Tỷ giá ngân hàng thành công')
     } catch (err) {
-      console.log(err);
-      notification.error('Khai báo Tỷ giá ngân hàng không thành công')
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Không hợp lệ.")) {
+            const index = parseInt(key.split('.')[1], 10);
+            const columnsErr = key.split('.')[2]
+            if (columnsErr === "currency_id") {
+              notification.error(`Đơn vị tiền tệ "${dataImport?.[index]['TIỀN TỆ']}" không hợp lệ.`)
+            }
+            if (columnsErr === "bank_id") {
+              notification.error(`Tên ngân hàng "${dataImport?.[index]['NGÂN HÀNG']}" không hợp lệ.`)
+            }
+            break;
+          }
+        }
+      } else {
+        notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+      }
     } finally {
       setLoading(false);
     }
