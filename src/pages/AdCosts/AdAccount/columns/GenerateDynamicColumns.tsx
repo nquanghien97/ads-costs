@@ -98,6 +98,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
               defaultValue={record.datas?.[date]?.status}
               className={bgSelect(record, date)}
               placeholder="Select..."
+              allowClear
             />
           </div>
         ),

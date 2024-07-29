@@ -172,6 +172,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
               <Select
                 options={channels.map(channel => ({ label: channel.name, value: channel.id}))}
                 className="w-full h-full"
+                allowClear
               />
             </Form.Item>
           </div>
@@ -185,6 +186,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                 labelInValue
                 options={adAccountTypes.map(item => ({ label: item.name, value: item.id }))}
                 className="w-full h-full"
+                allowClear
               />
             </Form.Item>
           </div>
@@ -197,6 +199,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
               <Select
                 options={currencies.map(item => ({ label: item.name, value: item.id }))}
                 className="w-full h-full"
+                allowClear
               />
             </Form.Item>
           </div>
@@ -209,6 +212,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
               <Select
                 options={timezones.map(item => ({ label: item.name, value: item.id }))}
                 className="w-full h-full"
+                allowClear
               />
             </Form.Item>
           </div>
@@ -258,6 +262,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                     onChange={onChangeBankName}
                     options={banks.map(item => ({ label: item.name, value: item.id }))}
                     className="w-full h-full"
+                    allowClear
                   />
                 </Form.Item>
               </div>
@@ -270,6 +275,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                   <Select
                     options={dataAdsAccount.filter(item => item.bank_id === bankName).map(x => ({ label: x.card_number, value: x.id }))}
                     className="w-full h-full"
+                    allowClear
                   />
                 </Form.Item>
               </div>
@@ -284,6 +290,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
               <Select
                 options={adAccountStatus.map(item => ({ label: item.name, value: item.id }))}
                 className="w-full h-full"
+                allowClear
               />
             </Form.Item>
           </div>

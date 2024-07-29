@@ -99,6 +99,7 @@ function Header(props: HeaderProps) {
               onChange={handleSystemChange}
               className="z-50 h-full w-[160px]"
               placeholder="Hệ thống"
+              allowClear
             />
           </Form.Item>
           <Form.Item
@@ -110,6 +111,7 @@ function Header(props: HeaderProps) {
               onChange={handleGroupChange}
               className="z-50 h-full w-[160px]"
               placeholder="HKD"
+              allowClear
             />
           </Form.Item>
           <Form.Item
@@ -121,6 +123,7 @@ function Header(props: HeaderProps) {
               className="z-50 h-full w-[160px]"
               placeholder="Họ tên"
               notFoundContent="Loading..."
+              allowClear
             />
           </Form.Item>
           <Form.Item>

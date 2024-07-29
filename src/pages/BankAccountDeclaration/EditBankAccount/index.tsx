@@ -144,6 +144,7 @@ function EditBankAccount(props: EditBankAccountProps) {
               <Select
                 options={banks.map(item => ({ label: item.name, value: item.id }))}
                 className="w-full h-full"
+                allowClear
               />
             </Form.Item>
           </div>
@@ -156,6 +157,7 @@ function EditBankAccount(props: EditBankAccountProps) {
               <Select
                 options={optionsBankStatus}
                 className="w-full h-full"
+                allowClear
               />
             </Form.Item>
           </div>

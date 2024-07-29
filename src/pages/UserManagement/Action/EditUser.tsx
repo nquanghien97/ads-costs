@@ -178,6 +178,7 @@ function EditUser(props: EditUserProps) {
               <Select
                 options={roleOptions}
                 className="w-full h-full"
+                allowClear
               />
             </Form.Item>
           </div>
@@ -198,6 +199,7 @@ function EditUser(props: EditUserProps) {
                 options={systems.map((system) => ({ label: system.name, value: system.id}))}
                 onChange={handleSystemChange}
                 className="w-full h-full"
+                allowClear
               />
             </Form.Item>
           </div>
@@ -217,6 +219,7 @@ function EditUser(props: EditUserProps) {
                 labelInValue
                 options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
                 className="w-full h-full"
+                allowClear
               />
             </Form.Item>
           </div>

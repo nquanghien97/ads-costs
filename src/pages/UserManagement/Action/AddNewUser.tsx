@@ -149,6 +149,7 @@ function AddUser(props: AddUserProps) {
                   options={roleOptions}
                   className="w-full h-full"
                   onChange={onRoleChange}
+                  allowClear
                 />
               </Form.Item>
             </div>
@@ -168,6 +169,7 @@ function AddUser(props: AddUserProps) {
                   options={systems.map((system) => ({ label: system.name, value: system.id}))}
                   onChange={handleSystemChange}
                   className="w-full h-full"
+                  allowClear
                 />
               </Form.Item>
             </div>
@@ -186,6 +188,7 @@ function AddUser(props: AddUserProps) {
                 <Select
                   options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
                   className="w-full h-full"
+                  allowClear
                 />
               </Form.Item>
             </div>

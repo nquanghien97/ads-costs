@@ -74,6 +74,7 @@ export const GenerateDynamicColumns = (datas: TotalDailyData): TableColumnsType<
               defaultValue={record.datas?.[date]?.status}
               className={bgSelect(record, date)}
               placeholder="Select..."
+              allowClear
             />
           </div>
         ),

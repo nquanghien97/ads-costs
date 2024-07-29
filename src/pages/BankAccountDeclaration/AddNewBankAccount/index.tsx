@@ -130,6 +130,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                   onChange={handleSystemChange}
                   options={systems.map((system) => ({ label: system.name, value: system.id }))}
                   className="w-full h-full"
+                  allowClear
                 />
               </Form.Item>
             </div>
@@ -143,6 +144,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                   options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
                   className="w-full h-full"
                   onChange={handleGroupChange}
+                  allowClear
                 />
               </Form.Item>
             </div>
@@ -158,6 +160,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                   className="w-full h-full"
                   onChange={(_, option) => handleUserChange(option as { label: string; value: number })}
                   notFoundContent={<div>Loading...</div>}
+                  allowClear
                 />
               </Form.Item>
             </div>
@@ -171,6 +174,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                   options={users.filter(user => user.name === selectedUser).map(item => ({ label: item.username, value: item.id }))}
                   className="w-full h-full"
                   notFoundContent={<div>Loading...</div>}
+                  allowClear
                 />
               </Form.Item>
             </div>
@@ -198,6 +202,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                 <Select
                   options={banks.map(item => ({ label: item.name, value: item.id }))}
                   className="w-full h-full"
+                  allowClear
                 />
               </Form.Item>
             </div>
@@ -210,6 +215,7 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                 <Select
                   options={optionsBankStatus}
                   className="w-full h-full"
+                  allowClear
                 />
               </Form.Item>
             </div>

@@ -185,6 +185,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                 <Select
                   options={channels.map(channel => ({ label: channel.name, value: channel.id}))}
                   className="w-full h-full"
+                  allowClear
                 />
               </Form.Item>
             </div>
@@ -198,6 +199,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                   labelInValue
                   options={adAccountTypes.map(item => ({ label: item.name, value: item.id }))}
                   className="w-full h-full"
+                  allowClear
                 />
               </Form.Item>
             </div>
@@ -210,6 +212,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                 <Select
                   options={currencies.map(item => ({ label: item.name, value: item.id }))}
                   className="w-full h-full"
+                  allowClear
                 />
               </Form.Item>
             </div>
@@ -222,6 +225,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                 <Select
                   options={timezones.map(item => ({ label: item.name, value: item.id }))}
                   className="w-full h-full"
+                  allowClear
                 />
               </Form.Item>
             </div>
@@ -271,6 +275,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                       onChange={onChangeBankId}
                       options={banks.map(item => ({ label: item.name, value: item.id }))}
                       className="w-full h-full"
+                      allowClear
                     />
                   </Form.Item>
                 </div>
@@ -283,6 +288,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                   <Select
                     options={dataAdsAccount.filter(item => item.bank_id === (bankId===0? bankAccountId : bankId)).map(x => ({ label: x.card_number, value: x.id }))}
                     className="w-full h-full"
+                    allowClear
                   />
                 </Form.Item>
               </div>
@@ -298,6 +304,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                   labelInValue
                   options={adAccountStatus.map(item => ({ label: item.name, value: item.id }))}
                   className="w-full h-full"
+                  allowClear
                 />
               </Form.Item>
             </div>

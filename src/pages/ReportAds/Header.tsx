@@ -68,6 +68,7 @@ function Header() {
               onChange={handleSystemChange}
               className="z-50 h-full w-[160px]"
               placeholder="Hệ thống"
+              allowClear
             />
           </Form.Item>
           <Form.Item
@@ -79,6 +80,7 @@ function Header() {
               onChange={handleGroupChange}
               className="z-50 h-full w-[160px]"
               placeholder="HKD"
+              allowClear
             />
           </Form.Item>
           <Form.Item
@@ -89,6 +91,7 @@ function Header() {
               options={name.map(item => ({label: item.name, value: item.id}))}
               className="z-50 h-full w-[160px]"
               placeholder="Họ tên"
+              allowClear
             />
           </Form.Item>
           <Form.Item
@@ -100,6 +103,7 @@ function Header() {
               // onChange={handleChange}
               className="z-50 h-full w-[160px]"
               placeholder="Kênh chạy"
+              allowClear
             />
           </Form.Item>
           <Form.Item>
