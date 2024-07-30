@@ -1,4 +1,4 @@
-import { Modal, Table, TableColumnsType } from "antd";
+import { ConfigProvider, Modal, Table, TableColumnsType } from "antd";
 import { useEffect, useState } from "react";
 import { getAdsBillDetails } from "../../../services/ads_bills";
 import { convertToDate, formatDate } from "../../../utils/date";
@@ -63,14 +63,31 @@ function InvoiceDetails(props: InvoiceDetailsProps) {
     >
       <div className="w-full text-center p-3 h-[50px] bg-[#eb9d4d] rounded-t-md uppercase font-bold">Chi tiết hóa đơn</div>
       <div className="p-4">
+      <ConfigProvider
+        theme={{
+          token: {
+            borderRadius: 8,
+          },
+          components: {
+            Table: {
+              borderColor: "red",
+              headerBg: "#2b663c !important",
+              colorBgContainer: '#e2d2bd !important'
+            }
+          }
+        }}
+      >
         <Table
           dataSource={dataBillDetails}
           columns={columns}
           bordered
+          scroll={{ y: 600}}
+          className="not-fixed"
           pagination={false}
           rowKey={(record => record.id)}
           loading={loading}
         />
+      </ConfigProvider>
       </div>
     </Modal>
   )
