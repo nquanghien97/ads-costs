@@ -60,7 +60,7 @@ function AdCosts(props: AdCostsProps) {
     const dataSubmit = dataImport?.map(item => ({
       date: formatDate(new Date(data.date)),
       account_id: item["ID TKQC"],
-      amount: +item["CHI PHÍ"].replace(/,/g, '')
+      amount: +item["CHI PHÍ"].replace(/,/g, '') || 0
     }));
     if(!dataSubmit) {
       notification.warning('Bạn cần import dữ liệu')
@@ -73,6 +73,7 @@ function AdCosts(props: AdCostsProps) {
       setOpenModal(false)
       notification.success('Khai báo Chi phí quảng cáo thành công')
       setRefreshKey(pre => !pre)
+      setDataImport(null);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const invalidData = err.response?.data.invalidData

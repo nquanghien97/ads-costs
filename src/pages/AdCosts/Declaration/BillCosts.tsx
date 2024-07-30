@@ -65,7 +65,7 @@ function BillCosts(props: BillCostsProps) {
     setLoading(true);
     const dataSubmit = dataBill?.map(item => ({
       date: formatDate(new Date(item['NGÀY'])),
-      amount: convertCurrencyStringToNumber(item['SỐ TIỀN']),
+      amount: item['SỐ TIỀN'] ? convertCurrencyStringToNumber(item['SỐ TIỀN']) : 0,
       payment_method: item['PTTT'],
       refer_code: item['MÃ THAM CHIẾU'],
       billing_id: item['ID GIAO DỊCH'],
@@ -82,6 +82,7 @@ function BillCosts(props: BillCostsProps) {
       setOpenModalBillCosts(false);
       notification.success('Khai báo Hóa đơn thành công')
       setRefreshKey(pre => !pre)
+      setDataBill(null);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const invalidData = err.response?.data.invalidData
@@ -97,7 +98,6 @@ function BillCosts(props: BillCostsProps) {
         } else {
           notification.error('Có lỗi xảy ra, vui lòng thử lại!')
         }
-        console.log(err.response?.data.message)
       } 
     } finally {
       setLoading(false)
