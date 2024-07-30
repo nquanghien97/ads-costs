@@ -17,7 +17,7 @@ function Layout() {
       <div className="fixed top-0 left-[160px] right-0 h-[60px] bg-[#0071ba] z-[100]">
         <div className="relative top-0 h-full">
           <div className="flex items-center justify-end h-full gap-4 px-4">
-            <div className="px-2 py-1 rounded-md">{user.name}</div>
+            <div className="px-2 py-1 rounded-md text-white">{user.name}</div>
             <Button className="px-4 py-4" onClick={() => setOpenChangePassword(true)}>Đổi mật khẩu</Button>
             <Button className="px-4 py-4" onClick={() => LogOut()}>Đăng xuất</Button>
           </div>
