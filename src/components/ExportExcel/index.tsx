@@ -20,6 +20,6 @@ export const ExportToExcel = <T,>({ apiData, fileName }: ExportToExcelProps<T>) 
   };
 
   return (
-    <button onClick={() => exportToCSV(apiData, fileName)}>Export</button>
+    <span onClick={() => exportToCSV(apiData, fileName)}>Export</span>
   );
 };

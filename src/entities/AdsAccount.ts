@@ -16,6 +16,14 @@ export interface AdsAccountType {
   account_id: string;
   account_name: string;
   channel_id: number;
+  group_id: number;
+  group: {
+    name: string;
+  }
+  system_id: number;
+  system: {
+    name: string;
+  }
   type_id: number;
   status_id: number;
   currency_id: number;
