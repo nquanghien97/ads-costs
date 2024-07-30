@@ -162,14 +162,14 @@ function Header(props: HeaderProps) {
           {openModalExchangeRate && <ExchangeRate openModalExchangeRate={openModalExchangeRate} setOpenModalExchangeRate={setOpenModalExchangeRate} />}
         </div>
         <div className="flex gap-2">
-          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 py-3 flex items-center justify-center hover:opacity-80 duration-300" >
+          <Button size="large">
             <Link to="/xem-ty-gia">
-              <span className="text-white">Xem tỷ giá</span>
+              <span className="font-normal">Xem tỷ giá</span>
             </Link>
-          </div>
-          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 py-3 flex items-center justify-center hover:opacity-80 duration-300">
-            <span className="text-white">Export dữ liệu</span>
-          </div>
+          </Button>
+          <Button size="large">
+            <span>Export dữ liệu</span>
+          </Button>
         </div>
       </div>
     </>
