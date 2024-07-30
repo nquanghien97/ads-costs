@@ -15,6 +15,7 @@ interface GenerateDynamicColumnsProps {
   setDataDetails: React.Dispatch<React.SetStateAction<{
     ad_account_id: number;
     date: string;
+    currency: string;
   }>>;
   datas: TotalDailyData;
   setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>
@@ -71,7 +72,8 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
                     setOpenInvoiceDetails(true)
                     setDataDetails({
                       ad_account_id: record.ad_account_id,
-                      date: date
+                      date: date,
+                      currency: record.ad_account.currency
                     })
                   }}
                   className="cursor-pointer">

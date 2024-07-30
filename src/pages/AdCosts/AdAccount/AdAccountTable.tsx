@@ -12,7 +12,8 @@ function AdAccountTable(props: { data: AdAccountData[], loading: boolean }) {
   const [openInvoiceDetails, setOpenInvoiceDetails] = useState(false);
   const [dataDetails, setDataDetails] = useState({
     ad_account_id: -1,
-    date: ''
+    date: '',
+    currency: ''
   });
   
   const dataForDynamicColumns = data.flatMap(x => 
