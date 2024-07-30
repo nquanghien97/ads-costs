@@ -10,6 +10,7 @@ import withAuth from '../../hocs/withAuth';
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '../../zustand/auth.store';
 import { useNotification } from '../../hooks/useNotification';
+import { useChangePasswordStore } from '../../zustand/isChangePasswod.store';
 
 interface FormValue {
   username: string;
@@ -21,6 +22,7 @@ function Login() {
   const [form] = Form.useForm<FormValue>()
   const navigate = useNavigate();
   const { getUser } = useAuthStore();
+  const { setIsChangePassword } = useChangePasswordStore();
 
   useEffect(() => {
     document.title = "Đăng nhập"
@@ -33,10 +35,16 @@ function Login() {
     try {
       const res = await LoginService(formValue);
       notification.success("Đăng nhập thành công")
+      setIsChangePassword(formValue.username !== formValue.password)
       const { data } = res
       Cookies.set('token', data.data.token, { expires: data.data.timeout / (1000 * 60 * 60 * 24) });
-      await getUser();
-      navigate('/')
+      if (formValue.username === formValue.password) {
+        navigate('/thay-doi-mat-khau', { state: { password_old: formValue.password }})
+        console.log('aaaa')
+      } else {
+        await getUser();
+        navigate('/')
+      }
     } catch (err) {
       console.log(err)
       notification.error("Đăng nhập không thành công")

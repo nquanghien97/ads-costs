@@ -10,6 +10,6 @@ export function LogOut() {
   window.location.href = '/login'
 }
 
-export function ChangePassword({password_old, password_new}: { password_old: string, password_new: string}){
+export function changePassword({password_old, password_new}: { password_old: string, password_new: string}){
   return api.post('/auth/change-password', { password_old, password_new})
 }

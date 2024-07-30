@@ -14,6 +14,7 @@ import GroupDeclaration from "../pages/GroupDeclaration";
 import { UserRole } from "../entities/User";
 import PrivateRouteWithAuth from "./PrivateRoute";
 import ExchangeRate from "../pages/ExchangeRate";
+import ChangePasswordPage from "../pages/ChangePassword";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -62,6 +63,7 @@ const router = createBrowserRouter(
         <Route path="/xem-bao-cao" element={<ReportView />} />
         <Route path="/xem-ty-gia" element={<ExchangeRate />} />
       </Route>
+      <Route path="/thay-doi-mat-khau" element={<ChangePasswordPage />} />
     </>
   )
 );
