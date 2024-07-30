@@ -1,20 +1,10 @@
 import api from "../config/api"
-import { DeclarationAdsBillsDTO } from "../dto/AdsBillingsDTO";
+import { AdsBillDetails, DeclarationAdsBillsDTO } from "../dto/AdsBillingsDTO";
 
 export const DeclarationAdsBills = (data: DeclarationAdsBillsDTO[]) => {
   return api.post('/bulk-ads-bills', {data})
 }
 
-interface AdsBillDetails {
-  search?: string,
-  system_id?: number,
-  group_id?: number,
-  user_id?: number,
-  ad_account_id?: number,
-  bank_account_id?: number,
-  since?: string,
-  until?: string
-}
 export const getAdsBillDetails = ({ search, system_id, group_id, user_id, ad_account_id, bank_account_id, since, until } : AdsBillDetails) => {
   const params = new URLSearchParams();
 

@@ -7,11 +7,11 @@ import { AdsAccountType, pagingAdAccount } from "../../entities/AdsAccount";
 import { useCallback, useEffect, useState } from "react";
 import { getListAdsAccount } from "../../services/ads_account";
 import EditAdsAccount from "./EditAdsAccount";
-import BaseButton from "../../components/common/BaseButton";
 import PlusIcon from "../../assets/icons/PlusIcon";
 import AddNewAdsAccount from "./AddNewAdsAccount";
 import DeleteAdAccount from "./DeleteAdAccount";
 import { AdsAccountStatusType } from "../../entities/AdsAccountStatus";
+import { ExportToExcel } from "../../components/ExportExcel";
 
 export interface SubmitFormSearchType {
   search: string;
@@ -276,10 +276,15 @@ function AdsAccountDeclaration() {
         <div className="m-auto">
           <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Khai báo tài khoản quảng cáo</span>
         </div>
-        <BaseButton color="info" className="text-white" onClick={() => setOpenAddNewAdsAccount(true)}>
-          Thêm mới
-          <PlusIcon color="white" />
-        </BaseButton>
+        <div className="flex gap-2">
+          <Button size="large">
+            <ExportToExcel apiData={data} fileName="Danh sách tài khoản quảng cáo" />
+          </Button>
+          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300 text-white" onClick={() => setOpenAddNewAdsAccount(true)}>
+            Thêm mới
+            <PlusIcon color="white" />
+          </div>
+        </div>
       </div>
       <div className="custom-header-table">
         <ConfigProvider

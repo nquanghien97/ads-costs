@@ -143,3 +143,14 @@ export interface DeclarationAdsBillsDTO {
   account_id: number;
   billing_id: string;
 }
+
+export interface AdsBillDetails {
+  search?: string,
+  system_id?: number,
+  group_id?: number,
+  user_id?: number,
+  ad_account_id?: number,
+  bank_account_id?: number,
+  since?: string,
+  until?: string
+}
