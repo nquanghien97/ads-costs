@@ -45,7 +45,7 @@ function BankTransaction() {
 
   return (
     <div className="px-6">
-      <Header setSearchForm={setSearchForm} setRefreshKey={setRefreshKey} />
+      <Header setSearchForm={setSearchForm} setRefreshKey={setRefreshKey} dataBankBillings={dataBankBillings} />
       {
         loading ? (
           <div className="flex justify-center">

@@ -5,11 +5,11 @@ import { useCallback, useEffect, useState } from "react";
 import EditBankAccount from "../EditBankAccount";
 import { BankAccountStatusType, BankAccountType, pagingBankAccount } from "../../../entities/BankAccount";
 import { getListBankAccounts } from "../../../services/bank_account";
-import BaseButton from "../../../components/common/BaseButton";
 import PlusIcon from "../../../assets/icons/PlusIcon";
 import AddNewBankAccount from "../AddNewBankAccount";
 import DeleteBankAccount from "../DeleteBankAccount";
 import { FormSearchValueType } from "..";
+import { ExportExcelBankAccount } from "../../../components/ExportExcel/ExportExcelBankAccount";
 
 interface TableBankAccountProps {
   data: BankAccountType[]
@@ -186,10 +186,15 @@ function TableBankAccount(props: TableBankAccountProps) {
         <div className="m-auto">
           <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Khai báo tài khoản ngân hàng</span>
         </div>
-        <BaseButton color="info" className="text-white" onClick={() => setOpenAddNewBankAccount(true)}>
-          Thêm mới
-          <PlusIcon color="white" />
-        </BaseButton>
+        <div className="flex gap-2">
+          <Button size="large">
+            <ExportExcelBankAccount apiData={data} />
+          </Button>
+          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300 text-white" onClick={() => setOpenAddNewBankAccount(true)}>
+            Thêm mới
+            <PlusIcon color="white" />
+          </div>
+        </div>
       </div>
       {openAddNewBankAccount && <AddNewBankAccount onClose={() => setOpenAddNewBankAccount(false)} setRefreshKey={setRefreshKey} />}
       <div className="custom-header-table">

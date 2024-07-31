@@ -12,6 +12,8 @@ import ExchangeRate from "./Declaration/exchange_rate";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../utils/date";
 import { SearchFormValues } from ".";
+import { exportExcelBankTransaction } from "../../components/ExportExcel/ExportExcelBankTransaction";
+import { BankTransactionsDTO } from "../../dto/BankTransactionsDTO";
 
 interface FormValues {
   search: string;
@@ -27,10 +29,11 @@ interface FormValues {
 interface HeaderProps {
   setSearchForm: React.Dispatch<React.SetStateAction<SearchFormValues>>
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>
+  dataBankBillings: BankTransactionsDTO[]
 }
 
 function Header(props: HeaderProps) {
-  const { setSearchForm, setRefreshKey } = props;
+  const { setSearchForm, setRefreshKey, dataBankBillings } = props;
 
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
@@ -167,7 +170,7 @@ function Header(props: HeaderProps) {
               <span className="font-normal">Xem tỷ giá</span>
             </Link>
           </Button>
-          <Button size="large">
+          <Button size="large" onClick={() => exportExcelBankTransaction(dataBankBillings)}>
             <span>Export dữ liệu</span>
           </Button>
         </div>

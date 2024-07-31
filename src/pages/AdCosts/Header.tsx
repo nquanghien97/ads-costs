@@ -13,7 +13,7 @@ import { formatDate } from "../../utils/date";
 import { useNotification } from "../../hooks/useNotification";
 import { GetAdsCostsByUser } from "../../services/ads_costs";
 import localeValues from "antd/locale/vi_VN";
-
+import { exportToExcel } from '../../components/ExportExcel/ExportExcelAdsCost'
 interface FormValues {
   search: string;
   system_id: number;
@@ -29,7 +29,8 @@ interface FormValues {
 interface HeaderProps {
   setDatas: React.Dispatch<React.SetStateAction<SystemData[] | undefined>>,
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>,
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  dataExportExcel: SystemData[] | undefined
 }
 
 export interface SearchFormValues {
@@ -42,7 +43,7 @@ export interface SearchFormValues {
   user_id?: number;
 }
 
-function Header({ setDatas, setRefreshKey, setLoading }: HeaderProps) {
+function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: HeaderProps) {
 
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
@@ -189,7 +190,10 @@ function Header({ setDatas, setRefreshKey, setLoading }: HeaderProps) {
           <BillCosts setRefreshKey={setRefreshKey} searchForm={searchForm} setDatas={setDatas} />
         </div>
         <div className="flex gap-2">
-          <Button size="large" className="bg-white">Export dữ liệu</Button>
+          <Button size="large" className="bg-white" onClick={() => exportToExcel(dataExportExcel)}>
+            {/* <ExportToExcel apiData={data1} fileName="CPQC Hóa đơn" /> */}
+            Export dữ liệu
+          </Button>
         </div>
       </div>
     </div>

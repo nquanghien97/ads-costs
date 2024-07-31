@@ -4,6 +4,8 @@ import { AdAccountData, TotalDailyData } from '../../../../dto/AdsBillingsDTO';
 import EyeIcon from '../../../../assets/icons/EyeIcon';
 import { formatCurrency } from '../../../../utils/currency';
 import { useState } from 'react';
+import { useNotification } from '../../../../hooks/useNotification';
+import clsx from 'clsx';
 
 const options = [
   { value: 'Đã XN', label: 'Đã XN' },
@@ -19,27 +21,41 @@ interface GenerateDynamicColumnsProps {
   }>>;
   datas: TotalDailyData;
   setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>
+  setLoadingTable: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): TableColumnsType<AdAccountData> => {
-  const { setDataDetails, datas, setOpenInvoiceDetails } = props;
+  const { setDataDetails, datas, setOpenInvoiceDetails, setLoadingTable } = props;
   const [selected, setSelected] = useState({
-    ad_account_id: -1,
-    date: '',
-    value: ''
+    value: '',
+    date_id: -1
   })
 
-  const onChangeStatus = (value: string, record: AdAccountData, date: string) => {
-    setSelected({ ad_account_id: record.ad_account_id, date, value: value})
+  const notification = useNotification()
+
+  const onChangeStatus = async (value: string, date_id: number, defaultValue: string) => {
+    setLoadingTable(true);
+    try {
+      // await updateStatusAdsBill(date_id, value);
+      setSelected({ value, date_id })
+      notification.success('Cập nhật trạng thái thành công')
+    } catch (err) {
+      notification.error('Cập nhật trạng thái thất bại')
+      if (selected.date_id === date_id) {
+        setSelected({ value: defaultValue, date_id})
+      }
+    } finally {
+      setLoadingTable(false)
+    }
   }
 
-  const bgSelect = (record: AdAccountData, date: string) => {
-    if (selected.ad_account_id === record.ad_account_id && selected.date === date) {
-      if (selected.value === 'Đã XN') return 'w-full [&>*]:!bg-[#0071ba] [&>*]:!text-white';
-      if (selected.value === 'Sai số') return 'w-full [&>*]:!bg-[#ff4d4f] [&>*]:!text-white';
-    }
-    return 'w-full';
-  }
+  // const bgSelect = (record: AdAccountData, date: string) => {
+  //   if (selected.date_id === record.datas[date]?.id) {
+  //     if (selected.value === 'Đã XN') return 'w-full [&>*]:!bg-[#0071ba] [&>*]:!text-white';
+  //     if (selected.value === 'Sai số') return 'w-full [&>*]:!bg-[#ff4d4f] [&>*]:!text-white';
+  //   }
+  //   return 'w-full';
+  // }
 
   const dates = Object.keys(datas);
   return dates.flatMap((date, index) => ({
@@ -95,10 +111,11 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
           <div className="px-2">
             <Select
               options={options}
-              onChange={(value) => onChangeStatus(value, record, date)}
+              onChange={(value) => onChangeStatus(value, record.datas?.[date]?.id, record.datas?.[date]?.status)}
               size="large"
+              value={selected.value || record.datas?.[date]?.status}
               defaultValue={record.datas?.[date]?.status}
-              className={bgSelect(record, date)}
+              className={clsx('w-full')}
               placeholder="Select..."
               allowClear
             />

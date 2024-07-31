@@ -6,6 +6,15 @@ export interface BankAccountType {
   bank_name: string;
   bank_id: number;
   status: string;
+  group: {
+    name: string
+  };
+  system: {
+    name: string
+  },
+  user: {
+    username: string
+  }
 }
 
 export interface pagingBankAccount {

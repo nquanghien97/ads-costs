@@ -66,7 +66,7 @@ function Invoice() {
 
   return (
     <div className="px-4">
-      <Header setDatas={setDatas} setLoading={setLoading} setRefreshKey={setRefreshKey} />
+      <Header setDatas={setDatas} setLoading={setLoading} setRefreshKey={setRefreshKey} dataExportExcel={filteredData} />
       <div className="pt-[136px]">
         {renderBody()}
       </div>

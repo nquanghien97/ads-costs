@@ -11,7 +11,7 @@ import PlusIcon from "../../assets/icons/PlusIcon";
 import AddNewAdsAccount from "./AddNewAdsAccount";
 import DeleteAdAccount from "./DeleteAdAccount";
 import { AdsAccountStatusType } from "../../entities/AdsAccountStatus";
-import { ExportToExcel } from "../../components/ExportExcel";
+import { ExportExcelAdsAccount } from "../../components/ExportExcel/ExportExcelAdsAccount";
 
 export interface SubmitFormSearchType {
   search: string;
@@ -269,26 +269,6 @@ function AdsAccountDeclaration() {
     })()
   }, [fetchListAdAccount, refreshKey, submitFormSearch])
 
-  const data1 = data.flatMap(x => ({
-    "Thời gian": x.created_at,
-    "Hệ thống": x.system?.name || "Không có hệ thống",
-    "Hộ kinh doanh": x.group?.name || "Không có HKD",
-    "Mã MKT": x.user.username,
-    "Họ tên": x.user.name,
-    "Mã TKQC": x.id,
-    "ID TKQC": x.account_id,
-    "Tên TKQC": x.account_name,
-    "Kênh chạy": x.channel,
-    "Loại TKQC": x.type,
-    "Tiền tệ": x.currency,
-    "Múi giờ": x.timezone,
-    "Tỷ giá TKQC": x.exchange_rate,
-    "Phí thuê": x.rental_fee,
-    "Tên ngân hàng": x.bank_account?.bank_name || "Chưa liên kết ngân hàng",
-    "Số TKNH": x.bank_account?.card_number || "Chưa có STK",
-    "Trạng thái": x.status
-  }))
-
   return (
     <div className="px-4">
       <Header setLoading={setLoading} setSubmitFormSearch={setSubmitFormSearch} />
@@ -298,7 +278,7 @@ function AdsAccountDeclaration() {
         </div>
         <div className="flex gap-2">
           <Button size="large">
-            <ExportToExcel apiData={data1} fileName="Danh sách tài khoản quảng cáo" />
+            <ExportExcelAdsAccount apiData={data} />
           </Button>
           <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300 text-white" onClick={() => setOpenAddNewAdsAccount(true)}>
             Thêm mới

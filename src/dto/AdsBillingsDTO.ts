@@ -1,4 +1,5 @@
 export interface DailyAdsBillings {
+  id: number;
   ads: number,
   ads_vnd: number,
   bill: number,
@@ -101,7 +102,7 @@ export interface AdAccountData {
   total_ads_vnd: number;
   total_bill: number;
   total_bill_vnd: number;
-  datas: TotalDailyData
+  datas: TotalDailyData;
 }
 
 export interface UserData {

@@ -16,7 +16,6 @@ function withAuth<P extends object>(
         const token = Cookies.get('token');
         const isAuthenticated = !!token;
         
-        console.log(isChangePassword, isAuthenticated)
         if (requireAuth && !isAuthenticated || !isChangePassword) {
           // Nếu yêu cầu xác thực nhưng chưa đăng nhập, chuyển hướng đến trang login
           navigate('/login');
