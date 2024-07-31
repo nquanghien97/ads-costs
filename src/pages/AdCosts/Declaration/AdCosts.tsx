@@ -60,7 +60,7 @@ function AdCosts(props: AdCostsProps) {
     const dataSubmit = dataImport?.map(item => ({
       date: formatDate(new Date(data.date)),
       account_id: item["ID TKQC"],
-      amount: +item["CHI PHÍ"].replace(/,/g, '') || 0
+      amount: +item["CHI PHÍ"]?.replace(/,/g, '') || 0
     }));
     if(!dataSubmit) {
       notification.warning('Bạn cần import dữ liệu')
