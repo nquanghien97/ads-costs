@@ -85,8 +85,11 @@ function AdCosts(props: AdCostsProps) {
             break;
           }
         }
-      } else {
-        notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+        if (err.response?.data.data.includes("Không tồn tại hoặc đã ngừng sử dụng.")) {
+          notification.error(err.response?.data.message)
+        } else {
+          notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+        }
       }
     } finally {
       setLoading(false);
