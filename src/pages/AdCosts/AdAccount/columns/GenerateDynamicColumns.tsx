@@ -6,6 +6,7 @@ import { formatCurrency } from '../../../../utils/currency';
 import { useState } from 'react';
 import { useNotification } from '../../../../hooks/useNotification';
 import clsx from 'clsx';
+import { updateStatusAdsBill } from '../../../../services/ads_bills';
 
 const options = [
   { value: 'Đã XN', label: 'Đã XN' },
@@ -26,24 +27,21 @@ interface GenerateDynamicColumnsProps {
 
 export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): TableColumnsType<AdAccountData> => {
   const { setDataDetails, datas, setOpenInvoiceDetails, setLoadingTable } = props;
-  const [selected, setSelected] = useState({
-    value: '',
-    date_id: -1
-  })
+  // const [selected, setSelected] = useState({
+  //   value: '',
+  //   date_id: -1
+  // })
 
   const notification = useNotification()
 
-  const onChangeStatus = async (value: string, date_id: number, defaultValue: string) => {
+  const onChangeStatus = async (value: string, date_id: number) => {
     setLoadingTable(true);
     try {
-      // await updateStatusAdsBill(date_id, value);
-      setSelected({ value, date_id })
+      await updateStatusAdsBill(date_id, value);
+      console.log({value, date_id })
       notification.success('Cập nhật trạng thái thành công')
     } catch (err) {
-      notification.error('Cập nhật trạng thái thất bại')
-      if (selected.date_id === date_id) {
-        setSelected({ value: defaultValue, date_id})
-      }
+      console.log(err)
     } finally {
       setLoadingTable(false)
     }
@@ -111,9 +109,9 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
           <div className="px-2">
             <Select
               options={options}
-              onChange={(value) => onChangeStatus(value, record.datas?.[date]?.id, record.datas?.[date]?.status)}
+              onChange={(value) => onChangeStatus(value, record.datas?.[date]?.id)}
               size="large"
-              value={selected.value || record.datas?.[date]?.status}
+              // value={selected.value || record.datas?.[date]?.status}
               defaultValue={record.datas?.[date]?.status}
               className={clsx('w-full')}
               placeholder="Select..."
