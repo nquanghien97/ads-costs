@@ -11,6 +11,7 @@ import AddNewUser from "../action/AddNewUser";
 import BaseButton from "../../../components/common/BaseButton";
 import PlusIcon from "../../../assets/icons/PlusIcon";
 import { SearchFormType } from "..";
+import { roleOptions } from "../../../config/userRoleOption";
 
 interface TableUserProps {
   users: User[],
@@ -68,6 +69,11 @@ function TableUser(props: TableUserProps) {
       width: 120,
       dataIndex: 'role',
       key: '5',
+      render(value) {
+        return(
+          <span>{roleOptions.find(role => role.value === value)?.label}</span>
+        )
+      }
     },
     {
       title: 'Thao tác',

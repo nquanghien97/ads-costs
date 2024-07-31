@@ -16,5 +16,9 @@ export const roleOptions = [
   {
     label: "Người dùng",
     value: UserRole.USER
+  },
+  {
+    label: "Kế toán",
+    valuiue: UserRole.ACCOUNTANT
   }
 ]
