@@ -190,6 +190,12 @@ function EditAdsAccount(props: EditAdsAccountProps) {
               <Form.Item
                 className="!mb-0 w-full"
                 name="channel_id"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
               >
                 <Select
                   options={channels.map(channel => ({ label: channel.name, value: channel.id}))}
@@ -203,6 +209,12 @@ function EditAdsAccount(props: EditAdsAccountProps) {
               <Form.Item
                 className="!mb-0 w-full"
                 name="type"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
               >
                 <Select
                   labelInValue
@@ -217,6 +229,12 @@ function EditAdsAccount(props: EditAdsAccountProps) {
               <Form.Item
                 className="!mb-0 w-full"
                 name="currency_id"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
               >
                 <Select
                   options={currencies.map(item => ({ label: item.name, value: item.id }))}
@@ -230,6 +248,12 @@ function EditAdsAccount(props: EditAdsAccountProps) {
               <Form.Item
                 className="!mb-0 w-full"
                 name="timezone_id"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
               >
                 <Select
                   options={timezones.map(item => ({ label: item.name, value: item.id }))}
@@ -301,6 +325,12 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                   <Form.Item
                     className="!mb-0 w-full"
                     name="bank_account_id"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Trường này là bắt buộc"
+                      }
+                    ]}
                   >
                     <Select
                       onChange={onChangeBankId}
@@ -315,6 +345,12 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                 <Form.Item
                   className="!mb-0 w-full"
                   name="card_number"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Trường này là bắt buộc"
+                    }
+                  ]}
                 >
                   <Select
                     options={dataAdsAccount.filter(item => item.bank_id === (bankId===0? bankAccountId : bankId)).map(x => ({ label: x.card_number, value: x.id }))}
@@ -330,6 +366,12 @@ function EditAdsAccount(props: EditAdsAccountProps) {
               <Form.Item
                 className="!mb-0 w-full"
                 name="status"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
               >
                 <Select
                   labelInValue

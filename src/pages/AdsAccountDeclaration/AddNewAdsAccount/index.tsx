@@ -178,6 +178,12 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
             <Form.Item
               className="!mb-0 w-full"
               name="channel_id"
+              rules={[
+                {
+                  required: true,
+                  message: "Trường này là bắt buộc"
+                }
+              ]}
             >
               <Select
                 options={channels.map(channel => ({ label: channel.name, value: channel.id}))}
@@ -191,6 +197,12 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
             <Form.Item
               className="!mb-0 w-full"
               name="type"
+              rules={[
+                {
+                  required: true,
+                  message: "Trường này là bắt buộc"
+                }
+              ]}
             >
               <Select
                 labelInValue
@@ -205,6 +217,12 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
             <Form.Item
               className="!mb-0 w-full"
               name="currency_id"
+              rules={[
+                {
+                  required: true,
+                  message: "Trường này là bắt buộc"
+                }
+              ]}
             >
               <Select
                 options={currencies.map(item => ({ label: item.name, value: item.id }))}
@@ -218,6 +236,12 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
             <Form.Item
               className="!mb-0 w-full"
               name="timezone_id"
+              rules={[
+                {
+                  required: true,
+                  message: "Trường này là bắt buộc"
+                }
+              ]}
             >
               <Select
                 options={timezones.map(item => ({ label: item.name, value: item.id }))}
@@ -289,6 +313,12 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                 <Form.Item
                   className="!mb-0 w-full"
                   name="bank_account_id"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Trường này là bắt buộc"
+                    }
+                  ]}
                 >
                   <Select
                     onChange={onChangeBankName}
@@ -303,6 +333,12 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                 <Form.Item
                   className="!mb-0 w-full"
                   name="card_number"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Trường này là bắt buộc"
+                    }
+                  ]}
                 >
                   <Select
                     options={dataAdsAccount.filter(item => item.bank_id === bankName).map(x => ({ label: x.card_number, value: x.id }))}
@@ -318,6 +354,12 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
             <Form.Item
               className="!mb-0 w-full"
               name="status_id"
+              rules={[
+                {
+                  required: true,
+                  message: "Trường này là bắt buộc"
+                }
+              ]}
             >
               <Select
                 options={adAccountStatus.map(item => ({ label: item.name, value: item.id }))}

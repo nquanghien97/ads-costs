@@ -219,6 +219,12 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
               <Form.Item
                 className="!mb-0 w-full"
                 name="bank_id"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
               >
                 <Select
                   options={banks.map(item => ({ label: item.name, value: item.id }))}
@@ -232,6 +238,12 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
               <Form.Item
                 className="!mb-0 w-full"
                 name="status"
+                rules={[
+                  {
+                    required: true,
+                    message: "Trường này là bắt buộc"
+                  }
+                ]}
               >
                 <Select
                   options={optionsBankStatus}
