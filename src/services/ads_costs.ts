@@ -24,3 +24,15 @@ export const GetAdsCostsByUser = (
 export const DeclarationAdsCosts = (data: DeclarationAdsCostsDTO[]) => {
   return api.post('/bulk-ads-costs', { data })
 }
+
+export const getAdsCostsBySystem = ({ system_id } : { system_id: number }) => {
+  const params = new URLSearchParams();
+  if (system_id) params.append('system_id', system_id.toString());
+  return api.get(`/statistics/ads?level=system&${params.toString()}`)
+}
+
+export const getAdsCostsByGroup = ({ group_id } : { group_id: number }) => {
+  const params = new URLSearchParams();
+  if (group_id) params.append('group_id', group_id.toString());
+  return api.get(`/statistics/ads?level=group&${params.toString()}`)
+}

@@ -6,18 +6,27 @@ import { useSystemsStore } from "../../zustand/systems.store";
 import User from "../../entities/User";
 import { getUsers } from "../../services/users";
 import localeValues from "antd/locale/vi_VN";
+import { SearchForm } from ".";
+import { formatDate } from "../../utils/date";
 
 interface FormValues {
   search: string;
-  system_id: number;
-  group_id: number;
-  search_name: {
+  system: {
     label: string;
     value: number;
   };
+  group: {
+    label: string;
+    value: number;
+  };
+  user: {
+    label: string;
+    value: number;
+  };
+  date: Date[];
 }
 
-function Header() {
+function Header({ setSearchForm } : { setSearchForm: React.Dispatch<React.SetStateAction<SearchForm>> }) {
 
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
@@ -27,10 +36,10 @@ function Header() {
 
   const [form] = Form.useForm();
 
-  const handleSystemChange = (option: number) => {
-    setSelectedSystem(option)
-    form.setFieldsValue({ group_id: null });
-    form.setFieldsValue({ search_name: null });
+  const handleSystemChange = (option: { label: string, value: number}) => {
+    setSelectedSystem(option.value)
+    form.setFieldsValue({ group: null });
+    form.setFieldsValue({ search: null });
   };
 
   const handleGroupChange = async (value: number) => {
@@ -43,16 +52,26 @@ function Header() {
     }
   }
   const onFinish = (data: FormValues) => {
-    console.log(data)
+    const submitData = {
+      search: data.search,
+      system_id: data.system?.value,
+      system_name: data.system?.label,
+      group_id: data.group?.value,
+      group_name: data.group?.label,
+      user_id: data.user?.value,
+      since: data.date ? formatDate(new Date(data.date?.[0])): formatDate(new Date(Date.now())),
+      until: data.date ? formatDate(new Date(data.date?.[1])) : formatDate(new Date(Date.now())),
+    }
+    setSearchForm(submitData)
   }
 
   return (
     <div>
-      <Form onFinish={onFinish} className="flex py-2 justify-between">
+      <Form onFinish={onFinish} className="flex py-2 justify-between" form={form}>
         <div className="flex gap-2 items-center">
           <Form.Item
             className="w-[160px]"
-            name="key_word"
+            name="search"
           >
             <Input
               placeholder="Tìm kiếm"
@@ -64,6 +83,7 @@ function Header() {
             name="system"
           >
             <Select
+              labelInValue
               options={systems.map((system) => ({ label: system.name, value: system.id }))}
               onChange={handleSystemChange}
               className="z-50 h-full w-[160px]"
@@ -76,6 +96,7 @@ function Header() {
             name="group"
           >
             <Select
+              labelInValue
               options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
               onChange={handleGroupChange}
               className="z-50 h-full w-[160px]"
@@ -85,24 +106,13 @@ function Header() {
           </Form.Item>
           <Form.Item
             className="w-[160px]"
-            name="name"
+            name="user"
           >
             <Select
+              labelInValue
               options={name.map(item => ({label: item.name, value: item.id}))}
               className="z-50 h-full w-[160px]"
               placeholder="Họ tên"
-              allowClear
-            />
-          </Form.Item>
-          <Form.Item
-            className="w-[160px]"
-            name="channel"
-          >
-            <Select
-              // options={options}
-              // onChange={handleChange}
-              className="z-50 h-full w-[160px]"
-              placeholder="Kênh chạy"
               allowClear
             />
           </Form.Item>
@@ -127,7 +137,7 @@ function Header() {
         </Form.Item>
       </Form>
       <div className='flex justify-center mb-4'>
-        <div className="px-8 py-2 bg-[#29a9e0] rounded-full">
+        <div className="px-8 py-2 bg-[#0071ba] rounded-full text-white uppercase font-bold text-xl">
           <span>Báo cáo dữ liệu ADS</span>
         </div>
       </div>
