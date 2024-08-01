@@ -71,8 +71,6 @@ function EditUser(props: EditUserProps) {
       const submitData = {
         group_id: data.group.value || userEdit?.group_id,
         system_id: data.system.value || userEdit?.system_id,
-        password: data.password,
-        password_confirm: data.password_confirm,
         role: data.role,
         name: data.name
       }
@@ -124,44 +122,6 @@ function EditUser(props: EditUserProps) {
               ]}
             >
               <Input className="py-2" />
-            </Form.Item>
-          </div>
-          <div className="flex items-center h-[40px]">
-            <p className="w-[120px] text-left text-[#0071BA]">Mật khẩu</p>
-            <Form.Item
-              className="!mb-0 w-full"
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Trường này là bắt buộc"
-                }
-              ]}
-            >
-              <Input.Password className="py-2" />
-            </Form.Item>
-          </div>
-          <div className="flex items-center h-[40px]">
-            <p className="w-[120px] text-left text-[#0071BA]">Xác nhận mật khẩu</p>
-            <Form.Item
-              className="!mb-0 w-full"
-              name="password_confirm"
-              rules={[
-                {
-                  required: true,
-                  message: "Trường này là bắt buộc"
-                },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue('password') === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(new Error('Mật khẩu xác nhận không chính xác'));
-                  },
-                }),
-              ]}
-            >
-              <Input.Password className="py-2" />
             </Form.Item>
           </div>
           <div className="flex items-center h-[40px]">
@@ -218,7 +178,7 @@ function EditUser(props: EditUserProps) {
             >
               <Select
                 labelInValue
-                options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
+                options={groups.filter((id) => id.system_id === selectedSystem || userEdit?.system_id).map((group) => ({ label: group.name, value: group.id }))}
                 className="w-full h-full"
                 allowClear
               />
