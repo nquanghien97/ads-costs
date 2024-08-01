@@ -37,6 +37,14 @@ export function addNewUser(data: UserDTO) {
   return api.post('/users', data)
 }
 
+export function blockUser(user_id: number) {
+  return api.post(`/users/${user_id}/block`)
+}
+
+export function unBlockUser(user_id: number) {
+  return api.post(`/users/${user_id}/unblock`)
+}
+
 export function getUserId(): number {
   const token = Cookies.get('token');
 

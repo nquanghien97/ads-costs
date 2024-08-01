@@ -72,7 +72,6 @@ function UpdatePassword(props: UpdatePasswordProps) {
             <Form.Item
               className="!mb-0 w-full"
               name="confirm_password"
-              dependencies={['newPassword']}
               rules={[
                 {
                   required: true,

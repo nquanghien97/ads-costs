@@ -10,7 +10,7 @@ export const roleOptions = [
     value: UserRole.SYSTEM_ADM
   },
   {
-    label: "Admin Hộ kinh doanh",
+    label: "Admin HKD",
     value: UserRole.GROUP_ADM
   },
   {

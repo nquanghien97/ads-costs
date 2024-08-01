@@ -12,6 +12,9 @@ import BaseButton from "../../../components/common/BaseButton";
 import PlusIcon from "../../../assets/icons/PlusIcon";
 import { SearchFormType } from "..";
 import { roleOptions } from "../../../config/userRoleOption";
+import { UnlockOutlined } from "@ant-design/icons";
+import BlockUser from "../action/BlockUser";
+import UnBlockUser from "../action/UnBlockUser";
 
 interface TableUserProps {
   users: User[],
@@ -26,6 +29,8 @@ function TableUser(props: TableUserProps) {
   const { users, setUsers, loading, setLoading, searchForm } = props;
   
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [openBlockModal, setOpenBlockModal] = useState(false);
+  const [openUnBlockModal, setOpenUnBlockModal] = useState(false);
   const [user, setUser] = useState({
     userId: -1,
     userName: ''
@@ -34,19 +39,23 @@ function TableUser(props: TableUserProps) {
   const [openUpdatePasswordModal, setOpenUpdatePasswordModal] = useState(false);
   const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
+  const [dataBlock, setDataBlock] = useState({
+    user_id: -1,
+    username: ''
+  });
   
   const columns: TableColumnsType<User> = [
     {
       title: 'STT',
       dataIndex: 'index',
       key: '1',
-      width: 60,
+      width: 40,
       render: (_, __, index) => index + 1,
     },
     {
       title: 'Mã',
       dataIndex: ['username'],
-      width: 100,
+      width: 80,
       key: '2',
     },
     {
@@ -62,7 +71,7 @@ function TableUser(props: TableUserProps) {
       width: 150
     },
     {
-      width: 160,
+      width: 100,
       title: 'Hộ kinh doanh',
       dataIndex: ['group', 'name'],
       key: '5',
@@ -101,7 +110,7 @@ function TableUser(props: TableUserProps) {
                   }
                 >
                   <Button
-                    className="bg-[green] w-full"
+                    className="w-full"
                     type="primary"
                     icon={<EditIcon width={16} height={16} color="white" />}
                   >
@@ -109,15 +118,43 @@ function TableUser(props: TableUserProps) {
                   </Button>
                 </div>
               </ConfigProvider>
-              <div className="flex items-center">
-                <Button
-                  icon={<LockIcon color="white" />}
-                  type="primary"
-                  danger
-                  className="w-full"
-                >      
-                  <p className="text-white">Khóa</p>
-                </Button>
+              <div className="flex items-center min-w-[120px]">
+                {record.is_blocked ? (
+                  <>
+                    <Button
+                      icon={<UnlockOutlined color="white" />}
+                      type="primary"
+                      className="w-full bg-[green]"
+                      onClick={() => {
+                        setOpenUnBlockModal(true)
+                        setDataBlock({
+                          user_id: record.id,
+                          username: record.username
+                        })
+                      }}
+                    >      
+                      <p className="text-white">Mở Khóa</p>
+                    </Button>
+                  </>
+                ): (
+                  <>
+                    <Button
+                      icon={<LockIcon color="white" />}
+                      type="primary"
+                      danger
+                      className="w-full"
+                      onClick={() => {
+                        setOpenBlockModal(true)
+                        setDataBlock({
+                          user_id: record.id,
+                          username: record.username
+                        })
+                      }}
+                    >      
+                      <p className="text-white">Khóa</p>
+                    </Button>
+                  </>
+                )}
               </div>
               <div 
                 className="flex items-center"
@@ -132,7 +169,7 @@ function TableUser(props: TableUserProps) {
                 <Button
                   icon={<CloseIcon color="white" />}
                   type="primary"
-                  className="w-full"
+                  className="w-full bg-[#FFA500]"
                 >      
                   <p className="text-white">Cập nhật mật khẩu</p>
                 </Button>
@@ -219,6 +256,8 @@ function TableUser(props: TableUserProps) {
         </ConfigProvider>
         {openEditModal && <EditUser onClose={() => setOpenEditModal(false)} user={user} setRefreshKey={setRefreshKey} open={openEditModal} />}
         {openUpdatePasswordModal && <UpdatePassword open={openUpdatePasswordModal} user_id={user.userId} onCancel={() => setOpenUpdatePasswordModal(false)} onOk={() => console.log('ok')} />}
+        <BlockUser open={openBlockModal} onCancel={() => setOpenBlockModal(false)} dataBlock={dataBlock} setRefreshKey={setRefreshKey} />
+        <UnBlockUser open={openUnBlockModal} onCancel={() => setOpenUnBlockModal(false)} dataUnBlock={dataBlock} setRefreshKey={setRefreshKey} />
       </div>
     </>
   )

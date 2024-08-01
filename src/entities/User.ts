@@ -11,6 +11,7 @@ export default interface User {
   username: string;
   name: string;
   group_id: number;
+  is_blocked: boolean;
   group: {
     id: number;
     name: string;
