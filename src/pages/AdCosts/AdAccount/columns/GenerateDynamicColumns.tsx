@@ -3,7 +3,6 @@ import { TableColumnsType } from 'antd';
 import { AdAccountData, TotalDailyData } from '../../../../dto/AdsBillingsDTO';
 import EyeIcon from '../../../../assets/icons/EyeIcon';
 import { formatCurrency } from '../../../../utils/currency';
-import { useState } from 'react';
 import { useNotification } from '../../../../hooks/useNotification';
 import clsx from 'clsx';
 import { updateStatusAdsBill } from '../../../../services/ads_bills';
