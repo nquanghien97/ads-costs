@@ -2,6 +2,7 @@ import { ConfigProvider, Table, TableColumnsType } from "antd"
 import { useEffect, useState } from "react";
 import { getListExchangeRate } from "../../services/exchange_rates";
 import { ExchangeRateType } from "../../entities/ExchangeRate";
+import { formatCurrency } from "../../utils/currency";
 
 interface TransformedData {
   bank: string;
@@ -60,7 +61,12 @@ function ExchangeRate() {
       title: date,
       dataIndex: date,
       key: date,
-      width: 200
+      width: 200,
+      render(value: number) {
+        return (
+          formatCurrency(value, 0)
+        )
+      }
     }))
   ];
 
