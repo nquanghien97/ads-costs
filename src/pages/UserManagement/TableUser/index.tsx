@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from "react";
 import { getUsers } from "../../../services/users";
 import EditIcon from "../../../assets/icons/EditIcon";
 import LockIcon from "../../../assets/icons/LockIcon";
-import CloseIcon from "../../../assets/icons/CloseIcon";
 import EditUser from "../action/EditUser";
 import UpdatePassword from "../action/UpdatePassword";
 import AddNewUser from "../action/AddNewUser";
@@ -15,6 +14,7 @@ import { roleOptions } from "../../../config/userRoleOption";
 import { UnlockOutlined } from "@ant-design/icons";
 import BlockUser from "../action/BlockUser";
 import UnBlockUser from "../action/UnBlockUser";
+import UpdatePasswordIcon from "../../../assets/icons/UpdatePasswordIcon";
 
 interface TableUserProps {
   users: User[],
@@ -96,7 +96,7 @@ function TableUser(props: TableUserProps) {
             <div className="flex justify-between gap-2">
               <ConfigProvider
                 button={{
-                  className: "hover:!bg-[#538b53]"
+                  // className: "hover:!bg-[#538b53]"
                 }}
               >
                 <div
@@ -112,34 +112,40 @@ function TableUser(props: TableUserProps) {
                   <Button
                     className="w-full"
                     type="primary"
-                    icon={<EditIcon width={16} height={16} color="white" />}
+                    icon={<EditIcon width={16} height={16} color="black" />}
                   >
-                    <p className="text-white">Sửa</p>
+                    <p className="text-black">Sửa</p>
                   </Button>
                 </div>
               </ConfigProvider>
               <div className="flex items-center min-w-[120px]">
                 {record.is_blocked ? (
                   <>
-                    <Button
-                      icon={<UnlockOutlined color="white" />}
-                      type="primary"
-                      className="w-full bg-[green]"
-                      onClick={() => {
-                        setOpenUnBlockModal(true)
-                        setDataBlock({
-                          user_id: record.id,
-                          username: record.username
-                        })
+                    <ConfigProvider
+                      button={{
+                        className: "hover:!bg-[#538b53]"
                       }}
-                    >      
-                      <p className="text-white">Mở Khóa</p>
-                    </Button>
+                    >
+                      <Button
+                        icon={<UnlockOutlined className="text-black" />}
+                        type="primary"
+                        className="w-full bg-[green]"
+                        onClick={() => {
+                          setOpenUnBlockModal(true)
+                          setDataBlock({
+                            user_id: record.id,
+                            username: record.username
+                          })
+                        }}
+                      >      
+                        <p className="text-black">Mở Khóa</p>
+                      </Button>
+                    </ConfigProvider>
                   </>
                 ): (
                   <>
                     <Button
-                      icon={<LockIcon color="white" />}
+                      icon={<LockIcon color="black" />}
                       type="primary"
                       danger
                       className="w-full"
@@ -151,7 +157,7 @@ function TableUser(props: TableUserProps) {
                         })
                       }}
                     >      
-                      <p className="text-white">Khóa</p>
+                      <p className="text-black">Khóa</p>
                     </Button>
                   </>
                 )}
@@ -166,13 +172,20 @@ function TableUser(props: TableUserProps) {
                   })
                 }}
               >
-                <Button
-                  icon={<CloseIcon color="white" />}
-                  type="primary"
-                  className="w-full bg-[#FFA500]"
-                >      
-                  <p className="text-white">Cập nhật mật khẩu</p>
-                </Button>
+                <ConfigProvider
+                    button={{
+                      className: "hover:!bg-[#edad37]"
+                    }}
+                  >
+
+                  <Button
+                    icon={<UpdatePasswordIcon color="black" />}
+                    type="primary"
+                    className="w-full bg-[#FFA500]"
+                  >      
+                    <p className="text-black">Cập nhật mật khẩu</p>
+                  </Button>
+                </ConfigProvider>
               </div>
             </div>
           </div>
@@ -213,9 +226,9 @@ function TableUser(props: TableUserProps) {
     <>
       <div className="flex mb-4">
         <div className="m-auto">
-          <span className="px-6 p-2 rounded-full bg-[#0071BA] text-white uppercase">Quản lý người dùng</span>
+          <span className="px-6 p-2 rounded-full bg-[#0071BA] text-black uppercase">Quản lý người dùng</span>
         </div>
-        <BaseButton color="info" className="text-white" onClick={() => setOpenAddNewAdsAccount(true)}>
+        <BaseButton color="info" className="text-black" onClick={() => setOpenAddNewAdsAccount(true)}>
           Thêm mới
           <PlusIcon color="white" />
         </BaseButton>
