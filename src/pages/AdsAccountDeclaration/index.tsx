@@ -12,6 +12,7 @@ import AddNewAdsAccount from "./AddNewAdsAccount";
 import DeleteAdAccount from "./DeleteAdAccount";
 import { AdsAccountStatusType } from "../../entities/AdsAccountStatus";
 import { ExportExcelAdsAccount } from "../../components/ExportExcel/ExportExcelAdsAccount";
+import { formatCurrency } from "../../utils/currency";
 
 export interface SubmitFormSearchType {
   search: string;
@@ -124,7 +125,12 @@ function AdsAccountDeclaration() {
       title: 'Tỷ giá TKQC thuê',
       dataIndex: 'exchange_rate',
       key: '13',
-      width: 100
+      width: 100,
+      render(value) {
+        return (
+          formatCurrency(value, 0)
+        )
+      }
     },
     {
       title: 'Phí thuê',

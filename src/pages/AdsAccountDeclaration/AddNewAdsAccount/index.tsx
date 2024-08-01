@@ -68,7 +68,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
           currency_id: data.currency_id,
           type_id: data.type.value,
           timezone_id: data.timezone_id,
-          exchange_rate: data.exchange_rate,
+          exchange_rate: Number(data.exchange_rate?.toString().replace(/\./g, '')),
           rental_fee: data.rental_fee,
           status_id: data.status_id,
         }

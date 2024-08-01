@@ -4,9 +4,8 @@ export const convertCurrencyStringToNumber = (currencyString: string) => {
   return parseFloat(modifiedString);
 }
 
-export const formatCurrency = (number: number | string) => {
+export const formatCurrency = (number: number | string, decPlaces = 2) => {
   if(typeof number === 'string') number = Number(number);
-  const decPlaces = 2;
   const decSep = ",";
   const thouSep = ".";
   
