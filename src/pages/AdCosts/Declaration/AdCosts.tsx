@@ -77,7 +77,6 @@ function AdCosts(props: AdCostsProps) {
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const invalidData = err.response?.data.invalidData
-        console.log(invalidData)
         for (const key in invalidData) {
           if (Array.isArray(invalidData[key]) && invalidData[key].includes("TKQC không tồn tại hoặc đã ngừng sử dụng.")) {
             const index = parseInt(key.split('.')[1], 10);

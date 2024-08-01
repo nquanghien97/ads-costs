@@ -6,6 +6,7 @@ import { getUserId } from "../../../services/users";
 import { useNotification } from "../../../hooks/useNotification";
 import { getListBankAccounts } from "../../../services/bank_account";
 import { BankAccountType } from "../../../entities/BankAccount";
+import axios from "axios";
 
 interface InvoiceDetailsProps {
   onClose: () => void;
@@ -76,7 +77,7 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
         onClose()
         form.resetFields();
       } else if(adsAccountTypes?.label === 'TK THƯỜNG - Trả sau' || adsAccountTypes?.label === 'TK THƯỜNG - Trả trước') {
-        const submitData = {
+        const dataSubmit = {
           user_id: user_id,
           account_id: data.account_id,
           account_name: data.account_name,
@@ -87,15 +88,24 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
           bank_account_id: +data.card_number,
           status_id: data.status_id,
         }
-        await addNewAdAccount(submitData)
+        await addNewAdAccount(dataSubmit)
         notification.success('Thêm mới tài khoản quảng cáo thành công')
         onClose();
         form.resetFields();
       }
       setRefreshKey(pre => !pre)
     } catch (err){
-      console.log(err);
-      notification.success('Thêm mới tài khoản quảng cáo thất bại')
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Đã được sử dụng.")) {
+            notification.error('ID TKQC đã tồn tại và đang được sử dụng.')
+            break;
+          } else {
+            notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+          }
+        }
+      }
     } finally {
       setLoading(false);
     }
@@ -227,7 +237,18 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                     {
                       required: true,
                       message: "Trường này là bắt buộc"
-                    }
+                    },
+                    () => ({
+                      validator(_, value) {
+                        if (!value) {
+                          return Promise.reject();
+                        }
+                        if (isNaN(value)) {
+                          return Promise.reject("Tỷ giá phải là số");
+                        }
+                        return Promise.resolve();
+                      },
+                    }),
                   ]}
                 >
                   <Input className="py-2" />
@@ -242,7 +263,18 @@ function AddNewAdsAccount(props: InvoiceDetailsProps) {
                     {
                       required: true,
                       message: "Trường này là bắt buộc"
-                    }
+                    },
+                    () => ({
+                      validator(_, value) {
+                        if (!value) {
+                          return Promise.reject();
+                        }
+                        if (isNaN(value)) {
+                          return Promise.reject("Phí thuê phải là số");
+                        }
+                        return Promise.resolve();
+                      },
+                    }),
                   ]}
                 >
                   <Input className="py-2" />

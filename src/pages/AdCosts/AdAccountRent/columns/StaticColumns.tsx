@@ -92,7 +92,7 @@ export const StaticColumns: TableColumnsType<AdAccountData> = [
     render: () => (
       <div>
         <div className="row-custom bg-[#c7ecce]">TKQC</div>
-        <div className="row-custom bg-[white]">VND</div>
+        <div className="row-custom bg-[white]">VNĐ</div>
       </div>
     ),
     className: '!bg-[#e9b9c9]'

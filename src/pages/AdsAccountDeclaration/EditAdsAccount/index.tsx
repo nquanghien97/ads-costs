@@ -7,6 +7,7 @@ import { useNotification } from "../../../hooks/useNotification";
 import { BankAccountType } from "../../../entities/BankAccount";
 import { getListBankAccounts } from "../../../services/bank_account";
 import { getUserId } from "../../../services/users";
+import axios from "axios";
 
 interface EditAdsAccountProps {
   onClose: () => void;
@@ -111,13 +112,21 @@ function EditAdsAccount(props: EditAdsAccountProps) {
       onClose();
       setRefreshKey(pre => !pre)
     } catch (err) {
-      console.log(err)
-      notification.error('Chỉnh sửa tài khoản quảng cáo thất bại');
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Đã được sử dụng.")) {
+            notification.error('ID TKQC đã tồn tại và đang được sử dụng.')
+            break;
+          } else {
+            notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+          }
+        }
+      }
     } finally {
       setLoading(false)
     }
   }
-
 
   return (
     <Modal
@@ -240,7 +249,18 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                       {
                         required: true,
                         message: "Trường này là bắt buộc"
-                      }
+                      },
+                      () => ({
+                        validator(_, value) {
+                          if (!value) {
+                            return Promise.reject();
+                          }
+                          if (isNaN(value)) {
+                            return Promise.reject("Tỷ giá phải là số");
+                          }
+                          return Promise.resolve();
+                        },
+                      }),
                     ]}
                   >
                     <Input className="py-2" />
@@ -255,7 +275,18 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                       {
                         required: true,
                         message: "Trường này là bắt buộc"
-                      }
+                      },
+                      () => ({
+                        validator(_, value) {
+                          if (!value) {
+                            return Promise.reject();
+                          }
+                          if (isNaN(value)) {
+                            return Promise.reject("Phí thuê phải là số");
+                          }
+                          return Promise.resolve();
+                        },
+                      }),
                     ]}
                   >
                     <Input className="py-2" />
