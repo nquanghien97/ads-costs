@@ -39,7 +39,7 @@ function TableReportGroup(props: TableReportGroupProps) {
         </div>
       ) : (
         <>
-          <div className="px-8 py-2 my-2 bg-[#0071ba] rounded-full uppercase font-bold text-white">
+          <div className="px-8 py-2 my-2 bg-[#c12f5b] rounded-full uppercase font-bold text-white">
             <span>{searchForm.system_name}</span>
           </div>
           <div>
@@ -51,7 +51,7 @@ function TableReportGroup(props: TableReportGroupProps) {
                 <div className="px-8 py-2 bg-[#0071ba] rounded-full w-full text-white uppercase font-bold">
                   <span>{searchForm.group_name}</span>
                 </div>
-                <div className="px-8 py-2 bg-[#0071ba] rounded-full w-full text-white uppercase font-bold">
+                <div className="px-8 py-2 bg-[#53b6f8] rounded-full w-full text-white uppercase font-bold">
                   <span>{item.name}</span>
                 </div>
                 <div>

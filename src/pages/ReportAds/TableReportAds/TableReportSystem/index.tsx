@@ -40,7 +40,7 @@ function TableReportSystem(props: TableReportSystemProps) {
           </div>
         ) : (
           <>
-            <div className="px-8 py-2 my-2 bg-[#0071ba] text-white rounded-full uppercase font-bold">
+            <div className="px-8 py-2 my-2 bg-[#c12f5b] text-white rounded-full uppercase font-bold">
               <span>{searchForm.system_name}</span>
             </div>
             <div>
