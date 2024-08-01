@@ -20,11 +20,11 @@ function TableReportGroup(props: TableReportGroupProps) {
     setLoading(true);
     (async () => {
       if(!searchForm.group_id) return
-      const res = await getAdsCostsByGroup({ group_id: searchForm.group_id, since: searchForm.since, until: searchForm.until })
+      const res = await getAdsCostsByGroup({ group_id: searchForm.group_id, since: searchForm.since, until: searchForm.until, user_id: searchForm.user_id })
       setDataGroup(res.data.data.list)
       setLoading(false)
     })()
-  }, [searchForm.group_id, searchForm.since, searchForm.until, setDataGroup, setLoading])
+  }, [searchForm.group_id, searchForm.since, searchForm.until, searchForm.user_id, setDataGroup, setLoading])
 
   const filterData = dataGroup.filter(item => item.account_type_datas.length !== 0)
 
@@ -41,15 +41,15 @@ function TableReportGroup(props: TableReportGroupProps) {
           <div className="px-8 py-2 my-2 bg-[#c12f5b] rounded-full uppercase font-bold text-white">
             <span>{searchForm.system_name}</span>
           </div>
+          <div className="px-8 py-2 bg-[#0071ba] rounded-full w-full text-white uppercase font-bold my-4">
+            <span>{searchForm.group_name}</span>
+          </div>
           <div>
             {filterData.map(item => (
               <div
                 className="flex flex-col gap-2 border-b-4 border-cyan-700 pb-6"
                 key={item.user_id}
               >
-                <div className="px-8 py-2 bg-[#0071ba] rounded-full w-full text-white uppercase font-bold">
-                  <span>{searchForm.group_name}</span>
-                </div>
                 <div className="px-8 py-2 bg-[#53b6f8] rounded-full w-full text-white uppercase font-bold">
                   <span>{item.name}</span>
                 </div>

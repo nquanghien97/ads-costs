@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SearchIcon from "../../assets/icons/SearchIcon";
 import { Button, DatePicker, Form, Input, Select, Tooltip } from "antd";
-import User from "../../entities/User";
+import User, { UserRole } from "../../entities/User";
 import { useGroupsStore } from "../../zustand/groups.store";
 import { useSystemsStore } from "../../zustand/systems.store";
 import { getUsers } from "../../services/users";
@@ -14,6 +14,7 @@ import { formatDate } from "../../utils/date";
 import { SearchFormValues } from ".";
 import { exportExcelBankTransaction } from "../../components/ExportExcel/ExportExcelBankTransaction";
 import { BankTransactionsDTO } from "../../dto/BankTransactionsDTO";
+import { useAuthStore } from "../../zustand/auth.store";
 
 interface FormValues {
   search: string;
@@ -38,6 +39,7 @@ function Header(props: HeaderProps) {
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
+  const { user } = useAuthStore();
   const [selectedSystem, setSelectedSystem] = useState(-1);
   const [name, setName] = useState<User[]>([]);
   
@@ -151,18 +153,22 @@ function Header(props: HeaderProps) {
       </Form>
       <div className="flex py-2 justify-between">
         <div className="flex gap-2">
-          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalTransfer(true)}>
-            <span className="text-white">Khai báo tiền chuyển</span>
-          </div>
-          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalCosts(true)}>
-            <span className="text-white">Khai báo Chi phí</span>
-          </div>
-          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalExchangeRate(true)}>
-            <span className="text-white">Khai báo tỷ giá ngân hàng</span>
-          </div>
-          {openModalTransfer && <TransferMoney openModalTransfer={openModalTransfer} setOpenModalTransfer={setOpenModalTransfer} />}
-          {openModalCosts && <CostsDeclaration openModalCosts={openModalCosts} setOpenModalCosts={setOpenModalCosts} />}
-          {openModalExchangeRate && <ExchangeRate openModalExchangeRate={openModalExchangeRate} setOpenModalExchangeRate={setOpenModalExchangeRate} />}
+          {(user.role === UserRole.ACCOUNTANT || user.role === UserRole.ROOT) ? (
+            <>
+              <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalTransfer(true)}>
+                <span className="text-white">Khai báo tiền chuyển</span>
+              </div>
+              <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalCosts(true)}>
+                <span className="text-white">Khai báo Chi phí</span>
+              </div>
+              <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalExchangeRate(true)}>
+                <span className="text-white">Khai báo tỷ giá ngân hàng</span>
+              </div>
+              {openModalTransfer && <TransferMoney openModalTransfer={openModalTransfer} setOpenModalTransfer={setOpenModalTransfer} />}
+              {openModalCosts && <CostsDeclaration openModalCosts={openModalCosts} setOpenModalCosts={setOpenModalCosts} />}
+              {openModalExchangeRate && <ExchangeRate openModalExchangeRate={openModalExchangeRate} setOpenModalExchangeRate={setOpenModalExchangeRate} />}
+            </>
+          ) : null}
         </div>
         <div className="flex gap-2">
           <Button size="large">

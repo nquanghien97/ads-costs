@@ -7,8 +7,8 @@ const api = axios.create({
 });
 
 // Hàm xử lý đăng xuất
-const handleLogout = () => {
-  Cookies.remove('accessToken');
+export const handleLogout = () => {
+  Cookies.remove('token');
   // Chuyển hướng đến trang đăng nhập
   window.location.href = '/login';
 };

@@ -26,6 +26,7 @@ function Login() {
 
   useEffect(() => {
     document.title = "Đăng nhập"
+    Cookies.remove('token');
   }, []);
 
   const notification = useNotification();
@@ -40,7 +41,6 @@ function Login() {
       Cookies.set('token', data.data.token, { expires: data.data.timeout / (1000 * 60 * 60 * 24) });
       if (formValue.username === formValue.password) {
         navigate('/thay-doi-mat-khau', { state: { password_old: formValue.password }})
-        console.log('aaaa')
       } else {
         await getUser();
         navigate('/')

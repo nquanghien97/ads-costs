@@ -34,11 +34,12 @@ export const getAdsCostsBySystem = ({ system_id, since, until } : { system_id: n
   return api.get(`/statistics/ads?level=system&${params.toString()}`)
 }
 
-export const getAdsCostsByGroup = ({ group_id, since, until } : { group_id: number, since?: string, until?: string }) => {
+export const getAdsCostsByGroup = ({ group_id, since, until, user_id } : { group_id: number, since?: string, until?: string, user_id?: number }) => {
   const params = new URLSearchParams();
   if (group_id) params.append('group_id', group_id.toString());
   if (since) params.append('since', since.toString());
   if (until) params.append('until', until.toString());
+  if (user_id) params.append('user_id', user_id.toString());
 
   return api.get(`/statistics/ads?level=group&${params.toString()}`)
 }

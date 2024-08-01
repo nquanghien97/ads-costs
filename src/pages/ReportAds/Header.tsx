@@ -42,10 +42,11 @@ function Header({ setSearchForm } : { setSearchForm: React.Dispatch<React.SetSta
     form.setFieldsValue({ search: null });
   };
 
-  const handleGroupChange = async (value: number) => {
+  const handleGroupChange = async (option: { label: string, value: number}) => {
+    console.log(option)
     form.setFieldsValue({ name: null })
     try {
-      const res = await getUsers({group_id: value});
+      const res = await getUsers({group_id: option.value});
       setName(res.data.data.list)
     } catch(e){
       console.log(e);

@@ -4,7 +4,7 @@ import { useState } from "react";
 import AdCosts from "./Declaration/AdCosts";
 import { useGroupsStore } from "../../zustand/groups.store";
 import { useSystemsStore } from "../../zustand/systems.store";
-import User from "../../entities/User";
+import User, { UserRole } from "../../entities/User";
 import { getUsers } from "../../services/users";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
 import BillCosts from "./Declaration/BillCosts";
@@ -14,6 +14,7 @@ import { useNotification } from "../../hooks/useNotification";
 import { GetAdsCostsByUser } from "../../services/ads_costs";
 import localeValues from "antd/locale/vi_VN";
 import { exportToExcel } from '../../components/ExportExcel/ExportExcelAdsCost'
+import { useAuthStore } from "../../zustand/auth.store";
 interface FormValues {
   search: string;
   system_id: number;
@@ -49,6 +50,7 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
   const { channels } = useInformationSettingsStore();
+  const { user } = useAuthStore();
   const [selectedSystem, setSelectedSystem] = useState(-1);
   const [name, setName] = useState<User[]>([]);
   const [searchForm, setSearchForm] = useState<SearchFormValues>({
@@ -185,13 +187,16 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
         </Form.Item>
       </Form>
       <div className="flex py-2 justify-between">
-        <div className="flex gap-4">
-          <AdCosts setRefreshKey={setRefreshKey} searchForm={searchForm} setDatas={setDatas} />
-          <BillCosts setRefreshKey={setRefreshKey} searchForm={searchForm} setDatas={setDatas} />
-        </div>
+          <div className="flex gap-4">
+            {(user.role === UserRole.ACCOUNTANT || user.role === UserRole.ROOT) ? (
+              <>
+                <AdCosts setRefreshKey={setRefreshKey} searchForm={searchForm} setDatas={setDatas} />
+                <BillCosts setRefreshKey={setRefreshKey} searchForm={searchForm} setDatas={setDatas} />
+              </>
+            ) : null}
+          </div>
         <div className="flex gap-2">
           <Button size="large" className="bg-white" onClick={() => exportToExcel(dataExportExcel)}>
-            {/* <ExportToExcel apiData={data1} fileName="CPQC Hóa đơn" /> */}
             Export dữ liệu
           </Button>
         </div>

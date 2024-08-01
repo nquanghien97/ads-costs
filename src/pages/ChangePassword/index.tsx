@@ -1,6 +1,6 @@
 import { Button, Form, Input } from 'antd';
 import { useState } from 'react';
-import { changePassword } from '../../services/auth';
+import { changePassword, LogOut } from '../../services/auth';
 import { useNotification } from '../../hooks/useNotification';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useChangePasswordStore } from '../../zustand/isChangePasswod.store';
@@ -81,7 +81,7 @@ function ChangePasswordPage() {
               </Form.Item>
             </div>
             <div className="flex justify-center gap-12 p-4">
-              <Button type="primary" danger onClick={() => navigate('/login')}>Hủy</Button>
+              <Button type="primary" danger onClick={() => LogOut()}>Hủy</Button>
               <Button type="primary" htmlType="submit" loading={loading}>Xác nhận</Button>
             </div>
           </Form>
