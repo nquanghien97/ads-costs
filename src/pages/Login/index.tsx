@@ -39,10 +39,10 @@ function Login() {
       setIsChangePassword(formValue.username !== formValue.password)
       const { data } = res
       Cookies.set('token', data.data.token, { expires: data.data.timeout / (1000 * 60 * 60 * 24) });
+      await getUser();
       if (formValue.username === formValue.password) {
         navigate('/thay-doi-mat-khau', { state: { password_old: formValue.password }})
       } else {
-        await getUser();
         navigate('/')
       }
     } catch (err) {

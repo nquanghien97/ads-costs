@@ -3,6 +3,7 @@ import GroupType from '../../entities/Group';
 import { useState } from 'react';
 import { addGroup } from '../../services/groups';
 import { useNotification } from '../../hooks/useNotification';
+import axios from 'axios';
 
 interface AddNewGroupProps {
   open: boolean;
@@ -27,8 +28,17 @@ export default function AddNewGroup(props: AddNewGroupProps) {
       form.resetFields();
       notification.success('Thêm mới Hộ kinh doanh thành công')
     } catch (err) {
-      console.log(err);
-      notification.error('Thêm mới Hộ kinh doanh thất bại')
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Đã được sử dụng.")) {
+            notification.error('Hộ kinh doanh đã tồn tại.')
+            break;
+          } else {
+            notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+          }
+        }
+      }
     } finally {
       setLoadingSubmit(false);
     }

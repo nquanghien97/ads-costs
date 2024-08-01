@@ -26,7 +26,10 @@ function TableUser(props: TableUserProps) {
   const { users, setUsers, loading, setLoading, searchForm } = props;
   
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [userId, setUserId] = useState(-1)
+  const [user, setUser] = useState({
+    userId: -1,
+    userName: ''
+  })
   const [pagingUsers, setPagingUsers] = useState<pagingUser>()
   const [openUpdatePasswordModal, setOpenUpdatePasswordModal] = useState(false);
   const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false);
@@ -34,7 +37,7 @@ function TableUser(props: TableUserProps) {
   
   const columns: TableColumnsType<User> = [
     {
-      title: 'ID',
+      title: 'STT',
       dataIndex: 'index',
       key: '1',
       width: 60,
@@ -90,7 +93,10 @@ function TableUser(props: TableUserProps) {
                 <div
                   className="flex items-center"
                   onClick={() => {
-                    setUserId(record.id)
+                    setUser({
+                      userId: record.id,
+                      userName: record.username
+                    })
                     setOpenEditModal(true)}
                   }
                 >
@@ -205,7 +211,7 @@ function TableUser(props: TableUserProps) {
             scroll={{ y: 600 }}
           />
         </ConfigProvider>
-        {openEditModal && <EditUser onClose={() => setOpenEditModal(false)} userId={userId} setRefreshKey={setRefreshKey} open={openEditModal} />}
+        {openEditModal && <EditUser onClose={() => setOpenEditModal(false)} user={user} setRefreshKey={setRefreshKey} open={openEditModal} />}
         {openUpdatePasswordModal && <UpdatePassword open={openUpdatePasswordModal} onCancel={() => setOpenUpdatePasswordModal(false)} onOk={() => console.log('ok')} />}
       </div>
     </>

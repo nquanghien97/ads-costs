@@ -9,6 +9,8 @@ import { UserDTO } from "../../../dto/UserDTO";
 import { addNewUser } from "../../../services/users";
 import { roleOptions } from "../../../config/userRoleOption";
 import { UserRole } from "../../../entities/User";
+import axios from "axios";
+import { useNotification } from "../../../hooks/useNotification";
 
 interface AddUserProps {
   onClose: () => void;
@@ -23,6 +25,8 @@ function AddUser(props: AddUserProps) {
   
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
+
+  const notification = useNotification();
 
   const handleSystemChange = (option: number) => {
     setSelectedSystem(option)
@@ -42,7 +46,17 @@ function AddUser(props: AddUserProps) {
       setRefreshKey(pre => !pre);
       onClose();
     } catch (err) {
-      console.log(err);
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Mã MKT đã được sử dụng.")) {
+            notification.error('Mã MKT đã được sử dụng.')
+            break;
+          } else {
+            notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+          }
+        }
+      }
     } finally {
       setLoading(false)
     }

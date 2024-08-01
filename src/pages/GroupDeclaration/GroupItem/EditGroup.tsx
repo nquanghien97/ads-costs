@@ -4,6 +4,7 @@ import { editGroup } from '../../../services/groups';
 import GroupType from '../../../entities/Group';
 import { useParams } from 'react-router-dom';
 import { useNotification } from '../../../hooks/useNotification';
+import axios from 'axios';
 
 interface EditGroupProps {
   open: boolean;
@@ -33,8 +34,17 @@ export default function EditGroup(props: EditGroupProps) {
       onCancel();
       notification.success('Chỉnh sửa Hộ kinh doanh thành công')
     } catch(err) {
-      console.log(err);
-      notification.error('Chỉnh sửa Hộ kinh doanh thất bại')
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Đã được sử dụng.")) {
+            notification.error('Hộ kinh doanh đã tồn tại.')
+            break;
+          } else {
+            notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+          }
+        }
+      }
     } finally {
       setLoading(false);
     }

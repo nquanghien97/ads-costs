@@ -3,6 +3,7 @@ import SystemType from '../../entities/System';
 import { useState } from 'react';
 import { addSystem } from '../../services/systems';
 import { useNotification } from '../../hooks/useNotification';
+import axios from 'axios';
 
 interface AddNewSystemProps {
   open: boolean;
@@ -26,8 +27,17 @@ export default function AddNewSystem(props: AddNewSystemProps) {
       form.resetFields();
       notification.success('Thêm mới Hệ thống thành công')
     } catch (err) {
-      console.log(err);
-      notification.error('Thêm mới Hệ thống thất bại')
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Đã được sử dụng.")) {
+            notification.error('Hệ thống đã tồn tại.')
+            break;
+          } else {
+            notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+          }
+        }
+      }
     } finally {
       setLoadingSubmit(false);
     }

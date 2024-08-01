@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { editSystem } from '../../../services/systems';
 import SystemType from '../../../entities/System';
 import { useNotification } from '../../../hooks/useNotification';
+import axios from 'axios';
 
 interface EditSystemProps {
   open: boolean;
@@ -29,8 +30,17 @@ export default function EditSystem(props: EditSystemProps) {
       onCancel();
       notification.success('Chỉnh sửa Hệ thống thành công')
     } catch(err) {
-      console.log(err);
-      notification.error('Chỉnh sửa Hệ thống thất bại')
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Đã được sử dụng.")) {
+            notification.error('Hệ thống đã tồn tại.')
+            break;
+          } else {
+            notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+          }
+        }
+      }
     } finally {
       setLoading(false);
     }

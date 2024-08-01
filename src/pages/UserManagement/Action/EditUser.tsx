@@ -1,13 +1,18 @@
-import { Button, Form, Input, Modal, Select } from "antd";
+import { Alert, Button, Form, Input, Modal, Select } from "antd";
 import { useEffect, useState } from "react";
 import { getUser, UpdateUser } from "../../../services/users";
 import { useGroupsStore } from "../../../zustand/groups.store";
 import { useSystemsStore } from "../../../zustand/systems.store";
 import { roleOptions } from "../../../config/userRoleOption";
+import axios from "axios";
+import { useNotification } from "../../../hooks/useNotification";
 
 interface EditUserProps {
   onClose: () => void;
-  userId: number;
+  user: {
+    userId: number;
+    userName: string;
+  };
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>
   open: boolean;
 }
@@ -25,16 +30,17 @@ interface FormValues {
   password: string,
   password_confirm: string,
   role: string,
-  username: string,
 }
 
 function EditUser(props: EditUserProps) {
-  const { onClose, userId, setRefreshKey, open } = props;
+  const { onClose, user, setRefreshKey, open } = props;
   const [selectedSystem, setSelectedSystem] = useState(-1);
   const [loading, setLoading] = useState(false);
   
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
+
+  const notification = useNotification()
 
   const handleSystemChange = (option: { label: string, value: number}) => {
     setSelectedSystem(option.value)
@@ -44,7 +50,7 @@ function EditUser(props: EditUserProps) {
 
   useEffect(() => {
     (async() => {
-      const res = await getUser(userId);
+      const res = await getUser(user.userId);
       const userData = res.data.data
       form.setFieldsValue({
         username: userData.username,
@@ -54,7 +60,7 @@ function EditUser(props: EditUserProps) {
         group: userData.group?.name,
       });
     })()
-  }, [userId, form])
+  }, [user, form])
 
   const onFinish = async (data: FormValues) => {
     setLoading(true);
@@ -65,15 +71,16 @@ function EditUser(props: EditUserProps) {
         password: data.password,
         password_confirm: data.password_confirm,
         role: data.role,
-        username: data.username,
         name: data.name
       }
-      await UpdateUser(submitData, userId);
-      console.log(data)
+      await UpdateUser(submitData, user.userId);
       setRefreshKey(pre => !pre);
       onClose();
+      notification.success('Chỉnh sửa người dùng thành công')
     } catch (err) {
-      console.log(err);
+      if (axios.isAxiosError(err)) {
+        notification.error('Chỉnh sửa người dùng thất bại')
+      }
     } finally {
       setLoading(false)
     }
@@ -96,19 +103,10 @@ function EditUser(props: EditUserProps) {
           className="flex flex-col gap-6"
         >
           <div className="flex items-center h-[40px]">
-            <p className="w-[120px] text-left text-[#0071BA]">Mã</p>
-            <Form.Item
-              className="!mb-0 w-full"
-              name="username"
-              rules={[
-                {
-                  required: true,
-                  message: "Trường này là bắt buộc"
-                }
-              ]}
-            >
-              <Input className="py-2" />
-            </Form.Item>
+            <p className="w-[120px] text-left text-[#0071BA]">Mã MKT</p>
+            <Alert message={user?.userName === undefined
+              ? 'Loading...'
+              :  user?.userName} className="w-full" />
           </div>
           <div className="flex items-center h-[40px]">
             <p className="w-[120px] text-left text-[#0071BA]">Họ tên</p>
