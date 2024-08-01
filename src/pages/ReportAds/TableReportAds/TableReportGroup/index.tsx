@@ -39,7 +39,7 @@ function TableReportGroup(props: TableReportGroupProps) {
         </div>
       ) : (
         <>
-          <div className="px-8 py-2 my-2 bg-[#0071ba] rounded-full">
+          <div className="px-8 py-2 my-2 bg-[#0071ba] rounded-full uppercase font-bold text-white">
             <span>{searchForm.system_name}</span>
           </div>
           <div>
