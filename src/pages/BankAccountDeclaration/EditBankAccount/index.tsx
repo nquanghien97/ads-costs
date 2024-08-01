@@ -7,6 +7,7 @@ import optionsBankStatus from "../../../config/bank_status";
 import User from "../../../entities/User";
 import { getUser } from "../../../services/users";
 import { useNotification } from "../../../hooks/useNotification";
+import axios from "axios";
 
 interface EditBankAccountProps {
   onClose: () => void;
@@ -85,8 +86,17 @@ function EditBankAccount(props: EditBankAccountProps) {
       setRefreshKey(pre => !pre)
       notification.success('Chỉnh sửa tài khoản ngân hàng thành công')
     } catch (err) {
-      console.log(err)
-      notification.error('Chỉnh sửa tài khoản ngân hàng thất bại')
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Đã được sử dụng.")) {
+            notification.error('Số TKNH đã tồn tại và đang được sử dụng.')
+            break;
+          } else {
+            notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+          }
+        }
+      }
     } finally {
       setLoading(false)
     }

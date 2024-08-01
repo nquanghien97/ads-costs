@@ -10,6 +10,7 @@ import User from "../../../entities/User";
 import { getUsersBySystemGroup } from "../../../services/users";
 import { addBankAccount } from "../../../services/bank_account";
 import { useNotification } from "../../../hooks/useNotification";
+import axios from "axios";
 
 
 interface FormValues {
@@ -89,8 +90,17 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
       setRefreshKey(pre => !pre)
       notification.success('Khai báo tài khoản ngân hàng thành công')
     } catch (err){
-      console.log(err)
-      notification.success('Khai báo tài khoản ngân hàng không thành công')
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Đã được sử dụng.")) {
+            notification.error('Số TKNH đã tồn tại và đang được sử dụng.')
+            break;
+          } else {
+            notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+          }
+        }
+      }
     } finally {
       setLoading(false);
     }
@@ -187,7 +197,18 @@ function AddNewBankAccount(props: AddNewBankAccountProps) {
                   {
                     required: true,
                     message: "Trường này là bắt buộc"
-                  }
+                  },
+                  // () => ({
+                  //   validator(_, value) {
+                  //     if (!value) {
+                  //       return Promise.reject();
+                  //     }
+                  //     if (isNaN(value)) {
+                  //       return Promise.reject("Số phải là số");
+                  //     }
+                  //     return Promise.resolve();
+                  //   },
+                  // }),
                 ]}
               >
                 <Input className="py-2" />
