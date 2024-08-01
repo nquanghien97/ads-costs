@@ -46,7 +46,7 @@ function TableReportSystem(props: TableReportSystemProps) {
             <div>
               {filterData.map(item => (
                 <div
-                  className="flex flex-col gap-2 border-b-4 border-cyan-700 pb-6 uppercase font-bold"
+                  className="flex flex-col gap-2 border-b-4 border-cyan-700 pb-6 uppercase font-bold mb-3"
                   key={item.group_id}
                 >
                   <div className="px-8 py-2 bg-[#0071ba] rounded-full w-full text-white">

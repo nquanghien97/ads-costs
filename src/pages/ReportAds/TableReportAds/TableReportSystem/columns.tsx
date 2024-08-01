@@ -43,11 +43,11 @@ export const columns: TableColumnsType<GroupData> = [
       return(
         <div className="font-normal">
           <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${formatCurrency(record.total_ads || 0)} VNĐ`}</div>
-          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${record.account_type_datas.find((item) => item.type === "TK THƯỜNG - Trả trước")?.total_ads || 0} VNĐ`}</div>
-          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${record.account_type_datas.find((item) => item.type === "TK THƯỜNG - Trả sau")?.total_ads || 0} VNĐ`}</div>
-          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${record.account_type_datas.find((item) => item.type === "TK THUÊ")?.total_ads || 0} VNĐ`}</div>
+          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${formatCurrency(record.account_type_datas.find((item) => item.type === "TK THƯỜNG - Trả trước")?.total_ads || 0)} VNĐ`}</div>
+          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${formatCurrency(record.account_type_datas.find((item) => item.type === "TK THƯỜNG - Trả sau")?.total_ads || 0)} VNĐ`}</div>
+          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${formatCurrency(record.account_type_datas.find((item) => item.type === "TK THUÊ")?.total_ads || 0)} VNĐ`}</div>
           {record.channel_datas.map((item, index) => (
-            <div className="py-1 w-full [&:not(:last-child)]:border-b-[1px] border-[red] bg-[#f7bfd7]" key={index}>{`${item?.total_ads} VNĐ`}</div>
+            <div className="py-1 w-full [&:not(:last-child)]:border-b-[1px] border-[red] bg-[#f7bfd7]" key={index}>{`${formatCurrency(item?.total_ads)} VNĐ`}</div>
           ))}
         </div>
       ) 
@@ -60,12 +60,12 @@ export const columns: TableColumnsType<GroupData> = [
     render(_, record) {
       return(
         <div className="font-normal">
-          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${record.total_bill || 0} VNĐ`}</div>
-          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${record.account_type_datas.find((item) => item.type === "TK THƯỜNG - Trả trước")?.total_bill || 0} VNĐ`}</div>
-          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${record.account_type_datas.find((item) => item.type === "TK THƯỜNG - Trả sau")?.total_bill || 0} VNĐ`}</div>
-          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${record.account_type_datas.find((item) => item.type === "TK THUÊ")?.total_bill || 0} VNĐ`}</div>
+          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${formatCurrency(record.total_bill || 0)} VNĐ`}</div>
+          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${formatCurrency(record.account_type_datas.find((item) => item.type === "TK THƯỜNG - Trả trước")?.total_bill || 0)} VNĐ`}</div>
+          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${formatCurrency(record.account_type_datas.find((item) => item.type === "TK THƯỜNG - Trả sau")?.total_bill || 0)} VNĐ`}</div>
+          <div className="py-1 w-full border-b-[1px] border-[red] bg-[#c4e6f4]">{`${formatCurrency(record.account_type_datas.find((item) => item.type === "TK THUÊ")?.total_bill || 0)} VNĐ`}</div>
           {record.channel_datas.map((item, index) => (
-            <div className="py-1 w-full [&:not(:last-child)]:border-b-[1px] [&:not(:last-child)]:border-[red] bg-[#f7bfd7]" key={index}>{`${item?.total_bill} VNĐ`}</div>
+            <div className="py-1 w-full [&:not(:last-child)]:border-b-[1px] [&:not(:last-child)]:border-[red] bg-[#f7bfd7]" key={index}>{`${formatCurrency(item?.total_bill)} VNĐ`}</div>
           ))}
         </div>
       ) 

@@ -98,6 +98,7 @@ function InvoiceDetails(props: InvoiceDetailsProps) {
           pagination={false}
           rowKey={(record => record.id)}
           loading={loading}
+          rowHoverable={false}
         />
       </ConfigProvider>
       </div>

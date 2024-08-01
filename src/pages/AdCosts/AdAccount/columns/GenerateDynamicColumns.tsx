@@ -114,7 +114,6 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
               defaultValue={record.datas?.[date]?.status}
               className={clsx('w-full')}
               placeholder="Select..."
-              allowClear
             />
           </div>
         ),

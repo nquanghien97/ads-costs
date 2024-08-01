@@ -51,7 +51,7 @@ function TableReportGroup(props: TableReportGroupProps) {
                 key={item.user_id}
               >
                 <div className="px-8 py-2 bg-[#53b6f8] rounded-full w-full text-white uppercase font-bold">
-                  <span>{item.name}</span>
+                  <span>{`${item.name} - ${item.username}`}</span>
                 </div>
                 <div>
               <ConfigProvider
