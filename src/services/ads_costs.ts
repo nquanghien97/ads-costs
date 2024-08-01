@@ -25,14 +25,20 @@ export const DeclarationAdsCosts = (data: DeclarationAdsCostsDTO[]) => {
   return api.post('/bulk-ads-costs', { data })
 }
 
-export const getAdsCostsBySystem = ({ system_id } : { system_id: number }) => {
+export const getAdsCostsBySystem = ({ system_id, since, until } : { system_id: number, since?: string, until?: string }) => {
   const params = new URLSearchParams();
   if (system_id) params.append('system_id', system_id.toString());
+  if (since) params.append('since', since.toString());
+  if (until) params.append('until', until.toString());
+
   return api.get(`/statistics/ads?level=system&${params.toString()}`)
 }
 
-export const getAdsCostsByGroup = ({ group_id } : { group_id: number }) => {
+export const getAdsCostsByGroup = ({ group_id, since, until } : { group_id: number, since?: string, until?: string }) => {
   const params = new URLSearchParams();
   if (group_id) params.append('group_id', group_id.toString());
+  if (since) params.append('since', since.toString());
+  if (until) params.append('until', until.toString());
+
   return api.get(`/statistics/ads?level=group&${params.toString()}`)
 }

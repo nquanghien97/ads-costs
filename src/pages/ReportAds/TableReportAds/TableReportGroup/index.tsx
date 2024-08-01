@@ -20,14 +20,13 @@ function TableReportGroup(props: TableReportGroupProps) {
     setLoading(true);
     (async () => {
       if(!searchForm.group_id) return
-      const res = await getAdsCostsByGroup({ group_id: searchForm.group_id})
+      const res = await getAdsCostsByGroup({ group_id: searchForm.group_id, since: searchForm.since, until: searchForm.until })
       setDataGroup(res.data.data.list)
       setLoading(false)
     })()
-  }, [searchForm.group_id, setDataGroup, setLoading])
+  }, [searchForm.group_id, searchForm.since, searchForm.until, setDataGroup, setLoading])
 
   const filterData = dataGroup.filter(item => item.account_type_datas.length !== 0)
-  console.log(filterData)
 
   return (
     loading ? (

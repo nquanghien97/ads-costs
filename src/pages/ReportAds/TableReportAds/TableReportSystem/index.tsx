@@ -21,11 +21,11 @@ function TableReportSystem(props: TableReportSystemProps) {
     setLoading(true);
     (async () => {
       if(!searchForm.system_id) return
-      const res = await getAdsCostsBySystem({ system_id: searchForm.system_id})
+      const res = await getAdsCostsBySystem({ system_id: searchForm.system_id, since: searchForm.since, until: searchForm.until })
       setDataGroup(res.data.data.list)
       setLoading(false)
     })()
-  }, [searchForm.system_id, setDataGroup, setLoading])
+  }, [searchForm.since, searchForm.system_id, searchForm.until, setDataGroup, setLoading])
 
   const filterData = dataGroup.filter(item => item.account_type_datas.length !== 0)
 

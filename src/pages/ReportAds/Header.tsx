@@ -59,8 +59,8 @@ function Header({ setSearchForm } : { setSearchForm: React.Dispatch<React.SetSta
       group_id: data.group?.value,
       group_name: data.group?.label,
       user_id: data.user?.value,
-      since: data.date ? formatDate(new Date(data.date?.[0])): formatDate(new Date(Date.now())),
-      until: data.date ? formatDate(new Date(data.date?.[1])) : formatDate(new Date(Date.now())),
+      since: data.date ? formatDate(new Date(data.date?.[0])): undefined,
+      until: data.date ? formatDate(new Date(data.date?.[1])) : undefined,
     }
     setSearchForm(submitData)
   }

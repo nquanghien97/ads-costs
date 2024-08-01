@@ -12,8 +12,8 @@ export interface SearchForm {
   group_id: number;
   group_name: string;
   user_id: number;
-  since: string;
-  until: string;
+  since?: string;
+  until?: string;
 }
 
 function ReportView() {
