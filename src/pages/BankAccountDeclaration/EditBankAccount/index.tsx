@@ -35,11 +35,20 @@ function EditBankAccount(props: EditBankAccountProps) {
   const [bankAccountData, setBankAccountData] = useState<BankAccountType>({
     id: -1,
     user_id: -1,
-    name: 'string',
-    card_number: 'string',
-    bank_name: 'string',
+    name: '',
+    card_number: '',
+    bank_name: '',
     bank_id: -1,
-    status: 'string',
+    status: '',
+    group: {
+      name: ''
+    },
+    system: {
+      name: ''
+    },
+    user: {
+      username: ''
+    }
   })
 
   const [form] = Form.useForm();
