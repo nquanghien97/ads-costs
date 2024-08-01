@@ -6,6 +6,7 @@ import { useSystemsStore } from "../../../zustand/systems.store";
 import { roleOptions } from "../../../config/userRoleOption";
 import axios from "axios";
 import { useNotification } from "../../../hooks/useNotification";
+import User from "../../../entities/User";
 
 interface EditUserProps {
   onClose: () => void;
@@ -39,6 +40,7 @@ function EditUser(props: EditUserProps) {
   
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
+  const [userEdit, setUserEdit] = useState<User>()
 
   const notification = useNotification()
 
@@ -59,6 +61,7 @@ function EditUser(props: EditUserProps) {
         system: userData.system?.name,
         group: userData.group?.name,
       });
+      setUserEdit(userData)
     })()
   }, [user, form])
 
@@ -66,8 +69,8 @@ function EditUser(props: EditUserProps) {
     setLoading(true);
     try {
       const submitData = {
-        group_id: data.group.value,
-        system_id: data.system.value,
+        group_id: data.group.value || userEdit?.group_id,
+        system_id: data.system.value || userEdit?.system_id,
         password: data.password,
         password_confirm: data.password_confirm,
         role: data.role,
