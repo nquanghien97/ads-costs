@@ -54,7 +54,7 @@ function ChangePasswordPage() {
                   }
                 ]}
               >
-                <Input className="py-2" />
+                <Input.Password className="py-2" />
               </Form.Item>
             </div>
             <div className="flex items-center h-[40px]">
@@ -77,7 +77,7 @@ function ChangePasswordPage() {
                   }),
                 ]}
               >
-                <Input className="py-2" />
+                <Input.Password className="py-2" />
               </Form.Item>
             </div>
             <div className="flex justify-center gap-12 p-4">

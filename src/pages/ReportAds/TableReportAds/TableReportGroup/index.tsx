@@ -47,11 +47,11 @@ function TableReportGroup(props: TableReportGroupProps) {
           <div>
             {filterData.map(item => (
               <div
-                className="flex flex-col gap-2 border-b-4 border-cyan-700 pb-6"
+                className="flex flex-col gap-2 border-b-4 border-cyan-700 pb-6 my-3"
                 key={item.user_id}
               >
                 <div className="px-8 py-2 bg-[#53b6f8] rounded-full w-full text-white uppercase font-bold">
-                  <span>{`${item.name} - ${item.username}`}</span>
+                  <span>{`${item.username} - ${item.name}`}</span>
                 </div>
                 <div>
               <ConfigProvider
