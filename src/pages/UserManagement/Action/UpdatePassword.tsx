@@ -7,16 +7,16 @@ interface UpdatePasswordProps {
   onCancel: () => void;
   open: boolean;
   onOk: () => void;
+  user_id: number
 }
 
 interface FormValue {
-  oldPassword: string;
-  newPassword: string;
-  confirmPassword: string;
+  password: string;
+  confirm_password: string;
 }
 
 function UpdatePassword(props: UpdatePasswordProps) {
-  const { onCancel, open } = props;
+  const { onCancel, open, user_id } = props;
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [form] = Form.useForm();
 
@@ -25,7 +25,11 @@ function UpdatePassword(props: UpdatePasswordProps) {
   const onSubmit = async (data: FormValue) => {
     setLoadingSubmit(true);
     try {
-      await updatePassword(data.oldPassword, data.newPassword)
+      await updatePassword({
+        user_id,
+        password: data.password,
+        confirm_password: data.confirm_password
+      })
       notification.success("Cập nhật mật khẩu thành công")
       onCancel();
     } catch (err) {
@@ -40,17 +44,17 @@ function UpdatePassword(props: UpdatePasswordProps) {
     <>
       <Modal
         open={open}
-        className='!p-0'
+        className='!p-0 !w-1/2'
         onCancel={onCancel}
         footer={false}
       >
         <div className="w-full text-center p-3 h-[60px] leading-[36px] bg-[#0071BA] rounded-t-lg uppercase font-bold">Cập nhật mật khẩu</div>
         <Form onFinish={onSubmit} form={form} className="p-4">
           <div className="flex items-center p-4">
-            <p className="w-[120px] text-left text-[#0071BA]">Mật khẩu cũ</p>
+            <p className="w-[200px] text-left text-[#0071BA]">Mật khẩu mới</p>
             <Form.Item
               className="!mb-0 w-full"
-              name="oldPassword"
+              name="password"
               rules={[
                 {
                   required: true,
@@ -59,32 +63,15 @@ function UpdatePassword(props: UpdatePasswordProps) {
               ]}
               >
                 <Input.Password
-                  className="py-4"
+                  className="py-2"
                 />
             </Form.Item>
           </div>
           <div className="flex items-center p-4">
-            <p className="w-[120px] text-left text-[#0071BA]">Mật khẩu mới</p>
+            <p className="w-[200px] text-left text-[#0071BA]">Xác nhận mật khẩu mới</p>
             <Form.Item
               className="!mb-0 w-full"
-              name="newPassword"
-              rules={[
-                {
-                  required: true,
-                  message: "Trường này là bắt buộc"
-                }
-              ]}
-              >
-                <Input.Password
-                  className="py-4"
-                />
-            </Form.Item>
-          </div>
-          <div className="flex items-center p-4">
-            <p className="w-[120px] text-left text-[#0071BA]">Xác nhận mật khẩu</p>
-            <Form.Item
-              className="!mb-0 w-full"
-              name="confirmPassword"
+              name="confirm_password"
               dependencies={['newPassword']}
               rules={[
                 {
@@ -93,7 +80,7 @@ function UpdatePassword(props: UpdatePasswordProps) {
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
-                    if (!value || getFieldValue('newPassword') === value) {
+                    if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
                     return Promise.reject(new Error('Mật khẩu xác nhận không chính xác'));
@@ -102,7 +89,7 @@ function UpdatePassword(props: UpdatePasswordProps) {
               ]}
               >
                 <Input.Password
-                  className="py-4"
+                  className="py-2"
                 />
             </Form.Item>
           </div>

@@ -25,8 +25,8 @@ export function getUser(userId: number) {
   return api.get(`/users/${userId}`)
 }
 
-export function updatePassword(password_old: string, password_new: string) {
-  return api.post('auth/change-password', { password_old, password_new})
+export function updatePassword({user_id, password, confirm_password} : { user_id: number, password: string, confirm_password: string }) {
+  return api.post(`/users/${user_id}/change-password`, { password, confirm_password})
 }
 
 export function UpdateUser(data: UserDTO, id: number) {

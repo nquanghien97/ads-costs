@@ -121,7 +121,13 @@ function TableUser(props: TableUserProps) {
               </div>
               <div 
                 className="flex items-center"
-                onClick={() => setOpenUpdatePasswordModal(true)}
+                onClick={() => {
+                  setOpenUpdatePasswordModal(true)
+                  setUser({
+                    userId: record.id,
+                    userName: record.username
+                  })
+                }}
               >
                 <Button
                   icon={<CloseIcon color="white" />}
@@ -212,7 +218,7 @@ function TableUser(props: TableUserProps) {
           />
         </ConfigProvider>
         {openEditModal && <EditUser onClose={() => setOpenEditModal(false)} user={user} setRefreshKey={setRefreshKey} open={openEditModal} />}
-        {openUpdatePasswordModal && <UpdatePassword open={openUpdatePasswordModal} onCancel={() => setOpenUpdatePasswordModal(false)} onOk={() => console.log('ok')} />}
+        {openUpdatePasswordModal && <UpdatePassword open={openUpdatePasswordModal} user_id={user.userId} onCancel={() => setOpenUpdatePasswordModal(false)} onOk={() => console.log('ok')} />}
       </div>
     </>
   )
