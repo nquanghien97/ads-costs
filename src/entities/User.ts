@@ -3,7 +3,7 @@ export enum UserRole {
   SYSTEM_ADM= 'SYSTEM_ADM',
   GROUP_ADM= 'GROUP_ADM',
   USER= 'USER',
-  ACCOUNTANT= 'ACCOUNTANT '
+  ACCOUNTANT= 'ACCOUNTANT'
 }
 
 export default interface User {

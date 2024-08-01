@@ -4,12 +4,12 @@ const MenuSidebar = [
   {
     title: 'CPQC HÓA ĐƠN',
     path: '/cpqc-hoa-don',
-    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER]
+    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT]
   },
   {
     title: 'GIAO DỊCH NGÂN HÀNG',
     path: '/giao-dich-ngan-hang',
-    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER]
+    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT]
   },
   {
     title: 'CÀI ĐẶT THÔNG TIN',
@@ -19,12 +19,12 @@ const MenuSidebar = [
   {
     title: 'KHAI BÁO TKQC',
     path: '/khai-bao-tkqc',
-    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER]
+    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT]
   },
   {
     title: 'KHAI BÁO TK NGÂN HÀNG',
     path: '/khai-bao-tk-ngan-hang',
-    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER]
+    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT]
   },
   {
     title: 'QUẢN LÝ NGƯỜI DÙNG',
@@ -39,7 +39,7 @@ const MenuSidebar = [
   {
     title: 'XEM BÁO CÁO',
     path: '/xem-bao-cao',
-    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER] 
+    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT] 
   },
 ]
 

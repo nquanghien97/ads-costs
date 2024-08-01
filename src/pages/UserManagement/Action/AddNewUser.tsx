@@ -174,7 +174,7 @@ function AddUser(props: AddUserProps) {
                 name="system_id"
                 rules={[
                   {
-                    required: role !== UserRole.ROOT,
+                    required: role !== UserRole.ROOT && role !== UserRole.ACCOUNTANT,
                     message: "Trường này là bắt buộc"
                   }
                 ]}
@@ -194,7 +194,7 @@ function AddUser(props: AddUserProps) {
                 name="group_id"
                 rules={[
                   {
-                    required: role !== UserRole.ROOT,
+                    required: role !== UserRole.ROOT && role !==UserRole.ACCOUNTANT,
                     message: "Trường này là bắt buộc"
                   }
                 ]}

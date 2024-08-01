@@ -19,6 +19,6 @@ export const roleOptions = [
   },
   {
     label: "Kế toán",
-    valuiue: UserRole.ACCOUNTANT
+    value: UserRole.ACCOUNTANT
   }
 ]
