@@ -25,6 +25,7 @@ export const useAuthStore = create<AuthStore>()((set) => ({
       name: '',
     },
     role: '',
+    is_blocked: false
   },
   loading: false,
   setUser: (item) =>
