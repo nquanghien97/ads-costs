@@ -157,32 +157,39 @@ function EditAdsAccount(props: EditAdsAccountProps) {
           className="flex flex-col gap-2"
         >
           <div className="p-2 flex flex-col gap-4">
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#0071BA]">ID TKQC</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="account_id"
-                rules={[
-                  {
-                    required: true,
-                    message: "Trường này là bắt buộc",
-                  },
-                  () => ({
-                    validator(_, value) {
-                      if (!value) {
-                        return Promise.reject();
-                      }
-                      if (isNaN(value)) {
-                        return Promise.reject("ID TKQC phải là số");
-                      }
-                      return Promise.resolve();
+            {(adAccountData?.ads_costs_count && adAccountData?.ads_bill_count ) ? (
+              <div className="flex items-center h-[40px]">
+                <p className="w-[120px] text-left text-[#0071BA]">ID TKQC</p>
+                <Alert message={adAccountData?.account_id || "Loading..."} className="w-full" />
+              </div>
+            ) : (
+              <div className="flex items-center h-[40px]">
+                <p className="w-[120px] text-left text-[#0071BA]">ID TKQC</p>
+                <Form.Item
+                  className="!mb-0 w-full"
+                  name="account_id"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Trường này là bắt buộc",
                     },
-                  }),
-                ]}
-              >
-                <Input className="py-2" />
-              </Form.Item>
-            </div>
+                    () => ({
+                      validator(_, value) {
+                        if (!value) {
+                          return Promise.reject();
+                        }
+                        if (isNaN(value)) {
+                          return Promise.reject("ID TKQC phải là số");
+                        }
+                        return Promise.resolve();
+                      },
+                    }),
+                  ]}
+                >
+                  <Input className="py-2" />
+                </Form.Item>
+              </div>
+            )}
             <div className="flex items-center h-[40px]">
               <p className="w-[120px] text-left text-[#0071BA]">Tên TKQC</p>
               <Form.Item
@@ -452,10 +459,12 @@ function EditAdsAccount(props: EditAdsAccountProps) {
               <div className="flex items-center h-[40px]">
                 <p className="w-[136px] text-left text-[#0071BA]">ID BM</p>
                 <Alert message={adAccountData?.bm_id || "Loading..."} className="w-full" />
-              </div><div className="flex items-center h-[40px]">
+              </div>
+              <div className="flex items-center h-[40px]">
                 <p className="w-[136px] text-left text-[#0071BA]">Tên BM</p>
                 <Alert message={adAccountData?.bm_name || "Loading..."} className="w-full" />
-              </div><div className="flex items-center h-[40px]">
+              </div>
+              <div className="flex items-center h-[40px]">
                 <p className="w-[136px] text-left text-[#0071BA]">SỞ HỮU</p>
                 <Alert message={adAccountData?.bm_owned_by || "Loading..."} className="w-full" />
               </div>

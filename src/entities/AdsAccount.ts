@@ -15,6 +15,8 @@ export interface AdsAccountType {
   user_id: number;
   account_id: string;
   account_name: string;
+  ads_bill_count: number;
+  ads_costs_count: number;
   channel_id: number;
   group_id: number;
   group: {
