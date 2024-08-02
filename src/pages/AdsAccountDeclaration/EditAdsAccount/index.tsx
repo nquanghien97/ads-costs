@@ -157,7 +157,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
           className="flex flex-col gap-2"
         >
           <div className="p-2 flex flex-col gap-4">
-            {(adAccountData?.ads_costs_count && adAccountData?.ads_bill_count ) ? (
+            {(adAccountData?.ads_costs_count || adAccountData?.ads_bill_count ) ? (
               <div className="flex items-center h-[40px]">
                 <p className="w-[120px] text-left text-[#0071BA]">ID TKQC</p>
                 <Alert message={adAccountData?.account_id || "Loading..."} className="w-full" />
