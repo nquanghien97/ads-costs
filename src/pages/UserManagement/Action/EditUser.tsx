@@ -6,7 +6,7 @@ import { useSystemsStore } from "../../../zustand/systems.store";
 import { roleOptions } from "../../../config/userRoleOption";
 import axios from "axios";
 import { useNotification } from "../../../hooks/useNotification";
-import User from "../../../entities/User";
+import User, { UserRole } from "../../../entities/User";
 
 interface EditUserProps {
   onClose: () => void;
@@ -37,6 +37,7 @@ function EditUser(props: EditUserProps) {
   const { onClose, user, setRefreshKey, open } = props;
   const [selectedSystem, setSelectedSystem] = useState(-1);
   const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState<UserRole | ''>('')
   
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
@@ -48,18 +49,29 @@ function EditUser(props: EditUserProps) {
     setSelectedSystem(option.value)
     form.setFieldsValue({ group: null });
   }
+
+  const handleRoleChange = (option: UserRole) => {
+    setRole(option)
+  }
+
   const [form] = Form.useForm();
 
   useEffect(() => {
     (async() => {
       const res = await getUser(user.userId);
-      const userData = res.data.data
+      const userData = res.data.data as User
       form.setFieldsValue({
         username: userData.username,
         name: userData.name,
         role: userData.role,
-        system: userData.system?.name,
-        group: userData.group?.name,
+        system: {
+          label: userData.system?.name,
+          value: userData.system_id
+        },
+        group: {
+          label: userData.group?.name,
+          value: userData.group_id
+        },
       });
       setUserEdit(userData)
     })()
@@ -69,8 +81,8 @@ function EditUser(props: EditUserProps) {
     setLoading(true);
     try {
       const submitData = {
-        group_id: data.group.value || userEdit?.group_id,
-        system_id: data.system.value || userEdit?.system_id,
+        group_id: data.group?.value || userEdit?.group_id,
+        system_id: data.system?.value || userEdit?.system_id,
         role: data.role,
         name: data.name
       }
@@ -137,6 +149,7 @@ function EditUser(props: EditUserProps) {
               ]}
             >
               <Select
+                onChange={handleRoleChange}
                 options={roleOptions}
                 className="w-full h-full"
                 allowClear
@@ -150,7 +163,7 @@ function EditUser(props: EditUserProps) {
               name="system"
               rules={[
                 {
-                  required: true,
+                  required: role !== UserRole.ROOT && role !== UserRole.ACCOUNTANT,
                   message: "Trường này là bắt buộc"
                 }
               ]}
@@ -171,7 +184,7 @@ function EditUser(props: EditUserProps) {
               name="group"
               rules={[
                 {
-                  required: true,
+                  required: role !== UserRole.ROOT && role !== UserRole.ACCOUNTANT && role !== UserRole.SYSTEM_ADM,
                   message: "Trường này là bắt buộc"
                 }
               ]}
