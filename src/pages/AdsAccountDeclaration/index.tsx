@@ -13,6 +13,8 @@ import DeleteAdAccount from "./DeleteAdAccount";
 import { AdsAccountStatusType } from "../../entities/AdsAccountStatus";
 import { ExportExcelAdsAccount } from "../../components/ExportExcel/ExportExcelAdsAccount";
 import { formatCurrency } from "../../utils/currency";
+import { useAuthStore } from "../../zustand/auth.store";
+import { UserRole } from "../../entities/User";
 
 export interface SubmitFormSearchType {
   search: string;
@@ -39,13 +41,15 @@ function AdsAccountDeclaration() {
   const [pagingAdAccount, setPagingAdAccount] = useState<pagingAdAccount>();
   const [submitFormSearch, setSubmitFormSearch] = useState<SubmitFormSearchType>();
 
+  const { user } = useAuthStore();
+
   const columns: TableColumnsType<AdsAccountType> = [
     {
       title: 'Thời gian',
       dataIndex: 'created_at',
       width: 200,
       key: '1',
-      render: (_, record) => {
+      render: (record: AdsAccountType) => {
         return (
           <div>{(new Date(record.created_at)).toLocaleString()}</div>
         )
@@ -77,7 +81,7 @@ function AdsAccountDeclaration() {
     },
     {
       title: 'Mã TKQC',
-      render: (_, record) => {
+      render: (record: AdsAccountType) => {
         return (
           <div>{`TK${record.id}`}</div>
         )
@@ -126,7 +130,7 @@ function AdsAccountDeclaration() {
       dataIndex: 'exchange_rate',
       key: '13',
       width: 100,
-      render(value) {
+      render(value: number) {
         return (
           formatCurrency(value, 0)
         )
@@ -137,7 +141,7 @@ function AdsAccountDeclaration() {
       dataIndex: 'rental_fee',
       key: '14',
       width: 100,
-      render(value) {
+      render(value: number) {
         return (
           <div>{`${value} %`}</div>
         )
@@ -167,7 +171,7 @@ function AdsAccountDeclaration() {
       dataIndex: ['status'],
       key: '16',
       width: 200,
-      render(value) {
+      render(value: string) {
         if (AdsAccountStatusType.DANG_SU_DUNG === value) {
           return (
             <div className="flex justify-center">
@@ -212,10 +216,10 @@ function AdsAccountDeclaration() {
         }
       ]
     },
-    {
+    user.role !== UserRole.ACCOUNTANT && {
       title: 'Thao tác',
       width: 250,
-      render(_, record) {
+      render(record: AdsAccountType) {
         return (
           <div className="flex justify-between gap-2 py-2">
             <ConfigProvider
@@ -247,20 +251,20 @@ function AdsAccountDeclaration() {
                 setAdAccountId(record.id)
               }}
             >
-              <Button
-                icon={<CloseIcon width={16} height={16} color="white" />}
-                type="primary"
-                danger
-                className="w-full"
-              >
-                <p className="text-white">Xóa</p>
-              </Button>
-            </div>
+                <Button
+                  icon={<CloseIcon width={16} height={16} color="white" />}
+                  type="primary"
+                  danger
+                  className="w-full"
+                >
+                  <p className="text-white">Xóa</p>
+                </Button>
+              </div>
           </div>
-        )
+        );
       },
-    },
-  ]
+    } || null,
+  ].filter(column => column !== null)
 
   const fetchListAdAccount = useCallback(async ({ page, page_size }: { page: number, page_size: number }) => {
     const res = await getListAdsAccount({ page, page_size, ...submitFormSearch })
