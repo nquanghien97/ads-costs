@@ -45,6 +45,7 @@ function AddUser(props: AddUserProps) {
       await addNewUser(data)
       setRefreshKey(pre => !pre);
       onClose();
+      notification.success("Thêm người dùng mới thành công")
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const invalidData = err.response?.data.invalidData
@@ -52,10 +53,12 @@ function AddUser(props: AddUserProps) {
           if (Array.isArray(invalidData[key]) && invalidData[key].includes("Mã MKT đã được sử dụng.")) {
             notification.error('Mã MKT đã được sử dụng.')
             break;
-          } else {
-            notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+          } else if (Array.isArray(invalidData[key]) && invalidData[key].includes("Mã MKT không hợp lệ")) {
+            notification.error('Mã MKT không hợp lệ')
           }
         }
+      } else {
+        notification.error("Thêm người dùng mới thất bại")
       }
     } finally {
       setLoading(false)
