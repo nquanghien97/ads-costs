@@ -37,11 +37,11 @@ function EditUser(props: EditUserProps) {
   const { onClose, user, setRefreshKey, open } = props;
   const [selectedSystem, setSelectedSystem] = useState(-1);
   const [loading, setLoading] = useState(false);
+  const [userEdit, setUserEdit] = useState<User>()
   const [role, setRole] = useState<UserRole | ''>('')
   
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
-  const [userEdit, setUserEdit] = useState<User>()
 
   const notification = useNotification()
 
@@ -60,6 +60,7 @@ function EditUser(props: EditUserProps) {
     (async() => {
       const res = await getUser(user.userId);
       const userData = res.data.data as User
+      setRole(userData.role)
       form.setFieldsValue({
         username: userData.username,
         name: userData.name,
