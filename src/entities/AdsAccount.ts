@@ -38,7 +38,10 @@ export interface AdsAccountType {
   currency: string;
   timezone: string;
   bank_account: BankAccount;
-  user: User
+  user: User;
+  bm_id?: string;
+  bm_name?: string;
+  bm_owned_by?: BmOwner
 }
 
 export interface AdsAccountList {
@@ -49,4 +52,9 @@ export interface pagingAdAccount {
   page: number;
   page_size: number;
   total: number;
+}
+
+export enum BmOwner {
+  DOI_TAC = "DỐI TÁC",
+  PTN = "PTN"
 }

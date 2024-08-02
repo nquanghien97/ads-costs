@@ -61,7 +61,7 @@ function AdsAccountDeclaration() {
       title: 'Hộ kinh doanh',
       dataIndex: ['group', 'name'],
       key: '3',
-      width: 150
+      width: 200
     },
     {
       title: 'Mã MKT',
@@ -188,6 +188,29 @@ function AdsAccountDeclaration() {
           )
         }
       }
+    },
+    {
+      title: 'BM QUẢN LÝ',
+      children: [
+        {
+          title: 'ID BM',
+          dataIndex: 'bm_id',
+          key: '88',
+          width: 200
+        },
+        {
+          title: 'Tên BM',
+          dataIndex: 'bm_name',
+          key: '89',
+          width: 200
+        },
+        {
+          title: 'SỞ HỮU',
+          dataIndex: 'bm_owned_by',
+          key: '90',
+          width: 100
+        }
+      ]
     },
     {
       title: 'Thao tác',
