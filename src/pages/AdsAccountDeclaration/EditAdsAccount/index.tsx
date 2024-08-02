@@ -405,7 +405,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
           {user.role === UserRole.ROOT ? (
             <div className="px-2 py-6 border-[1px] border-red-500 rounded-md w-1/2 flex flex-col gap-6 bg-[#dfdddd]">
               <div className="flex items-center h-[40px]">
-                <p className="w-[120px] text-left text-[#0071BA]">ID BM</p>
+                <p className="w-[130px] text-left text-[#0071BA]">ID BM</p>
                 <Form.Item
                   className="!mb-0 w-full"
                   name="bm_id"
@@ -420,7 +420,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                 </Form.Item>
               </div>
               <div className="flex items-center h-[40px]">
-                <p className="w-[120px] text-left text-[#0071BA]">Tên BM</p>
+                <p className="w-[130px] text-left text-[#0071BA]">Tên BM</p>
                 <Form.Item
                   className="!mb-0 w-full"
                   name="bm_name"
@@ -435,7 +435,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
                 </Form.Item>
               </div>
               <div className="flex items-center h-[40px]">
-                <p className="w-[120px] text-left text-[#0071BA]">Sở hữu BM</p>
+                <p className="w-[130px] text-left text-[#0071BA]">Sở hữu BM</p>
                 <Form.Item
                   className="!mb-0 w-full"
                   name="bm_owned_by"
