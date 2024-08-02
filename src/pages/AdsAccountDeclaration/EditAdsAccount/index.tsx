@@ -396,7 +396,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
             </div>
           </div>
           {user.role === UserRole.ROOT ? (
-            <div className="p-2 border-[1px] border-red-500 rounded-md w-1/2 flex flex-col gap-4 bg-[#dfdddd]">
+            <div className="px-2 py-6 border-[1px] border-red-500 rounded-md w-1/2 flex flex-col gap-6 bg-[#dfdddd]">
               <div className="flex items-center h-[40px]">
                 <p className="w-[120px] text-left text-[#0071BA]">ID BM</p>
                 <Form.Item

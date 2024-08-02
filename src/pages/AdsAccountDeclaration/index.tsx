@@ -51,7 +51,6 @@ function AdsAccountDeclaration() {
       width: 200,
       key: '1',
       render: (record: Date) => {
-        console.log(record)
         return (
           <div>{formatDate((new Date(record)))}</div>
         )
