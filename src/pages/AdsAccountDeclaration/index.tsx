@@ -15,6 +15,7 @@ import { ExportExcelAdsAccount } from "../../components/ExportExcel/ExportExcelA
 import { formatCurrency } from "../../utils/currency";
 import { useAuthStore } from "../../zustand/auth.store";
 import { UserRole } from "../../entities/User";
+import { formatDate } from "../../utils/date";
 
 export interface SubmitFormSearchType {
   search?: string;
@@ -49,9 +50,10 @@ function AdsAccountDeclaration() {
       dataIndex: 'created_at',
       width: 200,
       key: '1',
-      render: (record: AdsAccountType) => {
+      render: (record: Date) => {
+        console.log(record)
         return (
-          <div>{(new Date(record.created_at)).toLocaleString()}</div>
+          <div>{formatDate((new Date(record)))}</div>
         )
       }
     },
