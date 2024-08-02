@@ -17,10 +17,11 @@ interface TableBankAccountProps {
   loading: boolean
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
   formSearchValue: FormSearchValueType | undefined
+  setFormSearchValue: React.Dispatch<React.SetStateAction<FormSearchValueType | undefined>>
 }
 
 function TableBankAccount(props: TableBankAccountProps) {
-  const { data, setData, loading, setLoading, formSearchValue } = props
+  const { data, setData, loading, setLoading, formSearchValue, setFormSearchValue } = props
   
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [bankId, setBankId] = useState<number>(-1);
@@ -154,6 +155,7 @@ function TableBankAccount(props: TableBankAccountProps) {
 
   const onChange = async (page: number, pageSize: number) => {
     setLoading(true);
+    setFormSearchValue({ ...formSearchValue, page: page, page_size: pageSize })
     try {
       const dataAdAccount = await fetchListBankAccounts({ page, page_size: pageSize, ...formSearchValue })
       setData(dataAdAccount.list);

@@ -2,6 +2,7 @@ import { Button, Modal } from 'antd';
 import { useState } from 'react'
 import { deleteAdAccount } from '../../../services/ads_account';
 import { useNotification } from '../../../hooks/useNotification';
+import axios from 'axios';
 
 interface DeleteAdAccountProps {
   openDeleteModal: boolean;
@@ -24,8 +25,9 @@ function DeleteAdAccount(props: DeleteAdAccountProps) {
       onClose()
       setRefreshKey(pre => !pre)
     } catch (err) {
-      console.log(err)
-      notification.error('Xóa tài khoản quảng cáo thất bại')
+      if(axios.isAxiosError(err)) {
+        notification.error(err.response?.data.message)
+      }
     } finally {
       setLoadingDelete(false)
     }

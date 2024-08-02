@@ -9,6 +9,8 @@ export interface SearchFormType {
   system_id?: number;
   group_id?: number;
   user_id?: number;
+  page?: number;
+  page_size?: number;
 }
 
 function UserManagement() {
@@ -23,7 +25,7 @@ function UserManagement() {
   return (
     <div className="px-4">
       <Header setUsers={setUsers} setLoading={setLoading} setSearchForm={setSearchForm} />
-      <TableUser setUsers={setUsers} users={users} setLoading={setLoading} loading={loading} searchForm={searchForm} />
+      <TableUser setUsers={setUsers} users={users} setLoading={setLoading} loading={loading} searchForm={searchForm} setSearchForm={setSearchForm} />
     </div>
   )
 }

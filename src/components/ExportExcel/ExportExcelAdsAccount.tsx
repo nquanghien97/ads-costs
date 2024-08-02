@@ -16,8 +16,8 @@ export const ExportExcelAdsAccount = ({ apiData }: ExportExcelAdsAccountProps) =
     "Thời gian": formatDate(new Date(x.created_at)),
     "Hệ thống": x.system?.name || "Không có hệ thống",
     "Hộ kinh doanh": x.group?.name || "Không có HKD",
-    "Mã MKT": x.user.username,
-    "Họ tên": x.user.name,
+    "Mã MKT": x.user?.username,
+    "Họ tên": x.user?.name,
     "Mã TKQC": x.id,
     "ID TKQC": x.account_id,
     "Tên TKQC": x.account_name,
@@ -29,7 +29,10 @@ export const ExportExcelAdsAccount = ({ apiData }: ExportExcelAdsAccountProps) =
     "Phí thuê": x.rental_fee,
     "Tên ngân hàng": x.bank_account?.bank_name || "Chưa liên kết ngân hàng",
     "Số TKNH": x.bank_account?.card_number || "Chưa có STK",
-    "Trạng thái": x.status
+    "Trạng thái": x.status,
+    "ID BM": x.bm_id,
+    "Tên BM": x.bm_name,
+    "Sở hữu": x.bm_owned_by
   }))
 
 

@@ -17,7 +17,7 @@ import { useAuthStore } from "../../zustand/auth.store";
 import { UserRole } from "../../entities/User";
 
 export interface SubmitFormSearchType {
-  search: string;
+  search?: string;
   system_id?: number;
   group_id?: number;
   name?: string;
@@ -273,6 +273,7 @@ function AdsAccountDeclaration() {
 
   const onChange = async (page: number, pageSize: number) => {
     setLoading(true);
+    setSubmitFormSearch({ ...submitFormSearch, page, page_size: pageSize })
     try {
       const dataAdAccount = await fetchListAdAccount({ page, page_size: pageSize, ...submitFormSearch })
       setData(dataAdAccount.list);

@@ -22,11 +22,12 @@ interface TableUserProps {
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
   searchForm: SearchFormType | undefined
+  setSearchForm: React.Dispatch<React.SetStateAction<SearchFormType | undefined>>
 }
 
 function TableUser(props: TableUserProps) {
 
-  const { users, setUsers, loading, setLoading, searchForm } = props;
+  const { users, setUsers, loading, setLoading, searchForm, setSearchForm } = props;
   
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openBlockModal, setOpenBlockModal] = useState(false);
@@ -201,6 +202,7 @@ function TableUser(props: TableUserProps) {
 
   const onChange = async (page: number, pageSize: number) => {
     setLoading(true);
+    setSearchForm({...searchForm, page, page_size: pageSize});
     try {
       const res = await fetchUsers({ page, page_size: pageSize, ...searchForm})
       setUsers(res.data.data.list);
