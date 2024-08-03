@@ -15,6 +15,7 @@ import { GetAdsCostsByUser } from "../../services/ads_costs";
 import localeValues from "antd/locale/vi_VN";
 import { exportToExcel } from '../../components/ExportExcel/ExportExcelAdsCost'
 import { useAuthStore } from "../../zustand/auth.store";
+import dayjs from "dayjs";
 interface FormValues {
   search: string;
   system_id: number;
@@ -65,6 +66,8 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
     status: ''
   })
 
+  const defaultDate = dayjs().subtract(1, 'day')
+
   const notification = useNotification();
 
   const [form] = Form.useForm();
@@ -89,8 +92,8 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
     setLoading(true);
     const submitData = {
       search: data.search,
-      since: data.date ? formatDate(new Date(data.date?.[0])): undefined,
-      until: data.date ? formatDate(new Date(data.date?.[1])) : undefined,
+      since: data.date ? formatDate(new Date(data.date?.[0])): formatDate(new Date(defaultDate.toDate())),
+      until: data.date ? formatDate(new Date(data.date?.[1])) : formatDate(new Date(defaultDate.toDate())),
       system_id: data.system_id,
       group_id: data.group_id,
       channel_id: data.channel_id,
@@ -198,6 +201,7 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
         >
           <RangePicker
             locale={localeValues.DatePicker}
+            defaultValue={[defaultDate, defaultDate]}
             className="h-[40px]"
           />
         </Form.Item>
