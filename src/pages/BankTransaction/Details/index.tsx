@@ -11,7 +11,7 @@ interface PaymentDetailsProps {
     bank_account_id: number;
     date: string
     title: string;
-    type: string
+    type?: string
   }
 }
 
@@ -26,7 +26,7 @@ function BillDetails(props: PaymentDetailsProps) {
     if(!dataDetails.bank_account_id || !dataDetails.date) return
     setLoading(true);
     (async () => {
-      const res = await getBankBillDetails({ since: dateBill, until: dateBill, bank_account_id: dataDetails.bank_account_id, type: dataDetails.type })
+      const res = await getBankBillDetails({ since: dateBill, until: dateBill, bank_account_id: dataDetails.bank_account_id, type: dataDetails.type || '' })
       setDataBillDetails(res.data.data.list)
       setLoading(false)
     })()
