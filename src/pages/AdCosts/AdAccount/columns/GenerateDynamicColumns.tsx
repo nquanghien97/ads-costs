@@ -4,8 +4,8 @@ import { AdAccountData, TotalDailyData } from '../../../../dto/AdsBillingsDTO';
 import EyeIcon from '../../../../assets/icons/EyeIcon';
 import { formatCurrency } from '../../../../utils/currency';
 import { useNotification } from '../../../../hooks/useNotification';
-import clsx from 'clsx';
 import { updateStatusAdsBill } from '../../../../services/ads_bills';
+import { useState } from 'react';
 
 const options = [
   { value: 'Đã XN', label: 'Đã XN' },
@@ -26,18 +26,15 @@ interface GenerateDynamicColumnsProps {
 
 export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): TableColumnsType<AdAccountData> => {
   const { setDataDetails, datas, setOpenInvoiceDetails, setLoadingTable } = props;
-  // const [selected, setSelected] = useState({
-  //   value: '',
-  //   date_id: -1
-  // })
+  const [selectedStatus, setSelectedStatus] = useState<Record<number, string>>({});
 
   const notification = useNotification()
 
   const onChangeStatus = async (value: string, date_id: number) => {
+    setSelectedStatus((prevStatus) => ({ ...prevStatus, [date_id]: value }));
     setLoadingTable(true);
     try {
       await updateStatusAdsBill(date_id, value);
-      console.log({value, date_id })
       notification.success('Cập nhật trạng thái thành công')
     } catch (err) {
       console.log(err)
@@ -46,13 +43,12 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
     }
   }
 
-  // const bgSelect = (record: AdAccountData, date: string) => {
-  //   if (selected.date_id === record.datas[date]?.id) {
-  //     if (selected.value === 'Đã XN') return 'w-full [&>*]:!bg-[#0071ba] [&>*]:!text-white';
-  //     if (selected.value === 'Sai số') return 'w-full [&>*]:!bg-[#ff4d4f] [&>*]:!text-white';
-  //   }
-  //   return 'w-full';
-  // }
+  const getBackgroundColor = (value: string) => {
+    if (value === 'Đã XN') return '[&>*]:!bg-[#0071ba] [&>*]:!text-white';
+    if (value === 'Sai số') return '[&>*]:!bg-[#ff4d4f] [&>*]:!text-white';
+    if (value === 'Chưa XN') return '#d9d9d9'; // Màu mặc định cho "Chưa XN"
+    return 'white';
+  };
 
   const dates = Object.keys(datas);
   return dates.flatMap((date, index) => ({
@@ -104,20 +100,24 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
         title: "Xác nhận số liệu",
         key: `xacnhan_${index}`,
         width: 160,
-        render: (_, record) => (
-          <div className="px-2">
-            <Select
-              options={options}
-              onChange={(value) => onChangeStatus(value, record.datas?.[date]?.id)}
-              size="large"
-              // value={selected.value || record.datas?.[date]?.status}
-              defaultValue={record.datas?.[date]?.status}
-              className={clsx('w-full')}
-              placeholder="Select..."
-              disabled={!record.datas?.[date]?.status}
-            />
-          </div>
-        ),
+        render: (_, record) => {
+          const date_id = record.datas?.[date]?.id
+          const currentStatus = selectedStatus[date_id] || record.datas?.[date]?.status;
+          return (
+            <div className={`px-2 select-${record.datas?.[date]?.id}`}>
+              <Select
+                options={options}
+                onChange={(value) => onChangeStatus(value, record.datas?.[date]?.id)}
+                size="large"
+                id={`select-${record.datas?.[date]?.id}`}
+                defaultValue={record.datas?.[date]?.status}
+                className={`w-full ${getBackgroundColor(currentStatus)}`}
+                placeholder="Select..."
+                disabled={!record.datas?.[date]?.status}
+              />
+            </div>
+          )
+        },
       },
     ]
   }));
