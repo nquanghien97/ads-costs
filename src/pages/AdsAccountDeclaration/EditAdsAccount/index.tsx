@@ -121,7 +121,8 @@ function EditAdsAccount(props: EditAdsAccountProps) {
       }
       await editAdsAccount(adAccountData?.id || -1, valuesSubmit);
       notification.success('Chỉnh sửa tài khoản quảng cáo thành công');
-      onClose();
+      onCancel();
+      form.resetFields();
       setRefreshKey(pre => !pre)
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -140,11 +141,16 @@ function EditAdsAccount(props: EditAdsAccountProps) {
     }
   }
 
+  const onCancel = () => {
+    onClose();
+    form.resetFields();
+  }
+
   return (
     <Modal
       open={open}
       className='!p-0 !w-4/6 !top-12'
-      onCancel={onClose}
+      onCancel={onCancel}
       footer={false}
     >
       <div>
