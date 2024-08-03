@@ -29,6 +29,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
   const [selectedStatus, setSelectedStatus] = useState<Record<number, string>>({});
 
   const notification = useNotification()
+  console.log(selectedStatus)
 
   const onChangeStatus = async (value: string, date_id: number) => {
     setSelectedStatus((prevStatus) => ({ ...prevStatus, [date_id]: value }));

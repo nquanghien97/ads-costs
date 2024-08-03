@@ -14,7 +14,7 @@ interface FormValues {
   search: string;
   system_id: number;
   group_id: number;
-  search_name: {
+  user: {
     label: string;
     value: number;
   };
@@ -42,7 +42,7 @@ function Header(props: HeaderProps) {
   const handleSystemChange = (option: number) => {
     setSelectedSystem(option)
     form.setFieldsValue({ group_id: null });
-    form.setFieldsValue({ search_name: null });
+    form.setFieldsValue({ user: null });
   };
 
   const handleGroupChange = async (value: number) => {
@@ -61,7 +61,7 @@ function Header(props: HeaderProps) {
       search: data.search,
       system_id: data.system_id,
       group_id: data.group_id,
-      name: data.search_name?.label,
+      user_id: data.user?.value,
       channel_id: data.channel_id,
       since: data.date ? formatDate(new Date(data.date?.[0])): undefined,
       until: data.date ? formatDate(new Date(data.date?.[1])) : undefined,
@@ -116,7 +116,7 @@ function Header(props: HeaderProps) {
         </Form.Item>
         <Form.Item
           className="w-[160px]"
-          name="search_name"
+          name="user"
         >
           <Select
             labelInValue
