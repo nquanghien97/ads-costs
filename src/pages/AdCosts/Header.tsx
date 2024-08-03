@@ -25,6 +25,7 @@ interface FormValues {
   };
   channel_id: number;
   date: Date[];
+  status: string;
 }
 
 interface HeaderProps {
@@ -42,6 +43,7 @@ export interface SearchFormValues {
   group_id?: number;
   channel_id?: number;
   user_id?: number;
+  status?: string;
 }
 
 function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: HeaderProps) {
@@ -59,7 +61,8 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
     until: '',
     system_id: 0,
     group_id: 0,
-    channel_id: 0
+    channel_id: 0,
+    status: ''
   })
 
   const notification = useNotification();
@@ -91,7 +94,8 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
       system_id: data.system_id,
       group_id: data.group_id,
       channel_id: data.channel_id,
-      user_id: data.user?.value
+      user_id: data.user?.value,
+      status: data.status
     }
     setSearchForm(submitData)
     try {
@@ -163,6 +167,18 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
               options={channels.map(item => ({label: item.name, value: item.id}))}
               className="z-50 h-full w-[160px]"
               placeholder="Kênh chạy"
+              allowClear
+            />
+          </Form.Item>
+          <Form.Item
+            className="w-[160px]"
+            name="status"
+          >
+            <Select
+              options={[{ label: "Đã XN", value: "Đã XN "}, { label: "Chưa XN", value: "Chưa XN "}, { label: "Sai số", value: "Sai số "}]}
+              className="z-50 h-full w-[160px]"
+              placeholder="Trạng thái số liệu"
+              notFoundContent="Loading..."
               allowClear
             />
           </Form.Item>
