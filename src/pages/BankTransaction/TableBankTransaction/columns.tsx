@@ -190,7 +190,15 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
   },
 ];
 
-export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>): TableColumnsType<BankTransactionsDTO> => {
+export const generateDynamicColumns = (
+  datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>,
+    setDataDetails: React.Dispatch<React.SetStateAction<{
+    bank_account_id: number;
+    date: string;
+    title: string;
+    type?: string
+  }>>,
+): TableColumnsType<BankTransactionsDTO> => {
   const dates = Object.keys(datas);
   return dates.map((date, index) => ({
     title: date,
@@ -228,7 +236,17 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
               index % 2 === 0 ? (
                 <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
                   <td>{formatCurrency(innerData.datas[date]?.paid_bill)}</td>
-                  <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
+                  <td
+                    onClick={() => {
+                      setOpenInvoiceDetails(true)
+                      setDataDetails({
+                        bank_account_id: innerData.bank_account.id,
+                        date: date,
+                        title: "Tiền thanh toán hóa đơn",
+                      })
+                    }}
+                    className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer"
+                  >
                     <EyeIcon width={18} height={18} />
                   </td>
                 </tr>
@@ -256,7 +274,18 @@ export const generateDynamicColumns = (datas: TotalDailyData, setOpenInvoiceDeta
                 index % 2 === 0 ? (
                   <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
                     <td>{formatCurrency(innerData.datas[date]?.paid_other)}</td>
-                    <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
+                    <td
+                      onClick={() => {
+                        setOpenInvoiceDetails(true)
+                        setDataDetails({
+                          bank_account_id: innerData.bank_account.id,
+                          date: date,
+                          title: "Tiền thanh toán chi phí khác",
+                          type: "Thanh toán chi phí khác"
+                        })
+                      }}
+                      className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer"
+                    >
                       <EyeIcon width={18} height={18}/>
                     </td>
                   </tr>

@@ -17,3 +17,14 @@ export const GetBankTransactions = ({ user_id, search, since, until, system_id, 
 export const BankCostsDeclaration = (data: BankCostsDTO[]) => {
   return api.post(`/bulk-bank-costs`, { data })
 }
+
+export const getBankBillDetails = ({ since, until, bank_account_id, type } : { since: string, until: string, bank_account_id: number, type: string }) => {
+  const params = new URLSearchParams();
+
+  if (since) params.append('since', since.toString());
+  if (until) params.append('until', until.toString());
+  if (bank_account_id) params.append('bank_account_id', bank_account_id.toString());
+  if (type) params.append('type', type.toString());
+
+  return api.get(`/bank-costs?${params.toString()}`);
+}
