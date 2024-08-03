@@ -303,7 +303,6 @@ function AdsAccountDeclaration() {
       setPagingAdAccount(res.paging)
     })()
   }, [fetchListAdAccount, refreshKey, submitFormSearch])
-
   return (
     <div className="px-4">
       <Header setLoading={setLoading} setSubmitFormSearch={setSubmitFormSearch} />
@@ -348,7 +347,8 @@ function AdsAccountDeclaration() {
               pageSize: pagingAdAccount?.page_size,
               onChange: onChange,
               showTotal: (total) => <span className="font-bold">{`Tổng:   ${total}`}</span>,
-              showSizeChanger: true
+              showSizeChanger: true,
+              pageSizeOptions: [10, 20, 50, 100, pagingAdAccount?.total].filter(item => item !== undefined).sort((a, b) => a - b)
             }}
             loading={loading}
             scroll={{ y: 600, x: 3000 }}

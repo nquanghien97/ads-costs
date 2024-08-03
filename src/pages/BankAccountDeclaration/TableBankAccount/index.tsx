@@ -224,7 +224,8 @@ function TableBankAccount(props: TableBankAccountProps) {
                 pageSize: pagingBankAccount?.page_size,
                 onChange: onChange,
                 showTotal: (total) => <span className="font-bold">{`Tổng:   ${total}`}</span>,
-                showSizeChanger: true
+                showSizeChanger: true,
+                pageSizeOptions: [10, 20, 50, 100, pagingBankAccount?.total].filter(item => item !== undefined).sort((a, b) => a - b)
               }}
               rowKey={(record) => record.id}
               scroll={{ y: 600 }}
