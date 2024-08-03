@@ -66,7 +66,7 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
     status: ''
   })
 
-  const defaultDate = dayjs().subtract(1, 'day')
+  const defaultDate = dayjs().subtract(1, 'day').startOf('day')
 
   const notification = useNotification();
 
@@ -87,6 +87,8 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
       console.log(e);
     }
   }
+
+  console.log(formatDate(new Date(defaultDate.toDate())))
 
   const onFinish = async (data: FormValues) => {
     setLoading(true);
