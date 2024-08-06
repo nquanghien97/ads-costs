@@ -4,9 +4,11 @@ import { ConfigProvider, Empty, Table } from 'antd';
 import { AdAccountData, TotalDailyData } from '../../../dto/AdsBillingsDTO';
 import { GenerateDynamicColumns } from './columns/GenerateDynamicColumns';
 import { StaticColumns } from './columns/StaticColumns'; 
+import { useState } from 'react';
 
 function AdAccountRentTable(props: { data: AdAccountData[], loading: boolean }) {
-  const { data, loading } = props;
+  const { data } = props;
+  const [loadingTable, setLoadingTable] = useState(false)
   
   const dataForDynamicColumns = data.flatMap(x => 
     Object.entries(x.datas).map(([date, data]) => ({
@@ -14,10 +16,13 @@ function AdAccountRentTable(props: { data: AdAccountData[], loading: boolean }) 
       ...data
     }))
   );
-  const dynamicColumns = data.length > 0 ? GenerateDynamicColumns(dataForDynamicColumns.reduce((acc: TotalDailyData, cur) => {
-    acc[cur.date] = cur;
-    return acc;
-  }, {})) : [];
+  const dynamicColumns = data.length > 0 ? GenerateDynamicColumns({
+    datas: dataForDynamicColumns.reduce((acc: TotalDailyData, cur) => {
+      acc[cur.date] = cur;
+      return acc;
+    }, {}),
+    setLoadingTable
+  }) : [];
   const columns = [...StaticColumns, ...dynamicColumns];
 
   return (
@@ -55,7 +60,7 @@ function AdAccountRentTable(props: { data: AdAccountData[], loading: boolean }) 
           rowHoverable={false}
           className='not-fixed'
           rowClassName={(_, index) => index % 2 === 0 ? '[&>*]:!bg-[#e9e9e9] no-padding' :  '[&>*]:!bg-[#e5d1ba] no-padding'}
-          loading={loading}
+          loading={loadingTable}
         />
       </ConfigProvider>
     </div>

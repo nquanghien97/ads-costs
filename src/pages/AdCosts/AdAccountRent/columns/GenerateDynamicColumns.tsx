@@ -3,6 +3,11 @@ import { TableColumnsType } from 'antd';
 import { AdAccountData, TotalDailyData } from '../../../../dto/AdsBillingsDTO';
 import { formatCurrency } from '../../../../utils/currency';
 import { useState } from 'react';
+import { updateStatusAdsBill } from '../../../../services/ads_bills';
+import { useNotification } from '../../../../hooks/useNotification';
+import { useAuthStore } from '../../../../zustand/auth.store';
+import { UserRole } from '../../../../entities/User';
+import axios from 'axios';
 
 const options = [
   { value: 'Đã XN', label: 'Đã XN' },
@@ -10,24 +15,49 @@ const options = [
   { value: 'Chưa XN', label: 'Chưa XN' },
 ];
 
-export const GenerateDynamicColumns = (datas: TotalDailyData): TableColumnsType<AdAccountData> => {
-  const [selected, setSelected] = useState({
-    ad_account_id: -1,
-    date: '',
-    value: ''
-  });
+interface GenerateDynamicColumnsProps {
+  datas: TotalDailyData;
+  setLoadingTable: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-  const onChangeStatus = (value: string, record: AdAccountData, date: string) => {
-    setSelected({ ad_account_id: record.ad_account_id, date, value: value})
-  }
 
-  const bgSelect = (record: AdAccountData, date: string) => {
-    if (selected.ad_account_id === record.ad_account_id && selected.date === date) {
-      if (selected.value === 'Đã XN') return 'w-full [&>*]:!bg-[#0071ba] [&>*]:!text-white';
-      if (selected.value === 'Sai số') return 'w-full [&>*]:!bg-[#ff4d4f] [&>*]:!text-white';
+export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): TableColumnsType<AdAccountData> => {
+  const { datas, setLoadingTable } = props;
+  const [selectedStatus, setSelectedStatus] = useState<Record<number, string>>({});
+
+  const notification = useNotification()
+  const { user } = useAuthStore();
+
+  const onChangeStatus = async (value: string, date_id: number) => {
+    setSelectedStatus((prevStatus) => ({ ...prevStatus, [date_id]: value }));
+    setLoadingTable(true);
+    try {
+      await updateStatusAdsBill(date_id, value);
+      notification.success('Cập nhật trạng thái thành công')
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Không hợp lệ.")) {
+            notification.error('Bạn không có quyền để chỉnh sửa trạng thái này')
+            break;
+          } 
+        }
+        if(!invalidData) {
+          notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+        }
+      } 
+    } finally {
+      setLoadingTable(false)
     }
-    return 'w-full';
   }
+
+  const getBackgroundColor = (value: string) => {
+    if (value === 'Đã XN') return '[&>*]:!bg-[#0071ba] [&>*]:!text-white';
+    if (value === 'Sai số') return '[&>*]:!bg-[#ff4d4f] [&>*]:!text-white';
+    if (value === 'Chưa XN') return '#d9d9d9'; // Màu mặc định cho "Chưa XN"
+    return 'white';
+  };
 
   const dates = Object.keys(datas);
   return dates.flatMap((date, index) => ({
@@ -65,18 +95,23 @@ export const GenerateDynamicColumns = (datas: TotalDailyData): TableColumnsType<
         title: "Xác nhận số liệu",
         key: `xacnhan_${index}`,
         width: 160,
-        render: (_, record) => (
-          <div className="px-2">
-            <Select
-              options={options}
-              onChange={(value) => onChangeStatus(value, record, date)}
-              size="large"
-              defaultValue={record.datas?.[date]?.status}
-              className={bgSelect(record, date)}
-              placeholder="Select..."
-            />
-          </div>
-        ),
+        render: (_, record) => {
+          const date_id = record.datas?.[date]?.id
+          const currentStatus = selectedStatus[date_id] || record.datas?.[date]?.status;
+          return (
+            <div className="px-2">
+              <Select
+                options={options}
+                onChange={(value) => onChangeStatus(value, record.datas?.[date]?.id)}
+                size="large"
+                defaultValue={record.datas?.[date]?.status}
+                className={`w-full ${getBackgroundColor(currentStatus)}`}
+                placeholder="Select..."
+                disabled={!record.datas?.[date]?.status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedStatus[date_id] || record.datas?.[date]?.status) === "Đã XN"))}
+              />
+            </div>
+          )
+        }
       },
     ]
   }));

@@ -6,6 +6,9 @@ import { formatCurrency } from '../../../../utils/currency';
 import { useNotification } from '../../../../hooks/useNotification';
 import { updateStatusAdsBill } from '../../../../services/ads_bills';
 import { useState } from 'react';
+import axios from 'axios';
+import { UserRole } from '../../../../entities/User';
+import { useAuthStore } from '../../../../zustand/auth.store';
 
 const options = [
   { value: 'Đã XN', label: 'Đã XN' },
@@ -29,7 +32,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
   const [selectedStatus, setSelectedStatus] = useState<Record<number, string>>({});
 
   const notification = useNotification()
-  console.log(selectedStatus)
+  const { user } = useAuthStore()
 
   const onChangeStatus = async (value: string, date_id: number) => {
     setSelectedStatus((prevStatus) => ({ ...prevStatus, [date_id]: value }));
@@ -38,7 +41,18 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
       await updateStatusAdsBill(date_id, value);
       notification.success('Cập nhật trạng thái thành công')
     } catch (err) {
-      console.log(err)
+      if (axios.isAxiosError(err)) {
+        const invalidData = err.response?.data.invalidData
+        for (const key in invalidData) {
+          if (Array.isArray(invalidData[key]) && invalidData[key].includes("Không hợp lệ.")) {
+            notification.error('Bạn không có quyền để chỉnh sửa trạng thái này')
+            break;
+          } 
+        }
+        if(!invalidData) {
+          notification.error('Có lỗi xảy ra, vui lòng thử lại!')
+        }
+      } 
     } finally {
       setLoadingTable(false)
     }
@@ -110,11 +124,10 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
                 options={options}
                 onChange={(value) => onChangeStatus(value, record.datas?.[date]?.id)}
                 size="large"
-                id={`select-${record.datas?.[date]?.id}`}
                 defaultValue={record.datas?.[date]?.status}
                 className={`w-full ${getBackgroundColor(currentStatus)}`}
                 placeholder="Select..."
-                disabled={!record.datas?.[date]?.status}
+                disabled={!record.datas?.[date]?.status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedStatus[date_id] || record.datas?.[date]?.status) === "Đã XN"))}
               />
             </div>
           )

@@ -70,7 +70,7 @@ export const StaticColumns: TableColumnsType<AdAccountData> = [
     key: '7',
     fixed: 'left',
     render(value) {
-      return value.exchange_rate
+      return formatCurrency(value.exchange_rate, 0)
     }
   },
   {
