@@ -88,14 +88,12 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
     }
   }
 
-  console.log(formatDate(new Date(defaultDate.toDate())))
-
   const onFinish = async (data: FormValues) => {
     setLoading(true);
     const submitData = {
       search: data.search,
-      since: data.date ? formatDate(new Date(data.date?.[0])): formatDate(new Date(defaultDate.toDate())),
-      until: data.date ? formatDate(new Date(data.date?.[1])) : formatDate(new Date(defaultDate.toDate())),
+      since: data.date ? formatDate(new Date(data.date?.[0])): undefined,
+      until: data.date ? formatDate(new Date(data.date?.[1])) : undefined,
       system_id: data.system_id,
       group_id: data.group_id,
       channel_id: data.channel_id,
@@ -200,10 +198,10 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
         </div>
         <Form.Item
           name="date"
+          initialValue={[defaultDate, defaultDate]}
         >
           <RangePicker
             locale={localeValues.DatePicker}
-            defaultValue={[defaultDate, defaultDate]}
             className="h-[40px]"
           />
         </Form.Item>
