@@ -64,7 +64,8 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
     group_id: 0,
     channel_id: 0,
     status: ''
-  })
+  });
+  const [loadingUser, setLoadingUser] = useState(false);
 
   const defaultDate = dayjs().subtract(1, 'day').startOf('day')
 
@@ -79,12 +80,15 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
   };
 
   const handleGroupChange = async (value: number) => {
+    setLoadingUser(true);
     form.setFieldsValue({ name: null })
     try {
       const res = await getUsers({group_id: value});
       setName(res.data.data.list)
     } catch(e){
       console.log(e);
+    } finally {
+      setLoadingUser(false)
     }
   }
 
@@ -135,6 +139,7 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
               className="z-50 h-full w-[160px]"
               placeholder="Hệ thống"
               allowClear
+              notFoundContent="Không có hệ thống"
             />
           </Form.Item>
           <Form.Item
@@ -147,6 +152,7 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
               className="z-50 h-full w-[160px]"
               placeholder="HKD"
               allowClear
+              notFoundContent="Không có HKD"
             />
           </Form.Item>
           <Form.Item
@@ -158,8 +164,9 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
               options={name.map(item => ({label: item.name, value: item.id}))}
               className="z-50 h-full w-[160px]"
               placeholder="Họ tên"
-              notFoundContent="Loading..."
+              notFoundContent="Không có nhân sự"
               allowClear
+              loading={loadingUser}
             />
           </Form.Item>
           <Form.Item

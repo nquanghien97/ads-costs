@@ -33,6 +33,7 @@ function Header({ setSearchForm } : { setSearchForm: React.Dispatch<React.SetSta
   const { systems } = useSystemsStore();
   const [selectedSystem, setSelectedSystem] = useState(-1);
   const [name, setName] = useState<User[]>([]);
+  const [loadingUser, setLoadingUser] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -43,13 +44,15 @@ function Header({ setSearchForm } : { setSearchForm: React.Dispatch<React.SetSta
   };
 
   const handleGroupChange = async (option: { label: string, value: number}) => {
-    console.log(option)
+    setLoadingUser(true);
     form.setFieldsValue({ name: null })
     try {
       const res = await getUsers({group_id: option.value});
       setName(res.data.data.list)
     } catch(e){
       console.log(e);
+    } finally {
+      setLoadingUser(false);
     }
   }
   const onFinish = (data: FormValues) => {
@@ -90,6 +93,7 @@ function Header({ setSearchForm } : { setSearchForm: React.Dispatch<React.SetSta
               className="z-50 h-full w-[160px]"
               placeholder="Hệ thống"
               allowClear
+              notFoundContent="Không có hệ thống"
             />
           </Form.Item>
           <Form.Item
@@ -103,6 +107,7 @@ function Header({ setSearchForm } : { setSearchForm: React.Dispatch<React.SetSta
               className="z-50 h-full w-[160px]"
               placeholder="HKD"
               allowClear
+              notFoundContent="Không có HKD"
             />
           </Form.Item>
           <Form.Item
@@ -115,6 +120,8 @@ function Header({ setSearchForm } : { setSearchForm: React.Dispatch<React.SetSta
               className="z-50 h-full w-[160px]"
               placeholder="Họ tên"
               allowClear
+              notFoundContent="Không có nhân sự"
+              loading={loadingUser}
             />
           </Form.Item>
           <Form.Item>

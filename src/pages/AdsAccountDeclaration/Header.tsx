@@ -36,6 +36,7 @@ function Header(props: HeaderProps) {
   const { channels } = useInformationSettingsStore();
   const [selectedSystem, setSelectedSystem] = useState(-1);
   const [name, setName] = useState<User[]>([]);
+  const [loadingUser, setLoadingUser] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -46,12 +47,15 @@ function Header(props: HeaderProps) {
   };
 
   const handleGroupChange = async (value: number) => {
+    setLoadingUser(true);
     form.setFieldsValue({ name: null })
     try {
       const res = await getUsers({group_id: value});
       setName(res.data.data.list)
     } catch(e){
       console.log(e);
+    } finally {
+      setLoadingUser(false);
     }
   }
 
@@ -100,6 +104,7 @@ function Header(props: HeaderProps) {
             className="z-50 h-full w-[160px]"
             placeholder="Hệ thống"
             allowClear
+            notFoundContent="Không có hệ thống"
           />
         </Form.Item>
         <Form.Item
@@ -112,6 +117,7 @@ function Header(props: HeaderProps) {
             className="z-50 h-full w-[160px]"
             placeholder="HKD"
             allowClear
+            notFoundContent="Không có HKD"
           />
         </Form.Item>
         <Form.Item
@@ -124,6 +130,8 @@ function Header(props: HeaderProps) {
             className="z-50 h-full w-[160px]"
             placeholder="Họ tên"
             allowClear
+            loading={loadingUser}
+            notFoundContent="Không có nhân sự"
           />
         </Form.Item>
         <Form.Item
