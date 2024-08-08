@@ -105,7 +105,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
     try {
       const valuesSubmit = {
         user_id: adAccountData?.user.id,
-        account_id: data.account_id,
+        account_id: +(adAccountData?.account_id || -1),
         account_name: data.account_name,
         channel_id: data.channel_id,
         type_id: data.type.value,
@@ -464,15 +464,15 @@ function EditAdsAccount(props: EditAdsAccountProps) {
             <div className="p-2 border-[1px] border-red-500 rounded-md w-1/2 flex flex-col gap-4 bg-[#dfdddd]">
               <div className="flex items-center h-[40px]">
                 <p className="w-[136px] text-left text-[#0071BA]">ID BM</p>
-                <Alert message={adAccountData?.bm_id || "Loading..."} className="w-full" />
+                <Alert message={adAccountData?.bm_id || "Chưa có thông tin"} className="w-full" />
               </div>
               <div className="flex items-center h-[40px]">
                 <p className="w-[136px] text-left text-[#0071BA]">Tên BM</p>
-                <Alert message={adAccountData?.bm_name || "Loading..."} className="w-full" />
+                <Alert message={adAccountData?.bm_name || "Chưa có thông tin"} className="w-full" />
               </div>
               <div className="flex items-center h-[40px]">
                 <p className="w-[136px] text-left text-[#0071BA]">SỞ HỮU</p>
-                <Alert message={adAccountData?.bm_owned_by || "Loading..."} className="w-full" />
+                <Alert message={adAccountData?.bm_owned_by || "Chưa có thông tin"} className="w-full" />
               </div>
             </div>
           )}
