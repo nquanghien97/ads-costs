@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "./Header";
 import AdAccount from "./AdAccount";
-import AdAccountRent from "./AdAccountRent";
+// import AdAccountRent from "./AdAccountRent";
 import { GetAdsCostsByUser } from "../../services/ads_costs";
 import { SystemData } from "../../dto/AdsBillingsDTO";
 import withAuth from "../../hocs/withAuth";
@@ -33,7 +33,7 @@ function Invoice() {
 
   useEffect(() => {
     (async () => {
-      if(user.role !== UserRole.ROOT && user.role ) {
+      if (user.role !== UserRole.ROOT && user.role) {
         await fetchData()
       }
     })()
@@ -52,15 +52,15 @@ function Invoice() {
 
   const renderBody = () => {
     if (loading) return <div className="flex justify-center py-4"><LoadingIcon /></div>
-    if (!datas) return <div className="h-[300px] flex justify-center items-center text-xl">Vui lòng chọn hệ thống để hiển thị dữ liệu...</div>
+    if (!datas || !filteredData) return <div className="h-[300px] flex justify-center items-center text-xl">Vui lòng chọn hệ thống để hiển thị dữ liệu...</div>
     if (filteredData?.length === 0) return <div>Không có dữ liệu</div>
     return (
       filteredData?.map(data => data.group_datas.map(data => data.user_datas.map((item, index) => (
         <div className="border-b-4 border-cyan-700 py-6" key={index}>
           <AdAccount data={item} loading={loading} />
-          <AdAccountRent data={item} loading={loading} />
         </div>
-    ))))
+      ))))
+      // <AdAccount data={filteredData} loading={loading} />
     )
   }
 

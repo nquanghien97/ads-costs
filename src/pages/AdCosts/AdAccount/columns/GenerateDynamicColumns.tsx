@@ -76,8 +76,8 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
         render: (_, record) => {
           return (
             <div>
-              <div className="row-custom bg-[#c7ecce]">{formatCurrency(record.datas?.[date]?.ads)}</div>
-              <div className="row-custom bg-[white]">{formatCurrency(record.datas?.[date]?.ads_vnd)}</div>
+              <div className="row-custom ">{formatCurrency(record.datas?.[date]?.ads)}</div>
+              <div className="row-custom ">{formatCurrency(record.datas?.[date]?.ads_vnd)}</div>
             </div>
           )
         },
@@ -89,7 +89,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
         render: (_, record) => (
           <>
             <div>
-              <div className="row-custom flex items-center gap-2 bg-[#c7ecce]">
+              <div className="row-custom flex items-center gap-2">
                 {formatCurrency(record.datas?.[date]?.bill)}
                 <div
                   onClick={() => {
@@ -100,11 +100,12 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
                       currency: record.ad_account.currency
                     })
                   }}
-                  className="cursor-pointer">
+                  className="cursor-pointer"
+                >
                   <EyeIcon width={18} height={18} />
                 </div>
               </div>
-              <div className="row-custom flex items-center justify-between gap-2 bg-[white]">
+              <div className="row-custom flex items-center justify-between gap-2 ">
                 {formatCurrency(record.datas?.[date]?.bill_vnd)}
               </div>
             </div>

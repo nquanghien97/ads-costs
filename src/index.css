@@ -70,7 +70,7 @@ button:focus-visible {
 }
 
 .row-custom:first-child {
-  border-bottom: 1px solid red;
+  border-bottom: 1px solid;
 }
 
 .not-fixed th.ant-table-cell:not(.ant-table-cell-fix-left):not(.ant-table-cell-fix-left-last) {
@@ -86,7 +86,7 @@ button:focus-visible {
 }
 
 .border-top-row tr {
-  border-top: 1px solid red;
+  border-top: 1px solid;
   padding: 0 !important;
   text-align: center;
 }

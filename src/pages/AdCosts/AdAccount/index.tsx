@@ -21,7 +21,8 @@ function AdAccount(props: AdAccountProps) {
       <div className="flex gap-2">
         <div className="w-full">
           <AdAccountTable
-            data={data.ad_account_datas.filter(item => (item.ad_account !== null && item.ad_account.type !== "TK THUÊ"))}
+            // data={data.ad_account_datas.filter(item => (item.ad_account !== null && item.ad_account.type !== "TK THUÊ"))}
+            data={data.ad_account_datas}
             loading={loading}
           />
         </div>

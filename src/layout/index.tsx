@@ -42,7 +42,7 @@ function Layout() {
         <div className="w-[180px]" />
       </div>
       {openChangePassword && <ChangePassword open={openChangePassword} onClose={() => setOpenChangePassword(false)} />}
-      <div className="w-[calc(100vw-177px)] mt-[60px]">
+      <div className="w-[calc(100vw-197px)] mt-[60px]">
         <Outlet />
       </div>
     </>

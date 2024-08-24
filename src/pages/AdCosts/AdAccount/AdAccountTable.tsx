@@ -16,13 +16,22 @@ function AdAccountTable(props: { data: AdAccountData[], loading: boolean }) {
     date: '',
     currency: ''
   });
-  
-  const dataForDynamicColumns = data.flatMap(x => 
+  const [showHiddenColumns, setShowHiddenColumns] = useState(false);
+
+  // const dataForDynamicColumns = data?.map(data => data.group_datas.map(data => data.user_datas.map((item) => item.ad_account_datas.flatMap(x => 
+  //   Object.entries(x.datas).map(([date, data]) => ({
+  //     date,
+  //     ...data
+  //   }))
+  // ))))
+
+
+  const dataForDynamicColumns = data.flatMap(x =>
     Object.entries(x.datas).map(([date, data]) => ({
       date,
       ...data
     }))
-  );
+  )
   const dynamicColumns = GenerateDynamicColumns({
     datas: dataForDynamicColumns.reduce((acc: TotalDailyData, cur) => {
       acc[cur.date] = cur;
@@ -32,14 +41,33 @@ function AdAccountTable(props: { data: AdAccountData[], loading: boolean }) {
     setOpenInvoiceDetails,
     setLoadingTable
   });
-  const columns = [...StaticColumns, ...dynamicColumns];
-  
+  console.log(dataForDynamicColumns.reduce((acc: TotalDailyData, cur) => {
+    acc[cur.date] = cur;
+    return acc;
+  }, {}),)
+  const hiddenKeys = ['7', '8', '9', '10', '12', '13']
+  const hiddenColumns = StaticColumns(() => setShowHiddenColumns(pre => !pre), showHiddenColumns).filter(staticColumn => !hiddenKeys.includes(staticColumn.key as string))
+  const newColumns = showHiddenColumns ? StaticColumns(() => setShowHiddenColumns(pre => !pre), showHiddenColumns) : hiddenColumns
+  const columns = [...newColumns, ...dynamicColumns];
+  // Tạo sub header cho từng hệ thống / HKD
+  // const CustomRow = ({ children, className }: { children: React.ReactNode,  className: string }) => {
+  //   return (
+  //     <>
+  //       <tr>
+  //         <td colSpan={[...StaticColumns(() => setShowHiddenColumns(pre => !pre), showHiddenColumns)].length} className={`py-2 uppercase text-center !bg-[#0071ba] ant-table-cell ant-table-cell-fix-left sticky left-0 font-bold text-white`}>
+  //           {className.split(" ").slice(2, className.length).join(" ")}
+  //         </td>
+  //       </tr>
+  //       <tr className="border-top-row">{children}</tr>
+  //     </>
+  //   );
+  // };
   return (
     <>
       <div className="relative">
-        <div className="py-2 flex justify-start">
+        {/* <div className="py-2 flex justify-start">
           <span className="px-6 py-2 rounded-full bg-[#eb9d4d] text-white">TKQC Thường</span>
-        </div>
+        </div> */}
         <ConfigProvider
           theme={{
             token: {
@@ -49,7 +77,7 @@ function AdAccountTable(props: { data: AdAccountData[], loading: boolean }) {
             },
             components: {
               Table: {
-                borderColor: "red",
+                borderColor: "black",
                 headerBg: "#ebd1b2"
               }
             }
@@ -60,13 +88,18 @@ function AdAccountTable(props: { data: AdAccountData[], loading: boolean }) {
             columns={columns}
             dataSource={data}
             rowKey={(record) => record.ad_account_id}
-            rowClassName={(_, index) => index % 2 === 0 ? '[&>*]:!bg-[#e9e9e9] no-padding' :  '[&>*]:!bg-[#ebd1b2] no-padding'}
+            rowClassName={(_, index) => index % 2 === 0 ? '[&>*]:!bg-[#e9e9e9] no-padding' : '[&>*]:!bg-white no-padding'}
             pagination={false}
             bordered
             scroll={{ x: columns.length * 100, y: 240 }}
             rowHoverable={false}
             className='not-fixed'
             loading={loadingTable}
+          // components={{
+          //   body: {
+          //     row: (({ children, className }: { children: React.ReactNode, className: string})=> <CustomRow children={children} className={className} />),
+          //   },
+          // }}
           />
         </ConfigProvider>
       </div>
