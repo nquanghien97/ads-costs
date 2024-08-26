@@ -1,20 +1,17 @@
 import SearchIcon from "../../assets/icons/SearchIcon";
 import { Button, DatePicker, Form, Input, Select, Tooltip } from "antd";
 import { useState } from "react";
-import AdCosts from "./Declaration/AdCosts";
 import { useGroupsStore } from "../../zustand/groups.store";
 import { useSystemsStore } from "../../zustand/systems.store";
-import User, { UserRole } from "../../entities/User";
+import User from "../../entities/User";
 import { getUsers } from "../../services/users";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
-import BillCosts from "./Declaration/BillCosts";
 import { SystemData } from "../../dto/AdsBillingsDTO";
 import { formatDate } from "../../utils/date";
 import { useNotification } from "../../hooks/useNotification";
 import { GetAdsCostsByUser } from "../../services/ads_costs";
 import localeValues from "antd/locale/vi_VN";
 import { exportToExcel } from '../../components/ExportExcel/ExportExcelAdsCost'
-import { useAuthStore } from "../../zustand/auth.store";
 import dayjs from "dayjs";
 interface FormValues {
   search: string;
@@ -34,6 +31,8 @@ interface HeaderProps {
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   dataExportExcel: SystemData[] | undefined
+  setShowAdCosts: React.Dispatch<React.SetStateAction<boolean>>
+  setShowBillCosts: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export interface SearchFormValues {
@@ -47,24 +46,14 @@ export interface SearchFormValues {
   status?: string;
 }
 
-function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: HeaderProps) {
+function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShowBillCosts }: HeaderProps) {
 
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
   const { channels } = useInformationSettingsStore();
-  const { user } = useAuthStore();
   const [selectedSystem, setSelectedSystem] = useState(-1);
-  const [name, setName] = useState<User[]>([]);
-  const [searchForm, setSearchForm] = useState<SearchFormValues>({
-    search: '',
-    since: '',
-    until: '',
-    system_id: 0,
-    group_id: 0,
-    channel_id: 0,
-    status: ''
-  });
+  const [name, setName] = useState<User[]>([])
   const [loadingUser, setLoadingUser] = useState(false);
 
   const defaultDate = dayjs().subtract(1, 'day').startOf('day')
@@ -83,9 +72,9 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
     setLoadingUser(true);
     form.setFieldsValue({ name: null })
     try {
-      const res = await getUsers({group_id: value});
+      const res = await getUsers({ group_id: value });
       setName(res.data.data.list)
-    } catch(e){
+    } catch (e) {
       console.log(e);
     } finally {
       setLoadingUser(false)
@@ -96,7 +85,7 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
     setLoading(true);
     const submitData = {
       search: data.search,
-      since: data.date ? formatDate(new Date(data.date?.[0])): undefined,
+      since: data.date ? formatDate(new Date(data.date?.[0])) : undefined,
       until: data.date ? formatDate(new Date(data.date?.[1])) : undefined,
       system_id: data.system_id,
       group_id: data.group_id,
@@ -104,11 +93,10 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
       user_id: data.user?.value,
       status: data.status
     }
-    setSearchForm(submitData)
     try {
       const res = await GetAdsCostsByUser(submitData)
       setDatas(res.data.data.list)
-    } catch(err) {
+    } catch (err) {
       console.log(err);
       notification.error('Có lỗi xảy ra, vui lòng thử lại')
     } finally {
@@ -161,7 +149,7 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
           >
             <Select
               labelInValue
-              options={name.map(item => ({label: item.name, value: item.id}))}
+              options={name.map(item => ({ label: item.name, value: item.id }))}
               className="z-50 h-full w-[160px]"
               placeholder="Họ tên"
               notFoundContent="Không có nhân sự"
@@ -174,7 +162,7 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
             name="channel_id"
           >
             <Select
-              options={channels.map(item => ({label: item.name, value: item.id}))}
+              options={channels.map(item => ({ label: item.name, value: item.id }))}
               className="z-50 h-full w-[160px]"
               placeholder="Kênh chạy"
               allowClear
@@ -185,7 +173,7 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
             name="status"
           >
             <Select
-              options={[{ label: "Đã XN", value: "Đã XN "}, { label: "Chưa XN", value: "Chưa XN "}, { label: "Sai số", value: "Sai số "}]}
+              options={[{ label: "Đã XN", value: "Đã XN " }, { label: "Chưa XN", value: "Chưa XN " }, { label: "Sai số", value: "Sai số " }]}
               className="z-50 h-full w-[160px]"
               placeholder="Trạng thái số liệu"
               notFoundContent="Loading..."
@@ -214,14 +202,26 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
         </Form.Item>
       </Form>
       <div className="flex py-2 justify-between">
-          <div className="flex gap-4">
-            {(user.role === UserRole.ACCOUNTANT || user.role === UserRole.ROOT) ? (
-              <>
-                <AdCosts setRefreshKey={setRefreshKey} searchForm={searchForm} setDatas={setDatas} />
-                <BillCosts setRefreshKey={setRefreshKey} searchForm={searchForm} setDatas={setDatas} />
-              </>
-            ) : null}
+        <div className="flex gap-4">
+          <div
+            className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300"
+            onClick={() => {
+              setShowAdCosts(true);
+              setShowBillCosts(false);
+            }}
+          >
+            <span className="text-white">Dữ liệu CPQC</span>
           </div>
+          <div
+            className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300"
+            onClick={() => {
+              setShowAdCosts(false);
+              setShowBillCosts(true);
+            }}
+          >
+            <span className="text-white">Dữ liệu hóa đơn</span>
+          </div>
+        </div>
         <div className="flex gap-2">
           <Button size="large" className="bg-white" onClick={() => exportToExcel(dataExportExcel)}>
             Export dữ liệu

@@ -85,7 +85,7 @@ button:focus-visible {
   z-index: 0;
 }
 
-.border-top-row tr {
+.border-top-row tr:not(:first-child) {
   border-top: 1px solid;
   padding: 0 !important;
   text-align: center;

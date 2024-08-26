@@ -14,6 +14,8 @@ function Invoice() {
   const [loading, setLoading] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
   const { user } = useAuthStore();
+  const [showAdCosts, setShowAdCosts] = useState(true);
+  const [showBillCosts, setShowBillCosts] = useState(false);
 
   useEffect(() => {
     document.title = "Chi phí quảng cáo - hóa đơn"
@@ -49,25 +51,19 @@ function Invoice() {
       })).filter(user => user.ad_account_datas.length > 0)
     })).filter(group => group.user_datas.length > 0)
   })).filter(system => system.group_datas.length > 0);
-  // console.log(filteredData?.map(data => data.group_datas.map(data => data.user_datas.map(item => item.ad_account_datas))).flat(3))
 
   const renderBody = () => {
     if (loading) return <div className="flex justify-center py-4"><LoadingIcon /></div>
     if (!datas || !filteredData) return <div className="h-[300px] flex justify-center items-center text-xl">Vui lòng chọn hệ thống để hiển thị dữ liệu...</div>
     if (filteredData?.length === 0) return <div>Không có dữ liệu</div>
     return (
-      // filteredData?.map(data => data.group_datas.map(data => data.user_datas.map((item, index) => (
-      //   <div className="border-b-4 border-cyan-700 py-6" key={index}>
-      //     <AdAccount data={item} loading={loading} />
-      //   </div>
-      // ))))
-      <AdAccount data={filteredData} loading={loading} />
+      <AdAccount data={filteredData} loading={loading} showAdCosts={showAdCosts} showBillCosts={showBillCosts} />
     )
   }
 
   return (
     <div className="px-4">
-      <Header setDatas={setDatas} setLoading={setLoading} setRefreshKey={setRefreshKey} dataExportExcel={filteredData} />
+      <Header setDatas={setDatas} setLoading={setLoading} setRefreshKey={setRefreshKey} dataExportExcel={filteredData} setShowAdCosts={setShowAdCosts} setShowBillCosts={setShowBillCosts} />
       <div className="pt-[136px]">
         {renderBody()}
       </div>
