@@ -1,13 +1,13 @@
 // import Table from 'rc-table';
 import { Table, ConfigProvider, Empty } from 'antd';
-import { AdAccountData, TotalDailyData } from '../../../dto/AdsBillingsDTO';
+import { AdAccountData, SystemData, TotalDailyData } from '../../../dto/AdsBillingsDTO';
 import { GenerateDynamicColumns } from './columns/GenerateDynamicColumns';
 import { StaticColumns } from './columns/StaticColumns';
 import { useState } from 'react';
 import BillDetails from '../BillDetails';
 
 
-function AdAccountTable(props: { data: AdAccountData[], loading: boolean }) {
+function AdAccountTable(props: { data: SystemData[], loading: boolean }) {
   const { data } = props;
   const [loadingTable, setLoadingTable] = useState(false)
   const [openInvoiceDetails, setOpenInvoiceDetails] = useState(false);
@@ -25,8 +25,8 @@ function AdAccountTable(props: { data: AdAccountData[], loading: boolean }) {
   //   }))
   // ))))
 
-
-  const dataForDynamicColumns = data.flatMap(x =>
+  const a = data?.map(data => data.group_datas.map(data => data.user_datas.map(item => item.ad_account_datas))).flat(3)
+  const dataForDynamicColumns = a.flatMap(x =>
     Object.entries(x.datas).map(([date, data]) => ({
       date,
       ...data
@@ -41,10 +41,6 @@ function AdAccountTable(props: { data: AdAccountData[], loading: boolean }) {
     setOpenInvoiceDetails,
     setLoadingTable
   });
-  console.log(dataForDynamicColumns.reduce((acc: TotalDailyData, cur) => {
-    acc[cur.date] = cur;
-    return acc;
-  }, {}),)
   const hiddenKeys = ['7', '8', '9', '10', '12', '13']
   const hiddenColumns = StaticColumns(() => setShowHiddenColumns(pre => !pre), showHiddenColumns).filter(staticColumn => !hiddenKeys.includes(staticColumn.key as string))
   const newColumns = showHiddenColumns ? StaticColumns(() => setShowHiddenColumns(pre => !pre), showHiddenColumns) : hiddenColumns
@@ -87,7 +83,7 @@ function AdAccountTable(props: { data: AdAccountData[], loading: boolean }) {
           <Table
             columns={columns}
             dataSource={data}
-            rowKey={(record) => record.ad_account_id}
+            rowKey={(record) => record.system_id}
             rowClassName={(_, index) => index % 2 === 0 ? '[&>*]:!bg-[#e9e9e9] no-padding' : '[&>*]:!bg-white no-padding'}
             pagination={false}
             bordered

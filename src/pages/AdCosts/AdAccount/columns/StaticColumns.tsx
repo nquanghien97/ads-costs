@@ -1,19 +1,19 @@
 import { TableColumnsType } from "antd";
-import { AdAccountData } from "../../../../dto/AdsBillingsDTO";
+import { AdAccountData, GroupData } from "../../../../dto/AdsBillingsDTO";
 import { formatCurrency } from "../../../../utils/currency";
 import ArrowRight from "../../../../assets/icons/ArrowRight";
 import ArrowLeft from "../../../../assets/icons/ArrowLeft";
 
-export const StaticColumns = ( onExpandColumns: () => void, expandColumns: boolean ): TableColumnsType<AdAccountData> => (
-  [
+export const StaticColumns = (onExpandColumns: () => void, expandColumns: boolean): TableColumnsType<AdAccountData> => {
+  return [
     {
       title: 'Loại TK',
-      dataIndex: 'ad_account',
+      dataIndex: 'group_datas',
       width: 100,
       key: '1',
       fixed: 'left',
-      render(value) {
-        return value.type
+      render(value: GroupData[]) {
+        return value.map(item => item.user_datas.map(item => item.ad_account_datas.map(a => a.ad_account.type))).flat(3)
       }
     },
     {
@@ -22,8 +22,8 @@ export const StaticColumns = ( onExpandColumns: () => void, expandColumns: boole
       key: '2',
       width: 100,
       fixed: 'left',
-      render(value) {
-        return <span>{`TK${value.id}`}</span>
+      render(value: GroupData[]) {
+        return <span>{`TK${value.map(item => item.user_datas.map(item => item.ad_account_datas.map(a => a.ad_account.id)))}`}</span>
       }
     },
     {
@@ -32,8 +32,8 @@ export const StaticColumns = ( onExpandColumns: () => void, expandColumns: boole
       width: 100,
       key: '3',
       fixed: 'left',
-      render(value) {
-        return value.channel
+      render(value: GroupData[]) {
+        return value.map(item => item.user_datas.map(item => item.ad_account_datas.map(a => a.ad_account.channel)))
       }
     },
     {
@@ -42,8 +42,8 @@ export const StaticColumns = ( onExpandColumns: () => void, expandColumns: boole
       key: '4',
       width: 150,
       fixed: 'left',
-      render(value) {
-        return value.account_id
+      render(value: GroupData[]) {
+        return value.map(item => item.user_datas.map(item => item.ad_account_datas.map(a => a.ad_account.account_id)))
       }
     },
     {
@@ -52,8 +52,8 @@ export const StaticColumns = ( onExpandColumns: () => void, expandColumns: boole
       key: '5',
       width: 80,
       fixed: 'left',
-      render(value) {
-        return value.currency
+      render(value: GroupData[]) {
+        return value.map(item => item.user_datas.map(item => item.ad_account_datas.map(a => a.ad_account.currency)))
       },
     },
     {
@@ -62,8 +62,8 @@ export const StaticColumns = ( onExpandColumns: () => void, expandColumns: boole
       key: '6',
       width: 100,
       fixed: 'left',
-      render(value) {
-        return value.timezone
+      render(value: GroupData[]) {
+        return value.map(item => item.user_datas.map(item => item.ad_account_datas.map(a => a.ad_account.timezone)))
       },
     },
     {
@@ -72,11 +72,11 @@ export const StaticColumns = ( onExpandColumns: () => void, expandColumns: boole
       width: 150,
       key: '7',
       fixed: 'left',
-      render(value) {
+      render(value: GroupData[]) {
         return <div className="flex flex-col">
-          <p>{value?.bank_account?.bank_name || 'Chưa liên kết'}</p>
-          {value?.bank_account?.card_number && <p>{`( ${value?.bank_account?.card_number} )`}</p>}
-          
+          <p>{value.map(item => item.user_datas.map(item => item.ad_account_datas.map(a => a.ad_account.bank_account.bank_name))) || 'Chưa liên kết'}</p>
+          {value.map(item => item.user_datas.map(item => item.ad_account_datas.map(a => a.ad_account.bank_account.card_number)))}
+
         </div>
       }
     },
@@ -86,8 +86,8 @@ export const StaticColumns = ( onExpandColumns: () => void, expandColumns: boole
       width: 100,
       key: '8',
       fixed: 'left',
-      render(value) {
-        return `${value.rental_fee} %`
+      render(value: GroupData[]) {
+        return `${value.map(item => item.user_datas.map(item => item.ad_account_datas.map(a => a.ad_account.rental_fee)))} %`
       }
     },
     {
@@ -96,8 +96,8 @@ export const StaticColumns = ( onExpandColumns: () => void, expandColumns: boole
       width: 100,
       key: '9',
       fixed: 'left',
-      render(value) {
-        return formatCurrency(value.exchange_rate, 0)
+      render(value: GroupData[]) {
+        return formatCurrency(value.map(item => item.user_datas.map(item => item.ad_account_datas.map(a => a.ad_account.exchange_rate))), 0)
       }
     },
     {
@@ -106,8 +106,8 @@ export const StaticColumns = ( onExpandColumns: () => void, expandColumns: boole
       width: 100,
       key: '10',
       fixed: 'left',
-      render(value) {
-        return value.status
+      render(value: GroupData[]) {
+        return value.map(item => item.user_datas.map(item => item.ad_account_datas.map(a => a.ad_account.status)))
       }
     },
     {
@@ -151,8 +151,9 @@ export const StaticColumns = ( onExpandColumns: () => void, expandColumns: boole
         )
       },
       className: '!bg-[#ebd1b2] !text-[black]'
-    },
+    }
   ]
-)
+
+}
 
 // export const StaticColumns:  = 
