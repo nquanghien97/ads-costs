@@ -16,6 +16,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  background-color: white;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -73,15 +77,7 @@ button:focus-visible {
   border-bottom: 1px solid;
 }
 
-.not-fixed th.ant-table-cell:not(.ant-table-cell-fix-left):not(.ant-table-cell-fix-left-last) {
-  /* CSS của bạn ở đây */
-  background: #2b663c;
-  color: white;
-}
-
 .not-fixed td.ant-table-cell:not(.ant-table-cell-fix-left):not(.ant-table-cell-fix-left-last) {
-  /* CSS của bạn ở đây */
-  /* background: #f6ffea; */
   z-index: 0;
 }
 
@@ -124,4 +120,9 @@ button:focus-visible {
 .table-row-custom-color {
   background-color: #ccc;
 }
+
+thead > .ant-table-cell {
+  background-color: #bcf9ff;
+}
+
 

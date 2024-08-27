@@ -63,7 +63,16 @@ function Invoice() {
 
   return (
     <div className="px-4">
-      <Header setDatas={setDatas} setLoading={setLoading} setRefreshKey={setRefreshKey} dataExportExcel={filteredData} setShowAdCosts={setShowAdCosts} setShowBillCosts={setShowBillCosts} />
+      <Header
+        setDatas={setDatas}
+        setLoading={setLoading}
+        setRefreshKey={setRefreshKey}
+        dataExportExcel={filteredData}
+        setShowAdCosts={setShowAdCosts}
+        setShowBillCosts={setShowBillCosts}
+        showAdCosts={showAdCosts}
+        showBillCosts={showBillCosts}
+      />
       <div className="pt-[136px]">
         {renderBody()}
       </div>

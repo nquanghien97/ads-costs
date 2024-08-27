@@ -45,7 +45,7 @@ function AdAccountTable(props: { data: SystemData[], loading: boolean, showAdCos
     return (
       <>
         <tr>
-          <td colSpan={newColumns.length} className={`py-2 uppercase text-center !bg-[#0071ba] ant-table-cell ant-table-cell-fix-left sticky left-0 font-bold text-white`}>
+          <td colSpan={newColumns.length} className={`py-2 uppercase text-center !bg-black ant-table-cell ant-table-cell-fix-left sticky left-0 font-bold text-white`}>
             {className.split(" ").slice(2, className.length).join(" ")}
           </td>
         </tr>
@@ -66,7 +66,8 @@ function AdAccountTable(props: { data: SystemData[], loading: boolean, showAdCos
             components: {
               Table: {
                 borderColor: "black",
-                headerBg: "#ebd1b2"
+                headerBg: "#f3ec90",
+                headerColor: 'black',
               }
             }
           }}
@@ -76,7 +77,6 @@ function AdAccountTable(props: { data: SystemData[], loading: boolean, showAdCos
             columns={columns}
             dataSource={data}
             rowKey={(record) => record.system_id}
-            // rowClassName={(_, index) => index % 2 === 0 ? '[&>*]:!bg-[#e9e9e9] no-padding' : '[&>*]:!bg-white no-padding'}
             rowClassName={(record) => `${record.system.name} - ${record.group_datas.flatMap(item => item.group.name)} - ${record.group_datas.flatMap(item => item.user_datas.flatMap(innerItem => innerItem.name))}`}
             pagination={false}
             bordered

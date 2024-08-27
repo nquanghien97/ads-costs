@@ -14,7 +14,7 @@ function Layout() {
 
   return (
     <>
-      <div className="fixed top-0 left-[180px] right-0 h-[60px] bg-[#0071ba] z-[100]">
+      <div className="fixed top-0 left-[180px] right-0 h-[60px] bg-black z-[100]">
         <div className="relative top-0 h-full">
           <div className="flex items-center justify-end h-full gap-4 px-4">
             <div className="px-2 py-1 rounded-md text-white">{user.name}</div>
@@ -24,12 +24,12 @@ function Layout() {
         </div>
       </div>
       <div className="h-screen w-[180px] z-[100]">
-        <div className="bg-[#292727] w-[180px] opacity-85 fixed top-0 bottom-0 left-0 bg-no-repeat text-start">
+        <div className="bg-black w-[180px] fixed top-0 bottom-0 left-0 bg-no-repeat text-start">
           {MenuSidebar.map((menu) => (
             currentRole ? (
               menu.allowedRoles.includes(currentRole) && (
                 <div className="flex items-center justify-center" key={menu.path}>
-                  <SidebarItem title={menu.title} path={menu.path} icon={menu.icon} />
+                  <SidebarItem menu={menu} />
                 </div>
               )
             ) : (

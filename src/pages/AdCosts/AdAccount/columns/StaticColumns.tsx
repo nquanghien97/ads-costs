@@ -300,7 +300,6 @@ export const StaticColumns = (onExpandColumns: () => void, expandColumns: boolea
           </div>
         ))))
       },
-      className: '!bg-[#ebd1b2] !text-[black]'
     },
     {
       title: 'Tổng hóa đơn',
@@ -315,7 +314,6 @@ export const StaticColumns = (onExpandColumns: () => void, expandColumns: boolea
           </div>
         ))))
       },
-      className: '!bg-[#ebd1b2] !text-[black]'
     }
   ]
 

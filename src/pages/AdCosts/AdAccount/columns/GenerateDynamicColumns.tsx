@@ -11,9 +11,11 @@ import { UserRole } from '../../../../entities/User';
 import { useAuthStore } from '../../../../zustand/auth.store';
 
 const options = [
-  { value: 'Đã XN', label: 'Đã XN' },
-  { value: 'Sai số', label: 'Sai số' },
   { value: 'Chưa XN', label: 'Chưa XN' },
+  { value: 'Đã XN', label: 'Đã XN (MKT)' },
+  { value: 'Sai số', label: 'Sai số (MKT)' },
+  { value: 'Đã XN', label: 'Đã XN (KT)' },
+  { value: 'Sai số', label: 'Sai số (KT)' },
 ];
 
 interface GenerateDynamicColumnsProps {
@@ -60,7 +62,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
   }
 
   const getBackgroundColor = (value: string) => {
-    if (value === 'Đã XN') return '[&>*]:!bg-[#0071ba] [&>*]:!text-white';
+    if (value === 'Đã XN') return '[&>*]:!bg-[#efa30b] [&>*]:!text-black';
     if (value === 'Sai số') return '[&>*]:!bg-[#ff4d4f] [&>*]:!text-white';
     if (value === 'Chưa XN') return '#d9d9d9'; // Màu mặc định cho "Chưa XN"
     return 'white';
@@ -75,6 +77,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
         title: `Tổng hóa đơn`,
         key: `bill_${index}`,
         width: 140,
+        className: "dynamic-col",
         render: (_: unknown, record: SystemData) => {
           return record.group_datas.flatMap(item => item.user_datas.flatMap(innerItem => innerItem.ad_account_datas.flatMap(data => (
             <div key={data.ad_account.id} className="border-t-[1px] border-black">
@@ -106,6 +109,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
         title: `Tổng CPQC`,
         key: `ads_${index}`,
         width: 120,
+        className: "dynamic-col",
         render: (_: unknown, record: SystemData) => {
           return record.group_datas.flatMap(item => item.user_datas.flatMap(innerItem => innerItem.ad_account_datas.flatMap(data =>
           (
@@ -121,6 +125,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
         title: "Xác nhận số liệu",
         key: `xacnhan_${index}`,
         width: 160,
+        className: "dynamic-col",
         render: (_: unknown, record: SystemData) => {
           return record.group_datas.flatMap(item => item.user_datas.flatMap(innerItem => innerItem.ad_account_datas.flatMap(data => {
             const date_id = data.datas?.[date]?.id
@@ -133,7 +138,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
                   size="large"
                   defaultValue={data.datas?.[date]?.status}
                   className={`w-full ${getBackgroundColor(currentStatus)}`}
-                  placeholder="Select..."
+                  placeholder={!data.datas?.[date]?.status ? 'Không có dữ liệu' : 'Lựa chọn...'}
                   disabled={!data.datas?.[date]?.status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedStatus[date_id] || data.datas?.[date]?.status) === "Đã XN"))}
                 />
               </div>

@@ -7,8 +7,17 @@ import DepartmentIcon from "../assets/icons/DepartmentIcon";
 import ReportIcon from "../assets/icons/ReportIcon";
 import AccountBankIcon from "../assets/icons/AccountBankIcon";
 import AdsAccountIcon from "../assets/icons/AdsAccountIcon";
+import AdjustIcon from "../assets/icons/AdjustIcon";
 
-const MenuSidebar = [
+export interface MenuSidebar {
+  title: string;
+  path: string;
+  allowedRoles: UserRole[];
+  icon: JSX.Element;
+  children?: MenuSidebar[];
+}
+
+const MenuSidebar: MenuSidebar[] = [
   {
     title: 'CPQC-Hóa đơn',
     path: '/cpqc-hoa-don',
@@ -29,9 +38,23 @@ const MenuSidebar = [
   },
   {
     title: 'Khai báo TKQC',
-    path: '/khai-bao-tkqc',
+    path: '#',
     allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
     icon: <AdsAccountIcon />,
+    children: [
+      {
+        title: 'TKQC',
+        path: '/khai-bao-tkqc',
+        allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
+        icon: <AdjustIcon fill="white" width={16} className="duration-300 hover:text-[#ccc]" />,
+      },
+      {
+        title: 'Chiến dịch',
+        path: '/khai-bao-chien-dich',
+        allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
+        icon: <AdjustIcon fill="white" width={16} className="duration-300" />,
+      }
+    ]
   },
   {
     title: 'Khai báo TKNH',

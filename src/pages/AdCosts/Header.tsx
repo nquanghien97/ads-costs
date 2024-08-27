@@ -31,7 +31,9 @@ interface HeaderProps {
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   dataExportExcel: SystemData[] | undefined
+  showAdCosts: boolean
   setShowAdCosts: React.Dispatch<React.SetStateAction<boolean>>
+  showBillCosts: boolean
   setShowBillCosts: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -46,7 +48,7 @@ export interface SearchFormValues {
   status?: string;
 }
 
-function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShowBillCosts }: HeaderProps) {
+function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShowBillCosts, showAdCosts, showBillCosts }: HeaderProps) {
 
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
@@ -184,8 +186,9 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
             <Tooltip title="Tìm kiếm">
               <Button
                 htmlType="submit"
-                type="primary"
+                // type="primary"
                 shape="circle"
+                className="bg-black hover:!bg-black"
                 icon={<SearchIcon color="white" />}
               />
             </Tooltip>
@@ -204,22 +207,22 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
       <div className="flex py-2 justify-between">
         <div className="flex gap-4">
           <div
-            className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300"
+            className={`${showAdCosts ? 'bg-black text-white' : 'text-black'} rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300`}
             onClick={() => {
               setShowAdCosts(true);
               setShowBillCosts(false);
             }}
           >
-            <span className="text-white">Dữ liệu CPQC</span>
+            <span>Dữ liệu CPQC</span>
           </div>
           <div
-            className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300"
+            className={`${showBillCosts ? 'bg-black text-white' : 'text-black'} rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300`}
             onClick={() => {
               setShowAdCosts(false);
               setShowBillCosts(true);
             }}
           >
-            <span className="text-white">Dữ liệu hóa đơn</span>
+            <span>Dữ liệu hóa đơn</span>
           </div>
         </div>
         <div className="flex gap-2">

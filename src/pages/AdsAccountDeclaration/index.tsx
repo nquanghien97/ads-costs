@@ -176,13 +176,13 @@ function AdsAccountDeclaration() {
         if (AdsAccountStatusType.DANG_SU_DUNG === value) {
           return (
             <div className="flex justify-center">
-              <span className="bg-[#0071ba] py-1 px-2 text-center rounded-md text-white w-full">{value}</span>
+              <span className="bg-[#f3ec90] py-1 px-2 text-center rounded-md text-black w-full">{value}</span>
             </div>
           )
         } else if (AdsAccountStatusType.NGUNG_SU_DUNG === value) {
           return (
             <div className="flex justify-center">
-              <span className="bg-[#d37dbe] py-2 px-2 text-center rounded-md text-white w-full">{value}</span>
+              <span className="bg-[red] py-2 px-2 text-center rounded-md text-white w-full">{value}</span>
             </div>
           )
         } else if (AdsAccountStatusType.DIE === value) {
@@ -225,7 +225,7 @@ function AdsAccountDeclaration() {
           <div className="flex justify-between gap-2 py-2">
             <ConfigProvider
               button={{
-                className: "hover:!bg-[#538b53]"
+                className: "hover:!bg-[#5a5acc]"
               }}
             >
               <div
@@ -308,15 +308,15 @@ function AdsAccountDeclaration() {
       <Header setLoading={setLoading} setSubmitFormSearch={setSubmitFormSearch} />
       <div className="flex justify-between mb-4">
         <div className="m-auto">
-          <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Khai báo tài khoản quảng cáo</span>
+          <span className="px-6 py-2 rounded-full bg-[#f3ec90] font-bold text-black uppercase">Khai báo tài khoản quảng cáo</span>
         </div>
         <div className="flex gap-2">
           <Button size="large">
             <ExportExcelAdsAccount apiData={data} />
           </Button>
-          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300 text-white" onClick={() => setOpenAddNewAdsAccount(true)}>
+          <div className="bg-[#f3ec90] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300 text-black" onClick={() => setOpenAddNewAdsAccount(true)}>
             Thêm mới
-            <PlusIcon color="white" />
+            <PlusIcon color="black" />
           </div>
         </div>
       </div>
@@ -328,9 +328,10 @@ function AdsAccountDeclaration() {
             },
             components: {
               Table: {
-                borderColor: "red",
-                headerBg: "#d19b5c !important",
-                colorBgContainer: '#e2d2bd !important'
+                borderColor: "black",
+                headerBg: "#292727d9 !important",
+                colorBgContainer: '#e2d2bd !important',
+                headerColor: "white",
               }
             }
           }}
@@ -340,7 +341,7 @@ function AdsAccountDeclaration() {
             dataSource={data}
             rowHoverable={false}
             rowKey={(record) => record.id}
-            rowClassName={(_, index) => index % 2 === 0 ? 'table-row-custom-color' : ''}
+            rowClassName={(_, index) => index % 2 === 0 ? 'table-row-custom-color' : 'bg-white'}
             bordered
             pagination={{
               total: pagingAdAccount?.total,
