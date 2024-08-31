@@ -318,5 +318,3 @@ export const StaticColumns = (onExpandColumns: () => void, expandColumns: boolea
   ]
 
 }
-
-// export const StaticColumns:  = 

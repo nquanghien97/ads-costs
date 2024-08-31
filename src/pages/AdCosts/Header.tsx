@@ -117,6 +117,7 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
             <Input
               placeholder="Tìm kiếm"
               className="py-2"
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -130,6 +131,7 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
               placeholder="Hệ thống"
               allowClear
               notFoundContent="Không có hệ thống"
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -143,6 +145,7 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
               placeholder="HKD"
               allowClear
               notFoundContent="Không có HKD"
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -157,6 +160,7 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
               notFoundContent="Không có nhân sự"
               allowClear
               loading={loadingUser}
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -168,6 +172,7 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
               className="z-50 h-full w-[160px]"
               placeholder="Kênh chạy"
               allowClear
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -180,6 +185,7 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
               placeholder="Trạng thái số liệu"
               notFoundContent="Loading..."
               allowClear
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item>
@@ -188,7 +194,7 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
                 htmlType="submit"
                 // type="primary"
                 shape="circle"
-                className="bg-black hover:!bg-black"
+                className="bg-[#007bb5] hover:!bg-[#007bb5]"
                 icon={<SearchIcon color="white" />}
               />
             </Tooltip>
@@ -200,14 +206,14 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
         >
           <RangePicker
             locale={localeValues.DatePicker}
-            className="h-[40px]"
+            className="h-[40px] border-[1px] border-[#007bb5] rounded-lg"
           />
         </Form.Item>
       </Form>
       <div className="flex py-2 justify-between">
         <div className="flex gap-4">
           <div
-            className={`${showAdCosts ? 'bg-black text-white' : 'text-black'} rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300`}
+            className={`${showAdCosts ? 'bg-[#68c2ed]' : 'text-black'} rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300`}
             onClick={() => {
               setShowAdCosts(true);
               setShowBillCosts(false);
@@ -216,7 +222,7 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
             <span>Dữ liệu CPQC</span>
           </div>
           <div
-            className={`${showBillCosts ? 'bg-black text-white' : 'text-black'} rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300`}
+            className={`${showBillCosts ? 'bg-[#68c2ed]' : 'text-black'} rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300`}
             onClick={() => {
               setShowAdCosts(false);
               setShowBillCosts(true);
@@ -226,7 +232,7 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
           </div>
         </div>
         <div className="flex gap-2">
-          <Button size="large" className="bg-white" onClick={() => exportToExcel(dataExportExcel)}>
+          <Button size="large" className="bg-white border-[1px] border-[#007bb5] rounded-lg" onClick={() => exportToExcel(dataExportExcel)}>
             Export dữ liệu
           </Button>
         </div>

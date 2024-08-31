@@ -97,6 +97,7 @@ function Header(props: HeaderProps) {
             <Input
               placeholder="Tìm kiếm"
               className="py-2"
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -110,6 +111,7 @@ function Header(props: HeaderProps) {
               placeholder="Hệ thống"
               allowClear
               notFoundContent="Không có hệ thống"
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -123,6 +125,7 @@ function Header(props: HeaderProps) {
               placeholder="HKD"
               allowClear
               notFoundContent="Không có HKD"
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -136,6 +139,7 @@ function Header(props: HeaderProps) {
               notFoundContent="Không có nhân sự"
               allowClear
               loading={loadingUser}
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item>
@@ -145,6 +149,7 @@ function Header(props: HeaderProps) {
                 type="primary"
                 shape="circle"
                 icon={<SearchIcon color="white" />}
+                className="bg-[#007bb5] hover:!bg-[#007bb5]"
               />
             </Tooltip>
           </Form.Item>
@@ -155,6 +160,7 @@ function Header(props: HeaderProps) {
           <RangePicker
             locale={localeValues.DatePicker}
             className="h-[40px]"
+            rootClassName="border-[1px] border-[#007bb5] rounded-lg"
           />
         </Form.Item>
       </Form>
@@ -162,14 +168,14 @@ function Header(props: HeaderProps) {
         <div className="flex gap-2">
           {(user.role === UserRole.ACCOUNTANT || user.role === UserRole.ROOT) ? (
             <>
-              <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalTransfer(true)}>
-                <span className="text-white">Khai báo tiền chuyển</span>
+              <div className="bg-[#68c2ed] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalTransfer(true)}>
+                <span className="text-black">Khai báo tiền chuyển</span>
               </div>
-              <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalCosts(true)}>
-                <span className="text-white">Khai báo Chi phí</span>
+              <div className="bg-[#68c2ed] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalCosts(true)}>
+                <span className="text-black">Khai báo Chi phí</span>
               </div>
-              <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalExchangeRate(true)}>
-                <span className="text-white">Khai báo tỷ giá ngân hàng</span>
+              <div className="bg-[#68c2ed] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300" onClick={() => setOpenModalExchangeRate(true)}>
+                <span className="text-black">Khai báo tỷ giá ngân hàng</span>
               </div>
               {openModalTransfer && <TransferMoney openModalTransfer={openModalTransfer} setOpenModalTransfer={setOpenModalTransfer} />}
               {openModalCosts && <CostsDeclaration openModalCosts={openModalCosts} setOpenModalCosts={setOpenModalCosts} />}
@@ -178,12 +184,12 @@ function Header(props: HeaderProps) {
           ) : null}
         </div>
         <div className="flex gap-2">
-          <Button size="large">
+          <Button size="large" className="border-[1px] border-[#007bb5] rounded-lg">
             <Link to="/xem-ty-gia">
               <span className="font-normal">Xem tỷ giá</span>
             </Link>
           </Button>
-          <Button size="large" onClick={() => exportExcelBankTransaction(dataBankBillings)}>
+          <Button size="large" className="border-[1px] border-[#007bb5] rounded-lg" onClick={() => exportExcelBankTransaction(dataBankBillings)}>
             <span>Export dữ liệu</span>
           </Button>
         </div>

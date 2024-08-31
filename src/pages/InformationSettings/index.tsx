@@ -144,7 +144,7 @@ function InfomationSettings() {
   return (
     <div className="px-4">
       <div className="py-2 flex justify-center">
-        <h2 className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase text-center">CÀI ĐẶT THÔNG TIN</h2>
+        <h2 className="px-6 py-2 rounded-full bg-[#68c2ed] font-bold text-xl uppercase text-center">CÀI ĐẶT THÔNG TIN</h2>
       </div>
       <div className="flex flex-col gap-4">
         <InformationSetting

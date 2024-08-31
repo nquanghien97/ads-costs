@@ -12,28 +12,30 @@ function SidebarItem(props: SidebarItemProps) {
   const location = useLocation();
   const [showChildren, setShowChildren] = useState(false);
   const { menu } = props;
-  const activePath = location.pathname === menu.path ? 'text-[#f3ec90]' : 'text-white'
+  const activePath = location.pathname === menu.path ? 'text-[black] bg-[white] rounded-md' : 'text-black'
   return (
-    <div className="w-[160px] mt-4">
+    <div className="w-full mt-4">
       <Link to={menu.path}>
         <div
-          className='text-white py-4 text-sm drop-shadow-[1px_2px_rgba(0,0,0,0.4)] flex flex-col items-start'
+          className={`py-4 px-2 text-sm flex flex-col items-start ${activePath}`}
           style={{ outline: 'none' }}
         >
-          <div className="flex items-center justify-start hover:text-[#0071ba] duration-300" onClick={() => setShowChildren(pre => !pre)}>
+          <div className="flex items-center justify-start hover:scale-110 transform-scale duration-300" onClick={() => setShowChildren(pre => !pre)}>
             <div className="mr-1">
               {menu.icon}
             </div>
-            {menu.title}
+            <span>
+              {menu.title}
+            </span>
             {menu.children && (
               <div>
-                {showChildren ? <ArrowDown width={20} height={20} /> : <ArrowUp width={20} height={20} />}
+                {showChildren ? <ArrowDown className="duration-300" width={20} height={20} /> : <ArrowDown width={20} height={20} className="rotate-180 duration-300" />}
               </div>
             )}
           </div>
           {
             showChildren && (
-              <div className="flex flex-col pl-4">
+              <div className="flex flex-col pl-4 w-full">
                 {menu.children && (
                   menu.children.map((childMenu) => (
                     <SidebarItem key={childMenu.path} menu={childMenu} />

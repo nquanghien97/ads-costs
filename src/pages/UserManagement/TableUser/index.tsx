@@ -7,7 +7,6 @@ import LockIcon from "../../../assets/icons/LockIcon";
 import EditUser from "../action/EditUser";
 import UpdatePassword from "../action/UpdatePassword";
 import AddNewUser from "../action/AddNewUser";
-import BaseButton from "../../../components/common/BaseButton";
 import PlusIcon from "../../../assets/icons/PlusIcon";
 import { SearchFormType } from "..";
 import { roleOptions } from "../../../config/userRoleOption";
@@ -28,7 +27,7 @@ interface TableUserProps {
 function TableUser(props: TableUserProps) {
 
   const { users, setUsers, loading, setLoading, searchForm, setSearchForm } = props;
-  
+
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openBlockModal, setOpenBlockModal] = useState(false);
   const [openUnBlockModal, setOpenUnBlockModal] = useState(false);
@@ -44,7 +43,7 @@ function TableUser(props: TableUserProps) {
     user_id: -1,
     username: ''
   });
-  
+
   const columns: TableColumnsType<User> = [
     {
       title: 'STT',
@@ -83,7 +82,7 @@ function TableUser(props: TableUserProps) {
       dataIndex: 'role',
       key: '5',
       render(value) {
-        return(
+        return (
           <span>{roleOptions.find(role => role.value === value)?.label}</span>
         )
       }
@@ -107,7 +106,8 @@ function TableUser(props: TableUserProps) {
                       userId: record.id,
                       userName: record.username
                     })
-                    setOpenEditModal(true)}
+                    setOpenEditModal(true)
+                  }
                   }
                 >
                   <Button
@@ -138,12 +138,12 @@ function TableUser(props: TableUserProps) {
                             username: record.username
                           })
                         }}
-                      >      
+                      >
                         <p className="text-black">Mở Khóa</p>
                       </Button>
                     </ConfigProvider>
                   </>
-                ): (
+                ) : (
                   <>
                     <Button
                       icon={<LockIcon color="black" />}
@@ -157,13 +157,13 @@ function TableUser(props: TableUserProps) {
                           username: record.username
                         })
                       }}
-                    >      
+                    >
                       <p className="text-black">Khóa</p>
                     </Button>
                   </>
                 )}
               </div>
-              <div 
+              <div
                 className="flex items-center"
                 onClick={() => {
                   setOpenUpdatePasswordModal(true)
@@ -174,16 +174,16 @@ function TableUser(props: TableUserProps) {
                 }}
               >
                 <ConfigProvider
-                    button={{
-                      className: "hover:!bg-[#edad37]"
-                    }}
-                  >
+                  button={{
+                    className: "hover:!bg-[#edad37]"
+                  }}
+                >
 
                   <Button
                     icon={<UpdatePasswordIcon color="black" />}
                     type="primary"
                     className="w-full bg-[#FFA500]"
-                  >      
+                  >
                     <p className="text-black">Cập nhật mật khẩu</p>
                   </Button>
                 </ConfigProvider>
@@ -195,16 +195,16 @@ function TableUser(props: TableUserProps) {
     },
   ]
 
-  const fetchUsers = useCallback(async ({ page, page_size } : { page: number, page_size: number }) => {
-    const res = await getUsers({ page, page_size, ...searchForm});
+  const fetchUsers = useCallback(async ({ page, page_size }: { page: number, page_size: number }) => {
+    const res = await getUsers({ page, page_size, ...searchForm });
     return res
   }, [searchForm])
 
   const onChange = async (page: number, pageSize: number) => {
     setLoading(true);
-    setSearchForm({...searchForm, page, page_size: pageSize});
+    setSearchForm({ ...searchForm, page, page_size: pageSize });
     try {
-      const res = await fetchUsers({ page, page_size: pageSize, ...searchForm})
+      const res = await fetchUsers({ page, page_size: pageSize, ...searchForm })
       setUsers(res.data.data.list);
       setPagingUsers(res.data.data.paging)
     } catch (err) {
@@ -228,12 +228,15 @@ function TableUser(props: TableUserProps) {
     <>
       <div className="flex mb-4">
         <div className="m-auto">
-          <span className="px-6 p-2 rounded-full bg-[#0071BA] text-black uppercase">Quản lý người dùng</span>
+          <span className="px-6 p-2 rounded-full bg-[#68c2ed] text-black uppercase">Quản lý người dùng</span>
         </div>
-        <BaseButton color="info" className="text-black" onClick={() => setOpenAddNewAdsAccount(true)}>
+        <div
+          className="bg-[#68c2ed] border-[1px] py-2 border-[#007bb5] rounded-lg cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300 text-black"
+          onClick={() => setOpenAddNewAdsAccount(true)}
+        >
           Thêm mới
-          <PlusIcon color="white" />
-        </BaseButton>
+          <PlusIcon color="black" />
+        </div>
       </div>
       {openAddNewAdsAccount && <AddNewUser onClose={() => setOpenAddNewAdsAccount(false)} setRefreshKey={setRefreshKey} />}
       <div className="custom-header-table">
@@ -244,9 +247,10 @@ function TableUser(props: TableUserProps) {
             },
             components: {
               Table: {
-                borderColor: "red",
-                headerBg: "#d19b5c !important",
-                colorBgContainer: '#e2d2bd !important'
+                borderColor: "#007bb5",
+                headerBg: "#f3ec90 !important",
+                colorBgContainer: '#e2d2bd !important',
+                headerColor: "black",
               }
             }
           }}
@@ -256,7 +260,7 @@ function TableUser(props: TableUserProps) {
             dataSource={users}
             rowHoverable={false}
             rowKey={(record) => record.id}
-            rowClassName={(_, index) => index % 2 === 0 ? 'table-row-custom-color' :  ''}
+            rowClassName={(_, index) => index % 2 === 0 ? 'bg-[#e9e9e9]' : 'bg-white'}
             bordered
             pagination={{
               total: pagingUsers?.total,

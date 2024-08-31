@@ -62,7 +62,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
   }
 
   const getBackgroundColor = (value: string) => {
-    if (value === 'Đã XN') return '[&>*]:!bg-[#efa30b] [&>*]:!text-black';
+    if (value === 'Đã XN') return '[&>*]:!bg-[#68c2ed] [&>*]:!text-black';
     if (value === 'Sai số') return '[&>*]:!bg-[#ff4d4f] [&>*]:!text-white';
     if (value === 'Chưa XN') return '#d9d9d9'; // Màu mặc định cho "Chưa XN"
     return 'white';
@@ -103,8 +103,8 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
             </div>
           ))))
         },
-      } ,
-      showAdCosts && 
+      },
+      showAdCosts &&
       {
         title: `Tổng CPQC`,
         key: `ads_${index}`,

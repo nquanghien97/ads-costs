@@ -15,6 +15,8 @@ import { UserRole } from "../entities/User";
 import PrivateRouteWithAuth from "./PrivateRoute";
 import ExchangeRate from "../pages/ExchangeRate";
 import ChangePasswordPage from "../pages/ChangePassword";
+import CampainDeclarationWithAuth from "../pages/CampainDeclaration";
+import Content from "../pages/Content";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,6 +37,7 @@ const router = createBrowserRouter(
           }
         />
         <Route path="/khai-bao-tkqc" element={<AdsAccountDeclaration />} />
+        <Route path="/khai-bao-chien-dich" element={<CampainDeclarationWithAuth />} />
         <Route path="/khai-bao-tk-ngan-hang" element={<BankAccountDeclaration />} />
         <Route
           path="/quan-ly-nguoi-dung"
@@ -60,6 +63,7 @@ const router = createBrowserRouter(
             </PrivateRouteWithAuth>
           }
         />
+        <Route path="/content" element={<Content /> } />
         <Route path="/xem-bao-cao" element={<ReportView />} />
         <Route path="/xem-ty-gia" element={<ExchangeRate />} />
       </Route>

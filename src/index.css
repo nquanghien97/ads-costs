@@ -14,6 +14,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 #root {
@@ -115,10 +116,6 @@ button:focus-visible {
 .ant-table-cell {
   padding: 0 16px !important;
   height: 40px !important;
-}
-
-.table-row-custom-color {
-  background-color: #ccc;
 }
 
 thead > .ant-table-cell {

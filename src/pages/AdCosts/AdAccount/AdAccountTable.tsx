@@ -45,7 +45,7 @@ function AdAccountTable(props: { data: SystemData[], loading: boolean, showAdCos
     return (
       <>
         <tr>
-          <td colSpan={newColumns.length} className={`py-2 uppercase text-center !bg-black ant-table-cell ant-table-cell-fix-left sticky left-0 font-bold text-white`}>
+          <td colSpan={newColumns.length} className={`py-2 uppercase text-center !bg-[#68c2ed] ant-table-cell ant-table-cell-fix-left sticky left-0 font-bold text-black`}>
             {className.split(" ").slice(2, className.length).join(" ")}
           </td>
         </tr>
@@ -65,7 +65,7 @@ function AdAccountTable(props: { data: SystemData[], loading: boolean, showAdCos
             },
             components: {
               Table: {
-                borderColor: "black",
+                borderColor: "#007bb5",
                 headerBg: "#f3ec90",
                 headerColor: 'black',
               }

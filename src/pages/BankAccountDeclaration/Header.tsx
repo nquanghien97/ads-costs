@@ -83,6 +83,7 @@ function Header(props: HeaderProps) {
             <Input
               placeholder="Tìm kiếm"
               className="py-2"
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -96,6 +97,7 @@ function Header(props: HeaderProps) {
               placeholder="Hệ thống"
               allowClear
               notFoundContent="Không có hệ thống"
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -109,6 +111,7 @@ function Header(props: HeaderProps) {
               placeholder="HKD"
               allowClear
               notFoundContent="Không có HKD"
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -123,6 +126,7 @@ function Header(props: HeaderProps) {
               notFoundContent="Không có nhân sự"
               allowClear
               loading={loadingUser}
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item>
