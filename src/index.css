@@ -14,6 +14,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  background-color: white;
 }
 
 a {
@@ -73,19 +78,11 @@ button:focus-visible {
   border-bottom: 1px solid;
 }
 
-.not-fixed th.ant-table-cell:not(.ant-table-cell-fix-left):not(.ant-table-cell-fix-left-last) {
-  /* CSS của bạn ở đây */
-  background: #2b663c;
-  color: white;
-}
-
 .not-fixed td.ant-table-cell:not(.ant-table-cell-fix-left):not(.ant-table-cell-fix-left-last) {
-  /* CSS của bạn ở đây */
-  /* background: #f6ffea; */
   z-index: 0;
 }
 
-.border-top-row tr {
+.border-top-row tr:not(:first-child) {
   border-top: 1px solid;
   padding: 0 !important;
   text-align: center;
@@ -121,7 +118,8 @@ button:focus-visible {
   height: 40px !important;
 }
 
-.table-row-custom-color {
-  background-color: #ccc;
+thead > .ant-table-cell {
+  background-color: #bcf9ff;
 }
+
 

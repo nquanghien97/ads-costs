@@ -1,34 +1,27 @@
 import SearchIcon from "../../assets/icons/SearchIcon";
-import { Button, DatePicker, Form, Input, Select, Tooltip } from "antd";
 import { useState } from "react";
+import { Button, Form, Input, Select, Tooltip } from "antd";
 import { useGroupsStore } from "../../zustand/groups.store";
 import { useSystemsStore } from "../../zustand/systems.store";
-import User from "../../entities/User";
 import { getUsers } from "../../services/users";
-import localeValues from "antd/locale/vi_VN";
-import { SearchForm } from ".";
-import { formatDate } from "../../utils/date";
+import User from "../../entities/User";
+import { SearchFormType } from ".";
 
 interface FormValues {
   search: string;
-  system: {
+  system_id_search: number;
+  group_id_search: number;
+  search_name: {
     label: string;
     value: number;
   };
-  group: {
-    label: string;
-    value: number;
-  };
-  user: {
-    label: string;
-    value: number;
-  };
-  date: Date[];
 }
 
-function Header({ setSearchForm } : { setSearchForm: React.Dispatch<React.SetStateAction<SearchForm>> }) {
-
-  const { RangePicker } = DatePicker
+function Header(
+  { setUsers, setLoading, setSearchForm }
+  :
+  { setUsers: React.Dispatch<React.SetStateAction<User[]>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setSearchForm: React.Dispatch<React.SetStateAction<SearchFormType | undefined>>}
+) {
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
   const [selectedSystem, setSelectedSystem] = useState(-1);
@@ -37,17 +30,17 @@ function Header({ setSearchForm } : { setSearchForm: React.Dispatch<React.SetSta
 
   const [form] = Form.useForm();
 
-  const handleSystemChange = (option: { label: string, value: number}) => {
-    setSelectedSystem(option.value)
-    form.setFieldsValue({ group: null });
-    form.setFieldsValue({ search: null });
+  const handleSystemChange = (option: number) => {
+    setSelectedSystem(option)
+    form.setFieldsValue({ group_id: null });
+    form.setFieldsValue({ search_name: null });
   };
 
-  const handleGroupChange = async (option: { label: string, value: number}) => {
+  const handleGroupChange = async (value: number) => {
     setLoadingUser(true);
     form.setFieldsValue({ name: null })
     try {
-      const res = await getUsers({group_id: option.value});
+      const res = await getUsers({group_id: value});
       setName(res.data.data.list)
     } catch(e){
       console.log(e);
@@ -55,23 +48,32 @@ function Header({ setSearchForm } : { setSearchForm: React.Dispatch<React.SetSta
       setLoadingUser(false);
     }
   }
-  const onFinish = (data: FormValues) => {
-    const submitData = {
-      search: data.search,
-      system_id: data.system?.value,
-      system_name: data.system?.label,
-      group_id: data.group?.value,
-      group_name: data.group?.label,
-      user_id: data.user?.value,
-      since: data.date ? formatDate(new Date(data.date?.[0])): undefined,
-      until: data.date ? formatDate(new Date(data.date?.[1])) : undefined,
-    }
-    setSearchForm(submitData)
-  }
 
+  const onFinish = async (data: FormValues) => {
+    setLoading(true);
+    const dataSubmit = {
+      search: data.search,
+      group_id: data.group_id_search,
+      system_id: data.system_id_search,
+      name: data.search_name?.label
+    }
+    try {
+      const res = await getUsers(dataSubmit)
+      setUsers(res.data.data.list)
+      setSearchForm(dataSubmit)
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
-    <div>
-      <Form onFinish={onFinish} className="flex py-2 justify-between" form={form}>
+    <>
+      <Form
+        onFinish={onFinish}
+        className="flex py-2 justify-between"
+        form={form}
+      >
         <div className="flex gap-2 items-center">
           <Form.Item
             className="w-[160px]"
@@ -80,51 +82,58 @@ function Header({ setSearchForm } : { setSearchForm: React.Dispatch<React.SetSta
             <Input
               placeholder="Tìm kiếm"
               className="py-2"
-              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
             className="w-[160px]"
-            name="system"
+            name="system_id_search"
           >
             <Select
-              labelInValue
               options={systems.map((system) => ({ label: system.name, value: system.id }))}
               onChange={handleSystemChange}
               className="z-50 h-full w-[160px]"
               placeholder="Hệ thống"
               allowClear
               notFoundContent="Không có hệ thống"
-              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
             className="w-[160px]"
-            name="group"
+            name="group_id_search"
           >
             <Select
-              labelInValue
               options={groups.filter((id) => id.system_id === selectedSystem).map((group) => ({ label: group.name, value: group.id }))}
               onChange={handleGroupChange}
               className="z-50 h-full w-[160px]"
               placeholder="HKD"
               allowClear
               notFoundContent="Không có HKD"
-              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
             className="w-[160px]"
-            name="user"
+            name="search_name"
           >
             <Select
               labelInValue
               options={name.map(item => ({label: item.name, value: item.id}))}
               className="z-50 h-full w-[160px]"
               placeholder="Họ tên"
-              allowClear
               notFoundContent="Không có nhân sự"
               loading={loadingUser}
+              allowClear
+            />
+          </Form.Item>
+          <Form.Item
+            className="w-[180px]"
+            name="status"
+          >
+            <Select
+              options={[{ label: "Đã duyệt", value: "Đã duyệt " }, { label: "Chờ duyệt", value: "Chờ duyệt " }, { label: "Từ chối", value: "Từ chối " }]}
+              className="z-50 h-full w-[160px]"
+              placeholder="Trạng thái kiểm duyệt"
+              notFoundContent="Loading..."
+              allowClear
               rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
@@ -139,22 +148,8 @@ function Header({ setSearchForm } : { setSearchForm: React.Dispatch<React.SetSta
             </Tooltip>
           </Form.Item>
         </div>
-        <Form.Item
-          name="date"
-        >
-          <RangePicker
-            locale={localeValues.DatePicker}
-            className="h-[40px]"
-            rootClassName="border-[1px] border-[#007bb5] rounded-lg"
-          />
-        </Form.Item>
       </Form>
-      <div className='flex justify-center mb-4'>
-        <div className="px-8 py-2 bg-[#68c2ed] rounded-full uppercase font-bold text-xl">
-          <span>Báo cáo dữ liệu ADS</span>
-        </div>
-      </div>
-    </div>
+    </>
   )
 }
 

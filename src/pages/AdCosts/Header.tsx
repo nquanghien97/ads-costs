@@ -1,20 +1,17 @@
 import SearchIcon from "../../assets/icons/SearchIcon";
 import { Button, DatePicker, Form, Input, Select, Tooltip } from "antd";
 import { useState } from "react";
-import AdCosts from "./Declaration/AdCosts";
 import { useGroupsStore } from "../../zustand/groups.store";
 import { useSystemsStore } from "../../zustand/systems.store";
-import User, { UserRole } from "../../entities/User";
+import User from "../../entities/User";
 import { getUsers } from "../../services/users";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
-import BillCosts from "./Declaration/BillCosts";
 import { SystemData } from "../../dto/AdsBillingsDTO";
 import { formatDate } from "../../utils/date";
 import { useNotification } from "../../hooks/useNotification";
 import { GetAdsCostsByUser } from "../../services/ads_costs";
 import localeValues from "antd/locale/vi_VN";
 import { exportToExcel } from '../../components/ExportExcel/ExportExcelAdsCost'
-import { useAuthStore } from "../../zustand/auth.store";
 import dayjs from "dayjs";
 interface FormValues {
   search: string;
@@ -34,6 +31,10 @@ interface HeaderProps {
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   dataExportExcel: SystemData[] | undefined
+  showAdCosts: boolean
+  setShowAdCosts: React.Dispatch<React.SetStateAction<boolean>>
+  showBillCosts: boolean
+  setShowBillCosts: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export interface SearchFormValues {
@@ -47,24 +48,14 @@ export interface SearchFormValues {
   status?: string;
 }
 
-function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: HeaderProps) {
+function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShowBillCosts, showAdCosts, showBillCosts }: HeaderProps) {
 
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
   const { channels } = useInformationSettingsStore();
-  const { user } = useAuthStore();
   const [selectedSystem, setSelectedSystem] = useState(-1);
-  const [name, setName] = useState<User[]>([]);
-  const [searchForm, setSearchForm] = useState<SearchFormValues>({
-    search: '',
-    since: '',
-    until: '',
-    system_id: 0,
-    group_id: 0,
-    channel_id: 0,
-    status: ''
-  });
+  const [name, setName] = useState<User[]>([])
   const [loadingUser, setLoadingUser] = useState(false);
 
   const defaultDate = dayjs().subtract(1, 'day').startOf('day')
@@ -83,9 +74,9 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
     setLoadingUser(true);
     form.setFieldsValue({ name: null })
     try {
-      const res = await getUsers({group_id: value});
+      const res = await getUsers({ group_id: value });
       setName(res.data.data.list)
-    } catch(e){
+    } catch (e) {
       console.log(e);
     } finally {
       setLoadingUser(false)
@@ -96,7 +87,7 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
     setLoading(true);
     const submitData = {
       search: data.search,
-      since: data.date ? formatDate(new Date(data.date?.[0])): undefined,
+      since: data.date ? formatDate(new Date(data.date?.[0])) : undefined,
       until: data.date ? formatDate(new Date(data.date?.[1])) : undefined,
       system_id: data.system_id,
       group_id: data.group_id,
@@ -104,11 +95,10 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
       user_id: data.user?.value,
       status: data.status
     }
-    setSearchForm(submitData)
     try {
       const res = await GetAdsCostsByUser(submitData)
       setDatas(res.data.data.list)
-    } catch(err) {
+    } catch (err) {
       console.log(err);
       notification.error('Có lỗi xảy ra, vui lòng thử lại')
     } finally {
@@ -127,6 +117,7 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
             <Input
               placeholder="Tìm kiếm"
               className="py-2"
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -140,6 +131,7 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
               placeholder="Hệ thống"
               allowClear
               notFoundContent="Không có hệ thống"
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -153,6 +145,7 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
               placeholder="HKD"
               allowClear
               notFoundContent="Không có HKD"
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -161,12 +154,13 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
           >
             <Select
               labelInValue
-              options={name.map(item => ({label: item.name, value: item.id}))}
+              options={name.map(item => ({ label: item.name, value: item.id }))}
               className="z-50 h-full w-[160px]"
               placeholder="Họ tên"
               notFoundContent="Không có nhân sự"
               allowClear
               loading={loadingUser}
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -174,10 +168,11 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
             name="channel_id"
           >
             <Select
-              options={channels.map(item => ({label: item.name, value: item.id}))}
+              options={channels.map(item => ({ label: item.name, value: item.id }))}
               className="z-50 h-full w-[160px]"
               placeholder="Kênh chạy"
               allowClear
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item
@@ -185,19 +180,21 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
             name="status"
           >
             <Select
-              options={[{ label: "Đã XN", value: "Đã XN "}, { label: "Chưa XN", value: "Chưa XN "}, { label: "Sai số", value: "Sai số "}]}
+              options={[{ label: "Đã XN", value: "Đã XN " }, { label: "Chưa XN", value: "Chưa XN " }, { label: "Sai số", value: "Sai số " }]}
               className="z-50 h-full w-[160px]"
               placeholder="Trạng thái số liệu"
               notFoundContent="Loading..."
               allowClear
+              rootClassName="border-[1px] border-[#007bb5] rounded-lg"
             />
           </Form.Item>
           <Form.Item>
             <Tooltip title="Tìm kiếm">
               <Button
                 htmlType="submit"
-                type="primary"
+                // type="primary"
                 shape="circle"
+                className="bg-[#007bb5] hover:!bg-[#007bb5]"
                 icon={<SearchIcon color="white" />}
               />
             </Tooltip>
@@ -209,21 +206,33 @@ function Header({ setDatas, setRefreshKey, setLoading, dataExportExcel }: Header
         >
           <RangePicker
             locale={localeValues.DatePicker}
-            className="h-[40px]"
+            className="h-[40px] border-[1px] border-[#007bb5] rounded-lg"
           />
         </Form.Item>
       </Form>
       <div className="flex py-2 justify-between">
-          <div className="flex gap-4">
-            {(user.role === UserRole.ACCOUNTANT || user.role === UserRole.ROOT) ? (
-              <>
-                <AdCosts setRefreshKey={setRefreshKey} searchForm={searchForm} setDatas={setDatas} />
-                <BillCosts setRefreshKey={setRefreshKey} searchForm={searchForm} setDatas={setDatas} />
-              </>
-            ) : null}
+        <div className="flex gap-4">
+          <div
+            className={`${showAdCosts ? 'bg-[#68c2ed]' : 'text-black'} rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300`}
+            onClick={() => {
+              setShowAdCosts(true);
+              setShowBillCosts(false);
+            }}
+          >
+            <span>Dữ liệu CPQC</span>
           </div>
+          <div
+            className={`${showBillCosts ? 'bg-[#68c2ed]' : 'text-black'} rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300`}
+            onClick={() => {
+              setShowAdCosts(false);
+              setShowBillCosts(true);
+            }}
+          >
+            <span>Dữ liệu hóa đơn</span>
+          </div>
+        </div>
         <div className="flex gap-2">
-          <Button size="large" className="bg-white" onClick={() => exportToExcel(dataExportExcel)}>
+          <Button size="large" className="bg-white border-[1px] border-[#007bb5] rounded-lg" onClick={() => exportToExcel(dataExportExcel)}>
             Export dữ liệu
           </Button>
         </div>

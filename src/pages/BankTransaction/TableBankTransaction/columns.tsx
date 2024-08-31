@@ -212,11 +212,11 @@ export const generateDynamicColumns = (
             <tbody>
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
               index % 2 === 0 ? (
-                <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+                <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center border-t-[1px] border-black">
                   <td>{formatCurrency(innerData.datas[date]?.received)}</td>
                 </tr>
               ) : (
-                <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+                <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white] border-t-[1px] border-black">
                   <td>{formatCurrency(innerData.datas[date]?.received)}</td>
                 </tr>
               )
@@ -234,7 +234,7 @@ export const generateDynamicColumns = (
             <tbody>
             {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
               index % 2 === 0 ? (
-                <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+                <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center border-t-[1px] border-black">
                   <td>{formatCurrency(innerData.datas[date]?.paid_bill)}</td>
                   <td
                     onClick={() => {
@@ -251,7 +251,7 @@ export const generateDynamicColumns = (
                   </td>
                 </tr>
               ) : (
-                <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+                <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white] border-t-[1px] border-black">
                   <td>{formatCurrency(innerData.datas[date]?.paid_bill)}</td>
                   <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
                     <EyeIcon width={18} height={18} />
@@ -272,7 +272,7 @@ export const generateDynamicColumns = (
             <tbody>
               {record.group_datas.flatMap((data) => data.bank_account_datas.flatMap((innerData, index) => (
                 index % 2 === 0 ? (
-                  <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center">
+                  <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center border-t-[1px] border-black">
                     <td>{formatCurrency(innerData.datas[date]?.paid_other)}</td>
                     <td
                       onClick={() => {
@@ -290,7 +290,7 @@ export const generateDynamicColumns = (
                     </td>
                   </tr>
                 ) : (
-                  <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white]">
+                  <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white] border-t-[1px] border-black">
                     <td>{formatCurrency(innerData.datas[date]?.paid_other)}</td>
                     <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
                       <EyeIcon width={18} height={18}/>

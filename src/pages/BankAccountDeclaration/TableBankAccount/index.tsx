@@ -186,15 +186,15 @@ function TableBankAccount(props: TableBankAccountProps) {
     <>
       <div className="flex justify-between mb-4">
         <div className="m-auto">
-          <span className="px-6 py-2 rounded-full bg-[#0071BA] text-white uppercase">Khai báo tài khoản ngân hàng</span>
+          <span className="px-6 py-2 rounded-full bg-[#68c2ed] uppercase">Khai báo tài khoản ngân hàng</span>
         </div>
         <div className="flex gap-2">
-          <Button size="large">
+          <Button size="large" rootClassName="border-[1px] border-[#007bb5] rounded-lg">
             <ExportExcelBankAccount apiData={data} />
           </Button>
-          <div className="bg-[#0071ba] rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300 text-white" onClick={() => setOpenAddNewBankAccount(true)}>
+          <div className="bg-[#68c2ed] cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300 border-[1px] border-[#007bb5] rounded-lg" onClick={() => setOpenAddNewBankAccount(true)}>
             Thêm mới
-            <PlusIcon color="white" />
+            <PlusIcon />
           </div>
         </div>
       </div>
@@ -207,8 +207,8 @@ function TableBankAccount(props: TableBankAccountProps) {
               },
               components: {
                 Table: {
-                  borderColor: "red",
-                  headerBg: "#d19b5c !important",
+                  borderColor: "black",
+                  headerBg: "#f3ec90",
                   colorBgContainer: '#e2d2bd !important'
                 }
               }
@@ -218,7 +218,7 @@ function TableBankAccount(props: TableBankAccountProps) {
               columns={columns}
               dataSource={data}
               rowHoverable={false}
-              rowClassName={(_, index) => index % 2 === 0 ? 'table-row-custom-color' :  ''}
+              rowClassName={(_, index) => index % 2 === 0 ? 'bg-[#e9e9e9]' : 'bg-white'}
               pagination={{
                 total: pagingBankAccount?.total,
                 pageSize: pagingBankAccount?.page_size,

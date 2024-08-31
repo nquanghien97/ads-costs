@@ -6,16 +6,18 @@ import withAuth from "../../hocs/withAuth";
 import { AdsAccountType, pagingAdAccount } from "../../entities/AdsAccount";
 import { useCallback, useEffect, useState } from "react";
 import { getListAdsAccount } from "../../services/ads_account";
-import EditAdsAccount from "./EditAdsAccount";
+import EditAdsAccount from "./EditCampain";
 import PlusIcon from "../../assets/icons/PlusIcon";
-import AddNewAdsAccount from "./AddNewAdsAccount";
-import DeleteAdAccount from "./DeleteAdAccount";
+import AddNewAdsAccount from "./AddNewCampain";
+import DeleteAdAccount from "./DeleteCampain";
 import { AdsAccountStatusType } from "../../entities/AdsAccountStatus";
 import { ExportExcelAdsAccount } from "../../components/ExportExcel/ExportExcelAdsAccount";
 import { formatCurrency } from "../../utils/currency";
 import { useAuthStore } from "../../zustand/auth.store";
 import { UserRole } from "../../entities/User";
 import { formatDate } from "../../utils/date";
+import ArrowLeft from "../../assets/icons/ArrowLeft";
+import ArrowRight from "../../assets/icons/ArrowRight";
 
 export interface SubmitFormSearchType {
   search?: string;
@@ -29,7 +31,7 @@ export interface SubmitFormSearchType {
   page_size?: number;
 }
 
-function AdsAccountDeclaration() {
+function CampainDeclaration() {
 
   const [data, setData] = useState<AdsAccountType[]>([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
@@ -41,6 +43,7 @@ function AdsAccountDeclaration() {
   const [loading, setLoading] = useState(false);
   const [pagingAdAccount, setPagingAdAccount] = useState<pagingAdAccount>();
   const [submitFormSearch, setSubmitFormSearch] = useState<SubmitFormSearchType>();
+  const [expandColumns, setOnExpandColumns] = useState(false);
 
   const { user } = useAuthStore();
 
@@ -81,7 +84,7 @@ function AdsAccountDeclaration() {
       width: 200
     },
     {
-      title: 'Mã TKQC',
+      title: 'Mã chiến dịch',
       render: (record: AdsAccountType) => {
         return (
           <div>{`TK${record.id}`}</div>
@@ -89,6 +92,12 @@ function AdsAccountDeclaration() {
       },
       key: '6',
       width: 100
+    },
+    {
+      title: 'ID chiến dịch',
+      dataIndex: 'account_id',
+      key: '7',
+      width: 250
     },
     {
       title: 'ID TKQC',
@@ -115,10 +124,10 @@ function AdsAccountDeclaration() {
       width: 200
     },
     {
-      title: 'Tiền tệ',
+      title: (<div className="flex"><p className="mr-2">Tiền tệ</p><div className="cursor-pointer flex justify-center items-center" onClick={() => setOnExpandColumns(pre => !pre)}>{expandColumns ? <ArrowLeft color="#e9e9e9" width={32} height={32} /> : <ArrowRight width={32} height={32} color="#e9e9e9" />}</div></div>),
       dataIndex: 'currency',
-      key: '111',
-      width: 80
+      key: '11',
+      width: 100
     },
     {
       title: 'Múi giờ',
@@ -155,20 +164,20 @@ function AdsAccountDeclaration() {
       children: [
         {
           title: 'Tên ngân hàng',
-          key: '111',
+          key: '151',
           width: 150,
           dataIndex: ['bank_account', 'bank_name']
         },
         {
           title: 'Số TKNH',
-          key: '112',
+          key: '152',
           width: 150,
           dataIndex: ['bank_account', 'card_number']
         }
       ]
     },
     {
-      title: 'Trạng thái',
+      title: 'Trạng thái chiến dịch',
       dataIndex: ['status'],
       key: '16',
       width: 200,
@@ -196,23 +205,24 @@ function AdsAccountDeclaration() {
     },
     {
       title: 'BM QUẢN LÝ',
+      key: '17',
       children: [
         {
           title: 'ID BM',
           dataIndex: 'bm_id',
-          key: '88',
+          key: '171',
           width: 200
         },
         {
           title: 'Tên BM',
           dataIndex: 'bm_name',
-          key: '89',
+          key: '172',
           width: 200
         },
         {
           title: 'SỞ HỮU',
           dataIndex: 'bm_owned_by',
-          key: '90',
+          key: '173',
           width: 100
         }
       ]
@@ -225,7 +235,7 @@ function AdsAccountDeclaration() {
           <div className="flex justify-between gap-2 py-2">
             <ConfigProvider
               button={{
-                className: "hover:!bg-[#5a5acc]"
+                className: "hover:!bg-[#3ca348]"
               }}
             >
               <div
@@ -302,13 +312,18 @@ function AdsAccountDeclaration() {
       setData(res.list);
       setPagingAdAccount(res.paging)
     })()
-  }, [fetchListAdAccount, refreshKey, submitFormSearch])
+  }, [fetchListAdAccount, refreshKey, submitFormSearch]);
+
+  const hiddenKeys = ['12', '13', '14', '15', '17']
+  const hiddenColumns = columns.filter(staticColumn => !hiddenKeys.includes(staticColumn.key as string));
+  const newColumns = expandColumns ? columns : hiddenColumns
+
   return (
     <div className="px-4">
       <Header setLoading={setLoading} setSubmitFormSearch={setSubmitFormSearch} />
       <div className="flex justify-between mb-4">
         <div className="m-auto">
-          <span className="px-6 py-2 rounded-full bg-[#68c2ed] font-bold text-black uppercase">Khai báo tài khoản quảng cáo</span>
+          <span className="px-6 py-2 rounded-full bg-[#68c2ed] font-bold text-black uppercase">Khai báo ID chiến dịch</span>
         </div>
         <div className="flex gap-2">
           <Button size="large" className="border-[1px] border-[#007bb5] rounded-lg">
@@ -337,7 +352,7 @@ function AdsAccountDeclaration() {
           }}
         >
           <Table
-            columns={columns}
+            columns={newColumns}
             dataSource={data}
             rowHoverable={false}
             rowKey={(record) => record.id}
@@ -352,7 +367,7 @@ function AdsAccountDeclaration() {
               pageSizeOptions: [10, 20, 50, 100, pagingAdAccount?.total].filter(item => item !== undefined).sort((a, b) => a - b)
             }}
             loading={loading}
-            scroll={{ y: 600, x: 3000 }}
+            scroll={{ y: 600, x: newColumns.length * 100 }}
           />
         </ConfigProvider>
       </div>
@@ -373,5 +388,5 @@ function AdsAccountDeclaration() {
   )
 }
 
-const AdsAccountDeclarationWithAuth = withAuth(AdsAccountDeclaration)
-export default AdsAccountDeclarationWithAuth;
+const CampainDeclarationWithAuth = withAuth(CampainDeclaration)
+export default CampainDeclarationWithAuth;

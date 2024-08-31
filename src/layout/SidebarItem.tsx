@@ -1,23 +1,48 @@
 import { Link, useLocation } from "react-router-dom";
+import { MenuSidebar } from "../config/MenuSidebar";
+import ArrowUp from "../assets/icons/ArrowUp";
+import { useState } from "react";
+import ArrowDown from "../assets/icons/ArrowDown";
 
 interface SidebarItemProps {
-  title: string;
-  path: string;
-  icon: React.ReactNode;
+  menu: MenuSidebar
 }
 
 function SidebarItem(props: SidebarItemProps) {
   const location = useLocation();
-  const { title, path, icon } = props;
-  const activePath = location.pathname === path ? 'normal' : 'info'
+  const [showChildren, setShowChildren] = useState(false);
+  const { menu } = props;
+  const activePath = location.pathname === menu.path ? 'text-[black] bg-[white] rounded-md' : 'text-black'
   return (
-    <div className="w-[160px] mt-4">
-      <Link to={path}>
-        <div color={activePath} className="text-white py-4 text-sm drop-shadow-[1px_2px_rgba(0,0,0,0.4)] hover:text-[#0071ba] duration-300 flex items-center" style={{ outline: 'none' }}>
-          <div className="mr-1">
-            {icon}
+    <div className="w-full mt-4">
+      <Link to={menu.path}>
+        <div
+          className={`py-4 px-2 text-sm flex flex-col items-start ${activePath}`}
+          style={{ outline: 'none' }}
+        >
+          <div className="flex items-center justify-start hover:scale-110 transform-scale duration-300" onClick={() => setShowChildren(pre => !pre)}>
+            <div className="mr-1">
+              {menu.icon}
+            </div>
+            <span>
+              {menu.title}
+            </span>
+            {menu.children && (
+              <div>
+                {showChildren ? <ArrowDown className="duration-300" width={20} height={20} /> : <ArrowDown width={20} height={20} className="rotate-180 duration-300" />}
+              </div>
+            )}
           </div>
-          {title}
+          {
+            showChildren && (
+              <div className="flex flex-col pl-4 w-full">
+                {menu.children && (
+                  menu.children.map((childMenu) => (
+                    <SidebarItem key={childMenu.path} menu={childMenu} />
+                  ))
+                )}
+              </div>)
+          }
         </div>
       </Link>
     </div>

@@ -7,13 +7,29 @@ import DepartmentIcon from "../assets/icons/DepartmentIcon";
 import ReportIcon from "../assets/icons/ReportIcon";
 import AccountBankIcon from "../assets/icons/AccountBankIcon";
 import AdsAccountIcon from "../assets/icons/AdsAccountIcon";
+import AdjustIcon from "../assets/icons/AdjustIcon";
+import ContentIcon from "../assets/icons/ContentIcon";
 
-const MenuSidebar = [
+export interface MenuSidebar {
+  title: string;
+  path: string;
+  allowedRoles: UserRole[];
+  icon: JSX.Element;
+  children?: MenuSidebar[];
+}
+
+const MenuSidebar: MenuSidebar[] = [
   {
     title: 'CPQC-Hóa đơn',
     path: '/cpqc-hoa-don',
     allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
-    icon: <CurrencyIcon />,
+    icon: <CurrencyIcon  />,
+  },
+  {
+    title: 'Content',
+    path: '/content',
+    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
+    icon: <ContentIcon />
   },
   {
     title: 'Giao dịch TKNH',
@@ -29,9 +45,23 @@ const MenuSidebar = [
   },
   {
     title: 'Khai báo TKQC',
-    path: '/khai-bao-tkqc',
+    path: '#',
     allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
     icon: <AdsAccountIcon />,
+    children: [
+      {
+        title: 'TKQC',
+        path: '/khai-bao-tkqc',
+        allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
+        icon: <AdjustIcon width={16} />,
+      },
+      {
+        title: 'Chiến dịch',
+        path: '/khai-bao-chien-dich',
+        allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
+        icon: <AdjustIcon width={16} />,
+      }
+    ]
   },
   {
     title: 'Khai báo TKNH',
@@ -49,7 +79,7 @@ const MenuSidebar = [
     title: 'Quản lý HT-HKD',
     path: '/khai-bao-he-thong',
     allowedRoles: [UserRole.ROOT],
-    icon: <DepartmentIcon color="white" />
+    icon: <DepartmentIcon />
   },
   {
     title: 'Xem báo cáo',
