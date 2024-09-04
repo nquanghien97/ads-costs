@@ -36,3 +36,7 @@ export const addNewAdAccount = (data: AddNewAdAccountDTO) => {
 export const deleteAdAccount = (id: number) => {
   return api.delete(`ad-accounts/${id}`)
 }
+
+export const getAdsAccountByAccountId = (account_id: number) => {
+  return api.get(`/ad-accounts/${account_id}?type=account_id`)
+}

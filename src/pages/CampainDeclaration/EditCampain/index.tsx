@@ -1,15 +1,11 @@
-import { Alert, Button, Form, Input, Modal, Select } from "antd";
+import { Alert, Button, Form, Input, Modal } from "antd";
 import { useEffect, useState } from "react";
-import { editAdsAccount, getAdsAccount } from "../../../services/ads_account";
-import { useInformationSettingsStore } from "../../../zustand/information_settings.store";
+import { editAdsAccount, getAdsAccount, getAdsAccountByAccountId } from "../../../services/ads_account";
 import { AdsAccountType, BmOwner } from "../../../entities/AdsAccount";
 import { useNotification } from "../../../hooks/useNotification";
-import { BankAccountType } from "../../../entities/BankAccount";
-import { getListBankAccounts } from "../../../services/bank_account";
-import { getUserId } from "../../../services/users";
 import axios from "axios";
-import { useAuthStore } from "../../../zustand/auth.store";
-import { UserRole } from "../../../entities/User";
+import useDebounce from "../../../hooks/useDebounce";
+import LoadingIcon from "../../../assets/icons/LoadingIcon";
 
 interface EditAdsAccountProps {
   onClose: () => void;
@@ -44,30 +40,36 @@ interface FormValues {
 }
 
 function EditAdsAccount(props: EditAdsAccountProps) {
-  const { onClose, adAccountId, open, setRefreshKey, bankAccountId } = props;
+  const { onClose, adAccountId, open, setRefreshKey } = props;
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [adAccountData, setAdAccountData] = useState<AdsAccountType>();
-  const [dataAdsAccount, setDataAdsAccount] = useState<BankAccountType[]>([]);
-  const [bankId, setBankId] = useState(0)
-  const user_id = getUserId();
-  const { user } = useAuthStore()
-  const { channels, currencies, timezones, adAccountStatus, adAccountTypes, banks } = useInformationSettingsStore();
+  const [adsAccountData, setAdsAccountData] = useState<AdsAccountType>();
+  const [loadingDataAds, setLoadingDataAds] = useState(false);
+
   const notification = useNotification();
 
-  const adsAccountTypes = Form.useWatch('type', form);
-
-  const onChangeBankId = (option: number) => {
-    setBankId(option)
-    form.setFieldsValue({ card_number: null })
-  }
+  const adsAccountId = useDebounce(Form.useWatch('account_id', form), 1000);
 
   useEffect(() => {
     (async () => {
-      const res = await getListBankAccounts({ user_id })
-      setDataAdsAccount(res.data.data.list)
+      try {
+        if (adsAccountId) {
+          setLoadingDataAds(true);
+          const res = await getAdsAccountByAccountId(+adsAccountId);
+          setAdsAccountData(res.data.data);
+        }
+      } catch {
+        setAdsAccountData(undefined);
+        notification.warning('ID tài khoản quảng cáo không tồn tại')
+      } finally {
+        setLoadingDataAds(false);
+      }
     })()
-  }, [user_id])
+    return () => {
+      setAdsAccountData(undefined);
+    }
+  }, [adsAccountId, notification])
 
   useEffect(() => {
     (async () => {
@@ -162,320 +164,120 @@ function EditAdsAccount(props: EditAdsAccountProps) {
           onFinish={onFinish}
           className="flex flex-col gap-2"
         >
-          <div className="p-2 flex flex-col gap-4">
-            {(adAccountData?.ads_costs_count || adAccountData?.ads_bill_count ) ? (
+          <div className="flex items-center h-[40px]">
+            <p className="w-[120px] text-left text-[black]">ID Chiến dịch</p>
+            <Form.Item
+              className="!mb-0 w-full"
+              name="campain_id"
+              rules={[
+                {
+                  required: true,
+                  message: "Trường này là bắt buộc",
+                },
+                () => ({
+                  validator(_, value) {
+                    if (!value) {
+                      return Promise.reject();
+                    }
+                    if (isNaN(value)) {
+                      return Promise.reject("ID chiến dịch phải là số");
+                    }
+                    return Promise.resolve();
+                  },
+                }),
+              ]}
+            >
+              <Input className="py-2" />
+            </Form.Item>
+          </div>
+          <div className="flex flex-col gap-4">
+            {(adAccountData?.ads_costs_count || adAccountData?.ads_bill_count) ? (
               <div className="flex items-center h-[40px]">
-                <p className="w-[120px] text-left text-[#68c2ed]">ID TKQC</p>
+                <p className="w-[120px] text-left">ID TKQC</p>
                 <Alert message={adAccountData?.account_id || "Loading..."} className="w-full" />
               </div>
             ) : (
               <div className="flex items-center h-[40px]">
-                <p className="w-[120px] text-left text-[#68c2ed]">ID TKQC</p>
-                <Form.Item
-                  className="!mb-0 w-full"
-                  name="account_id"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Trường này là bắt buộc",
-                    },
-                    () => ({
-                      validator(_, value) {
-                        if (!value) {
-                          return Promise.reject();
-                        }
-                        if (isNaN(value)) {
-                          return Promise.reject("ID TKQC phải là số");
-                        }
-                        return Promise.resolve();
-                      },
-                    }),
-                  ]}
-                >
-                  <Input className="py-2" />
-                </Form.Item>
-              </div>
-            )}
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#68c2ed]">Tên TKQC</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="account_name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Trường này là bắt buộc"
-                  }
-                ]}
-              >
-                <Input className="py-2" />
-              </Form.Item>
-            </div>
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#68c2ed]">Kênh chạy</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="channel_id"
-                rules={[
-                  {
-                    required: true,
-                    message: "Trường này là bắt buộc"
-                  }
-                ]}
-              >
-                <Select
-                  options={channels.map(channel => ({ label: channel.name, value: channel.id }))}
-                  className="w-full h-full"
-                  allowClear
-                />
-              </Form.Item>
-            </div>
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#68c2ed]">Loại TKQC</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="type"
-                rules={[
-                  {
-                    required: true,
-                    message: "Trường này là bắt buộc"
-                  }
-                ]}
-              >
-                <Select
-                  labelInValue
-                  options={adAccountTypes.map(item => ({ label: item.name, value: item.id }))}
-                  className="w-full h-full"
-                  allowClear
-                />
-              </Form.Item>
-            </div>
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#68c2ed]">Tiền tệ</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="currency_id"
-                rules={[
-                  {
-                    required: true,
-                    message: "Trường này là bắt buộc"
-                  }
-                ]}
-              >
-                <Select
-                  options={currencies.map(item => ({ label: item.name, value: item.id }))}
-                  className="w-full h-full"
-                  allowClear
-                />
-              </Form.Item>
-            </div>
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#68c2ed]">Múi giờ</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="timezone_id"
-                rules={[
-                  {
-                    required: true,
-                    message: "Trường này là bắt buộc"
-                  }
-                ]}
-              >
-                <Select
-                  options={timezones.map(item => ({ label: item.name, value: item.id }))}
-                  className="w-full h-full"
-                  allowClear
-                />
-              </Form.Item>
-            </div>
-            {adsAccountTypes?.label === 'TK THUÊ' && (
-              <>
-                <div className="flex items-center h-[40px]">
-                  <p className="w-[120px] text-left text-[#68c2ed]">Tỷ giá</p>
-                  <Form.Item
-                    className="!mb-0 w-full"
-                    name="exchange_rate"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Trường này là bắt buộc"
-                      },
-                      () => ({
-                        validator(_, value) {
-                          if (!value) {
-                            return Promise.reject();
-                          }
-                          if (isNaN(value)) {
-                            return Promise.reject("Tỷ giá phải là số");
-                          }
-                          return Promise.resolve();
-                        },
-                      }),
-                    ]}
-                  >
-                    <Input className="py-2" />
-                  </Form.Item>
-                </div>
-                <div className="flex items-center h-[40px]">
-                  <p className="w-[120px] text-left text-[#68c2ed]">Phí thuê</p>
-                  <Form.Item
-                    className="!mb-0 w-full"
-                    name="rental_fee"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Trường này là bắt buộc"
-                      },
-                      () => ({
-                        validator(_, value) {
-                          if (!value) {
-                            return Promise.reject();
-                          }
-                          if (isNaN(value)) {
-                            return Promise.reject("Phí thuê phải là số");
-                          }
-                          return Promise.resolve();
-                        },
-                      }),
-                    ]}
-                  >
-                    <Input className="py-2" />
-                  </Form.Item>
-                </div>
-              </>
-            )}
-            {(adsAccountTypes?.label === 'TK THƯỜNG - Trả sau' || adsAccountTypes?.label === 'TK THƯỜNG - Trả trước') && (
-              <>
-                <div className="flex items-center h-[40px]">
-                  <p className="w-[120px] text-left text-[#68c2ed]">Bank Liên Kết</p>
-                  <Form.Item
-                    className="!mb-0 w-full"
-                    name="bank_account_id"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Trường này là bắt buộc"
-                      }
-                    ]}
-                  >
-                    <Select
-                      onChange={onChangeBankId}
-                      options={banks.map(item => ({ label: item.name, value: item.id }))}
-                      className="w-full h-full"
-                      allowClear
-                    />
-                  </Form.Item>
-                </div>
-                <div className="flex items-center h-[40px]">
-                  <p className="w-[120px] text-left text-[#68c2ed]">Số TKNH</p>
-                  <Form.Item
-                    className="!mb-0 w-full"
-                    name="card_number"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Trường này là bắt buộc"
-                      }
-                    ]}
-                  >
-                    <Select
-                      options={dataAdsAccount.filter(item => item.bank_id === (bankId === 0 ? bankAccountId : bankId)).map(x => ({ label: x.card_number, value: x.id }))}
-                      className="w-full h-full"
-                      allowClear
-                    />
-                  </Form.Item>
-                </div>
-              </>
-            )}
-            <div className="flex items-center h-[40px]">
-              <p className="w-[120px] text-left text-[#68c2ed]">Trạng thái TKQC</p>
-              <Form.Item
-                className="!mb-0 w-full"
-                name="status"
-                rules={[
-                  {
-                    required: true,
-                    message: "Trường này là bắt buộc"
-                  }
-                ]}
-              >
-                <Select
-                  labelInValue
-                  options={adAccountStatus.map(item => ({ label: item.name, value: item.id }))}
-                  className="w-full h-full"
-                  allowClear
-                />
-              </Form.Item>
-            </div>
+            <p className="w-[120px] text-left text-[black]">ID TKQC</p>
+            <Form.Item
+              className="!mb-0 w-full"
+              name="account_id"
+              rules={[
+                {
+                  required: true,
+                  message: "Trường này là bắt buộc",
+                },
+                () => ({
+                  validator(_, value) {
+                    if (!value) {
+                      return Promise.reject();
+                    }
+                    if (isNaN(value)) {
+                      return Promise.reject("ID TKQC phải là số");
+                    }
+                    return Promise.resolve();
+                  },
+                }),
+              ]}
+            >
+              <Input className="py-2" addonAfter={loadingDataAds && <LoadingIcon size="small" />} allowClear />
+            </Form.Item>
           </div>
-          {user.role === UserRole.ROOT ? (
-            <div className="px-2 py-6 border-[1px] border-red-500 rounded-md w-1/2 flex flex-col gap-6 bg-[#dfdddd]">
-              <div className="flex items-center h-[40px]">
-                <p className="w-[130px] text-left text-[#68c2ed]">ID BM</p>
-                <Form.Item
-                  className="!mb-0 w-full"
-                  name="bm_id"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Trường này là bắt buộc",
-                    },
-                  ]}
-                >
-                  <Input className="py-2" />
-                </Form.Item>
+            )}
+            {adsAccountData && (
+              <div className="p-2 border-[1px] border-red-500 rounded-md flex flex-col gap-4 bg-[#f0eeee]">
+                <div className="flex items-center h-[40px]">
+                  <p className="w-[136px] text-left">Tên TKQC</p>
+                  <Alert message={adsAccountData?.account_name || "Chưa có thông tin"} className="w-full" />
+                </div>
+                <div className="flex items-center h-[40px]">
+                  <p className="w-[136px] text-left">Kênh chạy</p>
+                  <Alert message={adsAccountData?.channel || "Chưa có thông tin"} className="w-full" />
+                </div>
+                <div className="flex items-center h-[40px]">
+                  <p className="w-[136px] text-left">Loại TKQC</p>
+                  <Alert message={adsAccountData?.type || "Chưa có thông tin"} className="w-full" />
+                </div>
+                <div className="flex items-center h-[40px]">
+                  <p className="w-[136px] text-left">Tiền tệ</p>
+                  <Alert message={adsAccountData?.currency || "Chưa có thông tin"} className="w-full" />
+                </div>
+                <div className="flex items-center h-[40px]">
+                  <p className="w-[136px] text-left">Múi giờ</p>
+                  <Alert message={adsAccountData?.timezone || "Chưa có thông tin"} className="w-full" />
+                </div>
+                {
+                  adsAccountData.type === "TK THUÊ" ? (
+                    <>
+                      <div className="flex items-center h-[40px]">
+                        <p className="w-[136px] text-left">Tỷ giá</p>
+                        <Alert message={adsAccountData?.exchange_rate || 0} className="w-full" />
+                      </div>
+                      <div className="flex items-center h-[40px]">
+                        <p className="w-[136px] text-left">Phí thuê</p>
+                        <Alert message={adsAccountData?.rental_fee || "Chưa có thông tin"} className="w-full" />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-center h-[40px]">
+                        <p className="w-[136px] text-left">Bank Liên kết</p>
+                        <Alert message={adsAccountData?.bank_account?.bank_name || "Chưa có thông tin"} className="w-full" />
+                      </div>
+                      <div className="flex items-center h-[40px]">
+                        <p className="w-[136px] text-left">Số TKNH</p>
+                        <Alert message={adsAccountData?.bank_account?.card_number || "Chưa có thông tin"} className="w-full" />
+                      </div>
+                    </>
+                  )
+                }
+                <div className="flex items-center h-[40px]">
+                  <p className="w-[136px] text-left">Trạng thái TKQC</p>
+                  <Alert message={adsAccountData?.status || "Chưa có thông tin"} className="w-full" />
+                </div>
               </div>
-              <div className="flex items-center h-[40px]">
-                <p className="w-[130px] text-left text-[#68c2ed]">Tên BM</p>
-                <Form.Item
-                  className="!mb-0 w-full"
-                  name="bm_name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Trường này là bắt buộc",
-                    }
-                  ]}
-                >
-                  <Input className="py-2" />
-                </Form.Item>
-              </div>
-              <div className="flex items-center h-[40px]">
-                <p className="w-[130px] text-left text-[#68c2ed]">Sở hữu BM</p>
-                <Form.Item
-                  className="!mb-0 w-full"
-                  name="bm_owned_by"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Trường này là bắt buộc"
-                    }
-                  ]}
-                >
-                  <Select
-                    options={[{ label: "ĐỐI TÁC", value: "ĐỐI TÁC" }, { label: "PTN", value: "PTN" }]}
-                    className="w-full h-full"
-                    allowClear
-                  />
-                </Form.Item>
-              </div>
-            </div>
-          ) : (
-            <div className="p-2 border-[1px] border-red-500 rounded-md w-1/2 flex flex-col gap-4 bg-[#dfdddd]">
-              <div className="flex items-center h-[40px]">
-                <p className="w-[136px] text-left text-[#68c2ed]">ID BM</p>
-                <Alert message={adAccountData?.bm_id || "Chưa có thông tin"} className="w-full" />
-              </div>
-              <div className="flex items-center h-[40px]">
-                <p className="w-[136px] text-left text-[#68c2ed]">Tên BM</p>
-                <Alert message={adAccountData?.bm_name || "Chưa có thông tin"} className="w-full" />
-              </div>
-              <div className="flex items-center h-[40px]">
-                <p className="w-[136px] text-left text-[#68c2ed]">SỞ HỮU</p>
-                <Alert message={adAccountData?.bm_owned_by || "Chưa có thông tin"} className="w-full" />
-              </div>
-            </div>
-          )}
+            )}
+          </div>
           <div className="flex justify-evenly">
             <Button type="primary" danger onClick={onClose}>Hủy</Button>
             <Button type="primary" htmlType="submit" loading={loading}>Xác nhận</Button>
