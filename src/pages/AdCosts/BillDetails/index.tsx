@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getAdsBillDetails } from "../../../services/ads_bills";
 import { convertToDate, formatDate } from "../../../utils/date";
 import { formatCurrency } from "../../../utils/currency";
-interface InvoiceDetailsProps {
+interface AdCostsDetailsProps {
   onClose: () => void;
   open: boolean;
   dataDetails: {
@@ -13,7 +13,7 @@ interface InvoiceDetailsProps {
   }
 }
 
-function InvoiceDetails(props: InvoiceDetailsProps) {
+function AdCostsDetails(props: AdCostsDetailsProps) {
   const { onClose, open, dataDetails } = props;
   const dateBill = formatDate(convertToDate(dataDetails.date))
   const [dataBillDetails, setDataBillDetails] = useState([]);
@@ -105,4 +105,4 @@ function InvoiceDetails(props: InvoiceDetailsProps) {
   )
 }
 
-export default InvoiceDetails
+export default AdCostsDetails

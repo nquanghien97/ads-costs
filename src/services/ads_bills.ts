@@ -20,6 +20,10 @@ export const getAdsBillDetails = ({ search, system_id, group_id, user_id, ad_acc
   return api.get(`/ads-bills?${params.toString()}`)
 }
 
-export const updateStatusAdsBill = (id: number, status: string) => {
+export const updateStatusAds = (id: number, status: string) => {
   return api.post(`/statistics/ads/${id}`, { status })
+}
+
+export const updateStatusBill = (id: number, status: string) => {
+  return api.post(`/statistics/bills/${id}`, { status })
 }

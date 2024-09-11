@@ -8,8 +8,9 @@ import withAuth from "../../hocs/withAuth";
 import { useAuthStore } from "../../zustand/auth.store";
 import { UserRole } from "../../entities/User";
 import LoadingIcon from "../../assets/icons/LoadingIcon";
+import React from "react";
 
-function Invoice() {
+function AdCosts() {
   const [datas, setDatas] = useState<SystemData[]>();
   const [loading, setLoading] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
@@ -80,6 +81,6 @@ function Invoice() {
   )
 }
 
-const InvoiceWithAuth = withAuth(Invoice)
+const AdCostsWithAuth = withAuth(React.memo(AdCosts))
 
-export default InvoiceWithAuth;
+export default AdCostsWithAuth;

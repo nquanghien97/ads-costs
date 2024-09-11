@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { InformationSettingType } from "../entities/InformationSetting";
-import { getAllAdAccountStatus, getAllAdAccountTypes, getAllBanks, getAllChannels, getAllCurrencies, getAllTimezones } from "../services/information_settings";
+import { getAllAdAccountStatus, getAllAdAccountTypes, getAllBanks, getAllChannels, getAllCurrencies, getAllSheetIds, getAllTimezones } from "../services/information_settings";
 
 interface SystemStore {
   channels: InformationSettingType[],
@@ -9,12 +9,14 @@ interface SystemStore {
   adAccountTypes: InformationSettingType[],
   adAccountStatus: InformationSettingType[],
   banks: InformationSettingType[],
+  sheetIds: InformationSettingType[],
   setChannels: (channels: InformationSettingType[] | ((prev: InformationSettingType[]) => InformationSettingType[])) => void,
   setCurrencies: (currencies: InformationSettingType[] | ((prev: InformationSettingType[]) => InformationSettingType[])) => void,
   setTimezones: (timezones: InformationSettingType[] | ((prev: InformationSettingType[]) => InformationSettingType[])) => void,
   setAdAccountTypes: (adAccountTypes: InformationSettingType[] | ((prev: InformationSettingType[]) => InformationSettingType[])) => void,
   setAdAccountStatus: (adAccountStatus: InformationSettingType[] | ((prev: InformationSettingType[]) => InformationSettingType[])) => void,
   setBanks: (banks: InformationSettingType[] | ((prev: InformationSettingType[]) => InformationSettingType[])) => void,
+  setSheetIds: (sheetIds: InformationSettingType[] | ((prev: InformationSettingType[]) => InformationSettingType[])) => void,
   getInformation: () => Promise<void>;
   loading: boolean;
 }
@@ -26,6 +28,7 @@ export const useInformationSettingsStore = create<SystemStore>()((set) => ({
   adAccountTypes: [],
   adAccountStatus: [],
   banks: [],
+  sheetIds: [],
   setChannels: (channels) => set((state) => ({
     channels: typeof channels === 'function' ? channels(state.channels) : channels
   })),
@@ -44,15 +47,19 @@ export const useInformationSettingsStore = create<SystemStore>()((set) => ({
   setBanks: (banks) => set((state) => ({
     banks: typeof banks === 'function' ? banks(state.banks) : banks
   })),
+  setSheetIds: (sheetIds) => set((state) => ({
+    sheetIds: typeof sheetIds === 'function' ? sheetIds(state.sheetIds) : sheetIds
+  })),
   getInformation: async () => {
     set(() => ({ loading: true}))
     try {
       const [
         channelsResponse, currenciesResponse, timezonesResponse,
-        adAccountTypesResponse, adAccountStatusResponse, banksResponse
+        adAccountTypesResponse, adAccountStatusResponse, banksResponse, sheetIdsResponse,
       ] = await Promise.all([
         getAllChannels(), getAllCurrencies(), getAllTimezones(),
-        getAllAdAccountTypes(), getAllAdAccountStatus(), getAllBanks()
+        getAllAdAccountTypes(), getAllAdAccountStatus(), getAllBanks(),
+        getAllSheetIds()
       ]);
 
       set(() => ({ channels: channelsResponse.data.data.list }))
@@ -61,6 +68,7 @@ export const useInformationSettingsStore = create<SystemStore>()((set) => ({
       set(() => ({ adAccountTypes: adAccountTypesResponse.data.data.list }))
       set(() => ({ adAccountStatus: adAccountStatusResponse.data.data.list }))
       set(() => ({ banks: banksResponse.data.data.list }))
+      set(() => ({ sheetIds: sheetIdsResponse.data.data.list }))
 
     } catch (error) {
       console.error('Error fetching data:', error);

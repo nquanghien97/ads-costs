@@ -1,6 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
 import { MenuSidebar } from "../config/MenuSidebar";
-import ArrowUp from "../assets/icons/ArrowUp";
 import { useState } from "react";
 import ArrowDown from "../assets/icons/ArrowDown";
 

@@ -10,7 +10,7 @@ import BillDetails from '../BillDetails';
 function AdAccountTable(props: { data: SystemData[], loading: boolean, showAdCosts: boolean, showBillCosts: boolean}) {
   const { data, showAdCosts, showBillCosts } = props;
   const [loadingTable, setLoadingTable] = useState(false)
-  const [openInvoiceDetails, setOpenInvoiceDetails] = useState(false);
+  const [openAdCostsDetails, setOpenAdCostsDetails] = useState(false);
   const [dataDetails, setDataDetails] = useState({
     ad_account_id: -1,
     date: '',
@@ -31,7 +31,7 @@ function AdAccountTable(props: { data: SystemData[], loading: boolean, showAdCos
       return acc;
     }, {}),
     setDataDetails,
-    setOpenInvoiceDetails,
+    setOpenAdCostsDetails,
     setLoadingTable,
     showAdCosts,
     showBillCosts
@@ -92,7 +92,7 @@ function AdAccountTable(props: { data: SystemData[], loading: boolean, showAdCos
           />
         </ConfigProvider>
       </div>
-      {openInvoiceDetails && <BillDetails open={openInvoiceDetails} onClose={() => setOpenInvoiceDetails(false)} dataDetails={dataDetails} />}
+      {openAdCostsDetails && <BillDetails open={openAdCostsDetails} onClose={() => setOpenAdCostsDetails(false)} dataDetails={dataDetails} />}
     </>
   )
 }

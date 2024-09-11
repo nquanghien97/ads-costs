@@ -8,7 +8,7 @@ import useDebounce from "../../../hooks/useDebounce";
 import { AdsAccountType } from "../../../entities/AdsAccount";
 import LoadingIcon from "../../../assets/icons/LoadingIcon";
 
-interface CampainDetailsProps {
+interface CampaignsDetailsProps {
   onClose: () => void;
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
@@ -32,7 +32,7 @@ interface FormValues {
   card_number: number,
 }
 
-function AddNewCampain(props: CampainDetailsProps) {
+function AddNewCampaigns(props: CampaignsDetailsProps) {
   const { onClose, setRefreshKey, open } = props;
   const [loading, setLoading] = useState(false);
   const [adsAccountData, setAdsAccountData] = useState<AdsAccountType>();
@@ -44,7 +44,7 @@ function AddNewCampain(props: CampainDetailsProps) {
 
   const adsAccountTypes = Form.useWatch('type', form);
   const adAccountId = useDebounce(Form.useWatch('account_id', form), 1000);
-
+  console.log(adsAccountData)
   useEffect(() => {
     (async () => {
       try {
@@ -145,7 +145,7 @@ function AddNewCampain(props: CampainDetailsProps) {
             <p className="w-[120px] text-left text-[black]">ID Chiến dịch</p>
             <Form.Item
               className="!mb-0 w-full"
-              name="campain_id"
+              name="campaigns_id"
               rules={[
                 {
                   required: true,
@@ -257,4 +257,4 @@ function AddNewCampain(props: CampainDetailsProps) {
   )
 }
 
-export default AddNewCampain;
+export default AddNewCampaigns;

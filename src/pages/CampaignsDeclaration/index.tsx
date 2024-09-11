@@ -5,11 +5,10 @@ import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import withAuth from "../../hocs/withAuth";
 import { AdsAccountType, pagingAdAccount } from "../../entities/AdsAccount";
 import { useCallback, useEffect, useState } from "react";
-import { getListAdsAccount } from "../../services/ads_account";
-import EditAdsAccount from "./EditCampain";
+import EditAdsAccount from "./EditCampaign";
 import PlusIcon from "../../assets/icons/PlusIcon";
-import AddNewAdsAccount from "./AddNewCampain";
-import DeleteAdAccount from "./DeleteCampain";
+import AddNewAdsAccount from "./AddNewCampaign";
+import DeleteAdAccount from "./DeleteCampaign";
 import { AdsAccountStatusType } from "../../entities/AdsAccountStatus";
 import { ExportExcelAdsAccount } from "../../components/ExportExcel/ExportExcelAdsAccount";
 import { formatCurrency } from "../../utils/currency";
@@ -18,6 +17,8 @@ import { UserRole } from "../../entities/User";
 import { formatDate } from "../../utils/date";
 import ArrowLeft from "../../assets/icons/ArrowLeft";
 import ArrowRight from "../../assets/icons/ArrowRight";
+import { getCampaigns } from "../../services/campaigns";
+import { CampaignsDTO } from "../../dto/Campaigns";
 
 export interface SubmitFormSearchType {
   search?: string;
@@ -31,7 +32,7 @@ export interface SubmitFormSearchType {
   page_size?: number;
 }
 
-function CampainDeclaration() {
+function CampaignsDeclaration() {
 
   const [data, setData] = useState<AdsAccountType[]>([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
@@ -44,6 +45,7 @@ function CampainDeclaration() {
   const [pagingAdAccount, setPagingAdAccount] = useState<pagingAdAccount>();
   const [submitFormSearch, setSubmitFormSearch] = useState<SubmitFormSearchType>();
   const [expandColumns, setOnExpandColumns] = useState(false);
+  const [dataCampaign, setDataCampaign] = useState<{ id: number, campaign_id: string, account_id: string }>()
 
   const { user } = useAuthStore();
 
@@ -61,25 +63,25 @@ function CampainDeclaration() {
     },
     {
       title: 'Hệ thống',
-      dataIndex: ['system', 'name'],
+      dataIndex: ['ad_account', 'system', 'name'],
       key: '2',
       width: 150
     },
     {
       title: 'Hộ kinh doanh',
-      dataIndex: ['group', 'name'],
+      dataIndex: ['ad_account', 'group', 'name'],
       key: '3',
       width: 200
     },
     {
       title: 'Mã MKT',
-      dataIndex: ['user', 'username'],
+      dataIndex: ['ad_account', 'user', 'username'],
       key: '4',
       width: 100
     },
     {
       title: 'Họ tên',
-      dataIndex: ['user', 'name'],
+      dataIndex: ['ad_account', 'user', 'name'],
       key: '5',
       width: 200
     },
@@ -87,7 +89,7 @@ function CampainDeclaration() {
       title: 'Mã chiến dịch',
       render: (record: AdsAccountType) => {
         return (
-          <div>{`TK${record.id}`}</div>
+          <div>{`CD${record.id}`}</div>
         )
       },
       key: '6',
@@ -95,7 +97,7 @@ function CampainDeclaration() {
     },
     {
       title: 'ID chiến dịch',
-      dataIndex: 'account_id',
+      dataIndex: 'campaign_id',
       key: '7',
       width: 250
     },
@@ -107,37 +109,37 @@ function CampainDeclaration() {
     },
     {
       title: 'Tên TKQC',
-      dataIndex: 'account_name',
+      dataIndex: ['ad_account', 'account_name'],
       key: '8',
       width: 300
     },
     {
       title: 'Kênh chạy',
-      dataIndex: 'channel',
+      dataIndex: ['ad_account', 'channel'],
       key: '9',
       width: 100
     },
     {
       title: 'Loại TKQC',
-      dataIndex: 'type',
+      dataIndex: ['ad_account', 'type'],
       key: '10',
       width: 200
     },
     {
       title: (<div className="flex"><p className="mr-2">Tiền tệ</p><div className="cursor-pointer flex justify-center items-center" onClick={() => setOnExpandColumns(pre => !pre)}>{expandColumns ? <ArrowLeft color="#e9e9e9" width={32} height={32} /> : <ArrowRight width={32} height={32} color="#e9e9e9" />}</div></div>),
-      dataIndex: 'currency',
+      dataIndex: ['ad_account', 'currency'],
       key: '11',
       width: 100
     },
     {
       title: 'Múi giờ',
-      dataIndex: 'timezone',
+      dataIndex: ['ad_account', 'timezone'],
       key: '12',
       width: 100
     },
     {
       title: 'Tỷ giá TKQC thuê',
-      dataIndex: 'exchange_rate',
+      dataIndex: ['ad_account', 'exchange_rate'],
       key: '13',
       width: 100,
       render(value: number) {
@@ -148,7 +150,7 @@ function CampainDeclaration() {
     },
     {
       title: 'Phí thuê',
-      dataIndex: 'rental_fee',
+      dataIndex: ['ad_account', 'rental_fee'],
       key: '14',
       width: 100,
       render(value: number) {
@@ -166,19 +168,19 @@ function CampainDeclaration() {
           title: 'Tên ngân hàng',
           key: '151',
           width: 150,
-          dataIndex: ['bank_account', 'bank_name']
+          dataIndex: ['ad_account', 'bank_account', 'bank_name']
         },
         {
           title: 'Số TKNH',
           key: '152',
           width: 150,
-          dataIndex: ['bank_account', 'card_number']
+          dataIndex: ['ad_account', 'bank_account', 'card_number']
         }
       ]
     },
     {
       title: 'Trạng thái chiến dịch',
-      dataIndex: ['status'],
+      dataIndex: ['ad_account', 'status'],
       key: '16',
       width: 200,
       render(value: string) {
@@ -209,19 +211,19 @@ function CampainDeclaration() {
       children: [
         {
           title: 'ID BM',
-          dataIndex: 'bm_id',
+          dataIndex: ['ad_account', 'bm_id'],
           key: '171',
           width: 200
         },
         {
           title: 'Tên BM',
-          dataIndex: 'bm_name',
+          dataIndex: ['ad_account', 'bm_name'],
           key: '172',
           width: 200
         },
         {
           title: 'SỞ HỮU',
-          dataIndex: 'bm_owned_by',
+          dataIndex: ['ad_account', 'bm_owned_by'],
           key: '173',
           width: 100
         }
@@ -230,7 +232,7 @@ function CampainDeclaration() {
     user.role !== UserRole.ACCOUNTANT && {
       title: 'Thao tác',
       width: 250,
-      render(record: AdsAccountType) {
+      render(record: CampaignsDTO) {
         return (
           <div className="flex justify-between gap-2 py-2">
             <ConfigProvider
@@ -243,7 +245,12 @@ function CampainDeclaration() {
                 onClick={() => {
                   setOpenModalEdit(true)
                   setAdAccountId(record.id)
-                  setBankAccountId(record.bank_account?.bank_id)
+                  setBankAccountId(record.ad_account.bank_account?.bank_id)
+                  setDataCampaign({
+                    id: record.id,
+                    account_id: record.account_id,
+                    campaign_id: record.campaign_id
+                  })
                 }}
               >
                 <Button
@@ -262,15 +269,15 @@ function CampainDeclaration() {
                 setAdAccountId(record.id)
               }}
             >
-                <Button
-                  icon={<CloseIcon width={16} height={16} color="white" />}
-                  type="primary"
-                  danger
-                  className="w-full"
-                >
-                  <p className="text-white">Xóa</p>
-                </Button>
-              </div>
+              <Button
+                icon={<CloseIcon width={16} height={16} color="white" />}
+                type="primary"
+                danger
+                className="w-full"
+              >
+                <p className="text-white">Xóa</p>
+              </Button>
+            </div>
           </div>
         );
       },
@@ -278,7 +285,7 @@ function CampainDeclaration() {
   ].filter(column => column !== null)
 
   const fetchListAdAccount = useCallback(async ({ page, page_size }: { page: number, page_size: number }) => {
-    const res = await getListAdsAccount({ page, page_size, ...submitFormSearch })
+    const res = await getCampaigns({ page, page_size, ...submitFormSearch })
     return res.data.data
   }, [submitFormSearch])
 
@@ -286,9 +293,9 @@ function CampainDeclaration() {
     setLoading(true);
     setSubmitFormSearch({ ...submitFormSearch, page, page_size: pageSize })
     try {
-      const dataAdAccount = await fetchListAdAccount({ page, page_size: pageSize, ...submitFormSearch })
-      setData(dataAdAccount.list);
-      setPagingAdAccount(dataAdAccount.paging)
+      const dataCampaigns = await fetchListAdAccount({ page, page_size: pageSize, ...submitFormSearch })
+      setData(dataCampaigns.list);
+      setPagingAdAccount(dataCampaigns.paging)
     } catch (err) {
       console.log(err);
     } finally {
@@ -371,22 +378,23 @@ function CampainDeclaration() {
           />
         </ConfigProvider>
       </div>
-      <AddNewAdsAccount
-        onClose={() => setOpenAddNewAdsAccount(false)}
-        setRefreshKey={setRefreshKey}
-        open={openAddNewAdsAccount}
-      />
       <EditAdsAccount
         adAccountId={adAccountId}
         onClose={() => setOpenModalEdit(false)}
         open={openModalEdit}
         setRefreshKey={setRefreshKey}
         bankAccountId={bankAccountId}
+        dataCampaign={dataCampaign}
+      />
+      <AddNewAdsAccount
+        onClose={() => setOpenAddNewAdsAccount(false)}
+        setRefreshKey={setRefreshKey}
+        open={openAddNewAdsAccount}
       />
       <DeleteAdAccount openDeleteModal={openDeleteAdAccount} onClose={() => setOpenDeleteAdAccount(false)} setRefreshKey={setRefreshKey} account_id={adAccountId} />
     </div>
   )
 }
 
-const CampainDeclarationWithAuth = withAuth(CampainDeclaration)
-export default CampainDeclarationWithAuth;
+const CampaignsDeclarationWithAuth = withAuth(CampaignsDeclaration)
+export default CampaignsDeclarationWithAuth;

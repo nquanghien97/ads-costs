@@ -8,7 +8,7 @@ import { getListBankAccounts } from "../../../services/bank_account";
 import { BankAccountType } from "../../../entities/BankAccount";
 import axios from "axios";
 
-interface InvoiceDetailsProps {
+interface AdAccountDetailsProps {
   onClose: () => void;
   setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
@@ -32,7 +32,7 @@ interface FormValues {
   card_number: number,
 }
 
-function AddNewAdsAccount(props: InvoiceDetailsProps) {
+function AddNewAdsAccount(props: AdAccountDetailsProps) {
   const { onClose, setRefreshKey, open } = props;
   const [loading, setLoading] = useState(false);
   const [dataAdsAccount, setDataAdsAccount] = useState<BankAccountType[]>([]);

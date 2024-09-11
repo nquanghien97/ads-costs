@@ -1,6 +1,6 @@
 import withAuth from "../../hocs/withAuth";
 import InformationSetting from "./InformationSetting";
-import { addBank, addChannel, addCurrency, addTimezone, deleteBank, deleteChannel, deleteCurrency, deleteTimezone, editAdAccountStatus, editBank, editChannel, editCurrency, editTimezone } from "../../services/information_settings";
+import { addBank, addChannel, addCurrency, addTimezone, deleteBank, deleteChannel, deleteCurrency, deleteSheetId, deleteTimezone, editAdAccountStatus, editBank, editChannel, editCurrency, editSheetId, editTimezone } from "../../services/information_settings";
 import { InformationSettingType } from "../../entities/InformationSetting";
 import { useEffect, useState } from "react";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
@@ -8,8 +8,9 @@ import { useInformationSettingsStore } from "../../zustand/information_settings.
 function InfomationSettings() {
   const {
     channels, currencies, timezones, adAccountTypes,
-    banks, setChannels, setCurrencies,
+    banks, sheetIds, setChannels, setCurrencies,
     setTimezones, setAdAccountStatus, setBanks,
+    setSheetIds,
     loading
   } = useInformationSettingsStore();
 
@@ -45,6 +46,10 @@ function InfomationSettings() {
           await editBank(data);
           setBanks((prev) => prev?.map((i) => (i.id === data.id ? data : i)));
           break;
+          case 'sheetIds':
+            await editSheetId(data);
+            setSheetIds((prev) => prev?.map((i) => (i.id === data.id ? data : i)));
+            break;
         default:
           console.error('Unknown type:', type);
       }
@@ -82,6 +87,10 @@ function InfomationSettings() {
         case 'bank':
           await deleteBank(id);
           setBanks((prev) => prev.filter((i) => i.id !== id));
+          break;
+        case 'sheetId':
+          await deleteSheetId(id);
+          setSheetIds((prev) => prev.filter((i) => i.id !== id));
           break;
         default:
           console.error('Unknown type:', type);
@@ -125,6 +134,11 @@ function InfomationSettings() {
         case 'bank': {
           const newBank = await addBank(name);
           setBanks((prev) => [...prev, newBank.data.data]);
+          break;
+        }
+        case 'sheetId': {
+          const newSheetId = await addBank(name);
+          setSheetIds((prev) => [...prev, newSheetId.data.data]);
           break;
         }
         default:
@@ -214,7 +228,8 @@ function InfomationSettings() {
         /> */}
         <InformationSetting
           data={banks}
-          title="Ngân hàng" color="#dbcfc2"
+          title="Ngân hàng"
+          color="#dbcfc2"
           titleColor="#9e7e58"
           loading={loading}
           onAdd={handleAdd}
@@ -224,6 +239,20 @@ function InfomationSettings() {
           handleEdit={handleEdit}
           loadingEdit={loadingEdit}
           type="bank"
+        />
+        <InformationSetting
+          data={sheetIds}
+          title="ID Google Sheet"
+          color="#ef9f40"
+          titleColor="#db8116"
+          loading={loading}
+          onAdd={handleAdd}
+          loadingAdd={loadingAdd}
+          onDelete={handleDelete}
+          loadingDelete={loadingDelete}
+          handleEdit={handleEdit}
+          loadingEdit={loadingEdit}
+          type="sheetId"
         />
       </div>
     </div>

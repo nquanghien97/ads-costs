@@ -191,7 +191,7 @@ export const staticColumns: TableColumnsType<BankTransactionsDTO> =  [
 ];
 
 export const generateDynamicColumns = (
-  datas: TotalDailyData, setOpenInvoiceDetails: React.Dispatch<React.SetStateAction<boolean>>,
+  datas: TotalDailyData, setOpenAdCostsDetails: React.Dispatch<React.SetStateAction<boolean>>,
     setDataDetails: React.Dispatch<React.SetStateAction<{
     bank_account_id: number;
     date: string;
@@ -238,7 +238,7 @@ export const generateDynamicColumns = (
                   <td>{formatCurrency(innerData.datas[date]?.paid_bill)}</td>
                   <td
                     onClick={() => {
-                      setOpenInvoiceDetails(true)
+                      setOpenAdCostsDetails(true)
                       setDataDetails({
                         bank_account_id: innerData.bank_account.id,
                         date: date,
@@ -253,7 +253,7 @@ export const generateDynamicColumns = (
               ) : (
                 <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white] border-t-[1px] border-black">
                   <td>{formatCurrency(innerData.datas[date]?.paid_bill)}</td>
-                  <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
+                  <td onClick={() => setOpenAdCostsDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
                     <EyeIcon width={18} height={18} />
                   </td>
                 </tr>
@@ -276,7 +276,7 @@ export const generateDynamicColumns = (
                     <td>{formatCurrency(innerData.datas[date]?.paid_other)}</td>
                     <td
                       onClick={() => {
-                        setOpenInvoiceDetails(true)
+                        setOpenAdCostsDetails(true)
                         setDataDetails({
                           bank_account_id: innerData.bank_account.id,
                           date: date,
@@ -292,7 +292,7 @@ export const generateDynamicColumns = (
                 ) : (
                   <tr key={innerData.bank_account.card_number} className="ant-table-cell ant-table-cell-fix-left flex justify-center items-center !bg-[white] border-t-[1px] border-black">
                     <td>{formatCurrency(innerData.datas[date]?.paid_other)}</td>
-                    <td onClick={() => setOpenInvoiceDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
+                    <td onClick={() => setOpenAdCostsDetails(true)} className="ml-2 p-2 hover:bg-[#e6e5e5] rounded-full duration-300 cursor-pointer">
                       <EyeIcon width={18} height={18}/>
                     </td>
                   </tr>

@@ -50,24 +50,31 @@ function TableContent() {
       dataIndex: ['group', 'name'],
       key: '5',
     },
-    // {
-    //   width: 100,
-    //   title: 'ID Chiến dịch',
-    //   dataIndex: ['group', 'name'],
-    //   key: '6',
-    // },
-    // {
-    //   width: 100,
-    //   title: 'Tên TKQC',
-    //   dataIndex: ['group', 'name'],
-    //   key: '7',
-    // },
-    // {
-    //   width: 100,
-    //   title: 'Link bài QC',
-    //   dataIndex: ['group', 'name'],
-    //   key: '8',
-    // },
+    {
+      width: 100,
+      title: 'Link bài QC',
+      dataIndex: ['group', 'name'],
+      key: '13',
+    },
+    {
+      width: 100,
+      title: 'Kiểm duyệt',
+      dataIndex: ['group', 'name'],
+      key: '14',
+      render: (_: unknown, record) => {
+        return (
+          <Select
+            options={options}
+            // onChange={(value) => onChangeStatus(value, data.datas?.[date]?.id)}
+            size="large"
+          // defaultValue={data.datas?.[date]?.status}
+          // className={`w-full ${getBackgroundColor(currentStatus)}`}
+          // placeholder={!data.datas?.[date]?.status ? 'Không có dữ liệu' : 'Lựa chọn...'}
+          // disabled={!data.datas?.[date]?.status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedStatus[date_id] || data.datas?.[date]?.status) === "Đã XN"))}
+          />
+        )
+      },
+    },
     {
       width: 100,
       title: 'Chi phí QC',
@@ -98,25 +105,6 @@ function TableContent() {
       dataIndex: ['group', 'name'],
       key: '13',
     },
-    {
-      width: 100,
-      title: 'Kiểm duyệt',
-      dataIndex: ['group', 'name'],
-      key: '14',
-      render: (_: unknown, record) => {
-        return (
-          <Select
-            options={options}
-            // onChange={(value) => onChangeStatus(value, data.datas?.[date]?.id)}
-            size="large"
-          // defaultValue={data.datas?.[date]?.status}
-          // className={`w-full ${getBackgroundColor(currentStatus)}`}
-          // placeholder={!data.datas?.[date]?.status ? 'Không có dữ liệu' : 'Lựa chọn...'}
-          // disabled={!data.datas?.[date]?.status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedStatus[date_id] || data.datas?.[date]?.status) === "Đã XN"))}
-          />
-        )
-      },
-    }
   ]
 
   return (

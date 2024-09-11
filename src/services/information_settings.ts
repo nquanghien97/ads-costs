@@ -101,3 +101,20 @@ export function editBank({ id, name}: { id: number, name: string }) {
 export function deleteBank(id: number) {
   return api.delete(`/setting/banks/${id}`)
 }
+
+//sheetIds
+export function getAllSheetIds() {
+  return api.get('/setting/sheetIds')
+}
+
+export function addSheetId(name: string) {
+  return api.post('/setting/sheetIds', { name })
+}
+
+export function editSheetId({ id, name}: { id: number, name: string }) {
+  return api.put(`/setting/sheetIds/${id}`, {name})
+}
+
+export function deleteSheetId(id: number) {
+  return api.delete(`/setting/sheetIds/${id}`)
+}

@@ -89,7 +89,7 @@ function TableUser(props: TableUserProps) {
     },
     {
       title: 'Thao tác',
-      width: 280,
+      width: 220,
       render(_, record) {
         return (
           <div className="flex flex-col gap-2 px-2">

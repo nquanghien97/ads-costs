@@ -4,8 +4,9 @@ export interface DailyAdsBillings {
   ads_vnd: number,
   bill: number,
   bill_vnd: number,
-  exchange_rate: number
-  status: string
+  exchange_rate: number,
+  status: string,
+  bill_status: string
 }
 
 export interface TotalDailyData {
