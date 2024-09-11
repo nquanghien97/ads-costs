@@ -1,9 +1,10 @@
 import withAuth from "../../hocs/withAuth";
 import InformationSetting from "./InformationSetting";
-import { addBank, addChannel, addCurrency, addTimezone, deleteBank, deleteChannel, deleteCurrency, deleteSheetId, deleteTimezone, editAdAccountStatus, editBank, editChannel, editCurrency, editSheetId, editTimezone } from "../../services/information_settings";
+import { addBank, addChannel, addCurrency, addSheetId, addTimezone, deleteBank, deleteChannel, deleteCurrency, deleteSheetId, deleteTimezone, editAdAccountStatus, editBank, editChannel, editCurrency, editSheetId, editTimezone } from "../../services/information_settings";
 import { InformationSettingType } from "../../entities/InformationSetting";
 import { useEffect, useState } from "react";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
+import { useNotification } from "../../hooks/useNotification";
 
 function InfomationSettings() {
   const {
@@ -18,20 +19,25 @@ function InfomationSettings() {
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
 
+  const notification = useNotification();
+
   const handleEdit = async (type: string, data: InformationSettingType) => {
     setLoadingEdit(true);
     try {
       switch (type) {
         case 'channel':
           await editChannel(data);
+          notification.success('Sửa Kênh chạy thành công')
           setChannels((prev) => prev?.map((i) => (i.id === data.id ? data : i)));
           break;
         case 'currency':
           await editCurrency(data);
+          notification.success('Sửa Tiền tệ thành công')
           setCurrencies((prev) => prev?.map((i) => (i.id === data.id ? data : i)));
           break;
         case 'timezone':
           await editTimezone(data);
+          notification.success('Sửa Múi giờ thành công')
           setTimezones((prev) => prev?.map((i) => (i.id === data.id ? data : i)));
           break;
         // case 'adAccountType':
@@ -40,21 +46,27 @@ function InfomationSettings() {
         //   break;
         case 'adAccountStatus':
           await editAdAccountStatus(data);
+          notification.success('Sửa Loại TKQC thành công')
           setAdAccountStatus((prev) => prev?.map((i) => (i.id === data.id ? data : i)));
           break;
         case 'bank':
           await editBank(data);
+          notification.success('Sửa Ngân hàng thành công')
           setBanks((prev) => prev?.map((i) => (i.id === data.id ? data : i)));
           break;
-          case 'sheetIds':
-            await editSheetId(data);
-            setSheetIds((prev) => prev?.map((i) => (i.id === data.id ? data : i)));
-            break;
+        case 'sheetId':
+          await editSheetId(data);
+          notification.success('Sửa ID Google sheet thành công')
+          setSheetIds((prev) => prev?.map((i) => (i.id === data.id ? data : i)));
+          break;
         default:
           console.error('Unknown type:', type);
       }
-    } catch (error) {
-      console.error('Error editing item:', error);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error('Error editing item:', err);
+        notification.error(err.message);
+      }
     } finally {
       setLoadingEdit(false)
     }
@@ -66,14 +78,17 @@ function InfomationSettings() {
       switch (type) {
         case 'channel':
           await deleteChannel(id);
+          notification.success('Xóa Kênh chạy thành công')
           setChannels((prev) => prev.filter((i) => i.id !== id));
           break;
         case 'currency':
           await deleteCurrency(id);
+          notification.success('Xóa Tiền tệ thành công')
           setCurrencies((prev) => prev.filter((i) => i.id !== id));
           break;
         case 'timezone':
           await deleteTimezone(id);
+          notification.success('Xóa Múi giờ thành công')
           setTimezones((prev) => prev.filter((i) => i.id !== id));
           break;
         // case 'adAccountType':
@@ -86,17 +101,22 @@ function InfomationSettings() {
         //   break;
         case 'bank':
           await deleteBank(id);
+          notification.success('Xóa Ngân hàng thành công')
           setBanks((prev) => prev.filter((i) => i.id !== id));
           break;
         case 'sheetId':
           await deleteSheetId(id);
+          notification.success('Xóa ID Google sheet thành công')
           setSheetIds((prev) => prev.filter((i) => i.id !== id));
           break;
         default:
           console.error('Unknown type:', type);
       }
-    } catch (error) {
-      console.error('Error deleting item:', error);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error('Error delete item:', err);
+        notification.error(err.message);
+      }
     } finally {
       setLoadingDelete(false)
     }
@@ -108,16 +128,19 @@ function InfomationSettings() {
       switch (type) {
         case 'channel': {
           const newChannel = await addChannel(name);
+          notification.success('Thêm Kênh chạy thành công')
           setChannels((prev) => [...prev, newChannel.data.data]);
           break;
         }
         case 'currency': {
           const newCurrency = await addCurrency(name);
+          notification.success('Thêm Tiền tệ thành công')
           setCurrencies((prev) => [...prev, newCurrency.data.data]);
           break;
         }
         case 'timezone': {
           const newTimezone = await addTimezone(name);
+          notification.success('Thêm Múi giờ thành công')
           setTimezones((prev) => [...prev, newTimezone.data.data]);
           break;
         }
@@ -133,19 +156,24 @@ function InfomationSettings() {
         // }
         case 'bank': {
           const newBank = await addBank(name);
+          notification.success('Thêm Ngân hàng thành công')
           setBanks((prev) => [...prev, newBank.data.data]);
           break;
         }
         case 'sheetId': {
-          const newSheetId = await addBank(name);
+          const newSheetId = await addSheetId(name);
+          notification.success('Thêm ID Google sheet thành công')
           setSheetIds((prev) => [...prev, newSheetId.data.data]);
           break;
         }
         default:
           console.error('Unknown type:', type);
       }
-    } catch (error) {
-      console.error('Error adding item:', error);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error('Error add item:', err);
+        notification.error(err.message);
+      }
     } finally {
       setLoadingAdd(false);
     }

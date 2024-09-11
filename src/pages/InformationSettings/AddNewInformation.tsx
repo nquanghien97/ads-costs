@@ -18,6 +18,7 @@ function AddNewInformation(props: AddNewInformationProps) {
   const { onClose, title, onAdd, type, loadingAdd, open } = props;
   const onSubmit = async (data: { name: string }) => {
     await onAdd(type, data.name)
+    form.setFieldValue("name", '')
     onClose()
   }
   return (

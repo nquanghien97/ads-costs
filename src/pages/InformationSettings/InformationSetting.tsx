@@ -54,7 +54,7 @@ function InformationSetting(props: InformationSettingProps) {
       ) : (
         <ul className="flex flex-wrap items-center">
         {datas.map((item) => (
-          <li key={item.id} className={`mr-4 px-4 py-3 my-2 rounded-xl uppercase text-center min-w-[120px] relative flex`} style={{ backgroundColor: color }}>
+          <li key={item.id} className={`mr-4 px-4 py-3 my-2 rounded-xl text-center min-w-[120px] relative flex`} style={{ backgroundColor: color }}>
             <p className="mx-2 font-bold">{item.name}</p>
             <div className="flex gap-2">
               <div

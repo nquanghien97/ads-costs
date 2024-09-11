@@ -104,17 +104,17 @@ export function deleteBank(id: number) {
 
 //sheetIds
 export function getAllSheetIds() {
-  return api.get('/setting/sheetIds')
+  return api.get('/setting/sheets')
 }
 
 export function addSheetId(name: string) {
-  return api.post('/setting/sheetIds', { name })
+  return api.post('/setting/sheets', { name })
 }
 
 export function editSheetId({ id, name}: { id: number, name: string }) {
-  return api.put(`/setting/sheetIds/${id}`, {name})
+  return api.put(`/setting/sheets/${id}`, { name })
 }
 
 export function deleteSheetId(id: number) {
-  return api.delete(`/setting/sheetIds/${id}`)
+  return api.delete(`/setting/sheets/${id}`)
 }

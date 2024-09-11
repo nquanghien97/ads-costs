@@ -21,13 +21,13 @@ function EditInformation(props: EditInformationProps) {
   const [form] = Form.useForm<FormValue>();
   const { onClose, title, onEdit, id, name, loadingEdit, type, open } = props;
 
-
   useEffect(() => {
     form.setFieldsValue({ name: name })
   }, [form, name])
 
   const onSubmit = async (data: { name: string }) => {
     await onEdit(type, {id: id, name: data.name})
+    form.setFieldsValue({ name: '' })
     onClose()
   }
   return (
