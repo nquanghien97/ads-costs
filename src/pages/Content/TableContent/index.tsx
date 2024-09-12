@@ -1,25 +1,24 @@
-import { Button, ConfigProvider, Select, Table, TableColumnsType } from 'antd'
-import React, { useState } from 'react';
+import {  ConfigProvider, Table, TableColumnsType } from 'antd'
 
-const options = [
-  {
-    value: 'Đã duyệt',
-    label: 'Đã duyệt'
-  },
-  {
-    value: 'Chờ duyệt',
-    label: 'Chờ duyệt'
-  },
-  {
-    value: 'Từ chối',
-    label: 'Từ chối'
-  }
-]
+// const options = [
+//   {
+//     value: 'Đã duyệt',
+//     label: 'Đã duyệt'
+//   },
+//   {
+//     value: 'Chờ duyệt',
+//     label: 'Chờ duyệt'
+//   },
+//   {
+//     value: 'Từ chối',
+//     label: 'Từ chối'
+//   }
+// ]
 
 function TableContent() {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
-  const columns: TableColumnsType<unknown> = [
+  const columns: TableColumnsType = [
     {
       title: 'Hệ thống',
       dataIndex: ['username'],
@@ -61,19 +60,19 @@ function TableContent() {
       title: 'Kiểm duyệt',
       dataIndex: ['group', 'name'],
       key: '14',
-      render: (_: unknown, record) => {
-        return (
-          <Select
-            options={options}
-            // onChange={(value) => onChangeStatus(value, data.datas?.[date]?.id)}
-            size="large"
-          // defaultValue={data.datas?.[date]?.status}
-          // className={`w-full ${getBackgroundColor(currentStatus)}`}
-          // placeholder={!data.datas?.[date]?.status ? 'Không có dữ liệu' : 'Lựa chọn...'}
-          // disabled={!data.datas?.[date]?.status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedStatus[date_id] || data.datas?.[date]?.status) === "Đã XN"))}
-          />
-        )
-      },
+      // render: (_: unknown, record) => {
+      //   return (
+      //     <Select
+      //       options={options}
+      //       // onChange={(value) => onChangeStatus(value, data.datas?.[date]?.id)}
+      //       size="large"
+      //     // defaultValue={data.datas?.[date]?.status}
+      //     // className={`w-full ${getBackgroundColor(currentStatus)}`}
+      //     // placeholder={!data.datas?.[date]?.status ? 'Không có dữ liệu' : 'Lựa chọn...'}
+      //     // disabled={!data.datas?.[date]?.status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedStatus[date_id] || data.datas?.[date]?.status) === "Đã XN"))}
+      //     />
+      //   )
+      // },
     },
     {
       width: 100,
@@ -139,7 +138,7 @@ function TableContent() {
           //   showTotal: (total) => <span className="font-bold">{`Tổng:   ${total}`}</span>,
           //   showSizeChanger: true
           // }}
-          loading={loading}
+          // loading={loading}
           scroll={{ y: 600 }}
         />
       </ConfigProvider>

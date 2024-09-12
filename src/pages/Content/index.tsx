@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Header from './Header';
 import User from '../../entities/User';
 import TableContent from './TableContent';
@@ -17,6 +17,11 @@ function Content() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchForm, setSearchForm] = useState<SearchFormType>()
+  console.log({
+    searchForm,
+    users,
+    loading
+  })
 
   return (
     <div className="px-4">
