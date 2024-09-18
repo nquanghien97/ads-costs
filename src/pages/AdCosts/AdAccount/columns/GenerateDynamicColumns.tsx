@@ -17,6 +17,12 @@ const options = [
   { value: 'Đã XN (KT)', label: 'Đã XN (KT)' },
   { value: 'Sai số (KT)', label: 'Sai số (KT)' },
 ];
+
+const optionsWithUserRole = [
+  { value: 'Chưa XN', label: 'Chưa XN' },
+  { value: 'Đã XN (MKT)', label: 'Đã XN (MKT)' },
+  { value: 'Sai số (MKT)', label: 'Sai số (MKT)' },
+];
 interface GenerateDynamicColumnsProps {
   setDataDetails: React.Dispatch<React.SetStateAction<{
     ad_account_id: number;
@@ -141,7 +147,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
             return (
               <div className={`px-2 flex items-center h-[78px] border-t-[1px] border-black select-${data.datas?.[date]?.id}`} key={data.ad_account.id}>
                 <Select
-                  options={options}
+                  options={(user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT) ? optionsWithUserRole : options}
                   value={currentStatus}
                   onChange={(value) => onChangeBillStatus(value, data.datas?.[date]?.id)}
                   size="large"
@@ -185,7 +191,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
             return (
               <div className={`px-2 flex items-center h-[78px] border-t-[1px] border-black select-${data.datas?.[date]?.id}`} key={data.ad_account.id}>
                 <Select
-                  options={options}
+                  options={(user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT) ? optionsWithUserRole : options}
                   onChange={(value) => onChangeStatus(value, data.datas?.[date]?.id)}
                   size="large"
                   value={currentStatus}

@@ -60,6 +60,12 @@ const MenuSidebar: MenuSidebar[] = [
         path: '/khai-bao-chien-dich',
         allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
         icon: <AdjustIcon width={16} />,
+      },
+      {
+        title: 'TKQC (live)',
+        path: '/khai-bao-tkqc-live',
+        allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
+        icon: <AdjustIcon width={16} />,
       }
     ]
   },

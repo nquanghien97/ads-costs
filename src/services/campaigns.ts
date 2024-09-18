@@ -21,6 +21,10 @@ export const getCampaigns = (
   return api.get(`/campaigns?${params.toString()}`)
 }
 
+export const createCampaign = (data: { account_id: string, campaign_id: string }) => {
+  return api.post(`/campaigns`, data)
+}
+
 export const updateCampaign = (id: number, data: { account_id?: string, campaign_id?: string }) => {
   return api.put(`/campaigns/${id}`, data)
 }

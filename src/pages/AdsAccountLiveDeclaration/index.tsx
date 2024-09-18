@@ -5,10 +5,11 @@ import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import withAuth from "../../hocs/withAuth";
 import { AdsAccountType, pagingAdAccount } from "../../entities/AdsAccount";
 import { useCallback, useEffect, useState } from "react";
-import EditCampaign from "./EditCampaign";
+import { getListAdsAccount } from "../../services/ads_account";
+import EditAdsAccount from "./EditAdsAccount";
 import PlusIcon from "../../assets/icons/PlusIcon";
-import AddNewCampaign from "./AddNewCampaign";
-import DeleteAdAccount from "./DeleteCampaign";
+import AddNewAdsAccountLive from "./AddNewAdsAccountLive";
+import DeleteAdAccount from "./DeleteAdAccount";
 import { AdsAccountStatusType } from "../../entities/AdsAccountStatus";
 import { ExportExcelAdsAccount } from "../../components/ExportExcel/ExportExcelAdsAccount";
 import { formatCurrency } from "../../utils/currency";
@@ -16,9 +17,6 @@ import { useAuthStore } from "../../zustand/auth.store";
 import { UserRole } from "../../entities/User";
 import { formatDate } from "../../utils/date";
 import ArrowLeft from "../../assets/icons/ArrowLeft";
-import ArrowRight from "../../assets/icons/ArrowRight";
-import { getCampaigns } from "../../services/campaigns";
-import { CampaignsDTO } from "../../dto/Campaigns";
 
 export interface SubmitFormSearchType {
   search?: string;
@@ -32,20 +30,18 @@ export interface SubmitFormSearchType {
   page_size?: number;
 }
 
-function CampaignsDeclaration() {
+function AdsAccountLiveDeclaration() {
 
   const [data, setData] = useState<AdsAccountType[]>([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
   const [adAccountId, setAdAccountId] = useState(0);
   const [bankAccountId, setBankAccountId] = useState(0);
-  const [openAddNewCampaign, setOpenAddNewCampaign] = useState(false);
+  const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false);
   const [openDeleteAdAccount, setOpenDeleteAdAccount] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pagingAdAccount, setPagingAdAccount] = useState<pagingAdAccount>();
   const [submitFormSearch, setSubmitFormSearch] = useState<SubmitFormSearchType>();
-  const [expandColumns, setOnExpandColumns] = useState(false);
-  const [dataCampaign, setDataCampaign] = useState<{ id: number, campaign_id: string, account_id: string }>()
 
   const { user } = useAuthStore();
 
@@ -63,43 +59,37 @@ function CampaignsDeclaration() {
     },
     {
       title: 'Hệ thống',
-      dataIndex: ['ad_account', 'system', 'name'],
+      dataIndex: ['system', 'name'],
       key: '2',
       width: 150
     },
     {
       title: 'Hộ kinh doanh',
-      dataIndex: ['ad_account', 'group', 'name'],
+      dataIndex: ['group', 'name'],
       key: '3',
       width: 200
     },
     {
       title: 'Mã MKT',
-      dataIndex: ['ad_account', 'user', 'username'],
+      dataIndex: ['user', 'username'],
       key: '4',
       width: 100
     },
     {
       title: 'Họ tên',
-      dataIndex: ['ad_account', 'user', 'name'],
+      dataIndex: ['user', 'name'],
       key: '5',
       width: 200
     },
     {
-      title: 'Mã chiến dịch',
+      title: 'Mã TKQC',
       render: (record: AdsAccountType) => {
         return (
-          <div>{`CD${record.id}`}</div>
+          <div>{`TK${record.id}`}</div>
         )
       },
       key: '6',
       width: 100
-    },
-    {
-      title: 'ID chiến dịch',
-      dataIndex: 'campaign_id',
-      key: '7',
-      width: 250
     },
     {
       title: 'ID TKQC',
@@ -109,37 +99,37 @@ function CampaignsDeclaration() {
     },
     {
       title: 'Tên TKQC',
-      dataIndex: ['ad_account', 'account_name'],
+      dataIndex: 'account_name',
       key: '8',
       width: 300
     },
     {
       title: 'Kênh chạy',
-      dataIndex: ['ad_account', 'channel'],
+      dataIndex: 'channel',
       key: '9',
       width: 100
     },
     {
       title: 'Loại TKQC',
-      dataIndex: ['ad_account', 'type'],
+      dataIndex: 'type',
       key: '10',
       width: 200
     },
     {
-      title: (<div className="flex"><p className="mr-2">Tiền tệ</p><div className="cursor-pointer flex justify-center items-center" onClick={() => setOnExpandColumns(pre => !pre)}>{expandColumns ? <ArrowLeft color="#e9e9e9" width={32} height={32} /> : <ArrowRight width={32} height={32} color="#e9e9e9" />}</div></div>),
-      dataIndex: ['ad_account', 'currency'],
-      key: '11',
-      width: 100
+      title: 'Tiền tệ',
+      dataIndex: 'currency',
+      key: '111',
+      width: 80
     },
     {
       title: 'Múi giờ',
-      dataIndex: ['ad_account', 'timezone'],
+      dataIndex: 'timezone',
       key: '12',
       width: 100
     },
     {
       title: 'Tỷ giá TKQC thuê',
-      dataIndex: ['ad_account', 'exchange_rate'],
+      dataIndex: 'exchange_rate',
       key: '13',
       width: 100,
       render(value: number) {
@@ -150,7 +140,7 @@ function CampaignsDeclaration() {
     },
     {
       title: 'Phí thuê',
-      dataIndex: ['ad_account', 'rental_fee'],
+      dataIndex: 'rental_fee',
       key: '14',
       width: 100,
       render(value: number) {
@@ -166,21 +156,21 @@ function CampaignsDeclaration() {
       children: [
         {
           title: 'Tên ngân hàng',
-          key: '151',
+          key: '111',
           width: 150,
-          dataIndex: ['ad_account', 'bank_account', 'bank_name']
+          dataIndex: ['bank_account', 'bank_name']
         },
         {
           title: 'Số TKNH',
-          key: '152',
+          key: '112',
           width: 150,
-          dataIndex: ['ad_account', 'bank_account', 'card_number']
+          dataIndex: ['bank_account', 'card_number']
         }
       ]
     },
     {
-      title: 'Trạng thái chiến dịch',
-      dataIndex: ['ad_account', 'status'],
+      title: 'Trạng thái',
+      dataIndex: ['status'],
       key: '16',
       width: 200,
       render(value: string) {
@@ -207,37 +197,54 @@ function CampaignsDeclaration() {
     },
     {
       title: 'BM QUẢN LÝ',
-      key: '17',
       children: [
         {
           title: 'ID BM',
-          dataIndex: ['ad_account', 'bm_id'],
-          key: '171',
+          dataIndex: 'bm_id',
+          key: '88',
           width: 200
         },
         {
           title: 'Tên BM',
-          dataIndex: ['ad_account', 'bm_name'],
-          key: '172',
+          dataIndex: 'bm_name',
+          key: '89',
           width: 200
         },
         {
           title: 'SỞ HỮU',
-          dataIndex: ['ad_account', 'bm_owned_by'],
-          key: '173',
+          dataIndex: 'bm_owned_by',
+          key: '90',
           width: 100
         }
       ]
     },
     user.role !== UserRole.ACCOUNTANT && {
       title: 'Thao tác',
-      width: 250,
-      render(record: CampaignsDTO) {
+      width: 450,
+      render(record: AdsAccountType) {
         return (
           <div className="flex justify-between gap-2 py-2">
             <ConfigProvider
               button={{
-                className: "hover:!bg-[#3ca348]"
+                className: "hover:!bg-[#549cf5]"
+              }}
+            >
+              <div
+                className="flex items-center w-full"
+                onClick={() => { }}
+              >
+                <Button
+                  className="bg-[#007bb5] w-full"
+                  type="primary"
+                  icon={<ArrowLeft width={24} height={24} fill="white" color="black" />}
+                >
+                  <p className="text-white">Chuyển về TKCN</p>
+                </Button>
+              </div>
+            </ConfigProvider>
+            <ConfigProvider
+              button={{
+                className: "hover:!bg-[#5a5acc]"
               }}
             >
               <div
@@ -245,12 +252,7 @@ function CampaignsDeclaration() {
                 onClick={() => {
                   setOpenModalEdit(true)
                   setAdAccountId(record.id)
-                  setBankAccountId(record.ad_account.bank_account?.bank_id)
-                  setDataCampaign({
-                    id: record.id,
-                    account_id: record.account_id,
-                    campaign_id: record.campaign_id
-                  })
+                  setBankAccountId(record.bank_account?.bank_id)
                 }}
               >
                 <Button
@@ -284,8 +286,8 @@ function CampaignsDeclaration() {
     } || null,
   ].filter(column => column !== null)
 
-  const fetchListCampaign = useCallback(async ({ page, page_size }: { page: number, page_size: number }) => {
-    const res = await getCampaigns({ page, page_size, ...submitFormSearch })
+  const fetchListAdAccount = useCallback(async ({ page, page_size }: { page: number, page_size: number }) => {
+    const res = await getListAdsAccount({ page, page_size, ...submitFormSearch })
     return res.data.data
   }, [submitFormSearch])
 
@@ -293,9 +295,9 @@ function CampaignsDeclaration() {
     setLoading(true);
     setSubmitFormSearch({ ...submitFormSearch, page, page_size: pageSize })
     try {
-      const dataCampaigns = await fetchListCampaign({ page, page_size: pageSize, ...submitFormSearch })
-      setData(dataCampaigns.list);
-      setPagingAdAccount(dataCampaigns.paging)
+      const dataAdAccount = await fetchListAdAccount({ page, page_size: pageSize, ...submitFormSearch })
+      setData(dataAdAccount.list);
+      setPagingAdAccount(dataAdAccount.paging)
     } catch (err) {
       console.log(err);
     } finally {
@@ -310,7 +312,7 @@ function CampaignsDeclaration() {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const res = await fetchListCampaign({
+      const res = await fetchListAdAccount({
         ...submitFormSearch,
         page: 1,
         page_size: 20
@@ -319,27 +321,26 @@ function CampaignsDeclaration() {
       setData(res.list);
       setPagingAdAccount(res.paging)
     })()
-  }, [fetchListCampaign, refreshKey, submitFormSearch]);
-
-  const hiddenKeys = ['12', '13', '14', '15', '17']
-  const hiddenColumns = columns.filter(staticColumn => !hiddenKeys.includes(staticColumn.key as string));
-  const newColumns = expandColumns ? columns : hiddenColumns
-
+  }, [fetchListAdAccount, refreshKey, submitFormSearch])
   return (
     <div className="px-4">
       <Header setLoading={setLoading} setSubmitFormSearch={setSubmitFormSearch} />
       <div className="flex justify-between mb-4">
+        <div className="flex">
+          <div className="bg-[#68c2ed] border-[1px] border-[#007bb5] rounded-lg cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300 text-black" onClick={() => setOpenAddNewAdsAccount(true)}>
+            Khai báo phiên live
+            <PlusIcon color="black" />
+          </div>
+        </div>
         <div className="m-auto">
-          <span className="px-6 py-2 rounded-full bg-[#68c2ed] font-bold text-black uppercase">Khai báo ID chiến dịch</span>
+          <div className="mr-[160px]">
+            <span className="px-6 py-2 rounded-full bg-[#68c2ed] font-bold text-black uppercase">Khai báo tài khoản quảng cáo livestream</span>
+          </div>
         </div>
         <div className="flex gap-2">
           <Button size="large" className="border-[1px] border-[#007bb5] rounded-lg">
             <ExportExcelAdsAccount apiData={data} />
           </Button>
-          <div className="bg-[#68c2ed] border-[1px] border-[#007bb5] rounded-lg cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300 text-black" onClick={() => setOpenAddNewCampaign(true)}>
-            Thêm mới
-            <PlusIcon color="black" />
-          </div>
         </div>
       </div>
       <div className="custom-header-table">
@@ -359,7 +360,7 @@ function CampaignsDeclaration() {
           }}
         >
           <Table
-            columns={newColumns}
+            columns={columns}
             dataSource={data}
             rowHoverable={false}
             rowKey={(record) => record.id}
@@ -374,27 +375,26 @@ function CampaignsDeclaration() {
               pageSizeOptions: [10, 20, 50, 100, pagingAdAccount?.total].filter(item => item !== undefined).sort((a, b) => a - b)
             }}
             loading={loading}
-            scroll={{ y: 600, x: newColumns.length * 100 }}
+            scroll={{ y: 560, x: 3000 }}
           />
         </ConfigProvider>
       </div>
-      <EditCampaign
+      <AddNewAdsAccountLive
+        onClose={() => setOpenAddNewAdsAccount(false)}
+        setRefreshKey={setRefreshKey}
+        open={openAddNewAdsAccount}
+      />
+      <EditAdsAccount
         adAccountId={adAccountId}
         onClose={() => setOpenModalEdit(false)}
         open={openModalEdit}
         setRefreshKey={setRefreshKey}
         bankAccountId={bankAccountId}
-        dataCampaign={dataCampaign}
-      />
-      <AddNewCampaign
-        onClose={() => setOpenAddNewCampaign(false)}
-        setRefreshKey={setRefreshKey}
-        open={openAddNewCampaign}
       />
       <DeleteAdAccount openDeleteModal={openDeleteAdAccount} onClose={() => setOpenDeleteAdAccount(false)} setRefreshKey={setRefreshKey} account_id={adAccountId} />
     </div>
   )
 }
 
-const CampaignsDeclarationWithAuth = withAuth(CampaignsDeclaration)
-export default CampaignsDeclarationWithAuth;
+const AdsAccountLiveDeclarationWithAuth = withAuth(AdsAccountLiveDeclaration)
+export default AdsAccountLiveDeclarationWithAuth;

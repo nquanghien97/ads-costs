@@ -1,12 +1,14 @@
-import { Alert, Button, Form, Input, Modal } from "antd";
-import { getAdsAccountByAccountId } from "../../../services/ads_account";
+import { Alert, Button, DatePicker, Form, Input, Modal, Select } from "antd";
+import { getAdsAccountByAccountId, getListAdsAccount } from "../../../services/ads_account";
 import { useEffect, useState } from "react";
 import { useNotification } from "../../../hooks/useNotification";
 import axios from "axios";
 import useDebounce from "../../../hooks/useDebounce";
 import { AdsAccountType } from "../../../entities/AdsAccount";
-import LoadingIcon from "../../../assets/icons/LoadingIcon";
-import { createCampaign } from "../../../services/campaigns";
+// import LoadingIcon from "../../../assets/icons/LoadingIcon";
+import localeValues from "antd/locale/vi_VN";
+import User from "../../../entities/User";
+import { getUsers } from "../../../services/users";
 
 interface CampaignsDetailsProps {
   onClose: () => void;
@@ -19,11 +21,12 @@ interface FormValues {
   campaign_id: string
 }
 
-function AddNewCampaigns(props: CampaignsDetailsProps) {
+function AddNewAdsAccountLive(props: CampaignsDetailsProps) {
   const { onClose, setRefreshKey, open } = props;
   const [loading, setLoading] = useState(false);
   const [adsAccountData, setAdsAccountData] = useState<AdsAccountType>();
-  const [loadingDataAds, setLoadingDataAds] = useState(false);
+  const [users, setUsers] = useState<User[]>([]);
+  const [listAdsAccount, setListAdsAccount] = useState<AdsAccountType[]>([]);
 
   const [form] = Form.useForm();
   const notification = useNotification();
@@ -33,15 +36,12 @@ function AddNewCampaigns(props: CampaignsDetailsProps) {
     (async () => {
       try {
         if (adAccountId) {
-          setLoadingDataAds(true);
           const res = await getAdsAccountByAccountId(+adAccountId);
           setAdsAccountData(res.data.data);
         }
       } catch {
         setAdsAccountData(undefined);
         notification.warning('ID tài khoản quảng cáo không tồn tại')
-      } finally {
-        setLoadingDataAds(false);
       }
     })()
     return () => {
@@ -49,14 +49,37 @@ function AddNewCampaigns(props: CampaignsDetailsProps) {
     }
   }, [adAccountId, notification])
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getUsers({})
+        setUsers(res.data.data.list)
+      } catch (err) {
+        console.error(err)
+      }
+    })()
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getListAdsAccount({})
+        setListAdsAccount(res.data.data.list)
+      } catch (err) {
+        console.log(err)
+      }
+    })()
+  }, [])
+
   const onFinish = async (data: FormValues) => {
     setLoading(true);
     try {
-      if(!adsAccountData) {
+      if (!adsAccountData) {
         notification.warning('ID TKQC không chính xác, vui lòng thử lại!')
         return
       }
-      await createCampaign(data)
+      // await createCampaign(data)
+      console.log(data)
       notification.success('Thêm mới tài khoản quảng cáo thành công')
       onClose()
       form.resetFields();
@@ -91,7 +114,7 @@ function AddNewCampaigns(props: CampaignsDetailsProps) {
       className="top-12"
     >
       <div>
-        <div className="w-full text-center p-3 h-[50px] bg-[#68c2ed] rounded-t-md uppercase font-bold">Khai báo chiến dịch</div>
+        <div className="w-full text-center p-3 h-[50px] bg-[#68c2ed] rounded-t-md uppercase font-bold">Khai báo phiên live</div>
       </div>
       <div className="p-4 my-4 px-8">
         <Form
@@ -100,55 +123,75 @@ function AddNewCampaigns(props: CampaignsDetailsProps) {
           onFinish={onFinish}
         >
           <div className="flex items-center h-[40px]">
-            <p className="w-[120px] text-left text-[black]">ID Chiến dịch</p>
+            <p className="w-[120px] text-left text-[#0071BA]">Ngày live</p>
+            <Form.Item
+              name="date"
+              className="w-full !mb-0"
+            >
+              <DatePicker
+                placeholder="Chọn ngày"
+                locale={localeValues.DatePicker}
+                className="py-2 w-full"
+              />
+            </Form.Item>
+          </div>
+          <div className="flex items-center h-[40px]">
+            <p className="w-[120px] text-left text-[#0071BA]">ID Chiến dịch</p>
             <Form.Item
               className="!mb-0 w-full"
               name="campaign_id"
-              rules={[
-                {
-                  required: true,
-                  message: "Trường này là bắt buộc",
-                },
-                () => ({
-                  validator(_, value) {
-                    if (!value) {
-                      return Promise.reject();
-                    }
-                    if (isNaN(value)) {
-                      return Promise.reject("ID chiến dịch phải là số");
-                    }
-                    return Promise.resolve();
-                  },
-                }),
-              ]}
             >
               <Input className="py-2" />
             </Form.Item>
           </div>
           <div className="flex items-center h-[40px]">
-            <p className="w-[120px] text-left text-[black]">ID TKQC</p>
+            <p className="w-[120px] text-left text-[#0071BA]">ID TKQC</p>
             <Form.Item
               className="!mb-0 w-full"
               name="account_id"
               rules={[
                 {
                   required: true,
-                  message: "Trường này là bắt buộc",
-                },
-                () => ({
-                  validator(_, value) {
-                    if (!value) {
-                      return Promise.reject();
-                    }
-                    if (isNaN(value)) {
-                      return Promise.reject("ID TKQC phải là số");
-                    }
-                    return Promise.resolve();
-                  },
-                }),
+                  message: "Trường này là bắt buộc"
+                }
               ]}
             >
-              <Input className="py-2" addonAfter={loadingDataAds && <LoadingIcon size="small" />} allowClear />
+              <Select
+                options={listAdsAccount.map(adsaccount => ({ label: adsaccount.account_id, value: adsaccount.account_id }))}
+                className="w-full h-full"
+                allowClear
+                showSearch
+                optionFilterProp="label"
+                filterSort={(optionA, optionB) => {
+                  return (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                }
+                }
+              />
+            </Form.Item>
+          </div>
+          <div className="flex items-center h-[40px]">
+            <p className="w-[120px] text-left text-[#0071BA]">Thành viên<br />tham gia</p>
+            <Form.Item
+              className="!mb-0 w-full"
+              name="members"
+              rules={[
+                {
+                  required: true,
+                  message: "Trường này là bắt buộc"
+                }
+              ]}
+            >
+              <Select
+                options={users.map(user => ({ label: `${user.username} - ${user.name}`, value: user.id }))}
+                className="w-full h-full"
+                allowClear
+                showSearch
+                optionFilterProp="label"
+                filterSort={(optionA, optionB) => {
+                  return (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                }
+                }
+              />
             </Form.Item>
           </div>
           {adsAccountData && (
@@ -215,4 +258,4 @@ function AddNewCampaigns(props: CampaignsDetailsProps) {
   )
 }
 
-export default AddNewCampaigns;
+export default AddNewAdsAccountLive;

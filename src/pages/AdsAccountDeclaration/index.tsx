@@ -352,7 +352,7 @@ function AdsAccountDeclaration() {
               pageSizeOptions: [10, 20, 50, 100, pagingAdAccount?.total].filter(item => item !== undefined).sort((a, b) => a - b)
             }}
             loading={loading}
-            scroll={{ y: 600, x: 3000 }}
+            scroll={{ y: 560, x: 3000 }}
           />
         </ConfigProvider>
       </div>
