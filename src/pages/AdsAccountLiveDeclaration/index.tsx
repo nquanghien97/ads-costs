@@ -6,17 +6,14 @@ import withAuth from "../../hocs/withAuth";
 import { AdsAccountType, pagingAdAccount } from "../../entities/AdsAccount";
 import { useCallback, useEffect, useState } from "react";
 import { getListAdsAccount } from "../../services/ads_account";
-import EditAdsAccount from "./EditAdsAccount";
+import EditAdsAccount from "./EditAdsAccountLive";
 import PlusIcon from "../../assets/icons/PlusIcon";
 import AddNewAdsAccountLive from "./AddNewAdsAccountLive";
-import DeleteAdAccount from "./DeleteAdAccount";
-import { AdsAccountStatusType } from "../../entities/AdsAccountStatus";
+import DeleteAdAccount from "./DeleteAdsAccountLive";
 import { ExportExcelAdsAccount } from "../../components/ExportExcel/ExportExcelAdsAccount";
-import { formatCurrency } from "../../utils/currency";
 import { useAuthStore } from "../../zustand/auth.store";
 import { UserRole } from "../../entities/User";
 import { formatDate } from "../../utils/date";
-import ArrowLeft from "../../assets/icons/ArrowLeft";
 
 export interface SubmitFormSearchType {
   search?: string;
@@ -47,7 +44,7 @@ function AdsAccountLiveDeclaration() {
 
   const columns: TableColumnsType<AdsAccountType> = [
     {
-      title: 'Thời gian',
+      title: 'Thời gian live',
       dataIndex: 'created_at',
       width: 200,
       key: '1',
@@ -89,7 +86,7 @@ function AdsAccountLiveDeclaration() {
         )
       },
       key: '6',
-      width: 100
+      width: 100,
     },
     {
       title: 'ID TKQC',
@@ -104,144 +101,72 @@ function AdsAccountLiveDeclaration() {
       width: 300
     },
     {
-      title: 'Kênh chạy',
-      dataIndex: 'channel',
-      key: '9',
-      width: 100
+      title: 'ID Chiến dịch',
+      dataIndex: 'account_id',
+      key: '8',
+      width: 300
     },
     {
-      title: 'Loại TKQC',
-      dataIndex: 'type',
-      key: '10',
-      width: 200
-    },
-    {
-      title: 'Tiền tệ',
-      dataIndex: 'currency',
-      key: '111',
-      width: 80
-    },
-    {
-      title: 'Múi giờ',
-      dataIndex: 'timezone',
+      title: "11/09",
+      key: '11',
+      width: 300,
+      children: [
+        {
+          title: "Thành viên tham gia",
+          key: '11.1',
+          render() {
+            return (
+              <div className="flex flex-col gap-2 my-2">
+                <p className="p-1 border-[1px] border-[black] rounded-md">Nguyen Van A</p>
+                <p className="p-1 border-[1px] border-[black] rounded-md">Nguyen Van B</p>
+              </div>
+            )
+          },
+          width: 200
+        },
+        {
+          title: "CPQC",
+          key: '11.2',
+          render() {
+            return "10.000.000đ"
+          },
+          width: 200
+        },
+      ],
+    },{
+      title: "18/09",
       key: '12',
-      width: 100
-    },
-    {
-      title: 'Tỷ giá TKQC thuê',
-      dataIndex: 'exchange_rate',
-      key: '13',
-      width: 100,
-      render(value: number) {
-        return (
-          formatCurrency(value, 0)
-        )
-      }
-    },
-    {
-      title: 'Phí thuê',
-      dataIndex: 'rental_fee',
-      key: '14',
-      width: 100,
-      render(value: number) {
-        return (
-          <div>{`${value} %`}</div>
-        )
-      }
-    },
-    {
-      title: 'Bank liên kết TKQC',
-      key: '15',
-      width: 200,
+      width: 300,
       children: [
         {
-          title: 'Tên ngân hàng',
-          key: '111',
-          width: 150,
-          dataIndex: ['bank_account', 'bank_name']
-        },
-        {
-          title: 'Số TKNH',
-          key: '112',
-          width: 150,
-          dataIndex: ['bank_account', 'card_number']
-        }
-      ]
-    },
-    {
-      title: 'Trạng thái',
-      dataIndex: ['status'],
-      key: '16',
-      width: 200,
-      render(value: string) {
-        if (AdsAccountStatusType.DANG_SU_DUNG === value) {
-          return (
-            <div className="flex justify-center">
-              <span className="bg-[#68c2ed] py-1 px-2 text-center rounded-md text-black w-full">{value}</span>
-            </div>
-          )
-        } else if (AdsAccountStatusType.NGUNG_SU_DUNG === value) {
-          return (
-            <div className="flex justify-center">
-              <span className="bg-[red] py-2 px-2 text-center rounded-md text-white w-full">{value}</span>
-            </div>
-          )
-        } else if (AdsAccountStatusType.DIE === value) {
-          return (
-            <div className="flex justify-center">
-              <span className="bg-[#ff4d4f] py-2 px-2 text-center rounded-md text-white w-full">{value}</span>
-            </div>
-          )
-        }
-      }
-    },
-    {
-      title: 'BM QUẢN LÝ',
-      children: [
-        {
-          title: 'ID BM',
-          dataIndex: 'bm_id',
-          key: '88',
+          title: "Thành viên tham gia",
+          key: '12.1',
+          render() {
+            return (
+              <div className="flex flex-col gap-2 my-2">
+                <p className="p-1 border-[1px] border-[black] rounded-md">Nguyen Van A</p>
+                <p className="p-1 border-[1px] border-[black] rounded-md">Nguyen Van B</p>
+              </div>
+            )
+          },
           width: 200
         },
         {
-          title: 'Tên BM',
-          dataIndex: 'bm_name',
-          key: '89',
+          title: "CPQC",
+          key: '12.2',
+          render() {
+            return "10.000.000đ"
+          },
           width: 200
         },
-        {
-          title: 'SỞ HỮU',
-          dataIndex: 'bm_owned_by',
-          key: '90',
-          width: 100
-        }
-      ]
+      ],
     },
     user.role !== UserRole.ACCOUNTANT && {
       title: 'Thao tác',
-      width: 450,
+      width: 150,
       render(record: AdsAccountType) {
         return (
-          <div className="flex justify-between gap-2 py-2">
-            <ConfigProvider
-              button={{
-                className: "hover:!bg-[#549cf5]"
-              }}
-            >
-              <div
-                className="flex items-center w-full"
-                onClick={() => { }}
-              >
-                <Button
-                  className="bg-[#007bb5] w-full"
-                  type="primary"
-                  icon={<ArrowLeft width={24} height={24} fill="white" color="black" />}
-                >
-                  <p className="text-white">Chuyển về TKCN</p>
-                </Button>
-              </div>
-            </ConfigProvider>
+          <div className="flex flex-col justify-between gap-2 py-2">
             <ConfigProvider
               button={{
                 className: "hover:!bg-[#5a5acc]"
@@ -375,7 +300,7 @@ function AdsAccountLiveDeclaration() {
               pageSizeOptions: [10, 20, 50, 100, pagingAdAccount?.total].filter(item => item !== undefined).sort((a, b) => a - b)
             }}
             loading={loading}
-            scroll={{ y: 560, x: 3000 }}
+            scroll={{ y: 560, x: columns.length * 100 }}
           />
         </ConfigProvider>
       </div>

@@ -185,6 +185,7 @@ function AddNewAdsAccountLive(props: CampaignsDetailsProps) {
                 options={users.map(user => ({ label: `${user.username} - ${user.name}`, value: user.id }))}
                 className="w-full h-full"
                 allowClear
+                mode="multiple"
                 showSearch
                 optionFilterProp="label"
                 filterSort={(optionA, optionB) => {
