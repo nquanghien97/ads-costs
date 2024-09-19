@@ -16,11 +16,18 @@ function Content() {
 
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
-  const [searchForm, setSearchForm] = useState<SearchFormType>()
+  const [searchForm, setSearchForm] = useState<SearchFormType>({
+    search: '',
+    system_id: 0,
+    group_id: 0,
+    user_id: 0,
+    page: 0,
+    page_size: 0,
+  })
 
   return (
     <div className="px-4">
-      <Header setUsers={setUsers} setLoading={setLoading} setSearchForm={setSearchForm} />
+      <Header setLoading={setLoading} setSearchForm={setSearchForm} />
       <div className="flex justify-between mb-4">
         <div className="m-auto">
           <span className="px-6 py-2 rounded-full bg-[#68c2ed] font-bold text-black uppercase">Quản lý content</span>

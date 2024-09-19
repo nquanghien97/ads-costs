@@ -4,7 +4,7 @@ import CloseIcon from "../../assets/icons/CloseIcon";
 import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import withAuth from "../../hocs/withAuth";
 import { AdsAccountType, pagingAdAccount } from "../../entities/AdsAccount";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getListAdsAccount } from "../../services/ads_account";
 import EditAdsAccount from "./EditAdsAccount";
 import PlusIcon from "../../assets/icons/PlusIcon";
@@ -40,7 +40,17 @@ function AdsAccountDeclaration() {
   const [openDeleteAdAccount, setOpenDeleteAdAccount] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pagingAdAccount, setPagingAdAccount] = useState<pagingAdAccount>();
-  const [submitFormSearch, setSubmitFormSearch] = useState<SubmitFormSearchType>();
+  const [submitFormSearch, setSubmitFormSearch] = useState<SubmitFormSearchType>({
+    search: '',
+    system_id: 0,
+    group_id: 0,
+    name: '',
+    channel_id: 0,
+    since: '',
+    until: '',
+    page: 1,
+    page_size: 20
+  });
 
   const { user } = useAuthStore();
 
@@ -267,23 +277,9 @@ function AdsAccountDeclaration() {
     } || null,
   ].filter(column => column !== null)
 
-  const fetchListAdAccount = useCallback(async ({ page, page_size }: { page: number, page_size: number }) => {
-    const res = await getListAdsAccount({ page, page_size, ...submitFormSearch })
-    return res.data.data
-  }, [submitFormSearch])
-
   const onChange = async (page: number, pageSize: number) => {
     setLoading(true);
     setSubmitFormSearch({ ...submitFormSearch, page, page_size: pageSize })
-    try {
-      const dataAdAccount = await fetchListAdAccount({ page, page_size: pageSize, ...submitFormSearch })
-      setData(dataAdAccount.list);
-      setPagingAdAccount(dataAdAccount.paging)
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
   }
 
   useEffect(() => {
@@ -293,16 +289,14 @@ function AdsAccountDeclaration() {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const res = await fetchListAdAccount({
+      const res = await getListAdsAccount({
         ...submitFormSearch,
-        page: 1,
-        page_size: 20
       });
       setLoading(false);
-      setData(res.list);
-      setPagingAdAccount(res.paging)
+      setData(res.data.data.list);
+      setPagingAdAccount(res.data.data.paging)
     })()
-  }, [fetchListAdAccount, refreshKey, submitFormSearch])
+  }, [refreshKey, submitFormSearch])
   return (
     <div className="px-4">
       <Header setLoading={setLoading} setSubmitFormSearch={setSubmitFormSearch} />

@@ -24,7 +24,7 @@ interface FormValues {
 
 interface HeaderProps {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
-  setSubmitFormSearch: React.Dispatch<React.SetStateAction<SubmitFormSearchType | undefined>>
+  setSubmitFormSearch: React.Dispatch<React.SetStateAction<SubmitFormSearchType>>
 }
 
 function Header(props: HeaderProps) {

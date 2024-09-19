@@ -18,9 +18,9 @@ interface FormValues {
 }
 
 function Header(
-  { setUsers, setLoading, setSearchForm }
+  { setLoading, setSearchForm }
   :
-  { setUsers: React.Dispatch<React.SetStateAction<User[]>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setSearchForm: React.Dispatch<React.SetStateAction<SearchFormType | undefined>>}
+  { setLoading: React.Dispatch<React.SetStateAction<boolean>>, setSearchForm: React.Dispatch<React.SetStateAction<SearchFormType>>}
 ) {
   const { groups } = useGroupsStore();
   const { systems } = useSystemsStore();
@@ -58,8 +58,6 @@ function Header(
       name: data.search_name?.label
     }
     try {
-      const res = await getUsers(dataSubmit)
-      setUsers(res.data.data.list)
       setSearchForm(dataSubmit)
     } catch (err) {
       console.log(err);

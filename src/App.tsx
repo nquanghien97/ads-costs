@@ -21,6 +21,7 @@ function App() {
   const { getUser } = useAuthStore();
 
   useEffect(() => {
+    console.log('render');
     (async() => {
       if(isAuthenticated()) {
         await getUser();

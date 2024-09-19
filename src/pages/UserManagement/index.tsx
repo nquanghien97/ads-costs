@@ -16,7 +16,14 @@ export interface SearchFormType {
 function UserManagement() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
-  const [searchForm, setSearchForm] = useState<SearchFormType>()
+  const [searchForm, setSearchForm] = useState<SearchFormType>({
+    search: '',
+    system_id: 0,
+    group_id: 0,
+    user_id: 0,
+    page: 1,
+    page_size: 20
+  })
 
   useEffect(() => {
     document.title = "Quản lý người dùng"
@@ -24,7 +31,7 @@ function UserManagement() {
 
   return (
     <div className="px-4">
-      <Header setUsers={setUsers} setLoading={setLoading} setSearchForm={setSearchForm} />
+      <Header setLoading={setLoading} setSearchForm={setSearchForm} />
       <TableUser setUsers={setUsers} users={users} setLoading={setLoading} loading={loading} searchForm={searchForm} setSearchForm={setSearchForm} />
     </div>
   )

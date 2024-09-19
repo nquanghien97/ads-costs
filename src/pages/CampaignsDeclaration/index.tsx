@@ -4,7 +4,7 @@ import CloseIcon from "../../assets/icons/CloseIcon";
 import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import withAuth from "../../hocs/withAuth";
 import { AdsAccountType, pagingAdAccount } from "../../entities/AdsAccount";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import EditAdsAccount from "./EditCampaign";
 import PlusIcon from "../../assets/icons/PlusIcon";
 import AddNewAdsAccount from "./AddNewCampaign";
@@ -43,7 +43,17 @@ function CampaignsDeclaration() {
   const [openDeleteAdAccount, setOpenDeleteAdAccount] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pagingAdAccount, setPagingAdAccount] = useState<pagingAdAccount>();
-  const [submitFormSearch, setSubmitFormSearch] = useState<SubmitFormSearchType>();
+  const [submitFormSearch, setSubmitFormSearch] = useState<SubmitFormSearchType>({
+    search: '',
+    system_id: 0,
+    group_id: 0,
+    name: '',
+    channel_id: 0,
+    since: '',
+    until: '',
+    page: 0,
+    page_size: 0,
+  });
   const [expandColumns, setOnExpandColumns] = useState(false);
   const [dataCampaign, setDataCampaign] = useState<{ id: number, campaign_id: string, account_id: string }>()
 
@@ -284,23 +294,9 @@ function CampaignsDeclaration() {
     } || null,
   ].filter(column => column !== null)
 
-  const fetchListAdAccount = useCallback(async ({ page, page_size }: { page: number, page_size: number }) => {
-    const res = await getCampaigns({ page, page_size, ...submitFormSearch })
-    return res.data.data
-  }, [submitFormSearch])
-
   const onChange = async (page: number, pageSize: number) => {
     setLoading(true);
     setSubmitFormSearch({ ...submitFormSearch, page, page_size: pageSize })
-    try {
-      const dataCampaigns = await fetchListAdAccount({ page, page_size: pageSize, ...submitFormSearch })
-      setData(dataCampaigns.list);
-      setPagingAdAccount(dataCampaigns.paging)
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
   }
 
   useEffect(() => {
@@ -310,16 +306,14 @@ function CampaignsDeclaration() {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const res = await fetchListAdAccount({
-        ...submitFormSearch,
-        page: 1,
-        page_size: 20
+      const res = await getCampaigns({
+        ...submitFormSearch
       });
       setLoading(false);
-      setData(res.list);
-      setPagingAdAccount(res.paging)
+      setData(res.data.data.list);
+      setPagingAdAccount(res.data.data.paging)
     })()
-  }, [fetchListAdAccount, refreshKey, submitFormSearch]);
+  }, [refreshKey, submitFormSearch]);
 
   const hiddenKeys = ['12', '13', '14', '15', '17']
   const hiddenColumns = columns.filter(staticColumn => !hiddenKeys.includes(staticColumn.key as string));

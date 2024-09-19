@@ -1,6 +1,6 @@
 import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import User, { pagingUser } from "../../../entities/User";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getUsers } from "../../../services/users";
 import EditIcon from "../../../assets/icons/EditIcon";
 import LockIcon from "../../../assets/icons/LockIcon";
@@ -21,7 +21,7 @@ interface TableUserProps {
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
   searchForm: SearchFormType | undefined
-  setSearchForm: React.Dispatch<React.SetStateAction<SearchFormType | undefined>>
+  setSearchForm: React.Dispatch<React.SetStateAction<SearchFormType>>
 }
 
 function TableUser(props: TableUserProps) {
@@ -195,34 +195,20 @@ function TableUser(props: TableUserProps) {
     },
   ]
 
-  const fetchUsers = useCallback(async ({ page, page_size }: { page: number, page_size: number }) => {
-    const res = await getUsers({ page, page_size, ...searchForm });
-    return res
-  }, [searchForm])
-
   const onChange = async (page: number, pageSize: number) => {
     setLoading(true);
     setSearchForm({ ...searchForm, page, page_size: pageSize });
-    try {
-      const res = await fetchUsers({ page, page_size: pageSize, ...searchForm })
-      setUsers(res.data.data.list);
-      setPagingUsers(res.data.data.paging)
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
   }
 
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const res = await fetchUsers({ page: 1, page_size: 20 })
+      const res = await getUsers({...searchForm})
       setUsers(res.data.data.list);
       setPagingUsers(res.data.data.paging)
       setLoading(false);
     })();
-  }, [fetchUsers, refreshKey, setLoading, setUsers]);
+  }, [refreshKey, searchForm, setLoading, setUsers]);
 
   return (
     <>
