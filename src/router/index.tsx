@@ -3,7 +3,7 @@ import Login from "../pages/Login";
 import AdCosts from "../pages/AdCosts";
 import BankTransaction from "../pages/BankTransaction";
 import InformationSettings from "../pages/InformationSettings";
-import AdsAccountDeclaration from "../pages/AdsAccountDeclaration";
+import AdsAccountDeclarationWithAuth from "../pages/AdsAccountDeclaration";
 import BankAccountDeclaration from "../pages/BankAccountDeclaration";
 import UserManagementWithAuth from "../pages/UserManagement";
 import ReportView from "../pages/ReportAds";
@@ -17,6 +17,7 @@ import ExchangeRate from "../pages/ExchangeRate";
 import ChangePasswordPage from "../pages/ChangePassword";
 import CampaignsDeclarationWithAuth from "../pages/CampaignsDeclaration";
 import Content from "../pages/Content";
+import AdsAccountLiveDeclarationWithAuth from "../pages/AdsAccountLiveDeclaration";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,8 +37,9 @@ const router = createBrowserRouter(
             </PrivateRouteWithAuth>
           }
         />
-        <Route path="/khai-bao-tkqc" element={<AdsAccountDeclaration />} />
+        <Route path="/khai-bao-tkqc" element={<AdsAccountDeclarationWithAuth />} />
         <Route path="/khai-bao-chien-dich" element={<CampaignsDeclarationWithAuth />} />
+        <Route path="/khai-bao-tkqc-live" element={<AdsAccountLiveDeclarationWithAuth />} />
         <Route path="/khai-bao-tk-ngan-hang" element={<BankAccountDeclaration />} />
         <Route
           path="/quan-ly-nguoi-dung"

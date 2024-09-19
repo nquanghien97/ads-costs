@@ -5,9 +5,9 @@ import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import withAuth from "../../hocs/withAuth";
 import { AdsAccountType, pagingAdAccount } from "../../entities/AdsAccount";
 import { useEffect, useState } from "react";
-import EditAdsAccount from "./EditCampaign";
+import EditCampaign from "./EditCampaign";
 import PlusIcon from "../../assets/icons/PlusIcon";
-import AddNewAdsAccount from "./AddNewCampaign";
+import AddNewCampaign from "./AddNewCampaign";
 import DeleteAdAccount from "./DeleteCampaign";
 import { AdsAccountStatusType } from "../../entities/AdsAccountStatus";
 import { ExportExcelAdsAccount } from "../../components/ExportExcel/ExportExcelAdsAccount";
@@ -39,7 +39,7 @@ function CampaignsDeclaration() {
   const [refreshKey, setRefreshKey] = useState(false);
   const [adAccountId, setAdAccountId] = useState(0);
   const [bankAccountId, setBankAccountId] = useState(0);
-  const [openAddNewAdsAccount, setOpenAddNewAdsAccount] = useState(false);
+  const [openAddNewCampaign, setOpenAddNewCampaign] = useState(false);
   const [openDeleteAdAccount, setOpenDeleteAdAccount] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pagingAdAccount, setPagingAdAccount] = useState<pagingAdAccount>();
@@ -330,7 +330,7 @@ function CampaignsDeclaration() {
           <Button size="large" className="border-[1px] border-[#007bb5] rounded-lg">
             <ExportExcelAdsAccount apiData={data} />
           </Button>
-          <div className="bg-[#68c2ed] border-[1px] border-[#007bb5] rounded-lg cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300 text-black" onClick={() => setOpenAddNewAdsAccount(true)}>
+          <div className="bg-[#68c2ed] border-[1px] border-[#007bb5] rounded-lg cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300 text-black" onClick={() => setOpenAddNewCampaign(true)}>
             Thêm mới
             <PlusIcon color="black" />
           </div>
@@ -372,7 +372,7 @@ function CampaignsDeclaration() {
           />
         </ConfigProvider>
       </div>
-      <EditAdsAccount
+      <EditCampaign
         adAccountId={adAccountId}
         onClose={() => setOpenModalEdit(false)}
         open={openModalEdit}
@@ -380,10 +380,10 @@ function CampaignsDeclaration() {
         bankAccountId={bankAccountId}
         dataCampaign={dataCampaign}
       />
-      <AddNewAdsAccount
-        onClose={() => setOpenAddNewAdsAccount(false)}
+      <AddNewCampaign
+        onClose={() => setOpenAddNewCampaign(false)}
         setRefreshKey={setRefreshKey}
-        open={openAddNewAdsAccount}
+        open={openAddNewCampaign}
       />
       <DeleteAdAccount openDeleteModal={openDeleteAdAccount} onClose={() => setOpenDeleteAdAccount(false)} setRefreshKey={setRefreshKey} account_id={adAccountId} />
     </div>

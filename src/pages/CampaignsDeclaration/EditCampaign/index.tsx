@@ -8,7 +8,7 @@ import useDebounce from "../../../hooks/useDebounce";
 import LoadingIcon from "../../../assets/icons/LoadingIcon";
 import { updateCampaign } from "../../../services/campaigns";
 
-interface EditAdsAccountProps {
+interface EditCampaignProps {
   onClose: () => void;
   open: boolean;
   adAccountId: number;
@@ -46,7 +46,7 @@ interface FormValues {
   bm_owned_by: BmOwner
 }
 
-function EditAdsAccount(props: EditAdsAccountProps) {
+function EditCampaign(props: EditCampaignProps) {
   const { onClose, adAccountId, open, setRefreshKey, dataCampaign } = props;
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -261,4 +261,4 @@ function EditAdsAccount(props: EditAdsAccountProps) {
   )
 }
 
-export default EditAdsAccount;
+export default EditCampaign;
