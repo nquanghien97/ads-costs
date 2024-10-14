@@ -107,8 +107,8 @@ export function getAllSheetIds() {
   return api.get('/setting/sheets')
 }
 
-export function addSheetId(name: string) {
-  return api.post('/setting/sheets', { name })
+export function addSheetId({ system_id, name } : { system_id: number, name: string }) {
+  return api.post('/setting/sheets', { system_id, name })
 }
 
 export function editSheetId({ id, name}: { id: number, name: string }) {

@@ -5,6 +5,7 @@ import { InformationSettingType } from "../../entities/InformationSetting";
 import { useEffect, useState } from "react";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
 import { useNotification } from "../../hooks/useNotification";
+import { useAuthStore } from "../../zustand/auth.store";
 
 function InfomationSettings() {
   const {
@@ -14,6 +15,8 @@ function InfomationSettings() {
     setSheetIds,
     loading
   } = useInformationSettingsStore();
+
+  const { user } = useAuthStore();
 
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
@@ -161,7 +164,7 @@ function InfomationSettings() {
           break;
         }
         case 'sheetId': {
-          const newSheetId = await addSheetId(name);
+          const newSheetId = await addSheetId({ system_id: user.system_id, name});
           notification.success('Thêm ID Google sheet thành công')
           setSheetIds((prev) => [...prev, newSheetId.data.data]);
           break;

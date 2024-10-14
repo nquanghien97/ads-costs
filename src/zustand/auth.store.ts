@@ -43,5 +43,5 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     } finally {
       set(() => ({ loading: false }));
     }
-  }
+  },
 }))
