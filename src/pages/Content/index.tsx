@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Header from './Header';
-import User from '../../entities/User';
+// import User from '../../entities/User';
 import TableContent from './TableContent';
 import { Button } from 'antd';
 
@@ -14,7 +14,7 @@ export interface SearchFormType {
 }
 function Content() {
 
-  const [users, setUsers] = useState<User[]>([]);
+  // const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchForm, setSearchForm] = useState<SearchFormType>({
     search: '',
@@ -24,6 +24,8 @@ function Content() {
     page: 0,
     page_size: 0,
   })
+
+  console.log({ loading, searchForm})
 
   return (
     <div className="px-4">
