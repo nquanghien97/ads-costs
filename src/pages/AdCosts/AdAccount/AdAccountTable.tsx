@@ -77,7 +77,7 @@ function AdAccountTable(props: { data: SystemData[], loading: boolean, showAdCos
             columns={columns}
             dataSource={data}
             rowKey={(record) => record.system_id}
-            rowClassName={(record) => `${record.system.name} - ${record.group_datas.flatMap(item => item.group.name)} - ${record.group_datas.flatMap(item => item.user_datas.flatMap(innerItem => innerItem.name))}`}
+            rowClassName={(record) => `${record.system?.name} - ${record.group_datas.flatMap(item => item.group?.name)} - ${record.group_datas.flatMap(item => item.user_datas.flatMap(innerItem => innerItem?.name))}`}
             pagination={false}
             bordered
             scroll={{ x: columns.length * 100, y: 600 }}

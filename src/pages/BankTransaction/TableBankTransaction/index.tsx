@@ -83,7 +83,7 @@ function TableBankTransaction(props: TableBankTransactionProps) {
                 bordered
                 scroll={{ x: [...staticColumns, ...dataForDynamicColumns].length * 100, y: 240 }}
                 rowHoverable={false}
-                rowClassName={(record) => `${record.system.name} - ${record.group_datas.flatMap(item => item.group.name)}`}
+                rowClassName={(record) => `${record.system?.name} - ${record.group_datas.flatMap(item => item.group?.name)}`}
                 components={{
                   body: {
                     row: (({ children, className }: { children: React.ReactNode, className: string})=> <CustomRow children={children} className={className} />),
