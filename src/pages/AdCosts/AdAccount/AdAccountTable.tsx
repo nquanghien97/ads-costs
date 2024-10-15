@@ -1,13 +1,15 @@
 // import Table from 'rc-table';
 import { Table, ConfigProvider, Empty } from 'antd';
-import { SystemData, TotalDailyData } from '../../../dto/AdsBillingsDTO';
+import { DailyAdsBillings, UserData } from '../../../dto/AdsBillingsDTO';
 import { GenerateDynamicColumns } from './columns/GenerateDynamicColumns';
 import { StaticColumns } from './columns/StaticColumns';
 import { useState } from 'react';
 import BillDetails from '../BillDetails';
+import React from 'react';
 
 
-function AdAccountTable(props: { data: SystemData[], loading: boolean, showAdCosts: boolean, showBillCosts: boolean}) {
+// eslint-disable-next-line react-refresh/only-export-components
+function AdAccountTable(props: { data: UserData[], loading: boolean, showAdCosts: boolean, showBillCosts: boolean}) {
   const { data, showAdCosts, showBillCosts } = props;
   const [loadingTable, setLoadingTable] = useState(false)
   const [openAdCostsDetails, setOpenAdCostsDetails] = useState(false);
@@ -18,18 +20,23 @@ function AdAccountTable(props: { data: SystemData[], loading: boolean, showAdCos
   });
   const [showHiddenColumns, setShowHiddenColumns] = useState(false);
 
-  const a = data?.map(data => data.group_datas.map(data => data.user_datas.map(item => item.ad_account_datas))).flat(3)
+  const a = data?.flatMap(data => data.ad_account_datas)
   const dataForDynamicColumns = a.flatMap(x =>
     Object.entries(x.datas).map(([date, data]) => ({
       date,
       ...data
     }))
-  )
+  );
+
+  const datasMap: Map<string, DailyAdsBillings> = new Map();
+
+for (const { date, ...cur } of dataForDynamicColumns) {
+  datasMap.set(date, cur); // Thêm dữ liệu vào Map với key là ngày và giá trị là các dữ liệu khác
+}
+
+  
   const dynamicColumns = GenerateDynamicColumns({
-    datas: dataForDynamicColumns.reduce((acc: TotalDailyData, cur) => {
-      acc[cur.date] = cur;
-      return acc;
-    }, {}),
+    datas: Object.fromEntries(datasMap),
     setDataDetails,
     setOpenAdCostsDetails,
     setLoadingTable,
@@ -76,8 +83,8 @@ function AdAccountTable(props: { data: SystemData[], loading: boolean, showAdCos
           <Table
             columns={columns}
             dataSource={data}
-            rowKey={(record) => record.system_id}
-            rowClassName={(record) => `${record.system?.name} - ${record.group_datas.flatMap(item => item.group?.name)} - ${record.group_datas.flatMap(item => item.user_datas.flatMap(innerItem => innerItem?.name))}`}
+            rowKey={(record) => record.ad_account_datas.flatMap(item => item.ad_account_id).toString()}
+            rowClassName={(record) => `${record.system?.name} - ${record.group?.name} - ${record.name} - ${record.username}`}
             pagination={false}
             bordered
             scroll={{ x: columns.length * 100, y: 600 }}
@@ -96,5 +103,5 @@ function AdAccountTable(props: { data: SystemData[], loading: boolean, showAdCos
     </>
   )
 }
-
-export default AdAccountTable;
+const memoizationAdAccount = React.memo(AdAccountTable)
+export default memoizationAdAccount;

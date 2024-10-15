@@ -12,6 +12,7 @@ import ContentIcon from "../assets/icons/ContentIcon";
 
 export interface MenuSidebar {
   title: string;
+  subTitle?: string;
   path: string;
   allowedRoles: UserRole[];
   icon: JSX.Element;
@@ -92,6 +93,13 @@ const MenuSidebar: MenuSidebar[] = [
     path: '/xem-bao-cao',
     allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
     icon: <ReportIcon />
+  },
+  {
+    title: 'CPQC - Hóa đơn',
+    subTitle: '(chưa khai báo)',
+    path: '/cpqc-hoa-don-chua-khai-bao',
+    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
+    icon: <CurrencyIcon  />
   },
 ]
 

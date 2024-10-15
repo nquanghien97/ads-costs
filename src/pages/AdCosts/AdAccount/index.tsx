@@ -1,8 +1,8 @@
-import { SystemData } from "../../../dto/AdsBillingsDTO";
+import { UserData } from "../../../dto/AdsBillingsDTO";
 import AdAccountTable from "./AdAccountTable";
 
 interface AdAccountProps {
-  data: SystemData[]
+  data: UserData[]
   loading: boolean
   showAdCosts: boolean
   showBillCosts: boolean

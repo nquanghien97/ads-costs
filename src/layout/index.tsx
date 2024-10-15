@@ -24,7 +24,7 @@ function Layout() {
         </div>
       </div>
       <div className="h-screen w-[180px] z-[100]">
-        <div className="bg-[#e5f6fe] w-[180px] fixed top-0 bottom-0 left-0 bg-no-repeat text-start">
+        <div className="bg-[#e5f6fe] w-[180px] fixed top-0 bottom-0 left-0 bg-no-repeat text-start overflow-y-auto">
           {MenuSidebar.map((menu) => (
             currentRole ? (
               menu.allowedRoles.includes(currentRole) && (
