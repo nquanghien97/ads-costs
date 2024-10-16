@@ -9,6 +9,7 @@ import { useCallback, useMemo, useState } from 'react';
 import axios from 'axios';
 import { UserRole } from '../../../../entities/User';
 import { useAuthStore } from '../../../../zustand/auth.store';
+import React from 'react';
 interface GenerateDynamicColumnsProps {
   setDataDetails: React.Dispatch<React.SetStateAction<{
     ad_account_id: number;
@@ -42,6 +43,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
     { value: 'Đã XN (MKT)', label: 'Đã XN (MKT)' },
     { value: 'Sai số (MKT)', label: 'Sai số (MKT)' },
   ], []);
+  console.log('aa')
 
   const onChangeStatus = useCallback(async (value: string, date_id: number) => {
     setSelectedStatus((prevStatus) => ({ ...prevStatus, [date_id]: value }));
@@ -136,15 +138,19 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
             const currentStatus = selectedBillStatus[date_id] || data.datas?.[date]?.bill_status;
             return (
               <div className={`px-2 flex items-center h-[78px] border-t-[1px] border-black select-${data.datas?.[date]?.id}`} key={data.ad_account.id}>
-                <Select
-                  options={(user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT) ? memoizedOptionsWithUserRole : memoizedOptions}
-                  value={currentStatus}
-                  onChange={(value) => onChangeBillStatus(value, data.datas?.[date]?.id)}
-                  size="large"
-                  className={`w-full ${getBackgroundColor(currentStatus)}`}
-                  placeholder={!data.datas?.[date]?.bill_status ? 'Không có dữ liệu' : 'Lựa chọn...'}
-                  disabled={!data.datas?.[date]?.bill_status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedBillStatus[date_id] || data.datas?.[date]?.bill_status) === "Đã XN (KT)" && (selectedBillStatus[date_id] || data.datas?.[date]?.bill_status) === "Sai số (KT)"))}
-                />
+                {!data.datas?.[date]?.bill_status ? (
+                  <div>Không có dữ liệu</div>
+                ) : (
+                  <Select
+                    options={(user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT) ? memoizedOptionsWithUserRole : memoizedOptions}
+                    value={currentStatus}
+                    onChange={(value) => onChangeBillStatus(value, data.datas?.[date]?.id)}
+                    size="large"
+                    className={`w-full ${getBackgroundColor(currentStatus)}`}
+                    placeholder={!data.datas?.[date]?.bill_status ? 'Không có dữ liệu' : 'Lựa chọn...'}
+                    disabled={!data.datas?.[date]?.bill_status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedBillStatus[date_id] || data.datas?.[date]?.bill_status) === "Đã XN (KT)" && (selectedBillStatus[date_id] || data.datas?.[date]?.bill_status) === "Sai số (KT)"))}
+                  />
+                )}
               </div>
             );
           });
@@ -175,15 +181,19 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
             const currentStatus = selectedStatus[date_id] || data.datas?.[date]?.status;
             return (
               <div className={`px-2 flex items-center h-[78px] border-t-[1px] border-black select-${data.datas?.[date]?.id}`} key={data.ad_account.id}>
-                <Select
-                  options={(user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT) ? memoizedOptionsWithUserRole : memoizedOptions}
-                  onChange={(value) => onChangeStatus(value, data.datas?.[date]?.id)}
-                  size="large"
-                  value={currentStatus}
-                  className={`w-full ${getBackgroundColor(currentStatus)}`}
-                  placeholder={!data.datas?.[date]?.status ? 'Không có dữ liệu' : 'Lựa chọn...'}
-                  disabled={!data.datas?.[date]?.status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedStatus[date_id] || data.datas?.[date]?.status) === "Đã XN (KT)" || (selectedStatus[date_id] || data.datas?.[date]?.status) === "Sai số (KT)"))}
-                />
+                {!data.datas?.[date]?.status ? (
+                  <div>Không có dữ liệu</div>
+                ) : (
+                  <Select
+                    options={(user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT) ? memoizedOptionsWithUserRole : memoizedOptions}
+                    onChange={(value) => onChangeStatus(value, data.datas?.[date]?.id)}
+                    size="large"
+                    value={currentStatus}
+                    className={`w-full ${getBackgroundColor(currentStatus)}`}
+                    placeholder={!data.datas?.[date]?.status ? 'Không có dữ liệu' : 'Lựa chọn...'}
+                    disabled={!data.datas?.[date]?.status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedStatus[date_id] || data.datas?.[date]?.status) === "Đã XN (KT)" || (selectedStatus[date_id] || data.datas?.[date]?.status) === "Sai số (KT)"))}
+                  />
+                )}
               </div>
             );
           });

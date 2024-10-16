@@ -47,7 +47,7 @@ function AdCosts() {
     ad_account_datas: user.ad_account_datas.filter(account => account.ad_account !== null)
   }))
     .filter(user => user.ad_account_datas.length > 0)
-    // .filter(user => user.username !== 'noname')
+    .filter(user => user.username !== 'noname')
 
   const renderBody = () => {
     if (loading) return <div className="flex justify-center py-4"><LoadingIcon /></div>

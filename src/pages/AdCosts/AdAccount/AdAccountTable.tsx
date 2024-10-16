@@ -9,7 +9,7 @@ import React from 'react';
 
 
 // eslint-disable-next-line react-refresh/only-export-components
-function AdAccountTable(props: { data: UserData[], loading: boolean, showAdCosts: boolean, showBillCosts: boolean}) {
+function AdAccountTable(props: { data: UserData[], loading: boolean, showAdCosts: boolean, showBillCosts: boolean }) {
   const { data, showAdCosts, showBillCosts } = props;
   const [loadingTable, setLoadingTable] = useState(false)
   const [openAdCostsDetails, setOpenAdCostsDetails] = useState(false);
@@ -29,12 +29,10 @@ function AdAccountTable(props: { data: UserData[], loading: boolean, showAdCosts
   );
 
   const datasMap: Map<string, DailyAdsBillings> = new Map();
+  for (const { date, ...cur } of dataForDynamicColumns) {
+    datasMap.set(date, cur); // Thêm dữ liệu vào Map với key là ngày và giá trị là các dữ liệu khác
+  }
 
-for (const { date, ...cur } of dataForDynamicColumns) {
-  datasMap.set(date, cur); // Thêm dữ liệu vào Map với key là ngày và giá trị là các dữ liệu khác
-}
-
-  
   const dynamicColumns = GenerateDynamicColumns({
     datas: Object.fromEntries(datasMap),
     setDataDetails,
