@@ -6,7 +6,6 @@ import { GetAdsCostsByUser } from "../../services/ads_costs";
 import { UserData } from "../../dto/AdsBillingsDTO";
 import withAuth from "../../hocs/withAuth";
 import { useAuthStore } from "../../zustand/auth.store";
-import { UserRole } from "../../entities/User";
 import LoadingIcon from "../../assets/icons/LoadingIcon";
 import React from "react";
 
