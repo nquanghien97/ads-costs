@@ -18,6 +18,7 @@ import ChangePasswordPage from "../pages/ChangePassword";
 import CampaignsDeclarationWithAuth from "../pages/CampaignsDeclaration";
 import Content from "../pages/Content";
 import AdsAccountLiveDeclarationWithAuth from "../pages/AdsAccountLiveDeclaration";
+import AdCostsNotDeclared from "../pages/AdCostsNotDeclared"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -65,9 +66,17 @@ const router = createBrowserRouter(
             </PrivateRouteWithAuth>
           }
         />
-        <Route path="/content" element={<Content /> } />
+        <Route path="/content" element={<Content />} />
         <Route path="/xem-bao-cao" element={<ReportView />} />
         <Route path="/xem-ty-gia" element={<ExchangeRate />} />
+        <Route
+        path="/cpqc-hoa-don-chua-khai-bao"
+        element={
+          <PrivateRouteWithAuth roles={[UserRole.ROOT, UserRole.ACCOUNTANT]}>
+            <AdCostsNotDeclared />
+          </PrivateRouteWithAuth>
+        }
+      />
       </Route>
       <Route path="/thay-doi-mat-khau" element={<ChangePasswordPage />} />
     </>

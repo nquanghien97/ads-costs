@@ -2,3 +2,16 @@
   text-align: center;
   color: black;
 }
+
+.ant-table-cell .ant-table-cell-fix-left {
+  padding: 0 !important;
+}
+
+.ant-table-cell {
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+.dynamic-col {
+  padding: 0 !important;
+}

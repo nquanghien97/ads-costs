@@ -72,3 +72,34 @@ export interface UserData {
   system: System;
   ad_account_datas: AdAccountData[];
 }
+
+export interface AdAccountNotDeclared {
+  id: number;
+  user_id: number;
+  account_id: string;
+  account_name: string;
+  channel_id: number;
+  type_id: number;
+  status_id: number;
+  currency_id: number;
+  timezone_id: number;
+  rental_fee: number;
+  bank_account_id: number | null;
+  created_at: string;
+  exchange_rate: number;
+  bm_id: string;
+  bm_name: string;
+  bm_owned_by: string;
+  group_id: number;
+  group: Group;
+  system_id: number;
+  system: System;
+  channel: string;
+  type: string;
+  status: string;
+  currency: string;
+  timezone: string;
+  bank_account: string | null;
+  ads_bill_count: number;
+  ads_costs_count: number;
+}

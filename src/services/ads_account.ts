@@ -40,3 +40,12 @@ export const deleteAdAccount = (id: number) => {
 export const getAdsAccountByAccountId = (account_id: number) => {
   return api.get(`/ad-accounts/${account_id}?type=account_id`)
 }
+
+export const getAdsAccountNotDeclared = ({ account_id, since, until } : { account_id?: string, since?: string, until?: string }) => {
+  const params = new URLSearchParams();
+  if (account_id) params.append('account_id', account_id.toString());
+  if (since) params.append('since', since.toString());
+  if (until) params.append('until', until.toString())
+  return api.get(`ad-accounts/not-declared`)
+}
+

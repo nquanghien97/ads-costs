@@ -1,4 +1,5 @@
-import { Select } from 'antd';
+// import { Select } from 'antd';
+import Select from 'react-select'
 import { TableColumnsType } from 'antd';
 import { UserData, TotalDailyData } from '../../../../dto/AdsBillingsDTO';
 import EyeIcon from '../../../../assets/icons/EyeIcon';
@@ -23,6 +24,11 @@ interface GenerateDynamicColumnsProps {
   showBillCosts: boolean
 }
 
+interface OptionType {
+  value: string;
+  label: string;
+}
+
 export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): TableColumnsType<UserData> => {
   const { setDataDetails, datas, setOpenAdCostsDetails, setLoadingTable, showAdCosts, showBillCosts } = props;
   const [selectedStatus, setSelectedStatus] = useState<Record<number, string>>({});
@@ -30,20 +36,19 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
   const notification = useNotification()
   const { user } = useAuthStore()
 
-  const memoizedOptions = useMemo(() => [
-    { value: 'Chưa XN', label: 'Chưa XN' },
-    { value: 'Đã XN (MKT)', label: 'Đã XN (MKT)' },
-    { value: 'Sai số (MKT)', label: 'Sai số (MKT)' },
-    { value: 'Đã XN (KT)', label: 'Đã XN (KT)' },
-    { value: 'Sai số (KT)', label: 'Sai số (KT)' },
+  const memoizedOptions: OptionType[] = useMemo(() => [
+    { label: 'Chưa XN', value: 'Chưa XN' },
+    { label: 'Đã XN (MKT)', value: 'Đã XN (MKT)' },
+    { label: 'Sai số (MKT)', value: 'Sai số (MKT)' },
+    { label: 'Đã XN (KT)', value: 'Đã XN (KT)' },
+    { label: 'Sai số (KT)', value: 'Sai số (KT)' },
   ], []);
   
-  const memoizedOptionsWithUserRole = useMemo(() => [
-    { value: 'Chưa XN', label: 'Chưa XN' },
-    { value: 'Đã XN (MKT)', label: 'Đã XN (MKT)' },
-    { value: 'Sai số (MKT)', label: 'Sai số (MKT)' },
+  const memoizedOptionsWithUserRole: OptionType[] = useMemo(() => [
+    { label: 'Chưa XN', value: 'Chưa XN' },
+    { label: 'Đã XN (MKT)', value: 'Đã XN (MKT)' },
+    { label: 'Sai số (MKT)', value: 'Sai số (MKT)' },
   ], []);
-  console.log('aa')
 
   const onChangeStatus = useCallback(async (value: string, date_id: number) => {
     setSelectedStatus((prevStatus) => ({ ...prevStatus, [date_id]: value }));
@@ -86,8 +91,8 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
   }, [notification, setLoadingTable]);
 
   const getBackgroundColor = useCallback((value: string) => {
-    if (value === 'Đã XN (KT)' || value === 'Đã XN (MKT)') return '[&>*]:!bg-[#68c2ed] [&>*]:!text-black';
-    if (value === 'Sai số (KT)' || value === 'Sai số (MKT)') return '[&>*]:!bg-[#ff4d4f] [&>*]:!text-white';
+    if (value === 'Đã XN (KT)' || value === 'Đã XN (MKT)') return '[&>div.css-13cymwt-control]:!bg-[#68c2ed] [&>div.css-13cymwt-control]:!text-black [&>div.css-13cymwt-control]:!cursor-pointer';
+    if (value === 'Sai số (KT)' || value === 'Sai số (MKT)') return '[&>div.css-13cymwt-control]:!bg-[#ff4d4f] [&>div.css-13cymwt-control]:!text-white [&>div.css-13cymwt-control]:!cursor-pointer';
     if (value === 'Chưa XN') return '#d9d9d9'; 
     return 'white';
   }, []);
@@ -143,12 +148,11 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
                 ) : (
                   <Select
                     options={(user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT) ? memoizedOptionsWithUserRole : memoizedOptions}
-                    value={currentStatus}
-                    onChange={(value) => onChangeBillStatus(value, data.datas?.[date]?.id)}
-                    size="large"
+                    value={{ label: currentStatus, value: currentStatus}}
+                    onChange={(value) => onChangeBillStatus(value?.value || '', data.datas?.[date]?.id)}
                     className={`w-full ${getBackgroundColor(currentStatus)}`}
                     placeholder={!data.datas?.[date]?.bill_status ? 'Không có dữ liệu' : 'Lựa chọn...'}
-                    disabled={!data.datas?.[date]?.bill_status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedBillStatus[date_id] || data.datas?.[date]?.bill_status) === "Đã XN (KT)" && (selectedBillStatus[date_id] || data.datas?.[date]?.bill_status) === "Sai số (KT)"))}
+                    isDisabled={!data.datas?.[date]?.bill_status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedBillStatus[date_id] || data.datas?.[date]?.bill_status) === "Đã XN (KT)" && (selectedBillStatus[date_id] || data.datas?.[date]?.bill_status) === "Sai số (KT)"))}
                   />
                 )}
               </div>
@@ -186,12 +190,11 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
                 ) : (
                   <Select
                     options={(user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT) ? memoizedOptionsWithUserRole : memoizedOptions}
-                    onChange={(value) => onChangeStatus(value, data.datas?.[date]?.id)}
-                    size="large"
-                    value={currentStatus}
+                    onChange={(value) => onChangeStatus(value?.value || '', data.datas?.[date]?.id)}
+                    value={{ label: currentStatus, value: currentStatus}}
                     className={`w-full ${getBackgroundColor(currentStatus)}`}
                     placeholder={!data.datas?.[date]?.status ? 'Không có dữ liệu' : 'Lựa chọn...'}
-                    disabled={!data.datas?.[date]?.status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedStatus[date_id] || data.datas?.[date]?.status) === "Đã XN (KT)" || (selectedStatus[date_id] || data.datas?.[date]?.status) === "Sai số (KT)"))}
+                    isDisabled={!data.datas?.[date]?.status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedStatus[date_id] || data.datas?.[date]?.status) === "Đã XN (KT)" || (selectedStatus[date_id] || data.datas?.[date]?.status) === "Sai số (KT)"))}
                   />
                 )}
               </div>

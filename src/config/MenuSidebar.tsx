@@ -98,7 +98,7 @@ const MenuSidebar: MenuSidebar[] = [
     title: 'CPQC - Hóa đơn',
     subTitle: '(chưa khai báo)',
     path: '/cpqc-hoa-don-chua-khai-bao',
-    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
+    allowedRoles: [UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
     icon: <CurrencyIcon  />
   },
 ]

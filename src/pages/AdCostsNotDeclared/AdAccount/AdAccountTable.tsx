@@ -58,21 +58,6 @@ function AdAccountTable(props: { data: UserData[], loading: boolean, showAdCosts
 
   const columns = [...newColumns, ...dynamicColumns];
 
-  // Custom row rendering
-  const CustomRow = ({ children, className }: { children: React.ReactNode, className: string }) => {
-    const classParts = className.split(" ").slice(2);
-    return (
-      <>
-        <tr>
-          <td colSpan={newColumns.length} className={`py-2 uppercase text-center !bg-[#68c2ed] ant-table-cell ant-table-cell-fix-left sticky left-0 font-bold text-black`}>
-            {classParts.join(" ")}
-          </td>
-        </tr>
-        <tr className="border-top-row">{children}</tr>
-      </>
-    );
-  }
-
   return (
     <>
       <div className="relative mt-4">
@@ -107,12 +92,8 @@ function AdAccountTable(props: { data: UserData[], loading: boolean, showAdCosts
             scroll={{ x: columns.length * 100, y: 600 }}
             rowHoverable={false}
             className='not-fixed'
+            rootClassName='ant-table-cell ant-table-cell-fix-left'
             loading={loadingTable}
-            components={{
-              body: {
-                row: (({ children, className }: { children: React.ReactNode, className: string }) => <CustomRow children={children} className={className} />),
-              },
-            }}
           />
         </ConfigProvider>
       </div>
