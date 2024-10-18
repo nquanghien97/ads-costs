@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Header from "./Header";
 import AdAccount from "./AdAccount";
 // import AdAccountRent from "./AdAccountRent";
@@ -8,6 +8,8 @@ import withAuth from "../../hocs/withAuth";
 import { useAuthStore } from "../../zustand/auth.store";
 import LoadingIcon from "../../assets/icons/LoadingIcon";
 import React from "react";
+import dayjs from "dayjs";
+import { formatDate } from "../../utils/date";
 
 function AdCosts() {
   const [datas, setDatas] = useState<UserData[]>();
@@ -20,23 +22,22 @@ function AdCosts() {
   useEffect(() => {
     document.title = "Chi phí quảng cáo - hóa đơn"
   }, []);
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const res = await GetAdsCostsByUser({});
-      setDatas(res.data.data.list);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  
+  
   useEffect(() => {
-    (async () => {
-       await fetchData()
-    })()
+    const defaultDate = new Date(dayjs().subtract(1, 'day').startOf('day').toDate())
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const res = await GetAdsCostsByUser({ since: formatDate(new Date(defaultDate)), until: formatDate(new Date(defaultDate)) });
+        setDatas(res.data.data.list);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData()
   }, [user.role, refreshKey]);
 
   const filteredData = datas?.map(user => ({
