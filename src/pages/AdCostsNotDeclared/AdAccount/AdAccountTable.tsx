@@ -16,7 +16,6 @@ function AdAccountTable(props: { data: UserData[], loading: boolean, showAdCosts
     date: '',
     currency: ''
   });
-  const [showHiddenColumns, setShowHiddenColumns] = useState(false);
 
   // Calculate ad_account_datas only once
   const a = useMemo(() => data?.flatMap(d => d.ad_account_datas) ?? [], [data]);
@@ -38,7 +37,6 @@ function AdAccountTable(props: { data: UserData[], loading: boolean, showAdCosts
     return map;
   }, [dataForDynamicColumns]);
 
-  // Generate dynamic columns using memoization
   const dynamicColumns = GenerateDynamicColumns({
     datas: Object.fromEntries(datasMap),
     setDataDetails,
@@ -48,15 +46,9 @@ function AdAccountTable(props: { data: UserData[], loading: boolean, showAdCosts
     showBillCosts
   });
 
-  // Static and hidden columns logic
-  const staticColumns = StaticColumns(() => setShowHiddenColumns(prev => !prev), showHiddenColumns);
-  const hiddenKeys = ['7', '8', '9', '10', '12', '13'];
-  const hiddenColumns = staticColumns.filter(staticColumn => !hiddenKeys.includes(staticColumn.key as string));
+  const staticColumns = StaticColumns();
 
-  // Combine columns based on hidden state
-  const newColumns = showHiddenColumns ? StaticColumns(() => setShowHiddenColumns(pre => !pre), showHiddenColumns) : hiddenColumns
-
-  const columns = [...newColumns, ...dynamicColumns];
+  const columns = [...staticColumns, ...dynamicColumns];
 
   return (
     <>

@@ -90,6 +90,8 @@ button:focus-visible {
 
 .border-top-row td {
   padding: 0 !important;
+  position: relative;
+  z-index: 1;
 }
 
 .border-top-row > .ant-table-cell-fix-left {

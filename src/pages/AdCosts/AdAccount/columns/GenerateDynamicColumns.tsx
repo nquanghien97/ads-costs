@@ -43,7 +43,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
     { label: 'Đã XN (KT)', value: 'Đã XN (KT)' },
     { label: 'Sai số (KT)', value: 'Sai số (KT)' },
   ], []);
-  
+
   const memoizedOptionsWithUserRole: OptionType[] = useMemo(() => [
     { label: 'Chưa XN', value: 'Chưa XN' },
     { label: 'Đã XN (MKT)', value: 'Đã XN (MKT)' },
@@ -93,7 +93,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
   const getBackgroundColor = useCallback((value: string) => {
     if (value === 'Đã XN (KT)' || value === 'Đã XN (MKT)') return '[&>div.css-13cymwt-control]:!bg-[#68c2ed] [&>div.css-13cymwt-control]:!text-black [&>div.css-13cymwt-control]:!cursor-pointer';
     if (value === 'Sai số (KT)' || value === 'Sai số (MKT)') return '[&>div.css-13cymwt-control]:!bg-[#ff4d4f] [&>div.css-13cymwt-control]:!text-white [&>div.css-13cymwt-control]:!cursor-pointer';
-    if (value === 'Chưa XN') return '#d9d9d9'; 
+    if (value === 'Chưa XN') return '#d9d9d9';
     return 'white';
   }, []);
 
@@ -148,7 +148,7 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
                 ) : (
                   <Select
                     options={(user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT) ? memoizedOptionsWithUserRole : memoizedOptions}
-                    value={{ label: currentStatus, value: currentStatus}}
+                    value={{ label: currentStatus, value: currentStatus }}
                     onChange={(value) => onChangeBillStatus(value?.value || '', data.datas?.[date]?.id)}
                     className={`w-full ${getBackgroundColor(currentStatus)}`}
                     placeholder={!data.datas?.[date]?.bill_status ? 'Không có dữ liệu' : 'Lựa chọn...'}
@@ -189,9 +189,13 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
                   <div>Không có dữ liệu</div>
                 ) : (
                   <Select
+                    menuPortalTarget={document.body}  // Đặt menu lên container `body`
+                    styles={{
+                      menuPortal: (base) => ({ ...base, zIndex: 9999 })  // Điều chỉnh z-index
+                    }}
                     options={(user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT) ? memoizedOptionsWithUserRole : memoizedOptions}
                     onChange={(value) => onChangeStatus(value?.value || '', data.datas?.[date]?.id)}
-                    value={{ label: currentStatus, value: currentStatus}}
+                    value={{ label: currentStatus, value: currentStatus }}
                     className={`w-full ${getBackgroundColor(currentStatus)}`}
                     placeholder={!data.datas?.[date]?.status ? 'Không có dữ liệu' : 'Lựa chọn...'}
                     isDisabled={!data.datas?.[date]?.status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedStatus[date_id] || data.datas?.[date]?.status) === "Đã XN (KT)" || (selectedStatus[date_id] || data.datas?.[date]?.status) === "Sai số (KT)"))}

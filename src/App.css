@@ -15,3 +15,7 @@
 .dynamic-col {
   padding: 0 !important;
 }
+
+.css-1nmdiq5-menu {
+  z-index: 1000 !important;
+}
