@@ -1,7 +1,7 @@
 import { Alert, Button, Form, Input, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { getAdsAccountByAccountId } from "../../../services/ads_account";
-import { AdsAccountType, BmOwner } from "../../../entities/AdsAccount";
+import { AdAccount } from "../../../entities/AdsAccount";
 import { useNotification } from "../../../hooks/useNotification";
 import axios from "axios";
 import useDebounce from "../../../hooks/useDebounce";
@@ -43,14 +43,14 @@ interface FormValues {
   card_number: number,
   bm_id: string,
   bm_name: string,
-  bm_owned_by: BmOwner
+  bm_owned_by: string
 }
 
 function EditCampaign(props: EditCampaignProps) {
   const { onClose, adAccountId, open, setRefreshKey, dataCampaign } = props;
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [adsAccountData, setAdsAccountData] = useState<AdsAccountType>();
+  const [adsAccountData, setAdsAccountData] = useState<AdAccount>();
   const [loadingDataAds, setLoadingDataAds] = useState(false);
 
   const notification = useNotification();

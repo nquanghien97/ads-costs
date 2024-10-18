@@ -3,7 +3,7 @@ import EditIcon from "../../assets/icons/EditIcon";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import withAuth from "../../hocs/withAuth";
-import { AdsAccountType, pagingAdAccount } from "../../entities/AdsAccount";
+import { AdAccount, pagingAdAccount } from "../../entities/AdsAccount";
 import { useEffect, useState } from "react";
 import { getListAdsAccount } from "../../services/ads_account";
 import EditAdsAccount from "./EditAdsAccountLive";
@@ -29,7 +29,7 @@ export interface SubmitFormSearchType {
 
 function AdsAccountLiveDeclaration() {
 
-  const [data, setData] = useState<AdsAccountType[]>([]);
+  const [data, setData] = useState<AdAccount[]>([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
   const [adAccountId, setAdAccountId] = useState(0);
@@ -52,7 +52,7 @@ function AdsAccountLiveDeclaration() {
 
   const { user } = useAuthStore();
 
-  const columns: TableColumnsType<AdsAccountType> = [
+  const columns: TableColumnsType<AdAccount> = [
     {
       title: 'Thời gian live',
       dataIndex: 'created_at',
@@ -90,7 +90,7 @@ function AdsAccountLiveDeclaration() {
     },
     {
       title: 'Mã TKQC',
-      render: (record: AdsAccountType) => {
+      render: (record: AdAccount) => {
         return (
           <div>{`TK${record.id}`}</div>
         )
@@ -174,7 +174,7 @@ function AdsAccountLiveDeclaration() {
     user.role !== UserRole.ACCOUNTANT && {
       title: 'Thao tác',
       width: 150,
-      render(record: AdsAccountType) {
+      render(record: AdAccount) {
         return (
           <div className="flex flex-col justify-between gap-2 py-2">
             <ConfigProvider

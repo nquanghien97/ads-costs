@@ -1,10 +1,10 @@
 import FileSaver from "file-saver";
 import * as XLSX from "xlsx";
-import { AdsAccountType } from "../../entities/AdsAccount";
+import { AdAccount } from "../../entities/AdsAccount";
 import { formatDate } from "../../utils/date";
 
 interface ExportExcelAdsAccountProps {
-  apiData: AdsAccountType[];
+  apiData: AdAccount[];
 }
 
 export const ExportExcelAdsAccount = ({ apiData }: ExportExcelAdsAccountProps) => {

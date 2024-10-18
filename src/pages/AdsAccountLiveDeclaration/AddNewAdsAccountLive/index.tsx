@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNotification } from "../../../hooks/useNotification";
 import axios from "axios";
 import useDebounce from "../../../hooks/useDebounce";
-import { AdsAccountType } from "../../../entities/AdsAccount";
+import { AdAccount } from "../../../entities/AdsAccount";
 // import LoadingIcon from "../../../assets/icons/LoadingIcon";
 import localeValues from "antd/locale/vi_VN";
 import User from "../../../entities/User";
@@ -24,9 +24,9 @@ interface FormValues {
 function AddNewAdsAccountLive(props: CampaignsDetailsProps) {
   const { onClose, setRefreshKey, open } = props;
   const [loading, setLoading] = useState(false);
-  const [adsAccountData, setAdsAccountData] = useState<AdsAccountType>();
+  const [adsAccountData, setAdsAccountData] = useState<AdAccount>();
   const [users, setUsers] = useState<User[]>([]);
-  const [listAdsAccount, setListAdsAccount] = useState<AdsAccountType[]>([]);
+  const [listAdsAccount, setListAdsAccount] = useState<AdAccount[]>([]);
 
   const [form] = Form.useForm();
   const notification = useNotification();

@@ -100,3 +100,4 @@ export interface UserData {
   system: System;
   ad_account_datas: AdAccountData[];
 }
+

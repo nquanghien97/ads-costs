@@ -3,7 +3,7 @@ import EditIcon from "../../assets/icons/EditIcon";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import { Button, ConfigProvider, Table, TableColumnsType } from "antd";
 import withAuth from "../../hocs/withAuth";
-import { AdsAccountType, pagingAdAccount } from "../../entities/AdsAccount";
+import { AdAccount, pagingAdAccount } from "../../entities/AdsAccount";
 import { useEffect, useState } from "react";
 import EditCampaign from "./EditCampaign";
 import PlusIcon from "../../assets/icons/PlusIcon";
@@ -34,7 +34,7 @@ export interface SubmitFormSearchType {
 
 function CampaignsDeclaration() {
 
-  const [data, setData] = useState<AdsAccountType[]>([]);
+  const [data, setData] = useState<AdAccount[]>([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [refreshKey, setRefreshKey] = useState(false);
   const [adAccountId, setAdAccountId] = useState(0);
@@ -59,7 +59,7 @@ function CampaignsDeclaration() {
 
   const { user } = useAuthStore();
 
-  const columns: TableColumnsType<AdsAccountType> = [
+  const columns: TableColumnsType<AdAccount> = [
     {
       title: 'Thời gian',
       dataIndex: 'created_at',
@@ -97,7 +97,7 @@ function CampaignsDeclaration() {
     },
     {
       title: 'Mã chiến dịch',
-      render: (record: AdsAccountType) => {
+      render: (record: AdAccount) => {
         return (
           <div>{`CD${record.id}`}</div>
         )

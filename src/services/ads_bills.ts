@@ -1,11 +1,15 @@
 import api from "../config/api"
-import { AdsBillDetails, DeclarationAdsBillsDTO } from "../dto/AdsBillingsDTO";
+// import { DeclarationAdsBillsDTO } from "../dto/AdsBillingsDTO";
 
-export const DeclarationAdsBills = (data: DeclarationAdsBillsDTO[]) => {
-  return api.post('/bulk-ads-bills', {data})
-}
+// export const DeclarationAdsBills = (data: DeclarationAdsBillsDTO[]) => {
+//   return api.post('/bulk-ads-bills', {data})
+// }
 
-export const getAdsBillDetails = ({ search, system_id, group_id, user_id, ad_account_id, bank_account_id, since, until } : AdsBillDetails) => {
+export const getAdsBillDetails = (
+  { search, system_id, group_id, user_id, ad_account_id, bank_account_id, since, until }
+  :
+  { search?: string; system_id?: number; group_id?: number; user_id?: number; ad_account_id?: number; bank_account_id?: number, since?: string; until?: string}
+) => {
   const params = new URLSearchParams();
 
   if (search) params.append('search', search.toString());

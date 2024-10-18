@@ -1,11 +1,11 @@
-import { AdsAccountType } from "../entities/AdsAccount";
+import { AdAccount } from "../entities/AdsAccount";
 
 export interface CampaignsDTO {
   id: number;
   campaign_id: string;
   account_id: string;
   ad_account_id: string;
-  ad_account: AdsAccountType
+  ad_account: AdAccount
 }
 
 export interface CreateCampaignDTO {

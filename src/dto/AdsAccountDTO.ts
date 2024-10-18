@@ -1,5 +1,3 @@
-import { BmOwner } from "../entities/AdsAccount"
-
 export interface EditAdsAccountDTO {
   account_id: number,
   account_name: string,
@@ -11,7 +9,7 @@ export interface EditAdsAccountDTO {
   status_id?: number,
   bm_id?: string,
   bm_name?: string,
-  bm_owned_by?: BmOwner
+  bm_owned_by?: string
 }
 
 export interface AddNewAdAccountDTO {

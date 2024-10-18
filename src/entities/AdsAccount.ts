@@ -1,3 +1,6 @@
+import { BankAccountType } from "./BankAccount";
+import { UserRole } from "./User";
+
 export interface Group {
   id: number;
   system_id: number;
@@ -35,9 +38,18 @@ export interface AdAccount {
   status: string;
   currency: string;
   timezone: string;
-  bank_account: string | null;
+  bank_account: BankAccountType;
   ads_bill_count: number;
   ads_costs_count: number;
+  user: {
+    group_id: number;
+    id: number;
+    is_blocked: boolean;
+    name: string;
+    role: UserRole;
+    system_id: number;
+    username: string;
+  }
 }
 
 export interface AdAccountData {
@@ -102,4 +114,10 @@ export interface AdAccountNotDeclared {
   bank_account: string | null;
   ads_bill_count: number;
   ads_costs_count: number;
+}
+
+export interface pagingAdAccount {
+  page: number;
+  page_size: number;
+  total: number;
 }

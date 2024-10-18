@@ -2,7 +2,7 @@ import { Alert, Button, Form, Input, Modal, Select } from "antd";
 import { useEffect, useState } from "react";
 import { editAdsAccount, getAdsAccount } from "../../../services/ads_account";
 import { useInformationSettingsStore } from "../../../zustand/information_settings.store";
-import { AdsAccountType, BmOwner } from "../../../entities/AdsAccount";
+import { AdAccount } from "../../../entities/AdsAccount";
 import { useNotification } from "../../../hooks/useNotification";
 import { BankAccountType } from "../../../entities/BankAccount";
 import { getListBankAccounts } from "../../../services/bank_account";
@@ -40,14 +40,14 @@ interface FormValues {
   card_number: number,
   bm_id: string,
   bm_name: string,
-  bm_owned_by: BmOwner
+  bm_owned_by: string
 }
 
 function EditAdsAccount(props: EditAdsAccountProps) {
   const { onClose, adAccountId, open, setRefreshKey, bankAccountId } = props;
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [adAccountData, setAdAccountData] = useState<AdsAccountType>();
+  const [adAccountData, setAdAccountData] = useState<AdAccount>();
   const [dataAdsAccount, setDataAdsAccount] = useState<BankAccountType[]>([]);
   const [bankId, setBankId] = useState(0)
   const user_id = getUserId();
@@ -73,7 +73,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
     (async () => {
       if (!adAccountId) return
       const res = await getAdsAccount(adAccountId);
-      const adAccountData = res.data.data as AdsAccountType
+      const adAccountData = res.data.data as AdAccount
       setAdAccountData(adAccountData)
       form.setFieldsValue({
         account_id: +adAccountData.account_id,
@@ -104,7 +104,7 @@ function EditAdsAccount(props: EditAdsAccountProps) {
     setLoading(true);
     try {
       const valuesSubmit = {
-        user_id: adAccountData?.user.id,
+        user_id: adAccountData?.user_id,
         account_id: +(adAccountData?.account_id || -1),
         account_name: data.account_name,
         channel_id: data.channel_id,

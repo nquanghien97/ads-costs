@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNotification } from "../../../hooks/useNotification";
 import axios from "axios";
 import useDebounce from "../../../hooks/useDebounce";
-import { AdsAccountType } from "../../../entities/AdsAccount";
+import { AdAccount } from "../../../entities/AdsAccount";
 import LoadingIcon from "../../../assets/icons/LoadingIcon";
 import { createCampaign } from "../../../services/campaigns";
 
@@ -22,7 +22,7 @@ interface FormValues {
 function AddNewCampaigns(props: CampaignsDetailsProps) {
   const { onClose, setRefreshKey, open } = props;
   const [loading, setLoading] = useState(false);
-  const [adsAccountData, setAdsAccountData] = useState<AdsAccountType>();
+  const [adsAccountData, setAdsAccountData] = useState<AdAccount>();
   const [loadingDataAds, setLoadingDataAds] = useState(false);
 
   const [form] = Form.useForm();
