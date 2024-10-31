@@ -95,6 +95,10 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
       user_id: data.user?.value,
       status: data.status
     }
+    console.log({
+      since: data.date ? formatDate(new Date(data.date?.[0])) : undefined,
+      until: data.date ? formatDate(new Date(data.date?.[1])) : undefined,
+    })
     try {
       const res = await GetAdsCostsByUser(submitData)
       setDatas(res.data.data.list)
@@ -208,8 +212,8 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
             locale={localeValues.DatePicker}
             className="h-[40px] border-[1px] border-[#007bb5] rounded-lg"
             presets={[
-              {label: 'Hôm nay', value: [dayjs(), dayjs()]},
-              {label: 'Hôm qua', value: [dayjs().subtract(1, 'day'), dayjs().subtract(1, 'day')]},
+              {label: 'Hôm nay', value: [dayjs().startOf('day'), dayjs().endOf('day')]},
+              {label: 'Hôm qua', value: [dayjs().subtract(1, 'day').startOf('day'), dayjs().subtract(1, 'day').endOf('day')]},
               {label: 'Tháng này', value: [dayjs().startOf('month'), dayjs().endOf('month')]},
               {label: 'Tháng trước', value: [dayjs().subtract(1, 'month').startOf('month'), dayjs().subtract(1, 'month').endOf('month')]}
             ]}
