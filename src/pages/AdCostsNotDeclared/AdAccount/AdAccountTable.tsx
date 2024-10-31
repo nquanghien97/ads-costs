@@ -36,15 +36,26 @@ function AdAccountTable(props: { data: UserData[], loading: boolean, showAdCosts
     }
     return map;
   }, [dataForDynamicColumns]);
-
+  
+  const sortedData = new Map(
+    Array.from(datasMap.entries()).sort((a, b) => {
+      const [dayA, monthA] = a[0].split("/").map(Number);
+      const [dayB, monthB] = b[0].split("/").map(Number);
+      const dateA = new Date(2000, monthA - 1, dayA).getTime();
+      const dateB = new Date(2000, monthB - 1, dayB).getTime();
+      return dateA - dateB;
+    })
+  );
   const dynamicColumns = GenerateDynamicColumns({
-    datas: Object.fromEntries(datasMap),
+    datas: Object.fromEntries(sortedData),
     setDataDetails,
     setOpenAdCostsDetails,
     setLoadingTable,
     showAdCosts,
     showBillCosts
   });
+
+
 
   const staticColumns = StaticColumns();
 

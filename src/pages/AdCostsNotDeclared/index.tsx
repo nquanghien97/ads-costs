@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import AdAccount from "./AdAccount";
-// import AdAccountRent from "./AdAccountRent";
 import { GetAdsCostsByUser } from "../../services/ads_costs";
 import { UserData } from "../../dto/AdsBillingsDTO";
 import withAuth from "../../hocs/withAuth";
@@ -22,7 +21,6 @@ function AdCosts() {
   useEffect(() => {
     document.title = "Chi phí quảng cáo - hóa đơn"
   }, []);
-  
   
   useEffect(() => {
     const defaultDate = new Date(dayjs().subtract(1, 'day').startOf('day').toDate())

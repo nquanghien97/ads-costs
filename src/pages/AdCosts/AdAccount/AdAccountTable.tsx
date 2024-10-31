@@ -38,9 +38,17 @@ function AdAccountTable(props: { data: UserData[], loading: boolean, showAdCosts
     return map;
   }, [dataForDynamicColumns]);
 
+  const sortedData = new Map(
+    Array.from(datasMap.entries()).sort(([dateA], [dateB]) => {
+        const [dayA, monthA] = dateA.split('/').map(Number);
+        const [dayB, monthB] = dateB.split('/').map(Number);
+        return monthA === monthB ? dayA - dayB : monthA - monthB;
+    })
+);
+
   // Generate dynamic columns using memoization
   const dynamicColumns = GenerateDynamicColumns({
-    datas: Object.fromEntries(datasMap),
+    datas: Object.fromEntries(sortedData),
     setDataDetails,
     setOpenAdCostsDetails,
     setLoadingTable,
