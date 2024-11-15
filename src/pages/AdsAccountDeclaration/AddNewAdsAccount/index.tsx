@@ -213,6 +213,26 @@ function AddNewAdsAccount(props: AdAccountDetailsProps) {
             </Form.Item>
           </div>
           <div className="flex items-center h-[40px]">
+            <p className="w-[120px] text-left text-[#0071BA]">Sở hữu</p>
+            <Form.Item
+              className="!mb-0 w-full"
+              name="owner"
+              rules={[
+                {
+                  required: true,
+                  message: "Trường này là bắt buộc"
+                }
+              ]}
+            >
+              <Select
+                labelInValue
+                options={[{ name: 'cá nhân', id: 1}, { name: 'chung', id: 2}].map(item => ({ label: item.name, value: item.id }))}
+                className="w-full h-full"
+                allowClear
+              />
+            </Form.Item>
+          </div>
+          <div className="flex items-center h-[40px]">
             <p className="w-[120px] text-left text-[#0071BA]">Tiền tệ</p>
             <Form.Item
               className="!mb-0 w-full"

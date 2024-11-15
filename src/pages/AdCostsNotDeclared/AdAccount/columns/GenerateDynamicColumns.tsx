@@ -31,26 +31,21 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
         width: 140,
         className: "dynamic-col",
         render: (_: unknown, record: UserData) => {
-          return record.ad_account_datas.flatMap(data => (
-            <div key={data.ad_account.id} className="border-t-[1px]">
-              <div className="row-custom flex items-center gap-2 bg-[#e9e9e9]">
-                {formatCurrency(data.datas?.[date]?.bill)}
-                <div
-                  onClick={() => {
-                    setOpenAdCostsDetails(true);
-                    setDataDetails({
-                      ad_account_id: data.ad_account_id,
-                      date: date,
-                      currency: data.ad_account.currency
-                    });
-                  }}
-                  className="cursor-pointer"
-                >
-                  <EyeIcon width={18} height={18} />
-                </div>
-              </div>
-              <div className="row-custom flex items-center justify-between gap-2 ">
-                {formatCurrency(data.datas?.[date]?.bill_vnd)}
+          return record.ad_account_datas.flatMap((data, index) => (
+            <div key={data.ad_account.id} className={`min-h-[60px] max-h-[78px] border-b-[1px] border-black gap-2 flex items-center justify-center ${index % 2 === 0 ? '' : 'bg-[#e9e9e9]'}`}>
+              {formatCurrency(data.datas?.[date]?.bill)}
+              <div
+                onClick={() => {
+                  setOpenAdCostsDetails(true);
+                  setDataDetails({
+                    ad_account_id: data.ad_account_id,
+                    date: date,
+                    currency: data.ad_account.currency
+                  });
+                }}
+                className="cursor-pointer"
+              >
+                <EyeIcon width={18} height={18} />
               </div>
             </div>
           ));
@@ -62,10 +57,9 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
         width: 120,
         className: "dynamic-col",
         render: (_: unknown, record: UserData) => {
-          return record.ad_account_datas.flatMap(data => (
-            <div key={data.ad_account.id} className="border-b-[1px] border-black">
-              <div className="row-custom bg-[#e9e9e9]">{formatCurrency(data.datas?.[date]?.ads) || 0}</div>
-              <div className="row-custom">{formatCurrency(data.datas?.[date]?.ads_vnd) || 0}</div>
+          return record.ad_account_datas.flatMap((data, index) => (
+            <div key={data.ad_account.id} className={`border-b-[1px] border-black min-h-[60px] max-h-[78px] flex items-center justify-center ${index % 2 === 0 ? '' : 'bg-[#e9e9e9]'}`}>
+              {formatCurrency(data.datas?.[date]?.ads) || 0}
             </div>
           ));
         },

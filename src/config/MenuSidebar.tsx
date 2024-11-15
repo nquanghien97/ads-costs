@@ -23,6 +23,14 @@ const MenuSidebar: MenuSidebar[] = [
   {
     title: 'CPQC-Hóa đơn',
     path: '/cpqc-hoa-don',
+    subTitle: '(Theo TKQC)',
+    allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
+    icon: <CurrencyIcon  />,
+  },
+  {
+    title: 'CPQC-Hóa đơn',
+    path: '/cpqc-hoa-don-chien-dich',
+    subTitle: '(Theo Chiến dịch)',
     allowedRoles: [UserRole.GROUP_ADM, UserRole.ROOT, UserRole.SYSTEM_ADM, UserRole.USER, UserRole.ACCOUNTANT],
     icon: <CurrencyIcon  />,
   },

@@ -13,6 +13,7 @@ export interface AdAccount {
   id: number;
   user_id: number;
   account_id: string;
+  campaign_id?: string;
   account_name: string;
   channel_id: number;
   type_id: number;

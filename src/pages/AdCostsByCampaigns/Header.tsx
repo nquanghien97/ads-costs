@@ -8,10 +8,11 @@ import { getUsers } from "../../services/users";
 import { useInformationSettingsStore } from "../../zustand/information_settings.store";
 import { UserData } from "../../dto/AdsBillingsDTO";
 import { formatDate } from "../../utils/date";
+import { useNotification } from "../../hooks/useNotification";
 import localeValues from "antd/locale/vi_VN";
 import { exportToExcel } from '../../components/ExportExcel/ExportExcelAdsCost'
 import dayjs from "dayjs";
-import { SearchFormValues } from ".";
+import { GetAdsCostsCampaigns } from "../../services/statistics_campaigns";
 interface FormValues {
   search: string;
   system_id: number;
@@ -26,16 +27,17 @@ interface FormValues {
 }
 
 interface HeaderProps {
+  setDatas: React.Dispatch<React.SetStateAction<UserData[] | undefined>>,
+  setRefreshKey: React.Dispatch<React.SetStateAction<boolean>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   dataExportExcel: UserData[] | undefined
-  showAdCosts: boolean
-  setShowAdCosts: React.Dispatch<React.SetStateAction<boolean>>
+  showAdCostsCampaigns: boolean
+  setShowAdCostsCampaigns: React.Dispatch<React.SetStateAction<boolean>>
   showBillCosts: boolean
   setShowBillCosts: React.Dispatch<React.SetStateAction<boolean>>
-  setSearchForm: React.Dispatch<React.SetStateAction<SearchFormValues>>
 }
 
-function Header({ setLoading, dataExportExcel, setShowAdCosts, setShowBillCosts, showAdCosts, showBillCosts, setSearchForm }: HeaderProps) {
+function Header({ setDatas, setLoading, dataExportExcel, setShowAdCostsCampaigns, setShowBillCosts, showAdCostsCampaigns, showBillCosts }: HeaderProps) {
 
   const { RangePicker } = DatePicker
   const { groups } = useGroupsStore();
@@ -46,6 +48,8 @@ function Header({ setLoading, dataExportExcel, setShowAdCosts, setShowBillCosts,
   const [loadingUser, setLoadingUser] = useState(false);
 
   const defaultDate = dayjs().subtract(1, 'day').startOf('day')
+
+  const notification = useNotification();
 
   const [form] = Form.useForm();
 
@@ -80,7 +84,15 @@ function Header({ setLoading, dataExportExcel, setShowAdCosts, setShowBillCosts,
       user_id: data.user?.value,
       status: data.status
     }
-    setSearchForm(submitData)
+    try {
+      const res = await GetAdsCostsCampaigns(submitData)
+      setDatas(res.data.data.list)
+    } catch (err) {
+      console.log(err);
+      notification.error('Có lỗi xảy ra, vui lòng thử lại')
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -196,9 +208,9 @@ function Header({ setLoading, dataExportExcel, setShowAdCosts, setShowBillCosts,
       <div className="flex py-2 justify-between">
         <div className="flex gap-4">
           <div
-            className={`${showAdCosts ? 'bg-[#68c2ed]' : 'text-black'} rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300`}
+            className={`${showAdCostsCampaigns ? 'bg-[#68c2ed]' : 'text-black'} rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300`}
             onClick={() => {
-              setShowAdCosts(true);
+              setShowAdCostsCampaigns(true);
               setShowBillCosts(false);
             }}
           >
@@ -207,7 +219,7 @@ function Header({ setLoading, dataExportExcel, setShowAdCosts, setShowBillCosts,
           <div
             className={`${showBillCosts ? 'bg-[#68c2ed]' : 'text-black'} rounded-md cursor-pointer h-full px-4 flex items-center justify-center hover:opacity-80 duration-300`}
             onClick={() => {
-              setShowAdCosts(false);
+              setShowAdCostsCampaigns(false);
               setShowBillCosts(true);
             }}
           >

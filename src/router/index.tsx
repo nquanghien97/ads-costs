@@ -19,6 +19,7 @@ import CampaignsDeclarationWithAuth from "../pages/CampaignsDeclaration";
 import Content from "../pages/Content";
 import AdsAccountLiveDeclarationWithAuth from "../pages/AdsAccountLiveDeclaration";
 import AdCostsNotDeclared from "../pages/AdCostsNotDeclared"
+import AdCostsCampaignsWithAuth from "../pages/AdCostsByCampaigns";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +30,7 @@ const router = createBrowserRouter(
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/cpqc-hoa-don" element={<AdCosts />} />
+        <Route path="/cpqc-hoa-don-chien-dich" element={<AdCostsCampaignsWithAuth />} />
         <Route path="/giao-dich-ngan-hang" element={<BankTransaction />} />
         <Route
           path="/cai-dat-thong-tin"

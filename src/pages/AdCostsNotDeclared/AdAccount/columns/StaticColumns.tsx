@@ -114,42 +114,79 @@ export const StaticColumns = (): TableColumnsType<UserData> => {
       dataIndex: 'ad_account_datas',
       key: '11',
       fixed: 'left',
-      render: (value: AdAccountData[]) => {
-        return value.flatMap((innerData) => (
-          <div className="border-t-[1px] border-black first:border-t-0" key={innerData.ad_account.id}>
-            <div className="row-custom bg-[#e9e9e9]">TKQC</div>
-            <div className="row-custom">VNĐ</div>
-          </div>
-        ))
-      },
+      render: (value: AdAccountData[]) => (
+        // <div className="border-t-[1px] border-black first:border-t-0" key={innerData.ad_account.id}>
+        //   {/* <div className="row-custom bg-[#e9e9e9]">TKQC</div>
+        //   <div className="row-custom">VNĐ</div> */}
+        //   TKQC
+        // </div>
+        <table className="h-full flex">
+          <tbody className="w-full h-full flex flex-col justify-center items-center">
+            {value.flatMap((innerData, index) => (
+              index % 2 === 0 ? (
+                <tr key={innerData.ad_account.account_id} className="min-h-[60px] max-h-[78px] !h-full w-full flex justify-center items-center border-b border-black">
+                  <td>TKQC</td>
+                </tr>
+              ) : (
+                <tr key={innerData.ad_account.account_id} className="min-h-[60px] max-h-[78px] !h-full w-full flex justify-center items-center border-b border-black !bg-[#e9e9e9]">
+                  <td>TKQC</td>
+                </tr>
+              )
+            ))}
+          </tbody>
+        </table>
+      ),
     },
     {
       title: 'Tổng CPQC',
       dataIndex: 'ad_account_datas',
       width: 200,
       key: '12',
-      render(value: AdAccountData[]) {
-        return value.flatMap((innerData) => (
-          <div className="border-t-[1px] border-black first:border-t-0" key={innerData.ad_account.id}>
-            <div className="row-custom bg-[#e9e9e9]">{formatCurrency(innerData.total_ads)}</div>
-            <div className="row-custom">{formatCurrency(innerData.total_ads_vnd)}</div>
-          </div>
-        ))
-      },
+      render: (value: AdAccountData[]) => (
+        // <div className="border-t-[1px] border-black first:border-t-0" key={innerData.ad_account.id}>
+        //   {/* <div className="row-custom bg-[#e9e9e9]"></div>
+        //   <div className="row-custom">{formatCurrency(innerData.total_ads_vnd)}</div> */}
+        //   {formatCurrency(innerData.total_ads)}
+        // </div>
+        <table className="h-full flex">
+          <tbody className="w-full h-full flex flex-col justify-center items-center">
+            {value.flatMap((innerData, index) => (
+              index % 2 === 0 ? (
+                <tr key={innerData.ad_account.account_id} className="min-h-[60px] max-h-[78px] !h-full w-full flex justify-center items-center border-b border-black">
+                  <td>{formatCurrency(innerData.total_ads)}</td>
+                </tr>
+              ) : (
+                <tr key={innerData.ad_account.account_id} className="min-h-[60px] max-h-[78px] !h-full w-full flex justify-center items-center border-b border-black !bg-[#e9e9e9]">
+                  <td>{formatCurrency(innerData.total_ads)}</td>
+                </tr>
+              )
+            ))}
+          </tbody>
+        </table>
+      ),
     },
-    {
-      title: 'Tổng hóa đơn',
-      dataIndex: 'ad_account_datas',
-      width: 200,
-      key: '13',
-      render(value: AdAccountData[]){
-        return value.flatMap((innerData) => (
-          <div className="border-t-[1px] border-black first:border-t-0" key={innerData.ad_account.id}>
-            <div className="row-custom bg-[#e9e9e9]">{formatCurrency(innerData.total_bill)}</div>
-            <div className="row-custom">{formatCurrency(innerData.total_bill_vnd)}</div>
-          </div>
-        ))
-      },
+  {
+    title: 'Tổng hóa đơn',
+    dataIndex: 'ad_account_datas',
+    width: 200,
+    key: '13',
+    render: (value: AdAccountData[]) => (
+      <table className="h-full flex">
+        <tbody className="w-full h-full flex flex-col justify-center items-center">
+          {value.flatMap((innerData, index) => (
+            index % 2 === 0 ? (
+              <tr key={innerData.ad_account.account_id} className="min-h-[60px] max-h-[78px] !h-full w-full flex justify-center items-center border-b border-black">
+                <td>{formatCurrency(innerData.total_bill)}</td>
+              </tr>
+            ) : (
+              <tr key={innerData.ad_account.account_id} className="min-h-[60px] max-h-[78px] !h-full w-full flex justify-center items-center border-b border-black !bg-[#e9e9e9]">
+                <td>{formatCurrency(innerData.total_bill)}</td>
+              </tr>
+            )
+          ))}
+        </tbody>
+      </table>
+    ),
     }
   ]
 }

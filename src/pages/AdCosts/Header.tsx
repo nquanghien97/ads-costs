@@ -95,6 +95,7 @@ function Header({ setDatas, setLoading, dataExportExcel, setShowAdCosts, setShow
       user_id: data.user?.value,
       status: data.status
     }
+    console.log(submitData);
     try {
       const res = await GetAdsCostsByUser(submitData)
       setDatas(res.data.data.list)
