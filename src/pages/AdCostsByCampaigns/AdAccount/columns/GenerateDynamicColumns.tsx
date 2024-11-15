@@ -5,12 +5,12 @@ import { UserData, TotalDailyData } from '../../../../dto/AdsBillingsDTO';
 import EyeIcon from '../../../../assets/icons/EyeIcon';
 import { formatCurrency } from '../../../../utils/currency';
 import { useNotification } from '../../../../hooks/useNotification';
-import { updateStatusAds, updateStatusBill } from '../../../../services/ads_bills';
 import { useCallback, useMemo, useState } from 'react';
 import axios from 'axios';
 import { UserRole } from '../../../../entities/User';
 import { useAuthStore } from '../../../../zustand/auth.store';
 import React from 'react';
+import { UpdateStatusCampaign } from '../../../../services/statistics_campaigns';
 interface GenerateDynamicColumnsProps {
   setDataDetails: React.Dispatch<React.SetStateAction<{
     ad_account_id: number;
@@ -32,7 +32,6 @@ interface OptionType {
 export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): TableColumnsType<UserData> => {
   const { setDataDetails, datas, setOpenAdCostsDetails, setLoadingTable, showAdCostsCampaigns, showBillCosts } = props;
   const [selectedStatus, setSelectedStatus] = useState<Record<number, string>>({});
-  const [selectedBillStatus, setSelectedBillStatus] = useState<Record<number, string>>({});
   const notification = useNotification()
   const { user } = useAuthStore()
 
@@ -54,28 +53,8 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
     setSelectedStatus((prevStatus) => ({ ...prevStatus, [date_id]: value }));
     setLoadingTable(true);
     try {
-      await updateStatusAds(date_id, value);
+      await UpdateStatusCampaign(date_id, value);
       notification.success('Cập nhật trạng thái CPQC thành công');
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        const invalidData = err.response?.data.invalidData;
-        if (invalidData) {
-          notification.error('Bạn không có quyền để chỉnh sửa trạng thái này');
-        } else {
-          notification.error('Có lỗi xảy ra, vui lòng thử lại!');
-        }
-      }
-    } finally {
-      setLoadingTable(false);
-    }
-  }, [notification, setLoadingTable]);
-
-  const onChangeBillStatus = useCallback(async (value: string, date_id: number) => {
-    setSelectedBillStatus((prevStatus) => ({ ...prevStatus, [date_id]: value }));
-    setLoadingTable(true);
-    try {
-      await updateStatusBill(date_id, value);
-      notification.success('Cập nhật trạng thái hóa đơn thành công');
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const invalidData = err.response?.data.invalidData;
@@ -132,34 +111,6 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
           ));
         },
       },
-      showBillCosts && {
-        title: "Xác nhận hóa đơn",
-        key: `xacnhan_${index}`,
-        width: 160,
-        className: "dynamic-col",
-        render: (_: unknown, record: UserData) => {
-          return record.ad_account_datas.flatMap(data => {
-            const date_id = data.datas?.[date]?.id;
-            const currentStatus = selectedBillStatus[date_id] || data.datas?.[date]?.bill_status;
-            return (
-              <div className={`px-2 flex items-center h-[78px] border-t-[1px] border-black select-${data.datas?.[date]?.id}`} key={data.ad_account.id}>
-                {!data.datas?.[date]?.bill_status ? (
-                  <div>Không có dữ liệu</div>
-                ) : (
-                  <Select
-                    options={(user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT) ? memoizedOptionsWithUserRole : memoizedOptions}
-                    value={{ label: currentStatus, value: currentStatus }}
-                    onChange={(value) => onChangeBillStatus(value?.value || '', data.datas?.[date]?.id)}
-                    className={`w-full ${getBackgroundColor(currentStatus)}`}
-                    placeholder={!data.datas?.[date]?.bill_status ? 'Không có dữ liệu' : 'Lựa chọn...'}
-                    isDisabled={!data.datas?.[date]?.bill_status || ((user.role !== UserRole.ACCOUNTANT && user.role !== UserRole.ROOT && (selectedBillStatus[date_id] || data.datas?.[date]?.bill_status) === "Đã XN (KT)" && (selectedBillStatus[date_id] || data.datas?.[date]?.bill_status) === "Sai số (KT)"))}
-                  />
-                )}
-              </div>
-            );
-          });
-        },
-      },
       showAdCostsCampaigns && {
         title: `Tổng CPQC`,
         key: `ads_${index}`,
@@ -207,6 +158,6 @@ export const GenerateDynamicColumns = (props: GenerateDynamicColumnsProps): Tabl
         },
       },
     ].filter(Boolean),
-  })), [dates, showBillCosts, showAdCostsCampaigns, setOpenAdCostsDetails, setDataDetails, selectedBillStatus, user.role, memoizedOptionsWithUserRole, memoizedOptions, getBackgroundColor, onChangeBillStatus, selectedStatus, onChangeStatus]);
+  })), [dates, showBillCosts, showAdCostsCampaigns, setOpenAdCostsDetails, setDataDetails, user.role, memoizedOptionsWithUserRole, memoizedOptions, getBackgroundColor, selectedStatus, onChangeStatus]);
 };
 
